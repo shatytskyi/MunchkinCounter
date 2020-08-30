@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#F3F3F3</color>
+    <color name="lightGrey">#EFEFEF</color>
+    <color name="grey">#E4E4E4</color>
+    <color name="darkGrey">#616161</color>
+    <color name="black">#151515</color>
+<!--    <color name="accent">#006C0B</color>-->
+<!--    <color name="accent2">#00830D</color>-->
+    <color name="accent">#006C3A</color>
+    <color name="accent2">#00835A</color>
+    <color name="warning">#9E0000</color>
+    <color name="warning2">#BA0000</color>
+    <color name="black_overlay">#66000000</color>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainListActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/a_main_list_tb"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/a_list_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/a_main_list_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="36dp"
+        android:elevation="20dp"
+        app:fabCustomSize="64dp"
+        android:background="@drawable/bg_accent"
+        android:src="@drawable/icon_add"
+        />
+
+    <TextView
+        android:id="@+id/a_main_list_tv_hint"
+        android:visibility="invisible"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_white_c_accent"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        android:text="There's no players yet. \n You can add one with button below."/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/a_main_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
