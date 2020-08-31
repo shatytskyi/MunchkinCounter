@@ -69,50 +69,39 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
 
     private void findButtons (View view) {
 
+
         view.findViewById(R.id.f_unit_bg).setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                     .remove(this).commit();
         });
 
-        // Power change buttons
-        view.findViewById(R.id.f_unit_b_minus_1).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, -1);
-        });
-        view.findViewById(R.id.f_unit_b_minus_2).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, -2);
-        });
-        view.findViewById(R.id.f_unit_b_minus_3).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, -3);
-        });
-        view.findViewById(R.id.f_unit_b_minus_4).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, -4);
-        });
-        view.findViewById(R.id.f_unit_b_minus_5).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, -5);
-        });
-        view.findViewById(R.id.f_unit_b_plus_1).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, 1);
-        });
-        view.findViewById(R.id.f_unit_b_plus_2).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, 2);
-        });
-        view.findViewById(R.id.f_unit_b_plus_3).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, 3);
-        });
-        view.findViewById(R.id.f_unit_b_plus_4).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, 4);
-        });
-        view.findViewById(R.id.f_unit_b_plus_5).setOnClickListener(v -> {
-            Repo.instance().changePower(mUnitID, 5);
+        view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .add(R.id.a_main_list_container,  WarningFragment.newInstance(WarningFragment.TYPE_RESET, mUnitID))
+                    .commit();
         });
 
+        view.findViewById(R.id.f_unit_b_remove).setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .replace(R.id.a_main_list_container,  WarningFragment.newInstance(WarningFragment.TYPE_REMOVE, mUnitID))
+                    .commit();
+        });
+
+        // Power change buttons
+        view.findViewById(R.id.f_unit_b_minus_1).setOnClickListener(v -> Repo.instance().changePower(mUnitID, -1));
+        view.findViewById(R.id.f_unit_b_minus_2).setOnClickListener(v -> Repo.instance().changePower(mUnitID, -2));
+        view.findViewById(R.id.f_unit_b_minus_3).setOnClickListener(v -> Repo.instance().changePower(mUnitID, -3));
+        view.findViewById(R.id.f_unit_b_minus_4).setOnClickListener(v -> Repo.instance().changePower(mUnitID, -4));
+        view.findViewById(R.id.f_unit_b_minus_5).setOnClickListener(v -> Repo.instance().changePower(mUnitID, -5));
+        view.findViewById(R.id.f_unit_b_plus_1).setOnClickListener(v -> Repo.instance().changePower(mUnitID, 1));
+        view.findViewById(R.id.f_unit_b_plus_2).setOnClickListener(v -> Repo.instance().changePower(mUnitID, 2));
+        view.findViewById(R.id.f_unit_b_plus_3).setOnClickListener(v -> Repo.instance().changePower(mUnitID, 3));
+        view.findViewById(R.id.f_unit_b_plus_4).setOnClickListener(v -> Repo.instance().changePower(mUnitID, 4));
+        view.findViewById(R.id.f_unit_b_plus_5).setOnClickListener(v -> Repo.instance().changePower(mUnitID, 5));
+
         // Lvl change buttons
-        view.findViewById(R.id.f_unit_b_lvl_minus).setOnClickListener(v -> {
-            Repo.instance().changeLvl(mUnitID, -1);
-        });
-        view.findViewById(R.id.f_unit_b_lvl_plus).setOnClickListener(v -> {
-            Repo.instance().changeLvl(mUnitID, 1);
-        });
+        view.findViewById(R.id.f_unit_b_lvl_minus).setOnClickListener(v -> Repo.instance().changeLvl(mUnitID, -1));
+        view.findViewById(R.id.f_unit_b_lvl_plus).setOnClickListener(v -> Repo.instance().changeLvl(mUnitID, 1));
 
     }
 

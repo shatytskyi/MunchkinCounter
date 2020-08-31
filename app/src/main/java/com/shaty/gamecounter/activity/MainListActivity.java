@@ -44,7 +44,6 @@ public class MainListActivity extends AppCompatActivity {
                     .commit();
             mButtonAdd.hide();
             hint.setVisibility(View.INVISIBLE);
-            MainListActivity.this.onPause();
         });
     }
 

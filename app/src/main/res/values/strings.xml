@@ -8,7 +8,10 @@
     <string name="add_player">Add player</string>
     <string name="enter_name">Enter the name</string>
     <string name="warning_all_remove">All players will be removed!</string>
+    <string name="warning_remove"> will be removed!</string>
+    <string name="player">Player</string>
     <string name="warning_all_reset">All players will be reset!</string>
+    <string name="warning_reset">will be reset!</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -23,4 +26,6 @@
     <string name="score">Score</string>
     <string name="level">Level</string>
     <string name="open_extended_menu">Open extended menu</string>
+    <string name="reset">Reset</string>
+    <string name="remove">Remove</string>
 </resources>
