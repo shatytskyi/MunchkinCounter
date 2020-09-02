@@ -11,6 +11,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/f_add_bg_white"
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:layout_gravity="center"

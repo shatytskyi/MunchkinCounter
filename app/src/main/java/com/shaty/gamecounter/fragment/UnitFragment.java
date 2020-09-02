@@ -1,5 +1,6 @@
 package com.shaty.gamecounter.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,14 +14,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shaty.gamecounter.R;
+import com.shaty.gamecounter.activity.FightActivity;
 import com.shaty.gamecounter.data.Repo;
 import com.shaty.gamecounter.data.Unit;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UnitFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class UnitFragment extends Fragment implements Repo.OnDataChangedListener {
 
     private static final String ARG_ID = "param1";
@@ -75,16 +73,24 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
                     .remove(this).commit();
         });
 
+        view.findViewById(R.id.f_unit_bg_white).setOnClickListener(v -> {
+
+        });
+
         view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(R.id.a_main_list_container,  WarningFragment.newInstance(WarningFragment.TYPE_RESET, mUnitID))
+                    .add(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_RESET, mUnitID))
                     .commit();
         });
 
         view.findViewById(R.id.f_unit_b_remove).setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .replace(R.id.a_main_list_container,  WarningFragment.newInstance(WarningFragment.TYPE_REMOVE, mUnitID))
+                    .replace(R.id.a_main_list_container, new WarningFragment(mUnitID))
                     .commit();
+        });
+
+        view.findViewById(R.id.f_unit_b_fight).setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), FightActivity.class));
         });
 
         // Power change buttons

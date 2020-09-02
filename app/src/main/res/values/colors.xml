@@ -7,9 +7,11 @@
     <color name="black">#151515</color>
 <!--    <color name="accent">#006C0B</color>-->
 <!--    <color name="accent2">#00830D</color>-->
-    <color name="accent">#002697</color>
-    <color name="accent2">#0035D3</color>
+    <color name="accent">#3AAC4D</color>
+    <color name="accent2">#4A9A5E</color>
     <color name="warning">#9E0000</color>
     <color name="warning2">#BA0000</color>
+    <color name="enemy">#7D218E</color>
+    <color name="enemy2">#83307F</color>
     <color name="black_overlay">#66000000</color>
 </resources>

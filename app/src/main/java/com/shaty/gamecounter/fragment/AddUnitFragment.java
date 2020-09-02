@@ -55,6 +55,9 @@ public class AddUnitFragment extends Fragment {
         view.findViewById(R.id.f_add_bg).setOnClickListener(v -> {
             closeFragment(this.getContext(), et);
         });
+        view.findViewById(R.id.f_add_bg_white).setOnClickListener(v -> {
+
+        });
         view.findViewById(R.id.f_add_b_ok).setOnClickListener(v -> {
             try {
                 Repo.instance().addUnit(et.getText().toString());

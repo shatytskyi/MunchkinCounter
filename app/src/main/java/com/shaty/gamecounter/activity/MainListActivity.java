@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shaty.gamecounter.data.Repo;
@@ -61,17 +62,25 @@ public class MainListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.act_reset_all:
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.animator.slide_in_from_up_right, R.animator.slide_out_to_down)
-                        .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_RESET))
-                        .commit();
+                if (Repo.instance().getData().size() != 0) {
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.animator.slide_in_from_up_right, R.animator.slide_out_to_down)
+                            .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_RESET))
+                            .commit();
+                } else {
+                    Toast.makeText(this, "No players in list", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.act_remove_all:
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.animator.slide_in_from_up_right, R.animator.slide_out_to_down)
-                        .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_REMOVED))
-                        .commit();
-                break;
+                if (Repo.instance().getData().size() != 0) {
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.animator.slide_in_from_up_right, R.animator.slide_out_to_down)
+                            .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_REMOVED))
+                            .commit();
+                    break;
+                } else {
+                    Toast.makeText(this, "No players in list", Toast.LENGTH_SHORT).show();
+                }
         }
         return true;
     }

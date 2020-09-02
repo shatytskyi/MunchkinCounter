@@ -28,4 +28,9 @@
     <string name="open_extended_menu">Open extended menu</string>
     <string name="reset">Reset</string>
     <string name="remove">Remove</string>
+    <string name="get_help">Get help</string>
+    <string name="fight">FIGHT</string>
+    <string name="des_remove_unit_from_list">Remove unit from list</string>
+    <string name="des_reset_unit_parameters">Reset unit parameters</string>
+    <string name="no_players">There\'s no players yet \n You can add one using button below</string>
 </resources>

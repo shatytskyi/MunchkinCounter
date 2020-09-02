@@ -1,5 +1,6 @@
 package com.shaty.gamecounter.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,11 +22,27 @@ public class WarningFragment extends Fragment {
     public static final String TYPE_ALL_REMOVED = "all removed";
     public static final String TYPE_ALL_RESET = "all_reset";
     public static final String TYPE_RESET = "reset";
-    public static final String TYPE_REMOVE = "remove";
 
     private String mType;
     private String mMessage;
+    private long mUnitId = -1;
 
+    public WarningFragment() {
+    }
+
+    public WarningFragment(long mUnitId) {
+        this.mUnitId = mUnitId;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (mUnitId != -1)
+        mMessage =
+                getString(R.string.player) + " " +
+                        Repo.instance().findUnitById(mUnitId).name + " " +
+                        getString(R.string.warning_remove);
+    }
 
     public static WarningFragment newInstance(String type) {
         WarningFragment fragment = new WarningFragment();
@@ -57,18 +74,11 @@ public class WarningFragment extends Fragment {
                 case TYPE_ALL_RESET:
                     mMessage = getString(R.string.warning_all_reset);
                     break;
-                case TYPE_REMOVE:
-                    mMessage =
-                        getString(R.string.player) + " " +
-                                Repo.instance().findUnitById((getArguments().getLong(ARG_ID))).name + " " +
-                                getString(R.string.warning_remove);
-                    break;
                 case TYPE_RESET:
                     mMessage =
                         getString(R.string.player) + " " +
                                 Repo.instance().findUnitById((getArguments().getLong(ARG_ID))).name + " " +
                                 getString(R.string.warning_reset);
-                    break;
             }
         }
 
@@ -90,31 +100,30 @@ public class WarningFragment extends Fragment {
 
         view.findViewById(R.id.f_warning_b_cancel).setOnClickListener(v -> closeFragment());
 
-        view.findViewById(R.id.f_warning_b_ok).setOnClickListener(v -> {
-            switch (mType) {
-                case TYPE_ALL_REMOVED:
-                    Repo.instance().removeAll();
-                    closeFragment();
-                    break;
-                case TYPE_ALL_RESET:
-                    Repo.instance().resetAll();
-                    closeFragment();
-                    break;
-                case TYPE_REMOVE:
-                    assert getArguments() != null;
-                    assert getParentFragment() != null;
-                    getParentFragmentManager().beginTransaction().remove(getParentFragment())
-                            .commit();
-                    Repo.instance().removeUnit(getArguments().getLong(ARG_ID));
-                    closeFragment();
-                    break;
-                case TYPE_RESET:
-                    assert getArguments() != null;
-                    Repo.instance().resetUnit(getArguments().getLong(ARG_ID));
-                    closeFragment();
-                    break;
-            }
-        });
+        if (mType != null) {
+            view.findViewById(R.id.f_warning_b_ok).setOnClickListener(v -> {
+                switch (mType) {
+                    case TYPE_ALL_REMOVED:
+                        Repo.instance().removeAll();
+                        closeFragment();
+                        break;
+                    case TYPE_ALL_RESET:
+                        Repo.instance().resetAll();
+                        closeFragment();
+                        break;
+                    case TYPE_RESET:
+                        assert getArguments() != null;
+                        Repo.instance().resetUnit(getArguments().getLong(ARG_ID));
+                        closeFragment();
+                        break;
+                }
+            });
+        } else {
+            view.findViewById(R.id.f_warning_b_ok).setOnClickListener(v -> {
+                Repo.instance().removeUnit(mUnitId);
+                closeFragment();
+            });
+        }
     }
 
     private void closeFragment() {

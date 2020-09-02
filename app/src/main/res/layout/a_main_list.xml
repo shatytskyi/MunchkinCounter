@@ -63,7 +63,7 @@
         android:textSize="24sp"
         android:padding="8dp"
         android:textColor="@color/black"
-        android:text="There's no players yet. \n You can add one with button below."/>
+        android:text="@string/no_players"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/a_main_list_container"
