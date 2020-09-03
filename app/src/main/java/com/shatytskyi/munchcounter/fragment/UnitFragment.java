@@ -1,22 +1,21 @@
-package com.shaty.gamecounter.fragment;
+package com.shatytskyi.munchcounter.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.shaty.gamecounter.R;
-import com.shaty.gamecounter.activity.FightActivity;
-import com.shaty.gamecounter.data.Repo;
-import com.shaty.gamecounter.data.Unit;
+import com.shatytskyi.munchcounter.R;
+import com.shatytskyi.munchcounter.activity.FightActivity;
+import com.shatytskyi.munchcounter.data.Repo;
+import com.shatytskyi.munchcounter.data.Unit;
 
 
 public class UnitFragment extends Fragment implements Repo.OnDataChangedListener {

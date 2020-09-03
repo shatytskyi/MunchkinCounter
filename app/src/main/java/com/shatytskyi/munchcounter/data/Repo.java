@@ -1,4 +1,4 @@
-package com.shaty.gamecounter.data;
+package com.shatytskyi.munchcounter.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -96,6 +96,7 @@ public class Repo {
     }
 
     public static class ZeroLengthException extends Exception {
+
     }
 
 }

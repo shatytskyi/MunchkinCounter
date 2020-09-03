@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Game Counter</string>
+    <string name="app_name">Munchkin Counter</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="ok">OK</string>
@@ -24,6 +24,7 @@
     <string name="minus">−</string>
     <string name="plus">+</string>
     <string name="score">Score</string>
+    <string name="monster">Monster</string>
     <string name="level">Level</string>
     <string name="open_extended_menu">Open extended menu</string>
     <string name="reset">Reset</string>
@@ -33,4 +34,8 @@
     <string name="des_remove_unit_from_list">Remove unit from list</string>
     <string name="des_reset_unit_parameters">Reset unit parameters</string>
     <string name="no_players">There\'s no players yet \n You can add one using button below</string>
+    <string name="des_get_help">Get help from other players</string>
+    <string name="equals">=</string>
+    <string name="reset_monster">Reset monster</string>
+    <string name="reset_fight">Reset fight</string>
 </resources>

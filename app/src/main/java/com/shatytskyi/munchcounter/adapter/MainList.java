@@ -1,25 +1,22 @@
-package com.shaty.gamecounter.adapter;
+package com.shatytskyi.munchcounter.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.shaty.gamecounter.R;
-import com.shaty.gamecounter.activity.MainListActivity;
-import com.shaty.gamecounter.data.DataIO;
-import com.shaty.gamecounter.data.Repo;
-import com.shaty.gamecounter.data.Unit;
-import com.shaty.gamecounter.fragment.AddUnitFragment;
-import com.shaty.gamecounter.fragment.UnitFragment;
+import com.shatytskyi.munchcounter.R;
+import com.shatytskyi.munchcounter.activity.MainListActivity;
+import com.shatytskyi.munchcounter.data.DataIO;
+import com.shatytskyi.munchcounter.data.Repo;
+import com.shatytskyi.munchcounter.data.Unit;
+import com.shatytskyi.munchcounter.fragment.UnitFragment;
 
 public class MainList {
 

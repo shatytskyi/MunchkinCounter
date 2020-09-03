@@ -1,10 +1,10 @@
-package com.shaty.gamecounter.activity;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.shatytskyi.munchcounter.activity;
 
 import android.os.Bundle;
 
-import com.shaty.gamecounter.R;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.shatytskyi.munchcounter.R;
 
 public class FightActivity extends AppCompatActivity {
 

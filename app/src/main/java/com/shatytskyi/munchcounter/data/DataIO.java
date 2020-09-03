@@ -1,4 +1,4 @@
-package com.shaty.gamecounter.data;
+package com.shatytskyi.munchcounter.data;
 
 import android.content.Context;
 

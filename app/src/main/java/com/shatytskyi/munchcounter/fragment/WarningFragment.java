@@ -1,19 +1,18 @@
-package com.shaty.gamecounter.fragment;
+package com.shatytskyi.munchcounter.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.shaty.gamecounter.R;
-import com.shaty.gamecounter.data.Repo;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.shatytskyi.munchcounter.R;
+import com.shatytskyi.munchcounter.data.Repo;
 
 public class WarningFragment extends Fragment {
 

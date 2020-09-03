@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.shaty.gamecounter"
+        applicationId 'com.shatytskyi.gamecounter'
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

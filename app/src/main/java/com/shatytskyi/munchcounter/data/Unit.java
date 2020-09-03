@@ -1,4 +1,4 @@
-package com.shaty.gamecounter.data;
+package com.shatytskyi.munchcounter.data;
 
 import java.io.Serializable;
 import java.util.Date;

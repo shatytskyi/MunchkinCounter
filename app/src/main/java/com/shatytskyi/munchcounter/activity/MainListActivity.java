@@ -1,7 +1,4 @@
-package com.shaty.gamecounter.activity;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.shatytskyi.munchcounter.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,31 +8,34 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.shaty.gamecounter.data.Repo;
-import com.shaty.gamecounter.fragment.AddUnitFragment;
-import com.shaty.gamecounter.adapter.MainList;
-import com.shaty.gamecounter.R;
-import com.shaty.gamecounter.fragment.WarningFragment;
+import com.shatytskyi.munchcounter.R;
+import com.shatytskyi.munchcounter.adapter.MainList;
+import com.shatytskyi.munchcounter.data.Repo;
+import com.shatytskyi.munchcounter.fragment.AddUnitFragment;
+import com.shatytskyi.munchcounter.fragment.WarningFragment;
 
-public class MainListActivity extends AppCompatActivity {
+public class MainListActivity extends AppCompatActivity implements Repo.OnDataChangedListener {
 
-    FloatingActionButton mButtonAdd;
+    private FloatingActionButton mButtonAdd;
+    private TextView mHint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("tag", "create called");
+        Log.d("tag", "omCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main_list);
+        Repo.instance().subscribe(this);
+        // TODO: 02.09.2020 unsubscribe
 
         setSupportActionBar(findViewById(R.id.a_main_list_tb));
 
         new MainList(findViewById(R.id.a_list_rv), this);
-
-        TextView hint = findViewById(R.id.a_main_list_tv_hint);
-        if (Repo.instance().getData().size() == 0) {
-            hint.setVisibility(View.VISIBLE);
-        }
+        mHint = findViewById(R.id.a_main_list_tv_hint);
+        onDataChanged();
 
         mButtonAdd = findViewById(R.id.a_main_list_fab);
         mButtonAdd.setOnClickListener(v -> {
@@ -44,9 +44,10 @@ public class MainListActivity extends AppCompatActivity {
                     .replace(R.id.a_main_list_container, new AddUnitFragment(this))
                     .commit();
             mButtonAdd.hide();
-            hint.setVisibility(View.INVISIBLE);
+            mHint.setVisibility(View.INVISIBLE);
         });
     }
+
 
     public void setAddButtonVisible() {
         mButtonAdd.show();
@@ -83,5 +84,12 @@ public class MainListActivity extends AppCompatActivity {
                 }
         }
         return true;
+    }
+
+    @Override
+    public void onDataChanged() {
+        if (Repo.instance().getData().size() == 0) {
+            mHint.setVisibility(View.VISIBLE);
+        } else mHint.setVisibility(View.INVISIBLE);
     }
 }

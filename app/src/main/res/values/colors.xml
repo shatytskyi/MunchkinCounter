@@ -5,13 +5,12 @@
     <color name="grey">#E4E4E4</color>
     <color name="darkGrey">#616161</color>
     <color name="black">#151515</color>
-<!--    <color name="accent">#006C0B</color>-->
-<!--    <color name="accent2">#00830D</color>-->
-    <color name="accent">#3AAC4D</color>
-    <color name="accent2">#4A9A5E</color>
-    <color name="warning">#9E0000</color>
-    <color name="warning2">#BA0000</color>
-    <color name="enemy">#7D218E</color>
-    <color name="enemy2">#83307F</color>
-    <color name="black_overlay">#66000000</color>
+    <!--    <color name="accent">#006C0B</color>-->
+    <!--    <color name="accent2">#00830D</color>-->
+    <color name="accent">#D59900</color>
+    <color name="accent2">#E1AF18</color>
+    <color name="warning">#C62828</color>
+    <color name="warning2">#E13B3B</color>
+    <color name="enemy">#6A1B9A</color>
+    <color name="enemy2">#7A24AE</color>
 </resources>
