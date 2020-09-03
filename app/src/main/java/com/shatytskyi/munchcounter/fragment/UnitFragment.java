@@ -89,7 +89,9 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
         });
 
         view.findViewById(R.id.f_unit_b_fight).setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), FightActivity.class));
+            Intent intent = new Intent(getContext(), FightActivity.class);
+            intent.putExtra(FightActivity.EXTRA_USER_ID, mUnitID);
+            startActivity(intent);
         });
 
         // Power change buttons

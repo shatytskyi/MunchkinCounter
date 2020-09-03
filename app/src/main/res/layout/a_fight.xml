@@ -30,13 +30,14 @@
             android:layout_height="0dp"
             android:background="@drawable/bg_accent_right_c"
             android:gravity="center"
+            android:maxLength="2"
             android:padding="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="55" />
+            tools:text="77" />
 
         <TextView
             android:id="@+id/textView4"
@@ -57,18 +58,18 @@
             android:gravity="center"
             android:text="@string/get_help"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView" />
+            app:layout_constraintBottom_toTopOf="@+id/a_fight_b_get_help"
+            app:layout_constraintEnd_toEndOf="@+id/a_fight_b_get_help"
+            app:layout_constraintStart_toStartOf="@+id/a_fight_b_get_help" />
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
+            android:id="@+id/a_fight_b_get_help"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_marginBottom="24dp"
+            android:background="?selectableItemBackground"
             android:contentDescription="@string/des_get_help"
             android:src="@drawable/icon_get_help"
-            android:background="?selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/a_fight_tv_score" />
@@ -80,13 +81,14 @@
             android:layout_height="0dp"
             android:background="@drawable/bg_accent_left_c"
             android:gravity="center"
+            android:maxLength="2"
             android:padding="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="9" />
+            tools:text="999" />
 
         <TextView
             android:id="@+id/textView"
@@ -168,7 +170,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/a_fight__b_minus_1"
+                    android:id="@+id/a_fight_b_minus_1"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="?selectableItemBackground"
@@ -183,7 +185,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/a_fight__b_plus_1"
+                    android:id="@+id/a_fight_b_plus_1"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="?selectableItemBackground"
@@ -431,15 +433,16 @@
             android:background="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/a_fight_tv_score"
+            app:layout_constraintStart_toEndOf="@+id/a_fight_tv_lvl" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:background="@color/accent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/a_fight_tv_score"
+            app:layout_constraintStart_toEndOf="@+id/a_fight_tv_lvl"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -449,76 +452,51 @@
         android:layout_height="45dp"
         android:layout_margin="4dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/a_fight_tv_table_player"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@drawable/bg_accent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="Player" />
+
+
+        <TextView
+            android:id="@+id/a_fight_tv_table_helper"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:padding="10dp"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="Player" />
-
-        <LinearLayout
-            android:id="@+id/a_fight_tv_helper_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/bg_accent"
-            android:orientation="horizontal"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/a_fight_tv_table_player"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/a_fight_tv_table_plus"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/plus"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/a_fight_tv_table_helper"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:text="Helper" />
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="+ Helper" />
 
         <TextView
+            android:id="@+id/a_fight_tv_table_result"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@drawable/bg_enemy"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/a_fight_tv_table_result"
             android:gravity="center"
+            android:orientation="horizontal"
             android:padding="10dp"
-            android:textColor="@color/white"
+            android:textColor="@color/green"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="12" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="+12" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -543,6 +521,7 @@
             android:layout_height="0dp"
             android:background="@drawable/bg_enemy_right_c"
             android:gravity="center"
+            android:maxLength="2"
             android:padding="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textColor="@color/white"
@@ -550,6 +529,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="55" />
+
 
         <TextView
             android:id="@+id/textView11"
@@ -564,62 +544,75 @@
             app:layout_constraintTop_toTopOf="@+id/a_fight_tv_monster_score" />
 
 
-        <View
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/a_fight_tv_monster_panel"
             android:layout_width="100dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_enemy_left_c"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="9" />
+            tools:text="9">
 
-        <TextView
-            android:id="@+id/textView33"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:width="54dp"
-            android:gravity="center"
-            android:text="@string/reset_monster"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/a_fight_b_reset_monster"
-            app:layout_constraintStart_toStartOf="@+id/a_fight_b_reset_monster"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/a_fight_b_reset_monster"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:background="?android:selectableItemBackground"
-            android:src="@drawable/icon_reset"
-            app:layout_constraintEnd_toEndOf="@+id/a_fight_tv_monster_panel"
-            app:layout_constraintStart_toStartOf="@+id/a_fight_tv_monster_panel"
-            app:layout_constraintTop_toBottomOf="@+id/textView33" />
-
-        <TextView
-            android:id="@+id/textView44"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:width="54dp"
-            android:gravity="center"
-            android:text="@string/reset_fight"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/a_fight_tv_monster_panel"
-            app:layout_constraintEnd_toEndOf="@+id/a_fight_tv_monster_panel"
-            app:layout_constraintStart_toStartOf="@+id/a_fight_tv_monster_panel" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/line_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
 
 
-        <ImageView
-            android:id="@+id/a_fight_b_reset_fight"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:background="?android:selectableItemBackground"
-            android:src="@drawable/icon_reset"
-            app:layout_constraintBottom_toTopOf="@+id/textView44"
-            app:layout_constraintEnd_toEndOf="@+id/textView44"
-            app:layout_constraintStart_toStartOf="@+id/textView44" />
+            <ImageView
+                android:id="@+id/a_fight_b_reset_fight"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="?android:selectableItemBackground"
+                android:src="@drawable/icon_reset"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/line_1" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="64dp"
+                android:gravity="center"
+                android:text="@string/reset_fight"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/a_fight_b_reset_fight" />
+
+
+            <ImageView
+                android:id="@+id/a_fight_b_finish"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="?android:selectableItemBackground"
+                android:src="@drawable/icon_back"
+                app:layout_constraintBottom_toTopOf="@+id/line_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <TextView
+                android:id="@+id/textView66"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="64dp"
+                android:gravity="center"
+                android:text="@string/finish_fight"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/a_fight_b_finish" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <LinearLayout
             android:layout_width="0dp"
@@ -903,15 +896,15 @@
             android:layout_height="2dp"
             android:background="@color/enemy"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/a_fight_tv_monster_score"
+            app:layout_constraintStart_toEndOf="@id/a_fight_tv_monster_panel" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:background="@color/enemy"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/a_fight_tv_monster_score"
+            app:layout_constraintStart_toEndOf="@id/a_fight_tv_monster_panel"
             app:layout_constraintTop_toTopOf="parent" />
 
 

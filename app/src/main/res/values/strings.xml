@@ -38,4 +38,5 @@
     <string name="equals">=</string>
     <string name="reset_monster">Reset monster</string>
     <string name="reset_fight">Reset fight</string>
+    <string name="finish_fight">Finish fight</string>
 </resources>
