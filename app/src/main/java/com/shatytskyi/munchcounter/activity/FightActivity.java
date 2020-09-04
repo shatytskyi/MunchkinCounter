@@ -1,17 +1,20 @@
 package com.shatytskyi.munchcounter.activity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.shatytskyi.munchcounter.R;
+import com.shatytskyi.munchcounter.adapter.HelperList;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
+import com.shatytskyi.munchcounter.fragment.HelperListFragment;
 
-public class FightActivity extends AppCompatActivity {
+public class FightActivity extends AppCompatActivity implements HelperList.HelperListener {
 
     public static final String EXTRA_USER_ID = "extra_user_id";
 
@@ -26,13 +29,14 @@ public class FightActivity extends AppCompatActivity {
     private TextView mTVMonsterScore;
     private TextView mTVHelperName;
     private TextView mTVResult;
+    private TextView mTVGetHelp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_fight);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setupViews();
         mUserId = getIntent().getLongExtra(EXTRA_USER_ID, -1);
         mPlayer = Repo.instance().findUnitById(mUserId).copy();
@@ -50,6 +54,7 @@ public class FightActivity extends AppCompatActivity {
         mTVPlayerLvl = findViewById(R.id.a_fight_tv_lvl);
         mTVPlayerScore = findViewById(R.id.a_fight_tv_score);
         mTVMonsterScore = findViewById(R.id.a_fight_tv_monster_score);
+        mTVGetHelp = findViewById(R.id.a_fight_tv_get_help);
 
         //functional buttons
         findViewById(R.id.a_fight_b_finish).setOnClickListener(v -> {
@@ -58,13 +63,23 @@ public class FightActivity extends AppCompatActivity {
         findViewById(R.id.a_fight_b_reset_fight).setOnClickListener(v -> {
             mMonster = new Unit("Monster", 0, 0);
             mPlayer = Repo.instance().findUnitById(mUserId).copy();
+            mHelper = null;
             bindViews();
-            Toast toast = Toast.makeText(this, "Initial parameters restored", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            Toast.makeText(this, R.string.fight_was_reset, Toast.LENGTH_SHORT).show();
         });
         findViewById(R.id.a_fight_b_get_help).setOnClickListener(v -> {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.a_fight_container,
+                            new HelperListFragment((mPlayer.getScore() - mMonster.getScore()), this),
+                            "helper_list_fragment")
+                    .addToBackStack("helper_list_fragment")
+                    .commit();
+        });
 
+        findViewById(R.id.a_fight_tv_table_helper).setOnClickListener(v -> {
+            mHelper = null;
+            Toast.makeText(this, "Partner removed", Toast.LENGTH_SHORT).show();
+            bindViews();
         });
 
 
@@ -165,10 +180,24 @@ public class FightActivity extends AppCompatActivity {
 
     private void bindViews() {
         mTVPlayerName.setText(mPlayer.name);
-        mTVPlayerScore.setText(String.valueOf(mPlayer.getScore()));
+
         mTVPlayerLvl.setText(String.valueOf(mPlayer.lvl));
         mTVMonsterScore.setText(String.valueOf(mMonster.getScore()));
+
         int scoresDifference = mPlayer.getScore() - mMonster.getScore();
+
+        if (mHelper != null) {
+            mTVGetHelp.setText(R.string.change_helper);
+            mTVHelperName.setVisibility(View.VISIBLE);
+            mTVHelperName.setText("+ " + mHelper.name);
+            scoresDifference = (mPlayer.getScore() + mHelper.getScore()) - mMonster.getScore();
+            mTVPlayerScore.setText(mPlayer.getScore() + "\n + \n" + mHelper.getScore());
+        } else {
+            mTVGetHelp.setText(R.string.get_help);
+            mTVHelperName.setVisibility(View.INVISIBLE);
+            mTVPlayerScore.setText(String.valueOf(mPlayer.getScore()));
+        }
+
         if (scoresDifference > 0) {
             mTVResult.setText("+" + scoresDifference);
             mTVResult.setTextColor(getColor(R.color.green));
@@ -176,7 +205,15 @@ public class FightActivity extends AppCompatActivity {
             mTVResult.setText(String.valueOf(scoresDifference));
             mTVResult.setTextColor(getColor(R.color.warning));
         }
+
     }
 
-
+    @Override
+    public void onAddHelper(int position) {
+        getSupportFragmentManager().beginTransaction()
+                .remove(getSupportFragmentManager().findFragmentByTag("helper_list_fragment"))
+                .commit();
+        mHelper = Repo.instance().getData().get(position);
+        bindViews();
+    }
 }

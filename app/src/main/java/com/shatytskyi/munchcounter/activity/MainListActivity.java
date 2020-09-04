@@ -1,5 +1,6 @@
 package com.shatytskyi.munchcounter.activity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,18 +23,18 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
 
     private FloatingActionButton mButtonAdd;
     private TextView mHint;
+    private MainList mMainList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("tag", "omCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main_list);
-        Repo.instance().subscribe(this);
-        // TODO: 02.09.2020 unsubscribe
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setSupportActionBar(findViewById(R.id.a_main_list_tb));
 
-        new MainList(findViewById(R.id.a_list_rv), this);
+        mMainList = new MainList(findViewById(R.id.a_list_rv), this);
         mHint = findViewById(R.id.a_main_list_tv_hint);
         onDataChanged();
 
@@ -48,6 +49,19 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Repo.instance().subscribe(this);
+        Repo.instance().subscribe(mMainList.getAdapter());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Repo.instance().unsubscribe(this);
+        Repo.instance().unsubscribe(mMainList.getAdapter());
+    }
 
     public void setAddButtonVisible() {
         mButtonAdd.show();

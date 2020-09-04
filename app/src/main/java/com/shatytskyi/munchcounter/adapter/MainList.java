@@ -21,12 +21,18 @@ import com.shatytskyi.munchcounter.fragment.UnitFragment;
 public class MainList {
 
     MainListActivity mActivity;
+    MainListAdapter mAdapter;
+
+    public MainListAdapter getAdapter() {
+        return mAdapter;
+    }
 
     public MainList(RecyclerView recyclerView, MainListActivity activity) {
         mActivity = activity;
         Repo.instance().setData(new DataIO(recyclerView.getContext()).read());
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(new MainListAdapter(recyclerView.getContext()));
+        mAdapter = new MainListAdapter(recyclerView.getContext());
+        recyclerView.setAdapter(mAdapter);
     }
 
     private class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainListViewHolder> implements Repo.OnDataChangedListener {
@@ -34,7 +40,7 @@ public class MainList {
         private DataIO mDataIO;
 
         public MainListAdapter(Context context) {
-            Repo.instance().subscribe(this);
+//            Repo.instance().subscribe(this);
             setHasStableIds(true);
             mDataIO = new DataIO(context);
         }
