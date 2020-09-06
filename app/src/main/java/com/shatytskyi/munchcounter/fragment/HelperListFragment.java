@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.adapter.HelperList;
@@ -40,7 +41,10 @@ public class HelperListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         new HelperList(view.findViewById(R.id.f_helper_rv), mHelperListener, dif);
         view.findViewById(R.id.f_helper_bg).setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction().remove(this).commit();
+            getParentFragmentManager()
+                    .beginTransaction().remove(this)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
         });
     }
 }

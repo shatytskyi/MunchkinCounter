@@ -14,10 +14,11 @@ public class Repo {
     private Repo () {
     }
 
-    public static Repo instance() {
+    public static Repo ins() {
         if (mInstance == null) mInstance = new Repo();
         return mInstance;
     }
+
     public List<Unit> getData() {
         return mData;
     }

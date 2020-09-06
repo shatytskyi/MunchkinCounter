@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:layout_height="170dp"
         android:layout_gravity="center"
         android:background="@drawable/bg_white_c_warning"
         android:elevation="20dp"
@@ -22,52 +22,61 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
 
-        <TextView
+        <ImageView
             android:id="@+id/f_warning_tv_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="@string/warning"
-            android:textColor="@color/warning"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:contentDescription="@string/warning"
+            android:src="@drawable/icon_warning"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/f_warning_b_cancel"
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="6dp"
-            android:background="@drawable/bg_accent"
             android:elevation="3dp"
-            android:gravity="center"
-            android:text="@string/cancel"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/f_warning_b_ok"
+            <TextView
+                android:id="@+id/f_warning_b_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="6dp"
-            android:layout_marginStart="0dp"
-            android:background="@drawable/bg_red"
             android:elevation="3dp"
-            android:gravity="center"
-            android:text="@string/ok"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline" />
+            app:layout_constraintStart_toStartOf="@+id/guideline">
+
+            <TextView
+                android:id="@+id/f_warning_b_ok"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/ok"
+                android:textColor="@color/warning"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </FrameLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -81,10 +90,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/warning2"
+            android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/f_warning_b_cancel"
+            app:layout_constraintBottom_toTopOf="@+id/frameLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/f_warning_tv_header"

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.data.Repo;
@@ -39,7 +40,7 @@ public class WarningFragment extends Fragment {
         if (mUnitId != -1)
         mMessage =
                 getString(R.string.player) + " " +
-                        Repo.instance().findUnitById(mUnitId).name + " " +
+                        Repo.ins().findUnitById(mUnitId).name + " " +
                         getString(R.string.warning_remove);
     }
 
@@ -75,9 +76,9 @@ public class WarningFragment extends Fragment {
                     break;
                 case TYPE_RESET:
                     mMessage =
-                        getString(R.string.player) + " " +
-                                Repo.instance().findUnitById((getArguments().getLong(ARG_ID))).name + " " +
-                                getString(R.string.warning_reset);
+                            getString(R.string.player) + " " +
+                                    Repo.ins().findUnitById((getArguments().getLong(ARG_ID))).name + " " +
+                                    getString(R.string.warning_reset);
             }
         }
 
@@ -103,23 +104,23 @@ public class WarningFragment extends Fragment {
             view.findViewById(R.id.f_warning_b_ok).setOnClickListener(v -> {
                 switch (mType) {
                     case TYPE_ALL_REMOVED:
-                        Repo.instance().removeAll();
+                        Repo.ins().removeAll();
                         closeFragment();
                         break;
                     case TYPE_ALL_RESET:
-                        Repo.instance().resetAll();
+                        Repo.ins().resetAll();
                         closeFragment();
                         break;
                     case TYPE_RESET:
                         assert getArguments() != null;
-                        Repo.instance().resetUnit(getArguments().getLong(ARG_ID));
+                        Repo.ins().resetUnit(getArguments().getLong(ARG_ID));
                         closeFragment();
                         break;
                 }
             });
         } else {
             view.findViewById(R.id.f_warning_b_ok).setOnClickListener(v -> {
-                Repo.instance().removeUnit(mUnitId);
+                Repo.ins().removeUnit(mUnitId);
                 closeFragment();
             });
         }
@@ -127,7 +128,7 @@ public class WarningFragment extends Fragment {
 
     private void closeFragment() {
         getParentFragmentManager().beginTransaction()
-                .setCustomAnimations(R.animator.slide_in_from_down_right, R.animator.slide_out_to_up_right)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .remove(this).commit();
     }
 }

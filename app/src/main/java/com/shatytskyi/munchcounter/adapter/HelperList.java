@@ -29,7 +29,7 @@ public class HelperList {
 
     private class HelperListAdapter extends RecyclerView.Adapter<HelperListAdapter.HelperViewHolder> {
 
-        private List<Unit> mData = Repo.instance().getData();
+        private List<Unit> mData = Repo.ins().getData();
 
         @NonNull
         @Override

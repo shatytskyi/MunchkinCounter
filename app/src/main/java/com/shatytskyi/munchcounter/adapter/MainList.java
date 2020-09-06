@@ -29,18 +29,18 @@ public class MainList {
 
     public MainList(RecyclerView recyclerView, MainListActivity activity) {
         mActivity = activity;
-        Repo.instance().setData(new DataIO(recyclerView.getContext()).read());
+        Repo.ins().setData(new DataIO(recyclerView.getContext()).read());
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         mAdapter = new MainListAdapter(recyclerView.getContext());
         recyclerView.setAdapter(mAdapter);
     }
 
-    private class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainListViewHolder> implements Repo.OnDataChangedListener {
+    private class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainListViewHolder>
+            implements Repo.OnDataChangedListener {
 
         private DataIO mDataIO;
 
         public MainListAdapter(Context context) {
-//            Repo.instance().subscribe(this);
             setHasStableIds(true);
             mDataIO = new DataIO(context);
         }
@@ -53,24 +53,23 @@ public class MainList {
 
         @Override
         public void onBindViewHolder(@NonNull MainListViewHolder holder, int position) {
-            holder.bind(Repo.instance().getData().get(position));
+            holder.bind(Repo.ins().getData().get(position));
         }
 
         @Override
         public int getItemCount() {
-            return Repo.instance().getData().size();
+            return Repo.ins().getData().size();
         }
 
 
         @Override
         public void onDataChanged() {
             notifyDataSetChanged();
-            mDataIO.write();
         }
 
         @Override
         public long getItemId(int position) {
-            return Repo.instance().getData().get(position).id;
+            return Repo.ins().getData().get(position).id;
         }
 
         class MainListViewHolder extends RecyclerView.ViewHolder {
@@ -87,23 +86,23 @@ public class MainList {
 
                 itemView.findViewById(R.id.i_main_list_b_power_minus)
                         .setOnClickListener(v ->
-                                Repo.instance().changePower(Repo.instance().getData().get(getAdapterPosition()).id,
+                                Repo.ins().changePower(Repo.ins().getData().get(getAdapterPosition()).id,
                                         -1));
                 itemView.findViewById(R.id.i_main_list_b_power_plus)
                         .setOnClickListener(v ->
-                                Repo.instance().changePower(Repo.instance().getData().get(getAdapterPosition()).id,
+                                Repo.ins().changePower(Repo.ins().getData().get(getAdapterPosition()).id,
                                         +1));
                 itemView.findViewById(R.id.i_main_list_b_lvl_minus)
                         .setOnClickListener(v ->
-                                Repo.instance().changeLvl(Repo.instance().getData().get(getAdapterPosition()).id,
+                                Repo.ins().changeLvl(Repo.ins().getData().get(getAdapterPosition()).id,
                                         -1));
                 itemView.findViewById(R.id.i_main_list_b_lvl_plus)
                         .setOnClickListener(v ->
-                                Repo.instance().changeLvl(Repo.instance().getData().get(getAdapterPosition()).id,
+                                Repo.ins().changeLvl(Repo.ins().getData().get(getAdapterPosition()).id,
                                         +1));
 
                 final long[] mLastRemoveButtonClickTime = {0};
-                itemView.findViewById(R.id.i_main_list_b_more).setOnClickListener(v -> {
+                itemView.setOnClickListener(v -> {
                     if (SystemClock.elapsedRealtime() - mLastRemoveButtonClickTime[0] < 1000) {
                         return;
                     }
@@ -111,11 +110,11 @@ public class MainList {
 
                     mActivity.getSupportFragmentManager().beginTransaction()
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .add(R.id.a_main_list_container, UnitFragment.newInstance(Repo.instance().getData().get(getAdapterPosition()).id))
+                            .add(R.id.a_main_list_container,
+                                    UnitFragment.newInstance(Repo.ins().getData().get(getAdapterPosition()).id))
                             .commit();
                 });
 
-                // TODO: 28.08.2020 unsubscribe
             }
 
             public void bind (Unit unit) {

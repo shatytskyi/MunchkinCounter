@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Munchkin Counter</string>
-    <string name="title_activity_main">MainActivity</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -12,10 +11,7 @@
     <string name="player">Player</string>
     <string name="warning_all_reset">All players will be reset!</string>
     <string name="warning_reset">will be reset!</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_2">2</string>
     <string name="_1">1</string>
     <string name="_3">3</string>
@@ -26,7 +22,6 @@
     <string name="score">Score</string>
     <string name="monster">Monster</string>
     <string name="level">Level</string>
-    <string name="open_extended_menu">Open extended menu</string>
     <string name="reset">Reset</string>
     <string name="remove">Remove</string>
     <string name="get_help">Get help</string>
@@ -35,8 +30,6 @@
     <string name="des_reset_unit_parameters">Reset unit parameters</string>
     <string name="no_players">There\'s no players yet \n You can add one using button below</string>
     <string name="des_get_help">Get help from other players</string>
-    <string name="equals">=</string>
-    <string name="reset_monster">Reset monster</string>
     <string name="reset_fight">Reset fight</string>
     <string name="finish_fight">Finish fight</string>
     <string name="change_helper">Change helper</string>
@@ -44,4 +37,5 @@
     <string name="choose_helper">Choose your partner</string>
     <string name="name">Name</string>
     <string name="result">Result</string>
+    <string name="no_name_warning">Unnamed players are not allowed</string>
 </resources>

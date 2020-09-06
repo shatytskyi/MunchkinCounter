@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.activity.MainListActivity;
@@ -59,11 +60,11 @@ public class AddUnitFragment extends Fragment {
         });
         view.findViewById(R.id.f_add_b_ok).setOnClickListener(v -> {
             try {
-                Repo.instance().addUnit(et.getText().toString());
+                Repo.ins().addUnit(et.getText().toString());
                 closeFragment(this.getContext(), et);
             } catch (Repo.ZeroLengthException e) {
                 TextView warning = view.findViewById(R.id.f_add_tv_warning);
-                warning.setText("Unnamed players are not allowed");
+                warning.setText(R.string.no_name_warning);
             }
         });
     }
@@ -92,7 +93,7 @@ public class AddUnitFragment extends Fragment {
             e.printStackTrace();
         }
         getParentFragmentManager().beginTransaction()
-                .setCustomAnimations(R.animator.slide_in_from_down_right, R.animator.slide_out_to_down)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .remove(this).commit();
     }
 

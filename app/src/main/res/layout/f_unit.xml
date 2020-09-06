@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/f_unit_bg"
@@ -9,27 +8,11 @@
     android:layout_gravity="center"
     tools:context=".fragment.UnitFragment">
 
-    <TextView
-        android:id="@+id/f_unit_tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_white_c_accent"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/f_unit_bg_white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Player" />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/f_unit_bg_white"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="440dp"
         android:layout_gravity="center"
         android:layout_margin="12dp"
         android:background="@drawable/bg_white_c_accent"
@@ -39,30 +22,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/f_unit_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@+id/f_unit_bg_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Player" />
+
 
         <TextView
             android:id="@+id/f_unit_tv_score"
             android:layout_width="100dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_accent_top_right_c"
             android:gravity="center"
-            android:padding="4dp"
             android:maxLength="2"
+            android:padding="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/f_unit_bottom_block"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/f_unit_tv_name"
             tools:text="55" />
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:gravity="center"
             android:text="@string/score"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@id/f_unit_tv_score"
             app:layout_constraintStart_toStartOf="@id/f_unit_tv_score"
             app:layout_constraintTop_toTopOf="@+id/f_unit_tv_score" />
@@ -72,24 +68,22 @@
             android:id="@+id/f_unit_tv_lvl"
             android:layout_width="100dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_accent_top_left_c"
             android:gravity="center"
             android:padding="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/f_unit_bottom_block"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/f_unit_tv_name"
             tools:text="9" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:gravity="center"
             android:text="@string/level"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@id/f_unit_tv_lvl"
             app:layout_constraintStart_toStartOf="@id/f_unit_tv_lvl"
             app:layout_constraintTop_toTopOf="@+id/f_unit_tv_lvl" />
@@ -102,7 +96,7 @@
             android:background="?selectableItemBackground"
             android:gravity="center"
             android:text="@string/minus"
-            android:textColor="@color/white"
+            android:textColor="@color/accent"
             android:textSize="45sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/f_unit_tv_lvl"
@@ -117,7 +111,7 @@
             android:background="?selectableItemBackground"
             android:gravity="center"
             android:text="@string/plus"
-            android:textColor="@color/white"
+            android:textColor="@color/accent"
             android:textSize="45sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/f_unit_tv_lvl"
@@ -131,13 +125,12 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@+id/f_unit_tv_score"
             app:layout_constraintStart_toEndOf="@+id/f_unit_tv_lvl"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/f_unit_tv_name"
             app:layout_constraintBottom_toTopOf="@+id/f_unit_bottom_block">
 
 
         <!-- Block 1 -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tools_f_unit_block_1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -190,7 +183,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- Block 2 -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tools_f_unit_block_2"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -242,7 +234,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- Block 3 -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tools_f_unit_block_3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -294,7 +285,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- Block 4 -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tools_f_unit_block_4"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -346,7 +336,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- Block 5 -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tools_f_unit_block_5"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -409,51 +398,40 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:text="@string/remove"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/f_unit_tv_lvl"
-            app:layout_constraintEnd_toEndOf="@+id/f_unit_tv_lvl"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:text="@string/reset"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/f_unit_tv_score"
-            app:layout_constraintEnd_toEndOf="@+id/f_unit_tv_score"
-            app:layout_constraintStart_toStartOf="@+id/f_unit_tv_score" />
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/f_unit_bottom_block"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/bg_accent_bottom_c"
+            android:layout_height="80dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="@string/remove"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="@id/f_unit_b_remove"
+                app:layout_constraintStart_toStartOf="@id/f_unit_b_remove"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
-                android:contentDescription="@string/des_remove_unit_from_list"
                 android:id="@+id/f_unit_b_remove"
                 android:layout_width="100dp"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:background="?selectableItemBackground"
+                android:contentDescription="@string/des_remove_unit_from_list"
                 android:gravity="center"
+                android:padding="8dp"
                 android:src="@drawable/icon_remove"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/textView2"
+                app:tint="@color/black" />
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -463,50 +441,46 @@
                 app:layout_constraintStart_toEndOf="@id/f_unit_b_remove">
 
                 <ImageView
+                    android:contentDescription="@string/fight"
                     android:id="@+id/f_unit_b_fight"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?selectableItemBackground"
-                    android:padding="2dp"
                     android:gravity="center"
-                    android:src="@drawable/icon_sword"
-                    android:textColor="@color/enemy"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/f_unit_b_reset"
-                app:layout_constraintStart_toEndOf="@id/f_unit_b_remove" />
+                    android:padding="2dp"
+                    android:src="@drawable/icon_next"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/f_unit_b_reset"
+                    app:layout_constraintStart_toEndOf="@id/f_unit_b_remove"
+                    app:tint="@color/warning" />
 
             </FrameLayout>
 
-
-            <View android:layout_height="2dp"
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="0dp"
-                android:background="@color/accent"
-                app:layout_constraintStart_toEndOf="@id/f_unit_b_remove"
-                app:layout_constraintEnd_toStartOf="@id/f_unit_b_reset"
-                app:layout_constraintTop_toTopOf="@id/f_unit_b_remove"/>
-
-
-            <ImageView
-                android:contentDescription="@string/des_reset_unit_parameters"
-                android:id="@+id/f_unit_b_reset"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:background="?selectableItemBackground"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:gravity="center"
-                android:src="@drawable/icon_reset"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/reset"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="@id/f_unit_b_reset"
+                app:layout_constraintStart_toStartOf="@id/f_unit_b_reset"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/accent"
-                app:layout_constraintStart_toEndOf="@id/f_unit_b_remove"
-                app:layout_constraintEnd_toStartOf="@id/f_unit_b_reset"
-                app:layout_constraintBottom_toBottomOf="parent" />
+            <ImageView
+                android:id="@+id/f_unit_b_reset"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:background="?selectableItemBackground"
+                android:contentDescription="@string/des_reset_unit_parameters"
+                android:gravity="center"
+                android:padding="8dp"
+                android:src="@drawable/icon_reset"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView3"
+                app:tint="@color/black" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,12 +7,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.adapter.HelperList;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
 import com.shatytskyi.munchcounter.fragment.HelperListFragment;
+
+import java.util.Objects;
 
 public class FightActivity extends AppCompatActivity implements HelperList.HelperListener {
 
@@ -39,7 +42,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setupViews();
         mUserId = getIntent().getLongExtra(EXTRA_USER_ID, -1);
-        mPlayer = Repo.instance().findUnitById(mUserId).copy();
+        mPlayer = Repo.ins().findUnitById(mUserId).copy();
         mMonster = new Unit("Monster", 0, 0);
         bindViews();
 
@@ -62,13 +65,14 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         });
         findViewById(R.id.a_fight_b_reset_fight).setOnClickListener(v -> {
             mMonster = new Unit("Monster", 0, 0);
-            mPlayer = Repo.instance().findUnitById(mUserId).copy();
+            mPlayer = Repo.ins().findUnitById(mUserId).copy();
             mHelper = null;
             bindViews();
             Toast.makeText(this, R.string.fight_was_reset, Toast.LENGTH_SHORT).show();
         });
         findViewById(R.id.a_fight_b_get_help).setOnClickListener(v -> {
             getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(R.id.a_fight_container,
                             new HelperListFragment((mPlayer.getScore() - mMonster.getScore()), this),
                             "helper_list_fragment")
@@ -101,15 +105,15 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
             bindViews();
         });
         findViewById(R.id.a_fight_b_minus_3).setOnClickListener(v -> {
-            mPlayer.power -= 2;
+            mPlayer.power -= 3;
             bindViews();
         });
         findViewById(R.id.a_fight_b_minus_4).setOnClickListener(v -> {
-            mPlayer.power -= 2;
+            mPlayer.power -= 4;
             bindViews();
         });
         findViewById(R.id.a_fight_b_minus_5).setOnClickListener(v -> {
-            mPlayer.power -= 2;
+            mPlayer.power -= 5;
             bindViews();
         });
         findViewById(R.id.a_fight_b_plus_1).setOnClickListener(v -> {
@@ -211,9 +215,9 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
     @Override
     public void onAddHelper(int position) {
         getSupportFragmentManager().beginTransaction()
-                .remove(getSupportFragmentManager().findFragmentByTag("helper_list_fragment"))
+                .remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag("helper_list_fragment")))
                 .commit();
-        mHelper = Repo.instance().getData().get(position);
+        mHelper = Repo.ins().getData().get(position);
         bindViews();
     }
 }

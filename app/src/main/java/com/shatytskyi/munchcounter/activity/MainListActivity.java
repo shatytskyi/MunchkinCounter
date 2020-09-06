@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shatytskyi.munchcounter.R;
@@ -41,7 +42,7 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
         mButtonAdd = findViewById(R.id.a_main_list_fab);
         mButtonAdd.setOnClickListener(v -> {
             getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.slide_in_from_down_right, R.animator.slide_out_to_down)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .replace(R.id.a_main_list_container, new AddUnitFragment(this))
                     .commit();
             mButtonAdd.hide();
@@ -52,15 +53,15 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
     @Override
     protected void onResume() {
         super.onResume();
-        Repo.instance().subscribe(this);
-        Repo.instance().subscribe(mMainList.getAdapter());
+        Repo.ins().subscribe(this);
+        Repo.ins().subscribe(mMainList.getAdapter());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Repo.instance().unsubscribe(this);
-        Repo.instance().unsubscribe(mMainList.getAdapter());
+        Repo.ins().unsubscribe(this);
+        Repo.ins().unsubscribe(mMainList.getAdapter());
     }
 
     public void setAddButtonVisible() {
@@ -77,9 +78,9 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.act_reset_all:
-                if (Repo.instance().getData().size() != 0) {
+                if (Repo.ins().getData().size() != 0) {
                     getSupportFragmentManager().beginTransaction()
-                            .setCustomAnimations(R.animator.slide_in_from_up_right, R.animator.slide_out_to_down)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_RESET))
                             .commit();
                 } else {
@@ -87,9 +88,9 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
                 }
                 break;
             case R.id.act_remove_all:
-                if (Repo.instance().getData().size() != 0) {
+                if (Repo.ins().getData().size() != 0) {
                     getSupportFragmentManager().beginTransaction()
-                            .setCustomAnimations(R.animator.slide_in_from_up_right, R.animator.slide_out_to_down)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_REMOVED))
                             .commit();
                     break;
@@ -102,7 +103,7 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
 
     @Override
     public void onDataChanged() {
-        if (Repo.instance().getData().size() == 0) {
+        if (Repo.ins().getData().size() == 0) {
             mHint.setVisibility(View.VISIBLE);
         } else mHint.setVisibility(View.INVISIBLE);
     }

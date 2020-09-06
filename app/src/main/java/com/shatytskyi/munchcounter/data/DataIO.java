@@ -8,12 +8,16 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataIO {
+public class DataIO implements Repo.OnDataChangedListener {
+
+    {
+        Repo.ins().subscribe(this);
+    }
 
     private Context context;
     final String FILE_DATA = "data.txt";
 
-    public DataIO (Context context) {
+    public DataIO(Context context) {
         this.context = context;
     }
 
@@ -33,13 +37,12 @@ public class DataIO {
         return restoredList;
     }
 
-    public void write () {
+    @Override
+    public void onDataChanged() {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(FILE_DATA, Context.MODE_PRIVATE))) {
-            objectOutputStream.writeObject(Repo.instance().getData());
+            objectOutputStream.writeObject(Repo.ins().getData());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 }
