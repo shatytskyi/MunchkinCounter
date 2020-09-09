@@ -112,6 +112,7 @@ public class MainList {
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .add(R.id.a_main_list_container,
                                     UnitFragment.newInstance(Repo.ins().getData().get(getAdapterPosition()).id))
+                            .addToBackStack("unit info")
                             .commit();
                 });
 

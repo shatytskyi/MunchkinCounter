@@ -25,6 +25,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
     private Unit mPlayer;
     private Unit mHelper;
     private Unit mMonster;
+    private int mInitPower;
 
     private TextView mTVPlayerName;
     private TextView mTVPlayerScore;
@@ -34,7 +35,6 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
     private TextView mTVResult;
     private TextView mTVGetHelp;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +42,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setupViews();
         mUserId = getIntent().getLongExtra(EXTRA_USER_ID, -1);
+        mInitPower = Repo.ins().findUnitById(mUserId).power;
         mPlayer = Repo.ins().findUnitById(mUserId).copy();
         mMonster = new Unit("Monster", 0, 0);
         bindViews();
@@ -90,12 +91,15 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         //player buttons
         findViewById(R.id.a_fight_b_lvl_minus).setOnClickListener(v -> {
             mPlayer.lvl--;
+            Repo.ins().changeLvl(mUserId, -1);
             bindViews();
         });
         findViewById(R.id.a_fight_b_lvl_plus).setOnClickListener(v -> {
             mPlayer.lvl++;
+            Repo.ins().changeLvl(mUserId, +1);
             bindViews();
         });
+
         findViewById(R.id.a_fight_b_minus_1).setOnClickListener(v -> {
             mPlayer.power--;
             bindViews();
@@ -193,14 +197,22 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         if (mHelper != null) {
             mTVGetHelp.setText(R.string.change_helper);
             mTVHelperName.setVisibility(View.VISIBLE);
-            mTVHelperName.setText("+ " + mHelper.name);
+            mTVHelperName.setText("+" + mHelper.name + " (" + mHelper.getScore() + ")");
             scoresDifference = (mPlayer.getScore() + mHelper.getScore()) - mMonster.getScore();
-            mTVPlayerScore.setText(mPlayer.getScore() + "\n + \n" + mHelper.getScore());
+            mTVPlayerScore.setText(String.valueOf(mPlayer.getScore() + mHelper.getScore()));
         } else {
             mTVGetHelp.setText(R.string.get_help);
             mTVHelperName.setVisibility(View.INVISIBLE);
             mTVPlayerScore.setText(String.valueOf(mPlayer.getScore()));
         }
+
+        if (mHelper != null) {
+            mTVPlayerScore.setTextColor(getColor(R.color.accent));
+        } else if (mPlayer.power > mInitPower) {
+            mTVPlayerScore.setTextColor(getColor(R.color.green));
+        } else if (mPlayer.power < mInitPower) {
+            mTVPlayerScore.setTextColor(getColor(R.color.warning));
+        } else mTVPlayerScore.setTextColor(getColor(R.color.black));
 
         if (scoresDifference > 0) {
             mTVResult.setText("+" + scoresDifference);
@@ -220,4 +232,5 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         mHelper = Repo.ins().getData().get(position);
         bindViews();
     }
+
 }

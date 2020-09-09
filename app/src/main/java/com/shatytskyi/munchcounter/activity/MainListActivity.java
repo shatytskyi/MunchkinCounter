@@ -2,7 +2,6 @@ package com.shatytskyi.munchcounter.activity;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +17,15 @@ import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.adapter.MainList;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.fragment.AddUnitFragment;
-import com.shatytskyi.munchcounter.fragment.WarningFragment;
+import com.shatytskyi.munchcounter.fragment.WarningDialogFragment;
 
 public class MainListActivity extends AppCompatActivity implements Repo.OnDataChangedListener {
+
+    // TODO: 08.09.2020 dialog fragments
+    // TODO: 08.09.2020 limit lvl n power
+    // TODO: 08.09.2020 add gender, classes n races, colors
+    // TODO: 08.09.2020 create icon
+    // TODO: 08.09.2020 add munchkin font
 
     private FloatingActionButton mButtonAdd;
     private TextView mHint;
@@ -28,15 +33,17 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("tag", "omCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main_list);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setSupportActionBar(findViewById(R.id.a_main_list_tb));
 
         mMainList = new MainList(findViewById(R.id.a_list_rv), this);
         mHint = findViewById(R.id.a_main_list_tv_hint);
+        Repo.ins().subscribe(this);
+        Repo.ins().subscribe(mMainList.getAdapter());
         onDataChanged();
 
         mButtonAdd = findViewById(R.id.a_main_list_fab);
@@ -44,6 +51,7 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
             getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .replace(R.id.a_main_list_container, new AddUnitFragment(this))
+                    .addToBackStack("add")
                     .commit();
             mButtonAdd.hide();
             mHint.setVisibility(View.INVISIBLE);
@@ -51,15 +59,8 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Repo.ins().subscribe(this);
-        Repo.ins().subscribe(mMainList.getAdapter());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         Repo.ins().unsubscribe(this);
         Repo.ins().unsubscribe(mMainList.getAdapter());
     }
@@ -79,20 +80,17 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
         switch (item.getItemId()) {
             case R.id.act_reset_all:
                 if (Repo.ins().getData().size() != 0) {
-                    getSupportFragmentManager().beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_RESET))
-                            .commit();
+                    WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_ALL_RESET);
+                    f.show(getSupportFragmentManager(), null);
+                    break;
                 } else {
                     Toast.makeText(this, "No players in list", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.act_remove_all:
                 if (Repo.ins().getData().size() != 0) {
-                    getSupportFragmentManager().beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .replace(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_ALL_REMOVED))
-                            .commit();
+                    WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_ALL_REMOVED);
+                    f.show(getSupportFragmentManager(), null);
                     break;
                 } else {
                     Toast.makeText(this, "No players in list", Toast.LENGTH_SHORT).show();

@@ -68,7 +68,7 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
 
 
         view.findViewById(R.id.f_unit_bg).setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+            getParentFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .remove(this).commit();
         });
@@ -80,12 +80,14 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
         view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_RESET, mUnitID))
+                    .addToBackStack("warning")
                     .commit();
         });
 
         view.findViewById(R.id.f_unit_b_remove).setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .replace(R.id.a_main_list_container, new WarningFragment(mUnitID))
+                    .addToBackStack("warning")
                     .commit();
         });
 

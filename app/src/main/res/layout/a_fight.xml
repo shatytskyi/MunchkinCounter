@@ -13,14 +13,16 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_margin="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_white_c_accent"
+            android:background="@drawable/bg_accent_2"
             android:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +35,7 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:maxLines="3"
-                android:padding="4dp"
+                android:paddingTop="4dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -428,7 +430,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="4dp"
                 android:background="@color/accent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -437,7 +439,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="4dp"
                 android:background="@color/accent"
                 app:layout_constraintEnd_toStartOf="@id/a_fight_tv_score"
                 app:layout_constraintStart_toEndOf="@+id/a_fight_tv_lvl"
@@ -476,7 +478,7 @@
                 android:elevation="10dp"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:textColor="@color/black"
+                android:textColor="@color/accent"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -496,8 +498,19 @@
                 android:textColor="@color/green"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/a_fight_b_info"
                 tools:text="+12" />
+
+            <ImageView
+                android:id="@+id/a_fight_b_info"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/icon_help"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/accent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -506,9 +519,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_margin="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_white_c_enemy"
+            android:background="@drawable/bg_secondary_2"
             android:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -530,7 +546,9 @@
                 tools:text="55" />
 
 
+
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -565,7 +583,7 @@
                     android:layout_width="54dp"
                     android:layout_height="54dp"
                     android:background="?android:selectableItemBackground"
-                    app:tint="@color/enemy"
+                    app:tint="@color/secondary"
                     android:src="@drawable/icon_reset"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -637,7 +655,7 @@
                         android:padding="2dp"
                         android:text="@string/_1"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                        android:textColor="@color/enemy"
+                        android:textColor="@color/secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -647,7 +665,7 @@
                         android:id="@+id/a_fight_monster_b_minus_1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:background="?selectableItemBackground"
+                        android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         android:text="@string/minus"
                         android:textColor="@color/black"
@@ -689,7 +707,7 @@
                         android:padding="2dp"
                         android:text="@string/_2"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                        android:textColor="@color/enemy"
+                        android:textColor="@color/secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -741,7 +759,7 @@
                         android:padding="2dp"
                         android:text="@string/_3"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                        android:textColor="@color/enemy"
+                        android:textColor="@color/secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -793,7 +811,7 @@
                         android:padding="2dp"
                         android:text="@string/_4"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                        android:textColor="@color/enemy"
+                        android:textColor="@color/secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -845,7 +863,7 @@
                         android:padding="2dp"
                         android:text="@string/_5"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                        android:textColor="@color/enemy"
+                        android:textColor="@color/secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -885,16 +903,16 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/enemy"
+                android:layout_height="4dp"
+                android:background="@color/secondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/a_fight_tv_monster_score"
                 app:layout_constraintStart_toEndOf="@id/a_fight_tv_monster_panel" />
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/enemy"
+                android:layout_height="4dp"
+                android:background="@color/secondary"
                 app:layout_constraintEnd_toStartOf="@id/a_fight_tv_monster_score"
                 app:layout_constraintStart_toEndOf="@id/a_fight_tv_monster_panel"
                 app:layout_constraintTop_toTopOf="parent" />

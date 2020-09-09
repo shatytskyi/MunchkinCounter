@@ -8,17 +8,9 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowBackground">@color/white</item>
     </style>
-    <!--    <style name="SelectableItemTheme">-->
-<!--        <item name="colorControlHighlight">@color/accent2</item>-->
-<!--    </style>-->
-
-<!--    <style name="SelectableItemBackground">-->
-<!--        <item name="android:theme">@style/SelectableItemTheme</item>-->
-<!--        <item name="android:background">?attr/selectableItemBackground</item>-->
-<!--    </style>-->
 
 
-
+    <!-- Define your custom alert theme here extending from base -->
 
 
 </resources>

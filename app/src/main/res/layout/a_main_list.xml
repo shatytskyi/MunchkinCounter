@@ -39,6 +39,21 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/a_main_list_tv_hint"
+        android:visibility="invisible"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_accent"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        android:text="@string/no_players" />
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/a_main_list_fab"
         android:layout_width="wrap_content"
@@ -48,26 +63,12 @@
         android:elevation="20dp"
         app:fabCustomSize="64dp"
         android:background="@drawable/bg_accent"
-        android:src="@drawable/icon_add"
-        />
-
-    <TextView
-        android:id="@+id/a_main_list_tv_hint"
-        android:visibility="invisible"
-        android:layout_width="300dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_white_c_accent"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:padding="8dp"
-        android:textColor="@color/black"
-        android:text="@string/no_players"/>
+        android:src="@drawable/icon_add" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/a_main_list_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

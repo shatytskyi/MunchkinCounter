@@ -32,7 +32,7 @@
     <string name="des_get_help">Get help from other players</string>
     <string name="reset_fight">Reset fight</string>
     <string name="finish_fight">Finish fight</string>
-    <string name="change_helper">Change helper</string>
+    <string name="change_helper">Change partner</string>
     <string name="fight_was_reset">Fight was reset</string>
     <string name="choose_helper">Choose your partner</string>
     <string name="name">Name</string>

@@ -2,115 +2,121 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_gravity="center"
+    android:id="@+id/f_add_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.AddUnitFragment"
+    android:layout_gravity="center"
     android:background="@android:color/transparent"
-    android:id="@+id/f_add_bg"
-    >
+    tools:context=".fragment.AddUnitFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/f_add_bg_white"
-        android:layout_width="300dp"
-        android:layout_height="240dp"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_white_c_accent"
-        android:elevation="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/f_add_tv_header"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:layout_marginTop="12dp"
-            android:contentDescription="@string/add_player"
-            android:gravity="center"
-            android:src="@drawable/icon_add"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/accent" />
-
-        <TextView
-            android:id="@+id/f_add_b_cancel"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_margin="6dp"
-            android:layout_marginEnd="0dp"
-            android:background="?selectableItemBackground"
-            android:elevation="3dp"
-            android:gravity="center"
-            android:text="@string/cancel"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/f_add_b_ok"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_margin="6dp"
-            android:layout_marginStart="0dp"
-            android:background="?selectableItemBackground"
-            android:elevation="3dp"
-            android:gravity="center"
-            android:text="@string/ok"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/f_add_bg_white"
+            android:layout_width="300dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_accent_2"
+            android:elevation="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <EditText
-
-            android:id="@+id/f_add_et_name"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:hint="@string/enter_name"
-            android:inputType="textPersonName"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textColorHint="@color/darkGrey"
-            android:maxLength="12"
-            android:textSize="18dp"
-            app:layout_constraintBottom_toTopOf="@+id/f_add_b_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_add_tv_header"
-            app:layout_constraintVertical_bias="0.344" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/f_add_tv_warning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/warning"
-            app:layout_constraintBottom_toTopOf="@+id/f_add_b_ok"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/f_add_et_name"
-            tools:text="Unnamed players are not allowed" />
+            <ImageView
+                android:id="@+id/f_add_tv_header"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginTop="12dp"
+                android:contentDescription="@string/add_player"
+                android:gravity="center"
+                android:src="@drawable/icon_add"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/accent" />
 
+            <TextView
+                android:id="@+id/f_add_b_cancel"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_margin="6dp"
+                android:layout_marginEnd="0dp"
+                android:background="?selectableItemBackground"
+                android:elevation="3dp"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/f_add_b_ok"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_margin="6dp"
+                android:layout_marginStart="0dp"
+                android:background="?selectableItemBackground"
+                android:elevation="3dp"
+                android:gravity="center"
+                android:text="@string/ok"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <EditText
+                android:autofillHints="0"
+                android:id="@+id/f_add_et_name"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:hint="@string/enter_name"
+                android:inputType="textPersonName"
+                android:maxLength="12"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkGrey"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/f_add_b_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/f_add_tv_header"
+                app:layout_constraintVertical_bias="0.344" />
+
+            <TextView
+                android:id="@+id/f_add_tv_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/warning"
+                app:layout_constraintBottom_toTopOf="@+id/f_add_b_ok"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/f_add_et_name"
+                tools:text="Unnamed players are not allowed" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,11 +8,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:elevation="10dp"
-        android:layout_margin="12dp"
+        android:layout_margin="24dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:background="@drawable/bg_white_c_accent">
+        android:background="@drawable/bg_accent_2">
 
         <TextView
             android:id="@+id/textView5"

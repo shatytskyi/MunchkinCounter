@@ -4,11 +4,9 @@
     <color name="lightGrey">#EFEFEF</color>
     <color name="darkGrey">#616161</color>
     <color name="black">#151515</color>
-    <!--    <color name="accent">#006C0B</color>-->
-    <!--    <color name="accent2">#00830D</color>-->
-    <color name="accent">#D59900</color>
-    <color name="accent2">#E1AF18</color>
-    <color name="warning">#C62828</color>
-    <color name="enemy">#6A1B9A</color>
-    <color name="green">#28C650</color>
+
+    <color name="accent">#009EB3</color>
+    <color name="warning">#B81C1C</color>
+    <color name="secondary">#BDAA17</color>
+    <color name="green">#2AB14C</color>
 </resources>

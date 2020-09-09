@@ -29,6 +29,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/level"
@@ -51,6 +52,16 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/icon_more"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/secondary" />
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -87,7 +98,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_white_c_accent"
+                android:background="@drawable/bg_accent_2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,8 +108,8 @@
                     android:id="@+id/i_main_list_tv_lvl"
                     android:layout_width="64dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/white"
                     android:gravity="center"
                     android:padding="2dp"
@@ -145,7 +156,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
                 android:layout_marginStart="6dp"
-                android:background="@drawable/bg_white_c_accent"
+                android:background="@drawable/bg_accent_2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
@@ -155,8 +166,8 @@
                     android:id="@+id/i_main_list_tv_score"
                     android:layout_width="64dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/white"
                     android:gravity="center"
                     android:padding="2dp"

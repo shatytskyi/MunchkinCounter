@@ -20,7 +20,7 @@ public class WarningFragment extends Fragment {
     private static final String ARG_TYPE = "type";
     private static final String ARG_ID = "userID";
     public static final String TYPE_ALL_REMOVED = "all removed";
-    public static final String TYPE_ALL_RESET = "all_reset";
+    public static final String TYPE_ALL_RESET = "all reset";
     public static final String TYPE_RESET = "reset";
 
     private String mType;
@@ -113,7 +113,7 @@ public class WarningFragment extends Fragment {
                         break;
                     case TYPE_RESET:
                         assert getArguments() != null;
-                        Repo.ins().resetUnit(getArguments().getLong(ARG_ID));
+
                         closeFragment();
                         break;
                 }

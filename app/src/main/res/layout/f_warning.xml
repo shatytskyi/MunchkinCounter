@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@android:color/transparent"
     tools:context=".fragment.WarningFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
         android:layout_height="170dp"
         android:layout_gravity="center"
-        android:background="@drawable/bg_white_c_warning"
+        android:background="@drawable/bg_warning_2"
         android:elevation="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
