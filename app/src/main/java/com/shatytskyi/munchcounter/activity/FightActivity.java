@@ -61,9 +61,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         mTVGetHelp = findViewById(R.id.a_fight_tv_get_help);
 
         //functional buttons
-        findViewById(R.id.a_fight_b_finish).setOnClickListener(v -> {
-            finish();
-        });
+        findViewById(R.id.a_fight_b_finish).setOnClickListener(v -> finish());
         findViewById(R.id.a_fight_b_reset_fight).setOnClickListener(v -> {
             mMonster = new Unit("Monster", 0, 0);
             mPlayer = Repo.ins().findUnitById(mUserId).copy();
@@ -71,15 +69,13 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
             bindViews();
             Toast.makeText(this, R.string.fight_was_reset, Toast.LENGTH_SHORT).show();
         });
-        findViewById(R.id.a_fight_b_get_help).setOnClickListener(v -> {
-            getSupportFragmentManager().beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(R.id.a_fight_container,
-                            new HelperListFragment((mPlayer.getScore() - mMonster.getScore()), this),
-                            "helper_list_fragment")
-                    .addToBackStack("helper_list_fragment")
-                    .commit();
-        });
+        findViewById(R.id.a_fight_b_get_help).setOnClickListener(v -> getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .add(R.id.a_fight_container,
+                        new HelperListFragment((mPlayer.getScore() - mMonster.getScore()), this),
+                        "helper_list_fragment")
+                .addToBackStack("helper_list_fragment")
+                .commit());
 
         findViewById(R.id.a_fight_tv_table_helper).setOnClickListener(v -> {
             mHelper = null;

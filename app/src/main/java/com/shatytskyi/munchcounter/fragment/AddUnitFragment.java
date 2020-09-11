@@ -45,16 +45,12 @@ public class AddUnitFragment extends Fragment {
         EditText et = view.findViewById(R.id.f_add_et_name);
         et.requestFocus();
         showKeyboard(this.getContext(), et);
-        if(et.requestFocus()) {
+        if (et.requestFocus()) {
             mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
 
-        view.findViewById(R.id.f_add_b_cancel).setOnClickListener(v -> {
-            closeFragment(this.getContext(), et);
-        });
-        view.findViewById(R.id.f_add_bg).setOnClickListener(v -> {
-            closeFragment(this.getContext(), et);
-        });
+        view.findViewById(R.id.f_add_b_cancel).setOnClickListener(v -> closeFragment(this.getContext(), et));
+        view.findViewById(R.id.f_add_bg).setOnClickListener(v -> closeFragment(this.getContext(), et));
         view.findViewById(R.id.f_add_bg_white).setOnClickListener(v -> {
 
         });

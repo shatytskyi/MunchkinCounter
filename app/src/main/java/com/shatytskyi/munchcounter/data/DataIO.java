@@ -21,10 +21,6 @@ public class DataIO implements Repo.OnDataChangedListener {
         this.context = context;
     }
 
-    public Context getContext() {
-        return context;
-    }
-
     public List<Unit> read () {
         List<Unit> restoredList;
 

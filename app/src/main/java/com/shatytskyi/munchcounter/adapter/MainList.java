@@ -1,6 +1,5 @@
 package com.shatytskyi.munchcounter.adapter;
 
-import android.content.Context;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -31,18 +30,15 @@ public class MainList {
         mActivity = activity;
         Repo.ins().setData(new DataIO(recyclerView.getContext()).read());
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        mAdapter = new MainListAdapter(recyclerView.getContext());
+        mAdapter = new MainListAdapter();
         recyclerView.setAdapter(mAdapter);
     }
 
     private class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainListViewHolder>
             implements Repo.OnDataChangedListener {
 
-        private DataIO mDataIO;
-
-        public MainListAdapter(Context context) {
+        public MainListAdapter() {
             setHasStableIds(true);
-            mDataIO = new DataIO(context);
         }
 
         @NonNull

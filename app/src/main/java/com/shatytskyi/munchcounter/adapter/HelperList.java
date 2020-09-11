@@ -17,7 +17,6 @@ import java.util.List;
 public class HelperList {
 
     private HelperListener mHelperListener;
-    private Unit mPlayer;
     private int dif;
 
     public HelperList(RecyclerView rv, HelperListener helperListener, int currentDifference) {
@@ -58,9 +57,7 @@ public class HelperList {
             }
 
             public void bind(int position) {
-                itemView.setOnClickListener(v -> {
-                    mHelperListener.onAddHelper(position);
-                });
+                itemView.setOnClickListener(v -> mHelperListener.onAddHelper(position));
                 mTVName = itemView.findViewById(R.id.i_helper_tv_name);
                 mTVScore = itemView.findViewById(R.id.i_helper_tv_score);
                 mTVName.setText(mData.get(position).name);

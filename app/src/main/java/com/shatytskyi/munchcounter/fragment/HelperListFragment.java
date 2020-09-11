@@ -12,11 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.adapter.HelperList;
-import com.shatytskyi.munchcounter.data.Unit;
 
 public class HelperListFragment extends Fragment {
 
-    private Unit mPlayer;
     private HelperList.HelperListener mHelperListener;
     private int dif;
 
@@ -40,11 +38,10 @@ public class HelperListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         new HelperList(view.findViewById(R.id.f_helper_rv), mHelperListener, dif);
-        view.findViewById(R.id.f_helper_bg).setOnClickListener(v -> {
-            getParentFragmentManager()
-                    .beginTransaction().remove(this)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
-        });
+        view.findViewById(R.id.f_helper_bg).setOnClickListener(v ->
+                getParentFragmentManager()
+                        .beginTransaction().remove(this)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit());
     }
 }
