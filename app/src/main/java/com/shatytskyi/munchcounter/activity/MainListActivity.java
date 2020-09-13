@@ -23,8 +23,6 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
 
     // TODO: 08.09.2020 dialog fragments
     // TODO: 08.09.2020 limit lvl n power
-    // TODO: 08.09.2020 add gender, classes n races, colors
-    // TODO: 08.09.2020 create icon
     // TODO: 08.09.2020 add munchkin font
 
     private FloatingActionButton mButtonAdd;

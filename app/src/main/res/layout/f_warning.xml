@@ -5,8 +5,7 @@
     android:id="@+id/f_warning_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    tools:context=".fragment.WarningFragment">
+    android:layout_gravity="center">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"

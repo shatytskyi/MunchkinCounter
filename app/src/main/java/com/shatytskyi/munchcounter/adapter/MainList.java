@@ -97,18 +97,18 @@ public class MainList {
                                 Repo.ins().changeLvl(Repo.ins().getData().get(getAdapterPosition()).id,
                                         +1));
 
-                final long[] mLastRemoveButtonClickTime = {0};
+                final long[] mLastUserButtonClickTime = {0};
                 itemView.setOnClickListener(v -> {
-                    if (SystemClock.elapsedRealtime() - mLastRemoveButtonClickTime[0] < 1000) {
+                    if (SystemClock.elapsedRealtime() - mLastUserButtonClickTime[0] < 1000) {
                         return;
                     }
-                    mLastRemoveButtonClickTime[0] = SystemClock.elapsedRealtime();
+                    mLastUserButtonClickTime[0] = SystemClock.elapsedRealtime();
 
                     mActivity.getSupportFragmentManager().beginTransaction()
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .add(R.id.a_main_list_container,
-                                    UnitFragment.newInstance(Repo.ins().getData().get(getAdapterPosition()).id))
-                            .addToBackStack("unit info")
+                                    UnitFragment.newInstance(Repo.ins().getData().get(getAdapterPosition()).id), UnitFragment.FRAGMENT_TAG)
+                            .addToBackStack(UnitFragment.FRAGMENT_TAG)
                             .commit();
                 });
 

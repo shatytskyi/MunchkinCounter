@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.data.Repo;
@@ -58,14 +59,14 @@ public class WarningDialogFragment extends DialogFragment {
                     Repo.ins().resetAll();
                     break;
                 case TYPE_RESET:
-                    if (mUnitId != -1) {
-                        Repo.ins().resetUnit(mUnitId);
-                    }
+                    Repo.ins().resetUnit(mUnitId);
                     break;
                 case TYPE_REMOVE:
-                    if (mUnitId != -1) {
-                        Repo.ins().removeUnit(mUnitId);
-                    }
+                    Repo.ins().removeUnit(mUnitId);
+                    getParentFragmentManager().beginTransaction()
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                            .remove(getParentFragmentManager().findFragmentByTag(UnitFragment.FRAGMENT_TAG))
+                            .commit();
                     break;
             }
         });

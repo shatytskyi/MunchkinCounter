@@ -20,6 +20,8 @@ import com.shatytskyi.munchcounter.data.Unit;
 
 public class UnitFragment extends Fragment implements Repo.OnDataChangedListener {
 
+
+    public static final String FRAGMENT_TAG = "unit_fragment_tag";
     private static final String ARG_ID = "param1";
 
     private long mUnitID;
@@ -75,17 +77,15 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
 
         });
 
-        view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v ->
-                getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .add(R.id.a_main_list_container, WarningFragment.newInstance(WarningFragment.TYPE_RESET, mUnitID))
-                        .addToBackStack("warning")
-                        .commit());
+        view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v -> {
+            WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_RESET, mUnitID);
+            f.show(getParentFragmentManager(), null);
+        });
 
-        view.findViewById(R.id.f_unit_b_remove).setOnClickListener(v ->
-                getParentFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.a_main_list_container, new WarningFragment(mUnitID))
-                        .addToBackStack("warning")
-                        .commit());
+        view.findViewById(R.id.f_unit_b_remove).setOnClickListener(v -> {
+            WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_REMOVE, mUnitID);
+            f.show(getParentFragmentManager(), null);
+        });
 
         view.findViewById(R.id.f_unit_b_fight).setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FightActivity.class);
