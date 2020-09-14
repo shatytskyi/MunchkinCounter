@@ -87,7 +87,7 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
                 break;
             case R.id.act_remove_all:
                 if (Repo.ins().getData().size() != 0) {
-                    WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_ALL_REMOVED);
+                    WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_ALL_REMOVE);
                     f.show(getSupportFragmentManager(), null);
                     break;
                 } else {

@@ -24,7 +24,7 @@
     <string name="level">Level</string>
     <string name="reset">Reset</string>
     <string name="remove">Remove</string>
-    <string name="get_help">Get help</string>
+    <string name="get_help">Get\nhelp</string>
     <string name="fight">FIGHT</string>
     <string name="des_remove_unit_from_list">Remove unit from list</string>
     <string name="des_reset_unit_parameters">Reset unit parameters</string>
@@ -32,11 +32,12 @@
     <string name="des_get_help">Get help from other players</string>
     <string name="reset_fight">Reset fight</string>
     <string name="finish_fight">Finish fight</string>
-    <string name="change_helper">Change partner</string>
+    <string name="change_helper">Change\npartner</string>
     <string name="fight_was_reset">Fight was reset</string>
     <string name="choose_helper">Choose your partner</string>
     <string name="name">Name</string>
     <string name="result">Result</string>
     <string name="no_name_warning">Unnamed players are not allowed</string>
     <string name="expand_player_s_card">Expand player\'s card</string>
+    <string name="result_is">Result:</string>
 </resources>

@@ -203,7 +203,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         }
 
         if (mHelper != null) {
-            mTVPlayerScore.setTextColor(getColor(R.color.accent));
+            mTVPlayerScore.setTextColor(getColor(R.color.black));
         } else if (mPlayer.power > mInitPower) {
             mTVPlayerScore.setTextColor(getColor(R.color.green));
         } else if (mPlayer.power < mInitPower) {

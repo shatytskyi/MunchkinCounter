@@ -4,5 +4,5 @@
     <solid android:color="@color/white" />
     <stroke
         android:width="4dp"
-        android:color="@color/accent" />
+        android:color="@color/primary" />
 </shape>

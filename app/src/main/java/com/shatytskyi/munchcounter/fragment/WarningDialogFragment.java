@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,7 +13,7 @@ import com.shatytskyi.munchcounter.data.Repo;
 
 public class WarningDialogFragment extends DialogFragment {
 
-    public static final String TYPE_ALL_REMOVED = "all removed";
+    public static final String TYPE_ALL_REMOVE = "all removed";
     public static final String TYPE_ALL_RESET = "all reset";
     public static final String TYPE_RESET = "reset";
     public static final String TYPE_REMOVE = "remove";
@@ -24,11 +23,6 @@ public class WarningDialogFragment extends DialogFragment {
 
     public WarningDialogFragment() {
 
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     public WarningDialogFragment(String type) {
@@ -47,12 +41,12 @@ public class WarningDialogFragment extends DialogFragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
         alertDialogBuilder.setTitle(createTitle());
-        alertDialogBuilder.setMessage(createMessage());
         alertDialogBuilder.setIcon(R.drawable.icon_warning);
+        alertDialogBuilder.setMessage(createMessage());
 
         alertDialogBuilder.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
             switch (mType) {
-                case TYPE_ALL_REMOVED:
+                case TYPE_ALL_REMOVE:
                     Repo.ins().removeAll();
                     break;
                 case TYPE_ALL_RESET:
@@ -78,10 +72,10 @@ public class WarningDialogFragment extends DialogFragment {
 
     private String createTitle() {
         switch (mType) {
-            case TYPE_ALL_REMOVED:
-                return "Remove all players";
+            case TYPE_ALL_REMOVE:
+                return "Remove all";
             case TYPE_ALL_RESET:
-                return "Reset all players";
+                return "Reset all";
             case TYPE_RESET:
                 return "Reset " + Repo.ins().findUnitById(mUnitId).name;
             case TYPE_REMOVE:
@@ -92,10 +86,15 @@ public class WarningDialogFragment extends DialogFragment {
 
     private String createMessage() {
         switch (mType) {
+            case TYPE_ALL_REMOVE:
+                return "All players will be permanently removed";
+            case TYPE_ALL_RESET:
+                return "All player's stats will be reset";
             case TYPE_RESET:
-                return "Player " + Repo.ins().findUnitById(mUnitId).name + " will lose all stats \n Are you sure?";
+                return "Player " + Repo.ins().findUnitById(mUnitId).name + " will lose all stats\n";
             case TYPE_REMOVE:
-                return "Player " + Repo.ins().findUnitById(mUnitId).name + " will be removed from list \n Are you sure?";
+                return "Player " + Repo.ins().findUnitById(mUnitId).name + " will be permanently removed\n";
+
         }
         return "Are you sure?";
     }
