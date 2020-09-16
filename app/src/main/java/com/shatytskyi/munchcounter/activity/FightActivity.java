@@ -3,16 +3,20 @@ package com.shatytskyi.munchcounter.activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.adapter.HelperList;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
+import com.shatytskyi.munchcounter.fragment.DiceFragment;
 import com.shatytskyi.munchcounter.fragment.HelperListFragment;
 
 import java.util.Objects;
@@ -32,8 +36,10 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
     private TextView mTVPlayerLvl;
     private TextView mTVMonsterScore;
     private TextView mTVHelperName;
-    private TextView mTVResult;
+    private TextView mTVResultValue;
     private TextView mTVGetHelp;
+    private ImageView mButtonResult;
+    private TextView mTVResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +60,13 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         //changeable text views
         mTVPlayerName = findViewById(R.id.a_fight_tv_table_player);
         mTVHelperName = findViewById(R.id.a_fight_tv_table_helper);
-        mTVResult = findViewById(R.id.a_fight_tv_table_result);
+        mTVResultValue = findViewById(R.id.a_fight_tv_table_result);
         mTVPlayerLvl = findViewById(R.id.a_fight_tv_lvl);
         mTVPlayerScore = findViewById(R.id.a_fight_tv_score);
         mTVMonsterScore = findViewById(R.id.a_fight_tv_monster_score);
         mTVGetHelp = findViewById(R.id.a_fight_tv_get_help);
+        mButtonResult = findViewById(R.id.a_fight_b_result);
+        mTVResult = findViewById(R.id.a_fight_tv_result);
 
         //functional buttons
         findViewById(R.id.a_fight_b_finish).setOnClickListener(v -> finish());
@@ -73,14 +81,31 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .add(R.id.a_fight_container,
                         new HelperListFragment((mPlayer.getScore() - mMonster.getScore()), this),
-                        "helper_list_fragment")
-                .addToBackStack("helper_list_fragment")
+                        HelperListFragment.FRAGMENT_TAG)
+                .addToBackStack(HelperListFragment.FRAGMENT_TAG)
                 .commit());
 
         findViewById(R.id.a_fight_tv_table_helper).setOnClickListener(v -> {
             mHelper = null;
             Toast.makeText(this, "Partner removed", Toast.LENGTH_SHORT).show();
             bindViews();
+        });
+
+        findViewById(R.id.a_fight_b_dice).setOnClickListener(v -> {
+            getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .add(R.id.a_fight_container, new DiceFragment())
+                    .commit();
+        });
+
+        findViewById(R.id.a_fight_b_info).setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setTitle(R.string.inf)
+                    .setMessage(R.string.info)
+                    .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    })
+                    .show();
         });
 
 
@@ -211,22 +236,51 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         } else mTVPlayerScore.setTextColor(getColor(R.color.black));
 
         if (scoresDifference > 0) {
-            mTVResult.setText("+" + scoresDifference);
+            mTVResultValue.setText("+" + scoresDifference);
+            mTVResultValue.setTextColor(getColor(R.color.green));
+            mButtonResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_treasure));
+            mButtonResult.setColorFilter(getColor(R.color.green));
+            mTVResult.setText(R.string.victory);
             mTVResult.setTextColor(getColor(R.color.green));
         } else {
-            mTVResult.setText(String.valueOf(scoresDifference));
+            mTVResultValue.setText(String.valueOf(scoresDifference));
+            mTVResultValue.setTextColor(getColor(R.color.warning));
+            mButtonResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_death));
+            mButtonResult.setColorFilter(getColor(R.color.warning));
+            mTVResult.setText(R.string.defeat);
             mTVResult.setTextColor(getColor(R.color.warning));
         }
+        mButtonResult.setOnClickListener(new OnResultClickListener(scoresDifference));
 
     }
 
     @Override
     public void onAddHelper(int position) {
         getSupportFragmentManager().beginTransaction()
-                .remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag("helper_list_fragment")))
+                .remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(HelperListFragment.FRAGMENT_TAG)))
                 .commit();
         mHelper = Repo.ins().getData().get(position);
         bindViews();
+        getSupportFragmentManager().popBackStack();
+    }
+
+    private class OnResultClickListener implements View.OnClickListener {
+
+        private int dif;
+
+        public OnResultClickListener(int dif) {
+            this.dif = dif;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (dif > 0) {
+                Toast.makeText(FightActivity.this, getString(R.string.fight_result_win), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(FightActivity.this, getString(R.string.fight_result_lose), Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        }
     }
 
 }

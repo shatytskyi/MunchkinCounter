@@ -4,10 +4,19 @@
 
     <item
         android:id="@+id/act_reset_all"
-        android:title="Reset all"
+        android:title="@string/reset_all"
         app:showAsAction="never" />
     <item
         android:id="@+id/act_remove_all"
-        android:title="Remove all"
+        android:title="@string/remove_all"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/act_dice"
+        android:icon="@drawable/icon_dice"
+        android:title="@string/throw_dice"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/act_info"
+        android:title="@string/inf"
         app:showAsAction="never" />
 </menu>

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#F3F3F3</color>
-    <color name="lightGrey">#EFEFEF</color>
     <color name="darkGrey">#616161</color>
     <color name="black">#151515</color>
 
     <color name="primary">#009EB3</color>
     <color name="warning">#B81C1C</color>
-    <color name="secondary">#BDAA17</color>
-    <color name="green">#2AB14C</color>
+    <color name="secondary">#AE9C15</color>
+    <color name="green">#28A347</color>
 </resources>

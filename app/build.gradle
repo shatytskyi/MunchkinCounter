@@ -8,8 +8,8 @@ android {
         applicationId 'com.shatytskyi.gamecounter'
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 4
-        versionName "1.2"
+        versionCode 7
+        versionName "v1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

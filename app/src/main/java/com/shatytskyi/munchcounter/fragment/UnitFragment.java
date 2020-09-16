@@ -69,13 +69,14 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
     private void findButtons (View view) {
 
 
-        view.findViewById(R.id.f_unit_bg).setOnClickListener(v -> getParentFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .remove(this).commit());
-
-        view.findViewById(R.id.f_unit_bg_white).setOnClickListener(v -> {
-
+        view.findViewById(R.id.f_unit_bg).setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .remove(this).commit();
+            getParentFragmentManager().popBackStack();
         });
+
+        view.findViewById(R.id.f_unit_bg_white).setClickable(false);
 
         view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v -> {
             WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_RESET, mUnitID);

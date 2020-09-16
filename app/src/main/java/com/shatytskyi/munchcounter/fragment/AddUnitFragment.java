@@ -91,6 +91,7 @@ public class AddUnitFragment extends Fragment {
         getParentFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .remove(this).commit();
+        getParentFragmentManager().popBackStack();
     }
 
 }

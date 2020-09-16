@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,16 +17,18 @@ import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.adapter.MainList;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.fragment.AddUnitFragment;
+import com.shatytskyi.munchcounter.fragment.DiceFragment;
 import com.shatytskyi.munchcounter.fragment.WarningDialogFragment;
 
 public class MainListActivity extends AppCompatActivity implements Repo.OnDataChangedListener {
 
-    // TODO: 08.09.2020 dialog fragments
     // TODO: 08.09.2020 limit lvl n power
-    // TODO: 08.09.2020 add munchkin font
+    // TODO: бонусы к смывке
+    // TODO: 16.09.2020 death
+    // TODO: 16.09.2020 change player
 
     private FloatingActionButton mButtonAdd;
-    private TextView mHint;
+    private View mHint;
     private MainList mMainList;
 
     @Override
@@ -82,7 +84,7 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
                     f.show(getSupportFragmentManager(), null);
                     break;
                 } else {
-                    Toast.makeText(this, "No players in list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.toast_no_players, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.act_remove_all:
@@ -91,8 +93,23 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
                     f.show(getSupportFragmentManager(), null);
                     break;
                 } else {
-                    Toast.makeText(this, "No players in list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.toast_no_players, Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.act_dice:
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .add(R.id.a_main_list_container, new DiceFragment())
+                        .commit();
+                break;
+            case R.id.act_info:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.inf)
+                        .setMessage(R.string.info)
+                        .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                        })
+                        .show();
+                break;
         }
         return true;
     }

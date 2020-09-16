@@ -40,21 +40,84 @@
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/a_main_list_tv_hint"
-        android:fontFamily="@font/munchkin"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:visibility="invisible"
-        tools:visibility="visible"
         android:layout_width="300dp"
-        android:layout_height="120dp"
+        android:layout_height="360dp"
+        tools:visibility="visible"
         android:layout_gravity="center"
-        android:background="@drawable/bg_accent_2"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:padding="8dp"
-        android:textColor="@color/black"
-        android:text="@string/no_players" />
+        android:id="@+id/a_main_list_tv_hint">
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/pic_wizard"
+            app:layout_constraintEnd_toEndOf="@id/gl0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv0"
+            android:padding="24dp" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/pic_witch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv0"
+            android:padding="24dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl0"
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/pic_knight"
+            app:layout_constraintEnd_toEndOf="@id/gl0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="24dp" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/pic_knight_fem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl0"
+            app:layout_constraintTop_toBottomOf="@id/tv0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="24dp" />
+
+
+        <TextView
+            android:id="@+id/tv0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_accent"
+            android:fontFamily="@font/munchkin"
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="@string/no_players"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/a_main_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/a_main_list_fab"
@@ -63,14 +126,11 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="36dp"
         android:elevation="20dp"
-        app:fabCustomSize="64dp"
-        android:background="@drawable/bg_accent"
+        app:rippleColor="@color/white"
+        android:tint="@color/white"
+        app:fabSize="auto"
         android:src="@drawable/icon_add" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/a_main_list_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

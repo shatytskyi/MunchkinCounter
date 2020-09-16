@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@android:color/transparent"
+    android:background="@drawable/bg_white_tint"
     tools:context=".fragment.AddUnitFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
             android:layout_width="300dp"
             android:layout_height="240dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_accent_2"
+            android:background="@drawable/bg_accent"
             android:elevation="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

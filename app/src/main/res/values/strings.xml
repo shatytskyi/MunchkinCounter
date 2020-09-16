@@ -1,24 +1,10 @@
 <resources>
-    <string name="app_name">Munchkin Counter</string>
-
-    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="warning">Warning!</string>
     <string name="add_player">Add player</string>
     <string name="enter_name">Enter the name</string>
     <string name="warning_all_remove">All players will be removed!</string>
-    <string name="warning_remove"> will be removed!</string>
     <string name="player">Player</string>
     <string name="warning_all_reset">All players will be reset!</string>
-    <string name="warning_reset">will be reset!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="_2">2</string>
-    <string name="_1">1</string>
-    <string name="_3">3</string>
-    <string name="_4">4</string>
-    <string name="_5">5</string>
-    <string name="minus">−</string>
-    <string name="plus">+</string>
     <string name="score">Score</string>
     <string name="monster">Monster</string>
     <string name="level">Level</string>
@@ -26,18 +12,60 @@
     <string name="remove">Remove</string>
     <string name="get_help">Get\nhelp</string>
     <string name="fight">FIGHT</string>
-    <string name="des_remove_unit_from_list">Remove unit from list</string>
-    <string name="des_reset_unit_parameters">Reset unit parameters</string>
+    <string name="des_remove_unit_from_list">Remove player from list</string>
+    <string name="des_reset_unit_parameters">Reset player parameters</string>
     <string name="no_players">There\'s no players yet \n You can add one using button below</string>
     <string name="des_get_help">Get help from other players</string>
     <string name="reset_fight">Reset fight</string>
-    <string name="finish_fight">Finish fight</string>
+    <string name="run">Run away</string>
     <string name="change_helper">Change\npartner</string>
     <string name="fight_was_reset">Fight was reset</string>
     <string name="choose_helper">Choose your partner</string>
-    <string name="name">Name</string>
     <string name="result">Result</string>
     <string name="no_name_warning">Unnamed players are not allowed</string>
     <string name="expand_player_s_card">Expand player\'s card</string>
     <string name="result_is">Result:</string>
+    <string name="remove_all">Remove all</string>
+    <string name="reset_all">Reset all</string>
+    <string name="warning_will_reset"> will lose all stats</string>
+    <string name="warning_will_removed">\" will be permanently removed\n\"</string>
+    <string name="toast_no_players">No players in list</string>
+    <string name="throw_dice">Throw dice</string>
+    <string name="victory">Victory</string>
+    <string name="defeat">Defeat</string>
+    <string name="show_info">Show\ninfo</string>
+    <string name="fight_result_win">Victory!\nDon\'t forget to lvl up</string>
+    <string name="fight_result_lose">Oh, no, it\'s a defeat\nGood luck next time</string>
+
+    <string name="inf">Info</string>
+    <string name="info">Main screen:
+\nLevel - shows current level of the munchkin.
+\nScore - the sum of the level and equipped items, strength of the character.
+\nClick on the character card to open the extended menu.
+\n
+\nExtended character menu:
+        \nUsing the buttons (1-5) you can increase or decrease the character\'s strength.
+        \nThis action displays equipping and removing gear items.
+\nUsing the buttons \"Remove\" or \"Reset\" you can remove a character from the game or reset his parameters to the initial ones.
+\nPress the \"FIGHT\" button to open the battle screen.
+\n
+\nBattle screen:
+\nThe character window is displayed at the top of the screen, the monster at the bottom.
+\nChanging the character\'s strength using the buttons (1-5) is temporary and is valid only during this battle.
+\nThe level change is permanent and will remain after leaving the battle.
+\nThe current balance of forces is displayed in the center of the screen.
+        \nTo the right of it is the end of the battle button.
+\nYou can also use the help of a partner, escape from the battle or start it over.
+\nThe six-sided die roll will help with the escape calculating.</string>
+
+    <string name="app_name" translatable="false">Munchkin Counter</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="_1" translatable="false">1</string>
+    <string name="_2" translatable="false">2</string>
+    <string name="_3" translatable="false">3</string>
+    <string name="_4" translatable="false">4</string>
+    <string name="_5" translatable="false">5</string>
+    <string name="minus" translatable="false">−</string>
+    <string name="plus" translatable="false">+</string>
+
 </resources>

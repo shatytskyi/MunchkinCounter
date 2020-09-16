@@ -61,6 +61,7 @@ public class WarningDialogFragment extends DialogFragment {
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .remove(getParentFragmentManager().findFragmentByTag(UnitFragment.FRAGMENT_TAG))
                             .commit();
+                    getParentFragmentManager().popBackStack();
                     break;
             }
         });
@@ -73,27 +74,29 @@ public class WarningDialogFragment extends DialogFragment {
     private String createTitle() {
         switch (mType) {
             case TYPE_ALL_REMOVE:
-                return "Remove all";
+                return getString(R.string.remove_all);
             case TYPE_ALL_RESET:
-                return "Reset all";
+                return getString(R.string.reset_all);
             case TYPE_RESET:
-                return "Reset " + Repo.ins().findUnitById(mUnitId).name;
+                return getString(R.string.reset) + " " + Repo.ins().findUnitById(mUnitId).name;
             case TYPE_REMOVE:
-                return "Remove " + Repo.ins().findUnitById(mUnitId).name;
+                return getString(R.string.remove) + " " + Repo.ins().findUnitById(mUnitId).name;
         }
-        return "No title";
+        return "Warning!";
     }
 
     private String createMessage() {
         switch (mType) {
             case TYPE_ALL_REMOVE:
-                return "All players will be permanently removed";
+                return getString(R.string.warning_all_remove);
             case TYPE_ALL_RESET:
-                return "All player's stats will be reset";
+                return getString(R.string.warning_all_reset);
             case TYPE_RESET:
-                return "Player " + Repo.ins().findUnitById(mUnitId).name + " will lose all stats\n";
+                return getString(R.string.player) + " " +
+                        Repo.ins().findUnitById(mUnitId).name + " " + getString(R.string.warning_will_reset);
             case TYPE_REMOVE:
-                return "Player " + Repo.ins().findUnitById(mUnitId).name + " will be permanently removed\n";
+                return getString(R.string.player) + " " +
+                        Repo.ins().findUnitById(mUnitId).name + " " + getString(R.string.warning_will_removed);
 
         }
         return "Are you sure?";

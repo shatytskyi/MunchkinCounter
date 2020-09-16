@@ -15,6 +15,7 @@ import com.shatytskyi.munchcounter.adapter.HelperList;
 
 public class HelperListFragment extends Fragment {
 
+    public static final String FRAGMENT_TAG = "helper_list_fragment_tag";
     private HelperList.HelperListener mHelperListener;
     private int dif;
 
@@ -38,10 +39,12 @@ public class HelperListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         new HelperList(view.findViewById(R.id.f_helper_rv), mHelperListener, dif);
-        view.findViewById(R.id.f_helper_bg).setOnClickListener(v ->
-                getParentFragmentManager()
-                        .beginTransaction().remove(this)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit());
+        view.findViewById(R.id.f_helper_bg).setOnClickListener(v -> {
+            getParentFragmentManager()
+                    .beginTransaction().remove(this)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+            getParentFragmentManager().popBackStack();
+        });
     }
 }
