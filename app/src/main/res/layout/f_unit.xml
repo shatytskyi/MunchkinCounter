@@ -475,7 +475,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/warning" />
+                        app:tint="@color/red" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:layout_width="match_parent"

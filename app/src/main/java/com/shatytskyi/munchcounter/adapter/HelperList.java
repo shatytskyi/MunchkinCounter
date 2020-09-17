@@ -67,7 +67,7 @@ public class HelperList {
                     mTVScore.setTextColor(itemView.getContext().getColor(R.color.green));
                     mTVScore.setText("+" + (dif + mData.get(position).getScore()));
                 } else {
-                    mTVScore.setTextColor(itemView.getContext().getColor(R.color.warning));
+                    mTVScore.setTextColor(itemView.getContext().getColor(R.color.red));
                     mTVScore.setText(String.valueOf(dif + mData.get(position).getScore()));
                 }
 

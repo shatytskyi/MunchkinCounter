@@ -232,7 +232,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         } else if (mPlayer.power > mInitPower) {
             mTVPlayerScore.setTextColor(getColor(R.color.green));
         } else if (mPlayer.power < mInitPower) {
-            mTVPlayerScore.setTextColor(getColor(R.color.warning));
+            mTVPlayerScore.setTextColor(getColor(R.color.red));
         } else mTVPlayerScore.setTextColor(getColor(R.color.black));
 
         if (scoresDifference > 0) {
@@ -244,11 +244,11 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
             mTVResult.setTextColor(getColor(R.color.green));
         } else {
             mTVResultValue.setText(String.valueOf(scoresDifference));
-            mTVResultValue.setTextColor(getColor(R.color.warning));
+            mTVResultValue.setTextColor(getColor(R.color.red));
             mButtonResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_death));
-            mButtonResult.setColorFilter(getColor(R.color.warning));
+            mButtonResult.setColorFilter(getColor(R.color.red));
             mTVResult.setText(R.string.defeat);
-            mTVResult.setTextColor(getColor(R.color.warning));
+            mTVResult.setTextColor(getColor(R.color.red));
         }
         mButtonResult.setOnClickListener(new OnResultClickListener(scoresDifference));
 
