@@ -13,19 +13,19 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
-import com.shatytskyi.munchcounter.adapter.HelperList;
+import com.shatytskyi.munchcounter.adapter.HelpersAdapt;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
-import com.shatytskyi.munchcounter.fragment.DiceFragment;
-import com.shatytskyi.munchcounter.fragment.HelperListFragment;
+import com.shatytskyi.munchcounter.fragment.DiceFrag;
+import com.shatytskyi.munchcounter.fragment.HelpersFrag;
 
 import java.util.Objects;
 
-public class FightActivity extends AppCompatActivity implements HelperList.HelperListener {
+public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperListener, DiceFrag.DiceListener {
 
     public static final String EXTRA_USER_ID = "extra_user_id";
 
-    private long mUserId;
+    private long mUnitId;
     private Unit mPlayer;
     private Unit mHelper;
     private Unit mMonster;
@@ -47,9 +47,9 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         setContentView(R.layout.a_fight);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setupViews();
-        mUserId = getIntent().getLongExtra(EXTRA_USER_ID, -1);
-        mInitPower = Repo.ins().findUnitById(mUserId).power;
-        mPlayer = Repo.ins().findUnitById(mUserId).copy();
+        mUnitId = getIntent().getLongExtra(EXTRA_USER_ID, -1);
+        mInitPower = Repo.ins().findUnitById(mUnitId).power;
+        mPlayer = Repo.ins().findUnitById(mUnitId).copy();
         mMonster = new Unit("Monster", 0, 0);
         bindViews();
 
@@ -72,7 +72,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         findViewById(R.id.a_fight_b_finish).setOnClickListener(v -> finish());
         findViewById(R.id.a_fight_b_reset_fight).setOnClickListener(v -> {
             mMonster = new Unit("Monster", 0, 0);
-            mPlayer = Repo.ins().findUnitById(mUserId).copy();
+            mPlayer = Repo.ins().findUnitById(mUnitId).copy();
             mHelper = null;
             bindViews();
             Toast.makeText(this, R.string.fight_was_reset, Toast.LENGTH_SHORT).show();
@@ -80,9 +80,9 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         findViewById(R.id.a_fight_b_get_help).setOnClickListener(v -> getSupportFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .add(R.id.a_fight_container,
-                        new HelperListFragment((mPlayer.getScore() - mMonster.getScore()), this),
-                        HelperListFragment.FRAGMENT_TAG)
-                .addToBackStack(HelperListFragment.FRAGMENT_TAG)
+                        new HelpersFrag((mPlayer.getScore() - mMonster.getScore()), this),
+                        HelpersFrag.FRAGMENT_TAG)
+                .addToBackStack(HelpersFrag.FRAGMENT_TAG)
                 .commit());
 
         findViewById(R.id.a_fight_tv_table_helper).setOnClickListener(v -> {
@@ -94,7 +94,8 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         findViewById(R.id.a_fight_b_dice).setOnClickListener(v -> {
             getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(R.id.a_fight_container, new DiceFragment())
+                    .addToBackStack(DiceFrag.FRAGMENT_TAG)
+                    .add(R.id.a_fight_container, new DiceFrag(DiceFrag.TYPE_SIMPLE, null))
                     .commit();
         });
 
@@ -112,12 +113,12 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         //player buttons
         findViewById(R.id.a_fight_b_lvl_minus).setOnClickListener(v -> {
             mPlayer.lvl--;
-            Repo.ins().changeLvl(mUserId, -1);
+            Repo.ins().changeLvl(mUnitId, -1);
             bindViews();
         });
         findViewById(R.id.a_fight_b_lvl_plus).setOnClickListener(v -> {
             mPlayer.lvl++;
-            Repo.ins().changeLvl(mUserId, +1);
+            Repo.ins().changeLvl(mUnitId, +1);
             bindViews();
         });
 
@@ -247,7 +248,7 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
             mTVResultValue.setTextColor(getColor(R.color.red));
             mButtonResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icon_death));
             mButtonResult.setColorFilter(getColor(R.color.red));
-            mTVResult.setText(R.string.defeat);
+            mTVResult.setText(R.string.try_to_run);
             mTVResult.setTextColor(getColor(R.color.red));
         }
         mButtonResult.setOnClickListener(new OnResultClickListener(scoresDifference));
@@ -257,11 +258,28 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
     @Override
     public void onAddHelper(int position) {
         getSupportFragmentManager().beginTransaction()
-                .remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(HelperListFragment.FRAGMENT_TAG)))
+                .remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(HelpersFrag.FRAGMENT_TAG)))
                 .commit();
         mHelper = Repo.ins().getData().get(position);
         bindViews();
         getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void onDiceResult(boolean isResultEnough) {
+        if (isResultEnough) {
+            finish();
+        } else {
+            Toast.makeText(FightAct.this, R.string.toast_run_fail, Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    @Override
+    public void onKillMunchkin() {
+        Repo.ins().changePower(mUnitId, -(Repo.ins().findUnitById(mUnitId).power));
+        Toast.makeText(FightAct.this, R.string.toast_munchkin_died, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private class OnResultClickListener implements View.OnClickListener {
@@ -275,11 +293,15 @@ public class FightActivity extends AppCompatActivity implements HelperList.Helpe
         @Override
         public void onClick(View view) {
             if (dif > 0) {
-                Toast.makeText(FightActivity.this, getString(R.string.fight_result_win), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FightAct.this, getString(R.string.fight_result_win), Toast.LENGTH_SHORT).show();
+                finish();
             } else {
-                Toast.makeText(FightActivity.this, getString(R.string.fight_result_lose), Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(DiceFrag.FRAGMENT_TAG)
+                        .add(R.id.a_fight_container, new DiceFrag(DiceFrag.TYPE_RUN, FightAct.this))
+                        .commit();
             }
-            finish();
         }
     }
 

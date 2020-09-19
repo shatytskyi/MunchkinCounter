@@ -5,7 +5,7 @@
     <string name="warning_all_remove">All players will be removed!</string>
     <string name="player">Player</string>
     <string name="warning_all_reset">All players will be reset!</string>
-    <string name="score">Score</string>
+    <string name="power">Power</string>
     <string name="monster">Monster</string>
     <string name="level">Level</string>
     <string name="reset">Reset</string>
@@ -25,7 +25,7 @@
     <string name="no_name_warning">Unnamed players are not allowed</string>
     <string name="expand_player_s_card">Expand player\'s card</string>
     <string name="result_is">Result:</string>
-    <string name="remove_all">Remove all</string>
+    <string name="clear">Clear</string>
     <string name="reset_all">Reset all</string>
     <string name="warning_will_reset"> will lose all stats</string>
     <string name="warning_will_removed">\" will be permanently removed\n\"</string>
@@ -67,5 +67,26 @@
     <string name="_5" translatable="false">5</string>
     <string name="minus" translatable="false">−</string>
     <string name="plus" translatable="false">+</string>
+    <string name="solo_mode">Solo mode</string>
+    <string name="group_mode">Group mode</string>
+    <string name="your_munchkin">Your munchkin </string>
+    <string name="all_was_removed">All players was removed</string>
+    <string name="undo">UNDO</string>
+    <string name="all_was_reset">All players was reset</string>
+    <string name="throw_dice_b">Throw</string>
+    <string name="bonus_is">Bonus:</string>
+    <string name="dice_success">Success! Run, Forest, run!</string>
+    <string name="dice_fail">Monster catches you</string>
+    <string name="toast_run_fail">Don\'t forget to punish munchkin</string>
+    <string name="leave">Leave</string>
+    <string name="toast_munchkin_died">Munchkin died, all items was lost</string>
+    <string name="try_to_run">Try to run</string>
+    <string name="death">Death</string>
+    <string name="list">List</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="new_name">New name</string>
+    <string name="gear">Gear</string>
+    <string name="shuffle">Shuffle</string>
 
 </resources>

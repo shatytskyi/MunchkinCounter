@@ -3,20 +3,36 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/act_reset_all"
-        android:title="@string/reset_all"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/act_remove_all"
-        android:title="@string/remove_all"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/act_dice"
         android:icon="@drawable/icon_dice"
         android:title="@string/throw_dice"
         app:showAsAction="ifRoom" />
+
+    <item android:title="@string/list">
+        <menu>
+            <item
+                android:id="@+id/act_shuffle"
+                android:title="@string/shuffle"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/act_reset_all"
+                android:title="@string/reset_all"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/act_remove_all"
+                android:title="@string/clear"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
     <item
-        android:id="@+id/act_info"
+        android:id="@+id/act_solo_mode"
+        android:title="@string/solo_mode"
+        app:showAsAction="never"
+        android:icon="@drawable/icon_solo" />
+
+    <item
+        android:id="@+id/act_info_main"
         android:title="@string/inf"
         app:showAsAction="never" />
 </menu>

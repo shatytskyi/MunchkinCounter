@@ -14,12 +14,12 @@ import com.shatytskyi.munchcounter.data.Unit;
 
 import java.util.List;
 
-public class HelperList {
+public class HelpersAdapt {
 
     private HelperListener mHelperListener;
     private int dif;
 
-    public HelperList(RecyclerView rv, HelperListener helperListener, int currentDifference) {
+    public HelpersAdapt(RecyclerView rv, HelperListener helperListener, int currentDifference) {
         mHelperListener = helperListener;
         dif = currentDifference;
         rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));

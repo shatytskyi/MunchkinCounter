@@ -13,13 +13,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
-import com.shatytskyi.munchcounter.activity.FightActivity;
+import com.shatytskyi.munchcounter.activity.FightAct;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
 
+import java.util.Objects;
 
-public class UnitFragment extends Fragment implements Repo.OnDataChangedListener {
 
+public class UnitFrag extends Fragment implements Repo.OnDataChangedListener, WarningFrag.WarningDialogListener {
 
     public static final String FRAGMENT_TAG = "unit_fragment_tag";
     private static final String ARG_ID = "param1";
@@ -30,8 +31,8 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
     private TextView mTVName;
     private TextView mTVScore;
 
-    public static UnitFragment newInstance(long userID) {
-        UnitFragment fragment = new UnitFragment();
+    public static UnitFrag newInstance(long userID) {
+        UnitFrag fragment = new UnitFrag();
         Bundle args = new Bundle();
         args.putLong(ARG_ID, userID);
         fragment.setArguments(args);
@@ -68,29 +69,38 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
 
     private void findButtons (View view) {
 
-
-        view.findViewById(R.id.f_unit_bg).setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .remove(this).commit();
-            getParentFragmentManager().popBackStack();
+        view.findViewById(R.id.f_unit_b_back).setOnClickListener(v -> {
+            closeFragment();
         });
 
-        view.findViewById(R.id.f_unit_bg_white).setClickable(false);
+        view.findViewById(R.id.f_unit_bg).setOnClickListener(v -> {
+            closeFragment();
+        });
+
+        view.findViewById(R.id.f_unit_b_edit).setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .add(R.id.a_main_list_container, new EditFrag(mUnitID), EditFrag.FRAGMENT_TAG)
+                    .addToBackStack(EditFrag.FRAGMENT_TAG)
+                    .commit();
+        });
+
+        view.findViewById(R.id.f_unit_bg_white).setOnClickListener(v -> {
+        });
 
         view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v -> {
-            WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_RESET, mUnitID);
+            WarningFrag f = new WarningFrag(WarningFrag.TYPE_RESET, mUnitID, this);
             f.show(getParentFragmentManager(), null);
         });
 
         view.findViewById(R.id.f_unit_b_remove).setOnClickListener(v -> {
-            WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_REMOVE, mUnitID);
+            WarningFrag f = new WarningFrag(WarningFrag.TYPE_REMOVE, mUnitID, this);
             f.show(getParentFragmentManager(), null);
         });
 
         view.findViewById(R.id.f_unit_b_fight).setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FightActivity.class);
-            intent.putExtra(FightActivity.EXTRA_USER_ID, mUnitID);
+            Intent intent = new Intent(getContext(), FightAct.class);
+            intent.putExtra(FightAct.EXTRA_USER_ID, mUnitID);
             startActivity(intent);
         });
 
@@ -118,5 +128,30 @@ public class UnitFragment extends Fragment implements Repo.OnDataChangedListener
         mTVName.setText(mUnit.name);
         mTVScore.setText(String.valueOf(mUnit.getScore()));
         mTVLvl.setText(String.valueOf(mUnit.lvl));
+    }
+
+    @Override
+    public void onDialogPositiveButtonClicked(String dialogType, long unitId) {
+        switch (dialogType) {
+            case WarningFrag.TYPE_RESET:
+                Repo.ins().resetUnit(unitId);
+                break;
+            case WarningFrag.TYPE_REMOVE:
+                Repo.ins().removeUnit(unitId);
+                getParentFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .remove(Objects.requireNonNull(getParentFragmentManager()
+                                .findFragmentByTag(UnitFrag.FRAGMENT_TAG)))
+                        .commit();
+                getParentFragmentManager().popBackStack();
+                break;
+        }
+    }
+
+    private void closeFragment() {
+        getParentFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .remove(this).commit();
+        getParentFragmentManager().popBackStack();
     }
 }

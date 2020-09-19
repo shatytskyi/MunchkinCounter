@@ -1,7 +1,9 @@
 package com.shatytskyi.munchcounter.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,23 +15,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.shatytskyi.munchcounter.R;
-import com.shatytskyi.munchcounter.adapter.MainList;
+import com.shatytskyi.munchcounter.adapter.ListAdapt;
 import com.shatytskyi.munchcounter.data.Repo;
-import com.shatytskyi.munchcounter.fragment.AddUnitFragment;
-import com.shatytskyi.munchcounter.fragment.DiceFragment;
-import com.shatytskyi.munchcounter.fragment.WarningDialogFragment;
+import com.shatytskyi.munchcounter.fragment.AddFrag;
+import com.shatytskyi.munchcounter.fragment.DiceFrag;
+import com.shatytskyi.munchcounter.fragment.WarningFrag;
 
-public class MainListActivity extends AppCompatActivity implements Repo.OnDataChangedListener {
-
-    // TODO: 08.09.2020 limit lvl n power
-    // TODO: бонусы к смывке
-    // TODO: 16.09.2020 death
-    // TODO: 16.09.2020 change player
+public class ListAct extends AppCompatActivity implements Repo.OnDataChangedListener, WarningFrag.WarningDialogListener {
 
     private FloatingActionButton mButtonAdd;
     private View mHint;
-    private MainList mMainList;
+    private ListAdapt mListAdapt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,33 +38,35 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
 
         setSupportActionBar(findViewById(R.id.a_main_list_tb));
 
-        mMainList = new MainList(findViewById(R.id.a_list_rv), this);
+        mListAdapt = new ListAdapt(findViewById(R.id.a_list_rv), this);
         mHint = findViewById(R.id.a_main_list_tv_hint);
-        Repo.ins().subscribe(this);
-        Repo.ins().subscribe(mMainList.getAdapter());
-        onDataChanged();
 
         mButtonAdd = findViewById(R.id.a_main_list_fab);
         mButtonAdd.setOnClickListener(v -> {
             getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .replace(R.id.a_main_list_container, new AddUnitFragment(this))
+                    .replace(R.id.a_main_list_container, new AddFrag(this))
                     .addToBackStack("add")
                     .commit();
             mButtonAdd.hide();
-            mHint.setVisibility(View.INVISIBLE);
         });
+        onDataChanged();
     }
 
+    //Unsubscribe all
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Repo.ins().unsubscribe(this);
-        Repo.ins().unsubscribe(mMainList.getAdapter());
+        Repo.ins().unsubscribe(mListAdapt.getAdapter());
     }
 
-    public void setAddButtonVisible() {
-        mButtonAdd.show();
+    //Subscribe all
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Repo.ins().subscribe(this);
+        Repo.ins().subscribe(mListAdapt.getAdapter());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
         switch (item.getItemId()) {
             case R.id.act_reset_all:
                 if (Repo.ins().getData().size() != 0) {
-                    WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_ALL_RESET);
+                    WarningFrag f = new WarningFrag(WarningFrag.TYPE_ALL_RESET, this);
                     f.show(getSupportFragmentManager(), null);
                     break;
                 } else {
@@ -89,7 +89,7 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
                 break;
             case R.id.act_remove_all:
                 if (Repo.ins().getData().size() != 0) {
-                    WarningDialogFragment f = new WarningDialogFragment(WarningDialogFragment.TYPE_ALL_REMOVE);
+                    WarningFrag f = new WarningFrag(WarningFrag.TYPE_ALL_REMOVE, this);
                     f.show(getSupportFragmentManager(), null);
                     break;
                 } else {
@@ -99,10 +99,11 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
             case R.id.act_dice:
                 getSupportFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .add(R.id.a_main_list_container, new DiceFragment())
+                        .add(R.id.a_main_list_container, new DiceFrag(DiceFrag.TYPE_SIMPLE, null))
+                        .addToBackStack(DiceFrag.FRAGMENT_TAG)
                         .commit();
                 break;
-            case R.id.act_info:
+            case R.id.act_info_main:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.inf)
                         .setMessage(R.string.info)
@@ -110,14 +111,48 @@ public class MainListActivity extends AppCompatActivity implements Repo.OnDataCh
                         })
                         .show();
                 break;
+            case R.id.act_solo_mode:
+                startActivity(new Intent(this, SoloAct.class));
+                finish();
+                break;
+            case R.id.act_shuffle:
+                Repo.ins().shuffleData();
+                break;
         }
         return true;
     }
 
+    //Control hint visibility
     @Override
     public void onDataChanged() {
+        Log.d("taag", String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
         if (Repo.ins().getData().size() == 0) {
             mHint.setVisibility(View.VISIBLE);
-        } else mHint.setVisibility(View.INVISIBLE);
+        } else {
+            mHint.setVisibility(View.INVISIBLE);
+        }
     }
+
+    public void setButtonAddVisible() {
+        mButtonAdd.show();
+    }
+
+    @Override
+    public void onDialogPositiveButtonClicked(String dialogType, long unitId) {
+        switch (dialogType) {
+            case WarningFrag.TYPE_ALL_REMOVE:
+                Repo.ins().createTempData();
+                Repo.ins().removeAll();
+                Snackbar.make(findViewById(R.id.a_main_list_container), R.string.all_was_removed, Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(getResources().getColor(R.color.primary, getTheme()))
+                        .setActionTextColor(getResources().getColor(R.color.white, getTheme()))
+                        .setAction(R.string.undo, v -> Repo.ins().restoreData())
+                        .show();
+                break;
+            case WarningFrag.TYPE_ALL_RESET:
+                Repo.ins().resetAll();
+                break;
+        }
+    }
+
 }

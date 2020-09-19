@@ -9,11 +9,11 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.shatytskyi.munchcounter.activity.FightActivity" />
-        <activity android:name="com.shatytskyi.munchcounter.activity.MainListActivity">
+        <activity android:name=".activity.SoloAct" />
+        <activity android:name=".activity.FightAct" />
+        <activity android:name=".activity.ListAct">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

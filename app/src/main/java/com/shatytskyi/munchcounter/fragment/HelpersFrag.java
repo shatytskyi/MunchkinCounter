@@ -11,17 +11,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
-import com.shatytskyi.munchcounter.adapter.HelperList;
+import com.shatytskyi.munchcounter.adapter.HelpersAdapt;
 
-public class HelperListFragment extends Fragment {
+public class HelpersFrag extends Fragment {
 
     public static final String FRAGMENT_TAG = "helper_list_fragment_tag";
-    private HelperList.HelperListener mHelperListener;
+    private HelpersAdapt.HelperListener mHelperListener;
     private int dif;
 
-    public HelperListFragment(int dif, HelperList.HelperListener helperListener) {
+    public HelpersFrag(int dif, HelpersAdapt.HelperListener helperListener) {
         this.dif = dif;
         mHelperListener = helperListener;
+    }
+
+    public HelpersFrag() {
+        // TODO: 17.09.2020 solo help
     }
 
     @Override
@@ -38,7 +42,7 @@ public class HelperListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new HelperList(view.findViewById(R.id.f_helper_rv), mHelperListener, dif);
+        new HelpersAdapt(view.findViewById(R.id.f_helper_rv), mHelperListener, dif);
         view.findViewById(R.id.f_helper_bg).setOnClickListener(v -> {
             getParentFragmentManager()
                     .beginTransaction().remove(this)

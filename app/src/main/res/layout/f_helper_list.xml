@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/f_helper_bg"
-    tools:context="com.shatytskyi.munchcounter.fragment.HelperListFragment">
+    tools:context="com.shatytskyi.munchcounter.fragment.HelpersFrag">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:elevation="10dp"

@@ -16,20 +16,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
-import com.shatytskyi.munchcounter.activity.MainListActivity;
+import com.shatytskyi.munchcounter.activity.ListAct;
 import com.shatytskyi.munchcounter.data.Repo;
 
-public class AddUnitFragment extends Fragment {
+public class AddFrag extends Fragment {
 
-    private MainListActivity mActivity;
+    private ListAct mActivity;
 
-    public AddUnitFragment(MainListActivity activity) {
+    public AddFrag(ListAct activity) {
         mActivity = activity;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -42,9 +37,12 @@ public class AddUnitFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mActivity.onDataChanged();
+
         EditText et = view.findViewById(R.id.f_add_et_name);
         et.requestFocus();
         showKeyboard(this.getContext(), et);
+
         if (et.requestFocus()) {
             mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
@@ -65,12 +63,6 @@ public class AddUnitFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mActivity.setAddButtonVisible();
-    }
-
 
     private void showKeyboard(Context context, View view) {
         try {
@@ -82,6 +74,7 @@ public class AddUnitFragment extends Fragment {
     }
 
     private void closeFragment(Context context, View view) {
+        getParentFragmentManager().popBackStack();
         try {
             InputMethodManager keyboard = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             keyboard.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -91,7 +84,7 @@ public class AddUnitFragment extends Fragment {
         getParentFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .remove(this).commit();
-        getParentFragmentManager().popBackStack();
+        mActivity.setButtonAddVisible();
     }
 
 }

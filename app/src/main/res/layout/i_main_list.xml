@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/munchkin"
             android:textSize="18sp"
-            android:text="@string/score"
+            android:text="@string/power"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="@color/darkGrey"
             app:layout_constraintBottom_toBottomOf="parent"

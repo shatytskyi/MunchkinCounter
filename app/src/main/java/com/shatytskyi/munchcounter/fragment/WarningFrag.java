@@ -6,81 +6,63 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.data.Repo;
 
-public class WarningDialogFragment extends DialogFragment {
+public class WarningFrag extends DialogFragment {
 
     public static final String TYPE_ALL_REMOVE = "all removed";
     public static final String TYPE_ALL_RESET = "all reset";
     public static final String TYPE_RESET = "reset";
     public static final String TYPE_REMOVE = "remove";
+    public static final String TYPE_RESET_SOLO = "reset solo";
 
     private String mType;
     private long mUnitId = -1;
+    private WarningDialogListener mListener;
 
-    public WarningDialogFragment() {
-
-    }
-
-    public WarningDialogFragment(String type) {
+    public WarningFrag(String type, WarningDialogListener listener) {
         mType = type;
+        mListener = listener;
     }
 
-    public WarningDialogFragment(String type, long unitId) {
+    public WarningFrag(String type, long unitId, WarningDialogListener listener) {
         mType = type;
         mUnitId = unitId;
+        mListener = listener;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder adb = new AlertDialog.Builder(requireContext());
 
-        alertDialogBuilder.setTitle(createTitle());
-        alertDialogBuilder.setIcon(R.drawable.icon_warning);
-        alertDialogBuilder.setMessage(createMessage());
+        adb.setIcon(R.drawable.icon_warning);
+        adb.setTitle(createTitle());
+        adb.setMessage(createMessage());
 
-        alertDialogBuilder.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-            switch (mType) {
-                case TYPE_ALL_REMOVE:
-                    Repo.ins().removeAll();
-                    break;
-                case TYPE_ALL_RESET:
-                    Repo.ins().resetAll();
-                    break;
-                case TYPE_RESET:
-                    Repo.ins().resetUnit(mUnitId);
-                    break;
-                case TYPE_REMOVE:
-                    Repo.ins().removeUnit(mUnitId);
-                    getParentFragmentManager().beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .remove(getParentFragmentManager().findFragmentByTag(UnitFragment.FRAGMENT_TAG))
-                            .commit();
-                    getParentFragmentManager().popBackStack();
-                    break;
-            }
-        });
+        adb.setPositiveButton(getString(R.string.ok), (dialog, which) ->
+                mListener.onDialogPositiveButtonClicked(mType, mUnitId));
 
-        alertDialogBuilder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
+        adb.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
-        return alertDialogBuilder.create();
+        return adb.create();
     }
 
     private String createTitle() {
         switch (mType) {
             case TYPE_ALL_REMOVE:
-                return getString(R.string.remove_all);
+                return getString(R.string.clear);
             case TYPE_ALL_RESET:
                 return getString(R.string.reset_all);
             case TYPE_RESET:
                 return getString(R.string.reset) + " " + Repo.ins().findUnitById(mUnitId).name;
             case TYPE_REMOVE:
                 return getString(R.string.remove) + " " + Repo.ins().findUnitById(mUnitId).name;
+            case TYPE_RESET_SOLO:
+                return getString(R.string.reset);
         }
         return "Warning!";
     }
@@ -97,9 +79,14 @@ public class WarningDialogFragment extends DialogFragment {
             case TYPE_REMOVE:
                 return getString(R.string.player) + " " +
                         Repo.ins().findUnitById(mUnitId).name + " " + getString(R.string.warning_will_removed);
-
+            case TYPE_RESET_SOLO:
+                return getString(R.string.your_munchkin) + getString(R.string.warning_will_reset);
         }
         return "Are you sure?";
+    }
+
+    public interface WarningDialogListener {
+        void onDialogPositiveButtonClicked(String dialogType, long unitId);
     }
 
 }

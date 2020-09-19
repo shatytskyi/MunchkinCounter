@@ -4,30 +4,30 @@
     <string name="enter_name">Введи имя</string>
     <string name="warning_all_remove">Все игроки будут удалены из списка</string>
     <string name="player">Игрок</string>
-    <string name="warning_all_reset">Показатели всех манчкинов будут сброшены до начальных:\n(Уровень - 1, сила - 0)</string>
-    <string name="score">Счет</string>
+    <string name="warning_all_reset">Показатели всех манчкинов будут сброшены до начальных:\n(Уровень - 1, шмотки - 0)</string>
+    <string name="power">Сила</string>
     <string name="monster">Монстр</string>
     <string name="level">Уровень</string>
     <string name="reset">Сбросить</string>
     <string name="remove">Удалить</string>
     <string name="get_help">Помощь</string>
-    <string name="fight">В БОЙ!</string>
+    <string name="fight">В бой!</string>
     <string name="des_remove_unit_from_list">Удалить игрока из списка</string>
     <string name="des_reset_unit_parameters">Сбросить параметры игрока</string>
-    <string name="no_players">В списке игроков совсем пусто\nДобавь несколько манчкинов\nс помощью кнопки внизу</string>
+    <string name="no_players">В списке совсем пусто\nДобавь несколько манчкинов\nс помощью кнопки внизу</string>
     <string name="des_get_help">Запросить помощь от других игроков</string>
     <string name="reset_fight">Сброс</string>
     <string name="run">Смывка</string>
     <string name="change_helper">Сменить</string>
-    <string name="fight_was_reset">Давай по новой</string>
+    <string name="fight_was_reset">Начинаем сначала</string>
     <string name="choose_helper">Выбери напарника</string>
     <string name="result">Результат</string>
-    <string name="no_name_warning">Нужно ввести имя, без имени манчкину никак</string>
+    <string name="no_name_warning">Нужно ввести имя, без имени никак</string>
     <string name="expand_player_s_card">Расширить каточку игрока</string>
     <string name="result_is">Результат:</string>
-    <string name="remove_all">Очистить список</string>
-    <string name="reset_all">Обнулить параметры игроков</string>
-    <string name="warning_will_reset">получит изначальные параметры:\nуровень - 1, сила - 0</string>
+    <string name="clear">Очистить</string>
+    <string name="reset_all">Обнулить</string>
+    <string name="warning_will_reset">получит изначальные параметры:\nуровень - 1, шмотки - 0</string>
     <string name="warning_will_removed">будет удален из списка</string>
     <string name="toast_no_players">Здесь пусто</string>
     <string name="throw_dice">Бросить кубик</string>
@@ -56,4 +56,25 @@
 \nБросок шестигранного кубика поможет в просчете смывки или при применении некоторых способностей/карт.
         \n
     \nПриятной игры и богатых трофеев!</string>
+    <string name="solo_mode">Режим соло</string>
+    <string name="group_mode">Групповой режим</string>
+    <string name="your_munchkin">Твой манчкин</string>
+    <string name="all_was_removed">Все игроки были удалены из списка</string>
+    <string name="all_was_reset">Параметры всех манчкинов сброшены</string>
+    <string name="undo">Отмена</string>
+    <string name="throw_dice_b">Бросок</string>
+    <string name="bonus_is">Бонус:</string>
+    <string name="dice_success">Успех! Беги, Форест, беги!</string>
+    <string name="dice_fail">Монстр оказался быстрее</string>
+    <string name="toast_run_fail">Не забудь совершить непотребство!</string>
+    <string name="toast_munchkin_died">Манчкин погиб, все его шмотки тоже</string>
+    <string name="try_to_run">Смывка</string>
+    <string name="leave">Уйти</string>
+    <string name="death">Смерть</string>
+    <string name="list">Список</string>
+    <string name="back">Назад</string>
+    <string name="edit">Изменить</string>
+    <string name="new_name">Новое имя</string>
+    <string name="gear">Шмотки</string>
+    <string name="shuffle">Перемешать</string>
 </resources>

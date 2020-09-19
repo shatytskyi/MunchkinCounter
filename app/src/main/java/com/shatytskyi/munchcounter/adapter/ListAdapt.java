@@ -11,22 +11,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shatytskyi.munchcounter.R;
-import com.shatytskyi.munchcounter.activity.MainListActivity;
+import com.shatytskyi.munchcounter.activity.ListAct;
 import com.shatytskyi.munchcounter.data.DataIO;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
-import com.shatytskyi.munchcounter.fragment.UnitFragment;
+import com.shatytskyi.munchcounter.fragment.UnitFrag;
 
-public class MainList {
+public class ListAdapt {
 
-    MainListActivity mActivity;
+    ListAct mActivity;
     MainListAdapter mAdapter;
 
     public MainListAdapter getAdapter() {
         return mAdapter;
     }
 
-    public MainList(RecyclerView recyclerView, MainListActivity activity) {
+    public ListAdapt(RecyclerView recyclerView, ListAct activity) {
         mActivity = activity;
         Repo.ins().setData(new DataIO(recyclerView.getContext()).read());
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
@@ -107,8 +107,8 @@ public class MainList {
                     mActivity.getSupportFragmentManager().beginTransaction()
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .add(R.id.a_main_list_container,
-                                    UnitFragment.newInstance(Repo.ins().getData().get(getAdapterPosition()).id), UnitFragment.FRAGMENT_TAG)
-                            .addToBackStack(UnitFragment.FRAGMENT_TAG)
+                                    UnitFrag.newInstance(Repo.ins().getData().get(getAdapterPosition()).id), UnitFrag.FRAGMENT_TAG)
+                            .addToBackStack(UnitFrag.FRAGMENT_TAG)
                             .commit();
                 });
 
