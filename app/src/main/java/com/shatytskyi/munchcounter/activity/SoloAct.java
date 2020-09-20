@@ -14,14 +14,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
 import com.shatytskyi.munchcounter.fragment.DiceFrag;
+import com.shatytskyi.munchcounter.fragment.EditFrag;
 import com.shatytskyi.munchcounter.fragment.WarningFrag;
 
-public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDialogListener {
+public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDialogListener, Repo.OnDataChangedListener {
 
     private Unit mPlayer;
     private TextView mTVPlayerScore;
@@ -31,6 +31,7 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
     private final String SOLO_PREF = "solo_pref";
     private final String PREF_LVL = "pref_lvl";
     private final String PREF_POWER = "pref_power";
+    private final String PREF_NAME = "pref_name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +39,14 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
         setContentView(R.layout.a_main_solo);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setSupportActionBar(findViewById(R.id.a_main_solo_tb));
-
-        mPlayer = new Unit("Munchkin", getSharedPreferences(SOLO_PREF, MODE_PRIVATE).getInt(PREF_LVL, 1),
+        Repo.ins().subscribe(this);
+        mPlayer = new Unit(
+                getSharedPreferences(SOLO_PREF, MODE_PRIVATE).getString(PREF_NAME, getString(R.string.munchkin)),
+                getSharedPreferences(SOLO_PREF, MODE_PRIVATE).getInt(PREF_LVL, 1),
                 getSharedPreferences(SOLO_PREF, MODE_PRIVATE).getInt(PREF_POWER, 0));
-        Repo.ins().addUnit(mPlayer);
 
         setupViews();
-        bindViews();
+        Repo.ins().addUnit(mPlayer);
     }
 
     @Override
@@ -88,80 +90,85 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             super.onBackPressed();
         } else {
+            saveData();
             finish();
-            System.exit(0);
         }
     }
 
     private void setupViews() {
+
+        findViewById(R.id.a_solo_b_edit).setOnClickListener(v -> {
+            getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .add(R.id.a_main_solo_container, new EditFrag(mPlayer.id), EditFrag.FRAGMENT_TAG)
+                    .addToBackStack(EditFrag.FRAGMENT_TAG)
+                    .commit();
+        });
+
 
         mTVPlayerLvl = findViewById(R.id.a_solo_tv_lvl);
         mTVPlayerScore = findViewById(R.id.a_solo_tv_score);
         mTVPlayerName = findViewById(R.id.a_solo_tv_name);
         //player buttons
         findViewById(R.id.a_solo_b_lvl_minus).setOnClickListener(v -> {
-            mPlayer.lvl--;
-            bindViews();
+            Repo.ins().changeLvl(mPlayer.id, -1);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_lvl_plus).setOnClickListener(v -> {
-            mPlayer.lvl++;
-            bindViews();
+            Repo.ins().changeLvl(mPlayer.id, +1);
+            onDataChanged();
         });
 
         findViewById(R.id.a_solo_b_minus_1).setOnClickListener(v -> {
-            mPlayer.power--;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, -1);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_minus_2).setOnClickListener(v -> {
-            mPlayer.power -= 2;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, -2);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_minus_3).setOnClickListener(v -> {
-            mPlayer.power -= 3;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, -3);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_minus_4).setOnClickListener(v -> {
-            mPlayer.power -= 4;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, -4);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_minus_5).setOnClickListener(v -> {
-            mPlayer.power -= 5;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, -5);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_plus_1).setOnClickListener(v -> {
-            mPlayer.power++;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, +1);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_plus_2).setOnClickListener(v -> {
-            mPlayer.power += 2;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, +2);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_plus_3).setOnClickListener(v -> {
-            mPlayer.power += 3;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, +3);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_plus_4).setOnClickListener(v -> {
-            mPlayer.power += 4;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, +4);
+            onDataChanged();
         });
         findViewById(R.id.a_solo_b_plus_5).setOnClickListener(v -> {
-            mPlayer.power += 5;
-            bindViews();
+            Repo.ins().changePower(mPlayer.id, +5);
+            onDataChanged();
         });
-    }
-
-    private void bindViews() {
-        mTVPlayerScore.setText(String.valueOf(mPlayer.getScore()));
-        mTVPlayerLvl.setText(String.valueOf(mPlayer.lvl));
-        mTVPlayerName.setText(mPlayer.name);
     }
 
     private void saveData() {
         SharedPreferences pref = getSharedPreferences(SOLO_PREF, MODE_PRIVATE);
         SharedPreferences.Editor ed = pref.edit();
+        ed.putString(PREF_NAME, mPlayer.name);
         ed.putInt(PREF_LVL, mPlayer.lvl);
         ed.putInt(PREF_POWER, mPlayer.power);
         ed.apply();
+        Repo.ins().unsubscribe(this);
         Repo.ins().removeUnit(mPlayer.id);
     }
 
@@ -173,16 +180,13 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
 
     @Override
     public void onDialogPositiveButtonClicked(String dialogType, long unitId) {
-        Unit mTempPlayer = mPlayer.copy();
-        mPlayer = new Unit("Player", 1, 0);
-        bindViews();
-        Snackbar.make(findViewById(R.id.a_main_solo_container), "Munchkin was reset", Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, v -> {
-                    mPlayer = mTempPlayer.copy();
-                    bindViews();
-                })
-                .setBackgroundTint(getResources().getColor(R.color.primary, getTheme()))
-                .setActionTextColor(getResources().getColor(R.color.white, getTheme()))
-                .show();
+
+    }
+
+    @Override
+    public void onDataChanged() {
+        mTVPlayerScore.setText(String.valueOf(mPlayer.getScore()));
+        mTVPlayerLvl.setText(String.valueOf(mPlayer.lvl));
+        mTVPlayerName.setText(mPlayer.name);
     }
 }

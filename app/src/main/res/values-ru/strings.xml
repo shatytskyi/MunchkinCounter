@@ -11,7 +11,7 @@
     <string name="reset">Сбросить</string>
     <string name="remove">Удалить</string>
     <string name="get_help">Помощь</string>
-    <string name="fight">В бой!</string>
+    <string name="fight">В БОЙ!</string>
     <string name="des_remove_unit_from_list">Удалить игрока из списка</string>
     <string name="des_reset_unit_parameters">Сбросить параметры игрока</string>
     <string name="no_players">В списке совсем пусто\nДобавь несколько манчкинов\nс помощью кнопки внизу</string>
@@ -77,4 +77,5 @@
     <string name="new_name">Новое имя</string>
     <string name="gear">Шмотки</string>
     <string name="shuffle">Перемешать</string>
+    <string name="munchkin">Манчкин</string>
 </resources>
