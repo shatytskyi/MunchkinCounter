@@ -30,6 +30,7 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
     private Unit mHelper;
     private Unit mMonster;
     private int mInitPower;
+    private int test;
 
     private TextView mTVPlayerName;
     private TextView mTVPlayerScore;
