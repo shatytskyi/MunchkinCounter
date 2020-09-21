@@ -30,7 +30,6 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
     private Unit mHelper;
     private Unit mMonster;
     private int mInitPower;
-    private int test;
 
     private TextView mTVPlayerName;
     private TextView mTVPlayerScore;
@@ -252,7 +251,7 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
             mTVResult.setText(R.string.try_to_run);
             mTVResult.setTextColor(getColor(R.color.red));
         }
-        mButtonResult.setOnClickListener(new OnResultClickListener(scoresDifference));
+        mButtonResult.setOnClickListener(new OnFightResultClickListener(scoresDifference));
 
     }
 
@@ -283,11 +282,11 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
         finish();
     }
 
-    private class OnResultClickListener implements View.OnClickListener {
+    private class OnFightResultClickListener implements View.OnClickListener {
 
         private int dif;
 
-        public OnResultClickListener(int dif) {
+        public OnFightResultClickListener(int dif) {
             this.dif = dif;
         }
 

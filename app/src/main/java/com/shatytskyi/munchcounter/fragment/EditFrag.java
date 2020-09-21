@@ -51,11 +51,10 @@ public class EditFrag extends Fragment {
         });
 
         EditText mETName = view.findViewById(R.id.f_edit_et_name);
+        mETName.requestFocus();
         mETName.setText(Repo.ins().findUnitById(mUnitId).name);
         EditText mETLvl = view.findViewById(R.id.f_edit_et_lvl);
-        mETLvl.setText(String.valueOf(Repo.ins().findUnitById(mUnitId).lvl));
         EditText mETGear = view.findViewById(R.id.f_edit_et_gear);
-        mETGear.setText(String.valueOf(Repo.ins().findUnitById(mUnitId).power));
 
         view.findViewById(R.id.f_edit_b_ok).setOnClickListener(v -> {
             if (!mETName.getText().toString().isEmpty()) {

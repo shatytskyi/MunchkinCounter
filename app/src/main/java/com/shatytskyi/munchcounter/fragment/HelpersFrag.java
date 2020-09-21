@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.adapter.HelpersAdapt;
+import com.shatytskyi.munchcounter.data.Repo;
+import com.shatytskyi.munchcounter.data.Unit;
 
 public class HelpersFrag extends Fragment {
 
@@ -44,11 +47,25 @@ public class HelpersFrag extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         new HelpersAdapt(view.findViewById(R.id.f_helper_rv), mHelperListener, dif);
         view.findViewById(R.id.f_helper_bg).setOnClickListener(v -> {
-            getParentFragmentManager()
-                    .beginTransaction().remove(this)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
-            getParentFragmentManager().popBackStack();
+            closeFragment();
         });
+
+        EditText et = view.findViewById(R.id.f_helper_et_custom);
+
+        view.findViewById(R.id.f_helper_b_ok).setOnClickListener(v -> {
+            Unit customPartner = new Unit(getString(R.string.partner), 1,
+                    Integer.parseInt(et.getText().toString())-1);
+            Repo.ins().addUnit(customPartner);
+            mHelperListener.onAddHelper(Repo.ins().getData().indexOf(customPartner));
+            closeFragment();
+        });
+    }
+
+    private void closeFragment() {
+        getParentFragmentManager()
+                .beginTransaction().remove(this)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+        getParentFragmentManager().popBackStack();
     }
 }

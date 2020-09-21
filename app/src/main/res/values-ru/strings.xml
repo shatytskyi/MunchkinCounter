@@ -78,4 +78,7 @@
     <string name="gear">Шмотки</string>
     <string name="shuffle">Перемешать</string>
     <string name="munchkin">Манчкин</string>
+    <string name="custom_partner_s_power">Ввести силу вручную</string>
+    <string name="partner">Друг</string>
+    <string name="_0">0</string>
 </resources>
