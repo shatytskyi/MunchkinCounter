@@ -100,9 +100,20 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
         findViewById(R.id.a_solo_b_edit).setOnClickListener(v -> {
             getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(R.id.a_main_solo_container, new EditFrag(mPlayer.id), EditFrag.FRAGMENT_TAG)
+                    .replace(R.id.a_main_solo_container, new EditFrag(mPlayer.id), EditFrag.FRAGMENT_TAG)
                     .addToBackStack(EditFrag.FRAGMENT_TAG)
                     .commit();
+        });
+
+        findViewById(R.id.a_solo_b_reset).setOnClickListener(v -> {
+            WarningFrag f = new WarningFrag(WarningFrag.TYPE_RESET, mPlayer.id, this);
+            f.show(getSupportFragmentManager(), null);
+        });
+
+        findViewById(R.id.a_solo_b_fight).setOnClickListener(v -> {
+            Intent intent = new Intent(SoloAct.this, FightAct.class);
+            intent.putExtra(FightAct.EXTRA_USER_ID, mPlayer.id);
+            startActivity(intent);
         });
 
 
@@ -173,14 +184,12 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
     }
 
     @Override
-    protected void onPause() {
-        saveData();
-        super.onPause();
-    }
-
-    @Override
     public void onDialogPositiveButtonClicked(String dialogType, long unitId) {
-
+        switch (dialogType) {
+            case WarningFrag.TYPE_RESET:
+                Repo.ins().resetUnit(mPlayer.id);
+                break;
+        }
     }
 
     @Override

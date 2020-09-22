@@ -35,10 +35,50 @@
             android:layout_height="0dp"
             android:layout_margin="6dp"
             android:background="@drawable/bg_white"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/f_helper_et_custom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <EditText
+            android:id="@+id/f_helper_et_custom"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            android:autofillHints="0"
+            android:fontFamily="@font/munchkin"
+            android:gravity="center"
+            android:hint="@string/custom_partner_s_power"
+            android:inputType="number"
+            android:maxLength="2"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/black"
+            android:textColorHint="@color/darkGrey"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/f_helper_b_ok"
+            app:layout_constraintEnd_toStartOf="@+id/f_helper_b_ok"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/f_helper_b_ok" />
+
+        <TextView
+            android:id="@+id/f_helper_b_ok"
+            android:layout_width="100dp"
+            android:layout_height="64dp"
+            android:layout_margin="6dp"
+            android:background="?selectableItemBackground"
+            android:elevation="3dp"
+            android:padding="0dp"
+            android:fontFamily="@font/munchkin"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -498,7 +498,7 @@
                 android:elevation="10dp"
                 android:fontFamily="@font/munchkin"
                 android:gravity="center_vertical"
-                android:textColor="@color/green"
+                android:textColor="@color/secondary"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -515,7 +515,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="0dp"
-                android:textColor="@color/green"
+                android:textColor="@color/primary"
                 android:textSize="46sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -562,7 +562,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/a_fight_tv_result"
-                app:tint="@color/green" />
+                app:tint="@color/primary" />
 
             <ImageView
                 android:layout_width="32dp"
@@ -586,7 +586,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_secondary"
+            android:background="@drawable/bg_black"
             android:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -650,7 +650,7 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:text="@string/monster"
-                android:textColor="@color/secondary"
+                android:textColor="@color/black"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="@id/a_fight_tv_monster_score"
                 app:layout_constraintStart_toStartOf="@id/a_fight_tv_monster_score"
@@ -750,6 +750,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/a_fight_tv_monster_score"
@@ -1019,22 +1021,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="4dp"
-                android:background="@color/secondary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/a_fight_tv_monster_score"
-                app:layout_constraintStart_toEndOf="@id/a_fight_tv_monster_panel" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="4dp"
-                android:background="@color/secondary"
-                app:layout_constraintEnd_toStartOf="@id/a_fight_tv_monster_score"
-                app:layout_constraintStart_toEndOf="@id/a_fight_tv_monster_panel"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
