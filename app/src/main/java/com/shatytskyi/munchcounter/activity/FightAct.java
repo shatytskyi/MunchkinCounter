@@ -80,7 +80,7 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
         findViewById(R.id.a_fight_b_get_help).setOnClickListener(v -> getSupportFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .add(R.id.a_fight_container,
-                        new HelpersFrag((mPlayer.getScore() - mMonster.getScore()), this),
+                        new HelpersFrag((mPlayer.getScore() - mMonster.getScore()), mPlayer.name, this),
                         HelpersFrag.FRAGMENT_TAG)
                 .addToBackStack(HelpersFrag.FRAGMENT_TAG)
                 .commit());
@@ -294,6 +294,7 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
         public void onClick(View view) {
             if (dif > 0) {
                 Toast.makeText(FightAct.this, getString(R.string.fight_result_win), Toast.LENGTH_SHORT).show();
+                Repo.ins().changeLvl(mUnitId, +1);
                 finish();
             } else {
                 getSupportFragmentManager().beginTransaction()

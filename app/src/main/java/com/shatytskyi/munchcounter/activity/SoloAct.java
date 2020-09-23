@@ -1,10 +1,8 @@
 package com.shatytskyi.munchcounter.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -28,25 +26,22 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
     private TextView mTVPlayerLvl;
     private TextView mTVPlayerName;
 
-    private final String SOLO_PREF = "solo_pref";
-    private final String PREF_LVL = "pref_lvl";
-    private final String PREF_POWER = "pref_power";
-    private final String PREF_NAME = "pref_name";
+    public static final String EXTRA_UNIT_ID = "solo_extra_unit_id";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main_solo);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setSupportActionBar(findViewById(R.id.a_main_solo_tb));
         Repo.ins().subscribe(this);
-        mPlayer = new Unit(
-                getSharedPreferences(SOLO_PREF, MODE_PRIVATE).getString(PREF_NAME, getString(R.string.munchkin)),
-                getSharedPreferences(SOLO_PREF, MODE_PRIVATE).getInt(PREF_LVL, 1),
-                getSharedPreferences(SOLO_PREF, MODE_PRIVATE).getInt(PREF_POWER, 0));
+
+        mPlayer = Repo.ins().findUnitById(getIntent().getLongExtra(EXTRA_UNIT_ID, -1));
 
         setupViews();
-        Repo.ins().addUnit(mPlayer);
+        onDataChanged();
     }
 
     @Override
@@ -74,25 +69,8 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
                         .show();
                 // TODO: 17.09.2020 create solo mode special info
                 break;
-            case R.id.act_group_mode:
-                saveData();
-                startActivity(new Intent(this, ListAct.class));
-                finish();
-                break;
         }
         return true;
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        Log.d("tag", String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            super.onBackPressed();
-        } else {
-            saveData();
-            finish();
-        }
     }
 
     private void setupViews() {
@@ -172,15 +150,10 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
         });
     }
 
-    private void saveData() {
-        SharedPreferences pref = getSharedPreferences(SOLO_PREF, MODE_PRIVATE);
-        SharedPreferences.Editor ed = pref.edit();
-        ed.putString(PREF_NAME, mPlayer.name);
-        ed.putInt(PREF_LVL, mPlayer.lvl);
-        ed.putInt(PREF_POWER, mPlayer.power);
-        ed.apply();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         Repo.ins().unsubscribe(this);
-        Repo.ins().removeUnit(mPlayer.id);
     }
 
     @Override

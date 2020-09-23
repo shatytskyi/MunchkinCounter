@@ -21,9 +21,11 @@ public class HelpersFrag extends Fragment {
     public static final String FRAGMENT_TAG = "helper_list_fragment_tag";
     private HelpersAdapt.HelperListener mHelperListener;
     private int dif;
+    private String playerName;
 
-    public HelpersFrag(int dif, HelpersAdapt.HelperListener helperListener) {
+    public HelpersFrag(int dif, String playerName, HelpersAdapt.HelperListener helperListener) {
         this.dif = dif;
+        this.playerName = playerName;
         mHelperListener = helperListener;
     }
 
@@ -45,7 +47,7 @@ public class HelpersFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new HelpersAdapt(view.findViewById(R.id.f_helper_rv), mHelperListener, dif);
+        new HelpersAdapt(view.findViewById(R.id.f_helper_rv), mHelperListener, dif, playerName);
         view.findViewById(R.id.f_helper_bg).setOnClickListener(v -> {
             closeFragment();
         });
@@ -58,6 +60,7 @@ public class HelpersFrag extends Fragment {
             Repo.ins().addUnit(customPartner);
             mHelperListener.onAddHelper(Repo.ins().getData().indexOf(customPartner));
             closeFragment();
+            Repo.ins().removeUnit(customPartner);
         });
     }
 

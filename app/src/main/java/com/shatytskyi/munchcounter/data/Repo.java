@@ -77,6 +77,11 @@ public class Repo {
         notifySubscribers();
     }
 
+    public void removeUnit(Unit unit) {
+        mData.remove(unit);
+        notifySubscribers();
+    }
+
     public void resetUnit(long id) {
         Unit unit = findUnitById(id);
         unit.lvl = 1;
@@ -124,6 +129,8 @@ public class Repo {
 
     //Set of subscribed OnDataChangedListeners
     private final Set<OnDataChangedListener> mSubscribers = new HashSet<>();
+
+
     public interface OnDataChangedListener {
         void onDataChanged();
     }

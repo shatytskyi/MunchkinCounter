@@ -103,13 +103,13 @@ public class ListAdapt {
                         return;
                     }
                     mLastUserButtonClickTime[0] = SystemClock.elapsedRealtime();
-
                     mActivity.getSupportFragmentManager().beginTransaction()
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .add(R.id.a_main_list_container,
                                     UnitFrag.newInstance(Repo.ins().getData().get(getAdapterPosition()).id), UnitFrag.FRAGMENT_TAG)
                             .addToBackStack(UnitFrag.FRAGMENT_TAG)
                             .commit();
+                    mActivity.setButtonAddInvisible();
                 });
 
             }

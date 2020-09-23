@@ -14,10 +14,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.shatytskyi.munchcounter.R;
 import com.shatytskyi.munchcounter.activity.FightAct;
+import com.shatytskyi.munchcounter.activity.ListAct;
+import com.shatytskyi.munchcounter.activity.SoloAct;
 import com.shatytskyi.munchcounter.data.Repo;
 import com.shatytskyi.munchcounter.data.Unit;
-
-import java.util.Objects;
 
 
 public class UnitFrag extends Fragment implements Repo.OnDataChangedListener, WarningFrag.WarningDialogListener {
@@ -72,9 +72,10 @@ public class UnitFrag extends Fragment implements Repo.OnDataChangedListener, Wa
         view.findViewById(R.id.f_unit_b_back).setOnClickListener(v -> {
             closeFragment();
         });
-
         view.findViewById(R.id.f_unit_bg).setOnClickListener(v -> {
             closeFragment();
+        });
+        view.findViewById(R.id.f_unit_bg_white).setOnClickListener(v -> {
         });
 
         view.findViewById(R.id.f_unit_b_edit).setOnClickListener(v -> {
@@ -85,7 +86,10 @@ public class UnitFrag extends Fragment implements Repo.OnDataChangedListener, Wa
                     .commit();
         });
 
-        view.findViewById(R.id.f_unit_bg_white).setOnClickListener(v -> {
+        view.findViewById(R.id.f_unit_b_go_fullscreen).setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), SoloAct.class);
+            intent.putExtra(SoloAct.EXTRA_UNIT_ID, mUnitID);
+            startActivity(intent);
         });
 
         view.findViewById(R.id.f_unit_b_reset).setOnClickListener(v -> {
@@ -138,12 +142,7 @@ public class UnitFrag extends Fragment implements Repo.OnDataChangedListener, Wa
                 break;
             case WarningFrag.TYPE_REMOVE:
                 Repo.ins().removeUnit(unitId);
-                getParentFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .remove(Objects.requireNonNull(getParentFragmentManager()
-                                .findFragmentByTag(UnitFrag.FRAGMENT_TAG)))
-                        .commit();
-                getParentFragmentManager().popBackStack();
+                closeFragment();
                 break;
         }
     }
@@ -153,5 +152,7 @@ public class UnitFrag extends Fragment implements Repo.OnDataChangedListener, Wa
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .remove(this).commit();
         getParentFragmentManager().popBackStack();
+        ListAct a = (ListAct) getActivity();
+        a.setButtonAddVisible();
     }
 }

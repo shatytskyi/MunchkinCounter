@@ -1,6 +1,5 @@
 package com.shatytskyi.munchcounter.activity;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,7 +47,7 @@ public class ListAct extends AppCompatActivity implements Repo.OnDataChangedList
                     .replace(R.id.a_main_list_container, new AddFrag(this))
                     .addToBackStack("add")
                     .commit();
-            mButtonAdd.hide();
+            setButtonAddInvisible();
         });
         onDataChanged();
     }
@@ -111,10 +110,6 @@ public class ListAct extends AppCompatActivity implements Repo.OnDataChangedList
                         })
                         .show();
                 break;
-            case R.id.act_solo_mode:
-                startActivity(new Intent(this, SoloAct.class));
-                finish();
-                break;
             case R.id.act_shuffle:
                 Repo.ins().shuffleData();
                 break;
@@ -135,6 +130,10 @@ public class ListAct extends AppCompatActivity implements Repo.OnDataChangedList
 
     public void setButtonAddVisible() {
         mButtonAdd.show();
+    }
+
+    public void setButtonAddInvisible() {
+        mButtonAdd.hide();
     }
 
     @Override

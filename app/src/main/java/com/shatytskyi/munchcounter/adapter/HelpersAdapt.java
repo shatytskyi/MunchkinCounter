@@ -18,10 +18,12 @@ public class HelpersAdapt {
 
     private HelperListener mHelperListener;
     private int dif;
+    private String playerName;
 
-    public HelpersAdapt(RecyclerView rv, HelperListener helperListener, int currentDifference) {
+    public HelpersAdapt(RecyclerView rv, HelperListener helperListener, int currentDifference, String playerName) {
         mHelperListener = helperListener;
         dif = currentDifference;
+        this.playerName = playerName;
         rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));
         rv.setAdapter(new HelperListAdapter());
     }
@@ -60,7 +62,9 @@ public class HelpersAdapt {
                 itemView.setOnClickListener(v -> mHelperListener.onAddHelper(position));
                 mTVName = itemView.findViewById(R.id.i_helper_tv_name);
                 mTVScore = itemView.findViewById(R.id.i_helper_tv_score);
-                mTVName.setText(mData.get(position).name);
+                mTVName.setText(mData.get(position).name.equals(playerName) ?
+                        itemView.getContext().getString(R.string.twin) :
+                        mData.get(position).name);
 
 
                 if (dif + mData.get(position).getScore() > 0) {

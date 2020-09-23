@@ -34,7 +34,7 @@
     <string name="victory">Victory</string>
     <string name="defeat">Defeat</string>
     <string name="show_info">Show\ninfo</string>
-    <string name="fight_result_win">Victory!\nDon\'t forget to lvl up</string>
+    <string name="fight_result_win">Victory!\n +1 LVL</string>
     <string name="fight_result_lose">Oh, no, it\'s a defeat\nGood luck next time</string>
 
     <string name="inf">Info</string>
@@ -92,5 +92,7 @@
     <string name="custom_partner_s_power">Custom partner\'s power</string>
     <string name="partner">Ally</string>
     <string name="_0">0</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="twin">Twin</string>
 
 </resources>

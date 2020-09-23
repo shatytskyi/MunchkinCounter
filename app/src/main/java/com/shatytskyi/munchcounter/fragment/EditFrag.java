@@ -58,11 +58,16 @@ public class EditFrag extends Fragment {
 
         view.findViewById(R.id.f_edit_b_ok).setOnClickListener(v -> {
             if (!mETName.getText().toString().isEmpty()) {
+                int newLvl = Repo.ins().findUnitById(mUnitId).lvl;
+                int newGear = Repo.ins().findUnitById(mUnitId).power;
+                if (!mETLvl.getText().toString().isEmpty()) {
+                    newLvl = Integer.parseInt(mETLvl.getText().toString());
+                }
+                if (!mETGear.getText().toString().isEmpty()) {
+                    newGear = Integer.parseInt(mETGear.getText().toString());
+                }
                 Repo.ins().editUnit(mUnitId,
-                        mETName.getText().toString().trim(),
-                        Integer.parseInt(mETLvl.getText().toString()),
-                        Integer.parseInt(mETGear.getText().toString())
-                );
+                        mETName.getText().toString().trim(), newLvl, newGear);
                 closeFragment();
             } else {
                 Toast.makeText(requireContext(), getString(R.string.no_name_warning), Toast.LENGTH_SHORT).show();

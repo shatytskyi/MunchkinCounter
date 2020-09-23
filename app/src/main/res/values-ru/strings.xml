@@ -34,7 +34,7 @@
     <string name="defeat">Поражение</string>
     <string name="victory">Победа</string>
     <string name="show_info">Инфо</string>
-    <string name="fight_result_win">Славная победа!\nНе забудь повысить уровень</string>
+    <string name="fight_result_win">Славная победа!\nПолучен один уровень</string>
     <string name="fight_result_lose">Очень жаль\nУдачи в следующий раз</string>
     <string name="inf">Информация</string>
     <string name="info">Главный экран:
@@ -81,4 +81,6 @@
     <string name="custom_partner_s_power">Ввести силу вручную</string>
     <string name="partner">Друг</string>
     <string name="_0">0</string>
+    <string name="fullscreen">Развернуть</string>
+    <string name="twin">Близнец</string>
 </resources>
