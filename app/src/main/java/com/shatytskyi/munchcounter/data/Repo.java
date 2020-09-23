@@ -103,13 +103,13 @@ public class Repo {
     }
 
     public void changePower(long id, int value) {
-        if ((findUnitById(id).getScore() + value) < 100) {
+        if ((findUnitById(id).getScore() + value) < 999) {
             mData.get(mData.indexOf(findUnitById(id))).power += value;
             notifySubscribers();
         }
     }
     public void changeLvl(long id, int value) {
-        if (findUnitById(id).lvl + value <= 10 && findUnitById(id).lvl + value >= 1) {
+        if (findUnitById(id).lvl + value <= 999 && findUnitById(id).lvl + value >= 1) {
             if ((findUnitById(id).getScore() + value) < 100)
                 mData.get(mData.indexOf(findUnitById(id))).lvl += value;
             else {

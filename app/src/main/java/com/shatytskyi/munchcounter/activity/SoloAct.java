@@ -88,6 +88,10 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
             f.show(getSupportFragmentManager(), null);
         });
 
+        findViewById(R.id.a_solo_b_exit_fullscreen).setOnClickListener(v -> {
+            finish();
+        });
+
         findViewById(R.id.a_solo_b_fight).setOnClickListener(v -> {
             Intent intent = new Intent(SoloAct.this, FightAct.class);
             intent.putExtra(FightAct.EXTRA_USER_ID, mPlayer.id);
@@ -171,4 +175,5 @@ public class SoloAct extends AppCompatActivity implements WarningFrag.WarningDia
         mTVPlayerLvl.setText(String.valueOf(mPlayer.lvl));
         mTVPlayerName.setText(mPlayer.name);
     }
+
 }

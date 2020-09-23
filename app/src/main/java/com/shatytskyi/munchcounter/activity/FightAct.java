@@ -37,7 +37,6 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
     private TextView mTVMonsterScore;
     private TextView mTVHelperName;
     private TextView mTVResultValue;
-    private TextView mTVGetHelp;
     private ImageView mButtonResult;
     private TextView mTVResult;
 
@@ -64,7 +63,6 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
         mTVPlayerLvl = findViewById(R.id.a_fight_tv_lvl);
         mTVPlayerScore = findViewById(R.id.a_fight_tv_score);
         mTVMonsterScore = findViewById(R.id.a_fight_tv_monster_score);
-        mTVGetHelp = findViewById(R.id.a_fight_tv_get_help);
         mButtonResult = findViewById(R.id.a_fight_b_result);
         mTVResult = findViewById(R.id.a_fight_tv_result);
 
@@ -87,7 +85,7 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
 
         findViewById(R.id.a_fight_tv_table_helper).setOnClickListener(v -> {
             mHelper = null;
-            Toast.makeText(this, "Partner removed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.partner_removed, Toast.LENGTH_SHORT).show();
             bindViews();
         });
 
@@ -217,13 +215,11 @@ public class FightAct extends AppCompatActivity implements HelpersAdapt.HelperLi
         int scoresDifference = mPlayer.getScore() - mMonster.getScore();
 
         if (mHelper != null) {
-            mTVGetHelp.setText(R.string.change_helper);
             mTVHelperName.setVisibility(View.VISIBLE);
             mTVHelperName.setText("+" + mHelper.name + " (" + mHelper.getScore() + ")");
             scoresDifference = (mPlayer.getScore() + mHelper.getScore()) - mMonster.getScore();
             mTVPlayerScore.setText(String.valueOf(mPlayer.getScore() + mHelper.getScore()));
         } else {
-            mTVGetHelp.setText(R.string.get_help);
             mTVHelperName.setVisibility(View.INVISIBLE);
             mTVPlayerScore.setText(String.valueOf(mPlayer.getScore()));
         }

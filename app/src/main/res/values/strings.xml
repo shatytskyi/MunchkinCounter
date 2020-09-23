@@ -6,11 +6,9 @@
     <string name="player">Player</string>
     <string name="warning_all_reset">All players will be reset!</string>
     <string name="power">Power</string>
-    <string name="monster">Monster</string>
     <string name="level">Level</string>
     <string name="reset">Reset</string>
     <string name="remove">Remove</string>
-    <string name="get_help">Get\nhelp</string>
     <string name="fight">FIGHT</string>
     <string name="des_remove_unit_from_list">Remove player from list</string>
     <string name="des_reset_unit_parameters">Reset player parameters</string>
@@ -18,7 +16,6 @@
     <string name="des_get_help">Get help from other players</string>
     <string name="reset_fight">Reset fight</string>
     <string name="run">Run away</string>
-    <string name="change_helper">Change\npartner</string>
     <string name="fight_was_reset">Fight was reset</string>
     <string name="choose_helper">Choose your partner</string>
     <string name="result">Result</string>
@@ -32,10 +29,7 @@
     <string name="toast_no_players">No players in list</string>
     <string name="throw_dice">Throw dice</string>
     <string name="victory">Victory</string>
-    <string name="defeat">Defeat</string>
-    <string name="show_info">Show\ninfo</string>
     <string name="fight_result_win">Victory!\n +1 LVL</string>
-    <string name="fight_result_lose">Oh, no, it\'s a defeat\nGood luck next time</string>
 
     <string name="inf">Info</string>
     <string name="info">Main screen:
@@ -67,12 +61,9 @@
     <string name="_5" translatable="false">5</string>
     <string name="minus" translatable="false">−</string>
     <string name="plus" translatable="false">+</string>
-    <string name="solo_mode">Solo mode</string>
-    <string name="group_mode">Group mode</string>
     <string name="your_munchkin">Your munchkin </string>
     <string name="all_was_removed">All players was removed</string>
     <string name="undo">UNDO</string>
-    <string name="all_was_reset">All players was reset</string>
     <string name="throw_dice_b">Throw</string>
     <string name="bonus_is">Bonus:</string>
     <string name="dice_success">Success! Run, Forest, run!</string>
@@ -82,17 +73,13 @@
     <string name="toast_munchkin_died">Munchkin died, all items was lost</string>
     <string name="try_to_run">Try to run</string>
     <string name="death">Death</string>
-    <string name="list">List</string>
-    <string name="back">Back</string>
-    <string name="edit">Edit</string>
     <string name="new_name">New name</string>
     <string name="gear">Gear</string>
     <string name="shuffle">Shuffle</string>
-    <string name="munchkin">Munchkin</string>
     <string name="custom_partner_s_power">Custom partner\'s power</string>
     <string name="partner">Ally</string>
     <string name="_0">0</string>
-    <string name="fullscreen">Fullscreen</string>
     <string name="twin">Twin</string>
+    <string name="partner_removed">Partner removed</string>
 
 </resources>

@@ -26,8 +26,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/f_unit_top_block"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="54dp"
             android:layout_marginTop="8dp"
+            android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -39,29 +40,16 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="@drawable/icon_back"
-                app:layout_constraintBottom_toTopOf="@id/f_unit_tv_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/primary" />
 
             <TextView
-                android:id="@+id/f_unit_tv_back"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/munchkin"
-                android:gravity="center"
-                android:text="@string/back"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/f_unit_b_back"
-                app:layout_constraintStart_toStartOf="@id/f_unit_b_back" />
-
-            <TextView
                 android:id="@+id/f_unit_tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/munchkin"
                 android:gravity="center"
                 android:padding="8dp"
@@ -69,24 +57,11 @@
                 android:textSize="32sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/f_unit_b_go_fullscreen"
+                app:layout_constraintStart_toEndOf="@+id/f_unit_b_back"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Player" />
 
-            <TextView
-                android:id="@+id/f_unit_tv_go_fullscreen"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/munchkin"
-                android:gravity="center"
-                android:text="@string/fullscreen"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/f_unit_b_go_fullscreen"
-                app:layout_constraintStart_toStartOf="@id/f_unit_b_go_fullscreen" />
 
             <ImageView
                 android:id="@+id/f_unit_b_go_fullscreen"
@@ -95,10 +70,11 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:src="@drawable/icon_go_fullscreen"
-                app:layout_constraintBottom_toTopOf="@id/f_unit_tv_go_fullscreen"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/secondary" />
+                app:layout_constraintVertical_bias="0.0"
+                app:tint="@color/primary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -106,10 +82,12 @@
         <TextView
             android:id="@+id/f_unit_tv_score"
             android:layout_width="100dp"
-            android:layout_height="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="4dp"
+            android:autoSizeMaxTextSize="60sp"
+            android:autoSizeTextType="uniform"
             android:fontFamily="@font/munchkin"
             android:gravity="center"
-            android:maxLength="2"
             android:padding="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textColor="@color/black"
@@ -121,7 +99,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/munchkin"
             android:gravity="center"
             android:text="@string/power"
@@ -129,13 +107,16 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@id/f_unit_tv_score"
             app:layout_constraintStart_toStartOf="@id/f_unit_tv_score"
-            app:layout_constraintTop_toTopOf="@+id/f_unit_tv_score" />
+            app:layout_constraintTop_toBottomOf="@+id/f_unit_top_block" />
 
 
         <TextView
             android:id="@+id/f_unit_tv_lvl"
             android:layout_width="100dp"
-            android:layout_height="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="4dp"
+            android:autoSizeMaxTextSize="60sp"
+            android:autoSizeTextType="uniform"
             android:fontFamily="@font/munchkin"
             android:gravity="center"
             android:padding="4dp"
@@ -149,7 +130,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/munchkin"
             android:gravity="center"
             android:text="@string/level"
@@ -157,34 +138,32 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@id/f_unit_tv_lvl"
             app:layout_constraintStart_toStartOf="@id/f_unit_tv_lvl"
-            app:layout_constraintTop_toTopOf="@+id/f_unit_tv_lvl" />
+            app:layout_constraintTop_toBottomOf="@+id/f_unit_top_block" />
 
         <ImageView
             android:id="@+id/f_unit_b_lvl_plus"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginTop="48dp"
-            android:background="?selectableItemBackground"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
             android:src="@drawable/icon_up"
             android:text="@string/plus"
+            app:layout_constraintBottom_toTopOf="@+id/f_unit_tv_lvl"
             app:layout_constraintEnd_toEndOf="@+id/f_unit_tv_lvl"
             app:layout_constraintStart_toStartOf="@+id/f_unit_tv_lvl"
-            app:layout_constraintTop_toTopOf="@+id/f_unit_tv_lvl"
             app:tint="@color/primary" />
 
         <ImageView
             android:id="@+id/f_unit_b_lvl_minus"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginBottom="48dp"
-            android:background="?selectableItemBackground"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
             android:src="@drawable/icon_down"
             android:text="@string/minus"
-            app:layout_constraintBottom_toBottomOf="@+id/f_unit_tv_lvl"
             app:layout_constraintEnd_toEndOf="@+id/f_unit_tv_lvl"
             app:layout_constraintStart_toStartOf="@+id/f_unit_tv_lvl"
+            app:layout_constraintTop_toBottomOf="@+id/f_unit_tv_lvl"
             app:tint="@color/primary" />
 
         <LinearLayout
@@ -223,7 +202,7 @@
                     android:id="@+id/f_unit_b_minus_1"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="?selectableItemBackground"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:gravity="center"
                     android:src="@drawable/icon_left"
                     android:text="@string/minus"
@@ -453,27 +432,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/f_unit_bottom_block"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="54dp"
             android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/munchkin"
-                android:gravity="center"
-                android:text="@string/remove"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@id/f_unit_b_remove"
-                app:layout_constraintStart_toStartOf="@id/f_unit_b_remove"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/f_unit_b_remove"
@@ -487,8 +452,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/gl025"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView2"
-                app:tint="@color/secondary" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/red" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gl025"
@@ -512,74 +477,34 @@
                 app:layout_constraintGuide_percent="0.75" />
 
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/munchkin"
-                android:gravity="center"
-                android:text="@string/reset"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/f_unit_b_reset"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintStart_toStartOf="@+id/f_unit_b_reset"
-                app:layout_constraintTop_toTopOf="@+id/textView2" />
-
             <ImageView
                 android:id="@+id/f_unit_b_reset"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/des_reset_unit_parameters"
+                android:foreground="?selectableItemBackgroundBorderless"
                 android:gravity="center"
                 android:padding="8dp"
                 android:src="@drawable/icon_reset"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/gl050"
                 app:layout_constraintStart_toStartOf="@+id/gl025"
-                app:layout_constraintTop_toBottomOf="@id/textView3"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/primary" />
 
-            <TextView
-                android:id="@+id/f_unit_tv_edit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/munchkin"
-                android:gravity="center"
-                android:text="@string/edit"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/f_unit_b_edit"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
-                app:layout_constraintStart_toStartOf="@+id/f_unit_b_edit"
-                app:layout_constraintTop_toTopOf="@+id/textView3" />
 
             <ImageView
                 android:id="@+id/f_unit_b_edit"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="?selectableItemBackgroundBorderless"
+                android:foreground="?selectableItemBackgroundBorderless"
                 android:padding="12dp"
                 android:src="@drawable/icon_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/gl075"
                 app:layout_constraintStart_toStartOf="@+id/gl050"
-                app:layout_constraintTop_toBottomOf="@+id/f_unit_tv_edit"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/primary" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/munchkin"
-                android:gravity="center"
-                android:text="@string/fight"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/f_unit_b_fight"
-                app:layout_constraintStart_toStartOf="@+id/f_unit_b_fight"
-                app:layout_constraintTop_toTopOf="@+id/f_unit_tv_edit" />
 
             <ImageView
                 android:id="@+id/f_unit_b_fight"
@@ -588,13 +513,13 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/fight"
                 android:gravity="center"
-                android:padding="6dp"
-                android:src="@drawable/icon_next"
+                android:padding="8dp"
+                android:src="@drawable/icon_fight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/gl075"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                app:tint="@color/red" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/secondary" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
