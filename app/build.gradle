@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'com.shatytskyi.munchcounter'
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
