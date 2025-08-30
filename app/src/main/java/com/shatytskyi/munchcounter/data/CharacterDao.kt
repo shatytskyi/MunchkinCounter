@@ -37,21 +37,14 @@ interface CharacterDao {
     @Query("UPDATE characters SET lvl = lvl + :delta WHERE id = :id")
     suspend fun updateLevel(id: Long, delta: Int)
     
-    @Query("UPDATE characters SET power = power + :delta WHERE id = :id")
+    @Query("UPDATE characters SET items = items + :delta WHERE id = :id")
     suspend fun updatePower(id: Long, delta: Int)
     
-    @Query("UPDATE characters SET lvl = 1, power = 0 WHERE id = :id")
+    @Query("UPDATE characters SET lvl = 1, items = 0 WHERE id = :id")
     suspend fun resetCharacter(id: Long)
     
-    @Query("UPDATE characters SET lvl = 1, power = 0")
+    @Query("UPDATE characters SET lvl = 1, items = 0")
     suspend fun resetAllCharacters()
-    
-    @Transaction
-    suspend fun shuffleCharacters() {
-        val characters = getAllCharactersSync()
-        deleteAllCharacters()
-        insertCharacters(characters.shuffled())
-    }
     
     @Query("SELECT * FROM characters ORDER BY id")
     suspend fun getAllCharactersSync(): List<Character>

@@ -1,6 +1,11 @@
 package com.shatytskyi.munchcounter.ui.screens
 
-import androidx.compose.foundation.Image
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,36 +15,35 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Casino
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.outlined.Casino
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.PlaylistRemove
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,21 +51,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
+import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
-import com.shatytskyi.munchcounter.ui.components.MunchkinBackground
-import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
-import com.shatytskyi.munchcounter.ui.theme.Black
 import com.shatytskyi.munchcounter.ui.theme.Dimens
-import com.shatytskyi.munchcounter.ui.theme.Primary
-import com.shatytskyi.munchcounter.ui.theme.White
 import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,13 +67,9 @@ import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
 fun CharacterListScreen(
     viewModel: CharacterViewModel,
     onCharacterClick: (Long) -> Unit,
-    onFightClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val characters by viewModel.characters.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
 
     var showAddDialog by remember { mutableStateOf(false) }
     var showResetAllDialog by remember { mutableStateOf(false) }
@@ -83,192 +77,84 @@ fun CharacterListScreen(
     var showDiceDialog by remember { mutableStateOf(false) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        viewModel.loadCharacters()
-    }
-
-    MunchkinBackground {
-        Scaffold(
-            containerColor = Color.Transparent,
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "Munchkin Counter",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = White
-                        )
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                if (characters.isNotEmpty()) {
-                                    showResetAllDialog = true
-                                }
-                            }
-                        ) {
-                            Icon(
-                                Icons.Default.Refresh,
-                                contentDescription = "Сбросить всех"
-                            )
-                        }
-
-                        IconButton(
-                            onClick = {
-                                if (characters.isNotEmpty()) {
-                                    showRemoveAllDialog = true
-                                }
-                            }
-                        ) {
-                            Icon(
-                                Icons.Default.Clear,
-                                contentDescription = "Удалить всех"
-                            )
-                        }
-
-                        IconButton(onClick = { showDiceDialog = true }) {
-                            Icon(
-                                Icons.Default.Casino,
-                                contentDescription = "Кубик"
-                            )
-                        }
-
-                        IconButton(onClick = { viewModel.shuffleCharacters() }) {
-                            Icon(
-                                Icons.Default.Shuffle,
-                                contentDescription = "Перемешать"
-                            )
-                        }
-
-                        IconButton(onClick = { showInfoDialog = true }) {
-                            Icon(
-                                Icons.Default.Info,
-                                contentDescription = "Информация"
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent
-                    )
-                )
-            },
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = { showAddDialog = true },
-                    containerColor = Primary,
-                    contentColor = White
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_add),
-                        contentDescription = "Добавить игрока",
-                        modifier = Modifier.size(Dimens.iconSizeSmall)
-                    )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
+                .statusBarsPadding()
+                .padding(vertical = Dimens.paddingLarge)
+                .padding(horizontal = Dimens.screenPaddingHorizontal),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {
+                    if (characters.isNotEmpty()) {
+                        showResetAllDialog = true
+                    }
                 }
-            },
-            modifier = modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)),
-            contentWindowInsets = WindowInsets(0, 0, 0, 0)
-        ) { paddingValues ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
             ) {
-                when {
-                    isLoading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+                Icon(
+                    imageVector = Icons.Outlined.Refresh,
+                    contentDescription = "Reset All"
+                )
+            }
 
-                    characters.isEmpty() -> {
-                        Box(
-                            modifier = Modifier
-                                .size(300.dp, 360.dp)
-                                .align(Alignment.Center)
-                        ) {
-                            // Character images in grid
-                            Row(modifier = Modifier.fillMaxSize()) {
-                                Column(
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.pic_wizard),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .padding(Dimens.paddingExtraLarge)
-                                    )
-                                    Image(
-                                        painter = painterResource(id = R.drawable.pic_knight),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .padding(Dimens.paddingExtraLarge)
-                                    )
-                                }
-                                Column(
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.pic_witch),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .padding(Dimens.paddingExtraLarge)
-                                    )
-                                    Image(
-                                        painter = painterResource(id = R.drawable.pic_knight_fem),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .padding(Dimens.paddingExtraLarge)
-                                    )
-                                }
-                            }
-
-                            // Center text
-                            MunchkinCard(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .padding(horizontal = 40.dp)
-                            ) {
-                                Text(
-                                    text = "Нет игроков",
-                                    style = MaterialTheme.typography.headlineSmall,
-                                    color = Black,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.padding(Dimens.paddingMedium)
-                                )
-                            }
-                        }
-                    }
-
-                    else -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(
-                                top = Dimens.paddingMedium,
-                                bottom = Dimens.listBottomPadding
-                            ),
-                            verticalArrangement = Arrangement.spacedBy(Dimens.paddingSmall)
-                        ) {
-                            items(characters) { character ->
-                                CharacterListItem(
-                                    character = character,
-                                    onClick = { onCharacterClick(character.id) },
-                                    onLevelChange = { delta ->
-                                        viewModel.changeLevel(character.id, delta)
-                                    },
-                                    onPowerChange = { delta ->
-                                        viewModel.changePower(character.id, delta)
-                                    }
-                                )
-                            }
-                        }
+            IconButton(
+                onClick = {
+                    if (characters.isNotEmpty()) {
+                        showRemoveAllDialog = true
                     }
                 }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.PlaylistRemove,
+                    contentDescription = "Delete All"
+                )
+            }
+
+            IconButton(onClick = { showDiceDialog = true }) {
+                Icon(
+                    imageVector = Icons.Outlined.Casino,
+                    contentDescription = "Dice"
+                )
+            }
+
+            IconButton(onClick = { showInfoDialog = true }) {
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = "Info"
+                )
+            }
+        }
+
+        when {
+            characters.isEmpty() -> {
+                EmptyStateContent(
+                    onAddCharacterClick = {
+                        showAddDialog = true
+                    }
+                )
+            }
+
+            else -> {
+                CharacterListContent(
+                    characters = characters,
+                    onCharacterClick = onCharacterClick,
+                    onAddCharacterClick = {
+                        showAddDialog = true
+                    },
+                    onLevelChange = { characterId, delta ->
+                        viewModel.changeLevel(characterId, delta)
+                    },
+                    onPowerChange = { characterId, delta ->
+                        viewModel.changePower(characterId, delta)
+                    }
+                )
             }
         }
     }
@@ -286,8 +172,8 @@ fun CharacterListScreen(
 
     if (showResetAllDialog) {
         WarningDialog(
-            title = "Сбросить всех игроков?",
-            message = "Все игроки будут сброшены до 1 уровня с 0 силы",
+            title = "Reset All Players?",
+            message = "All players will be reset to level 1 with 0 power",
             onDismiss = { showResetAllDialog = false },
             onConfirm = {
                 viewModel.resetAllCharacters()
@@ -298,8 +184,8 @@ fun CharacterListScreen(
 
     if (showRemoveAllDialog) {
         WarningDialog(
-            title = "Удалить всех игроков?",
-            message = "Все игроки будут безвозвратно удалены",
+            title = "Delete All Players?",
+            message = "All players will be permanently deleted",
             onDismiss = { showRemoveAllDialog = false },
             onConfirm = {
                 viewModel.removeAllCharacters()
@@ -317,7 +203,7 @@ fun CharacterListScreen(
     if (showInfoDialog) {
         AlertDialog(
             onDismissRequest = { showInfoDialog = false },
-            title = { Text("Информация") },
+            title = { Text("Information") },
             text = { Text(stringResource(R.string.info)) },
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
@@ -326,11 +212,110 @@ fun CharacterListScreen(
             }
         )
     }
+}
 
-    // Show error if any
-    error?.let { errorMessage ->
-        LaunchedEffect(errorMessage) {
-            // Here you could show a Snackbar or Toast
+@Composable
+private fun EmptyStateContent(
+    onAddCharacterClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
+            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
+            .padding(Dimens.paddingExtraLarge),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+        ) {
+            // Empty state icon could go here
+            Text(
+                text = "No Players Yet",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = "Add your first player to get started with Munchkin!",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.paddingLarge))
+
+            Button(
+                onClick = onAddCharacterClick,
+                content = {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = null,
+                        modifier = Modifier.size(Dimens.iconSizeSmall)
+                    )
+                    Spacer(modifier = Modifier.width(Dimens.paddingMedium))
+                    Text("Add Player")
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun CharacterListContent(
+    characters: List<Character>,
+    onAddCharacterClick: () -> Unit,
+    onCharacterClick: (Long) -> Unit,
+    onLevelChange: (Long, Int) -> Unit,
+    onPowerChange: (Long, Int) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            start = Dimens.screenPaddingHorizontal,
+            end = Dimens.screenPaddingHorizontal,
+            top = Dimens.paddingMedium,
+            bottom = 100.dp // Space for FAB
+        ),
+        verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+    ) {
+        itemsIndexed(
+            items = characters,
+            key = { _, character -> character.id }
+        ) { _, character ->
+            CharacterListItem(
+                character = character,
+                onClick = { onCharacterClick(character.id) },
+                onLevelChange = { delta ->
+                    onLevelChange(character.id, delta)
+                },
+                onItemsChange = { delta ->
+                    onPowerChange(character.id, delta)
+                }
+            )
+        }
+
+        item {
+            Button(
+                onClick = onAddCharacterClick,
+                colors = ButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.38f),
+                    disabledContainerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
+                ),
+                content = {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = null,
+                        modifier = Modifier.size(Dimens.iconSizeSmall)
+                    )
+                    Spacer(modifier = Modifier.width(Dimens.paddingMedium))
+                    Text("Add Player")
+                }
+            )
         }
     }
 }
@@ -344,18 +329,29 @@ private fun DiceDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Бросить кубик") },
+        title = {
+            Text(
+                "Roll Dice",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        },
         text = {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
             ) {
-                if (result != null) {
-                    Text(
-                        text = "Результат: $result",
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.height(Dimens.paddingLarge))
+                AnimatedVisibility(
+                    visible = result != null,
+                    enter = scaleIn() + fadeIn(),
+                    exit = scaleOut() + fadeOut()
+                ) {
+                    result?.let { diceResult ->
+                        Text(
+                            text = "Result: $diceResult",
+                            style = MaterialTheme.typography.displayMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
 
                 Button(
@@ -364,16 +360,16 @@ private fun DiceDialog(
                     Icon(
                         Icons.Default.Casino,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(Dimens.iconSizeSmall)
                     )
                     Spacer(modifier = Modifier.width(Dimens.paddingMedium))
-                    Text("Бросить")
+                    Text("Roll")
                 }
             }
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Закрыть")
+                Text("Close")
             }
         },
         modifier = modifier

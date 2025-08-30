@@ -10,19 +10,19 @@ data class Character(
     val id: Long = 0,
     val name: String,
     val lvl: Int,
-    val power: Int
+    val items: Int
 ) : Serializable {
 
     init {
         require(name.isNotBlank()) { "Character name cannot be blank" }
         require(lvl >= 1) { "Character level must be at least 1" }
         require(lvl <= 999) { "Character level cannot exceed 999" }
-        require(power >= -999) { "Character power cannot be less than -999" }
-        require(power <= 999) { "Character power cannot exceed 999" }
+        require(items >= -999) { "Character power cannot be less than -999" }
+        require(items <= 999) { "Character power cannot exceed 999" }
     }
 
-    val score: Int
-        get() = lvl + power
+    val power: Int
+        get() = lvl + items
 
     companion object {
         const val MIN_LEVEL = 1
@@ -32,22 +32,22 @@ data class Character(
         const val MAX_SCORE = 999
         
         fun createDefault(name: String): Character {
-            return Character(name = name.trim(), lvl = MIN_LEVEL, power = 0)
+            return Character(name = name.trim(), lvl = MIN_LEVEL, items = 0)
         }
         
         fun createMonster(power: Int = 0): Character {
-            return Character(name = "Monster", lvl = MIN_LEVEL, power = power)
+            return Character(name = "Monster", lvl = MIN_LEVEL, items = power)
         }
     }
 
     fun withLevel(newLevel: Int): Character {
         val adjustedLevel = newLevel.coerceIn(MIN_LEVEL, MAX_LEVEL)
-        val adjustedPower = if (adjustedLevel + power > MAX_SCORE) {
+        val adjustedPower = if (adjustedLevel + items > MAX_SCORE) {
             MAX_SCORE - adjustedLevel
         } else {
-            power
+            items
         }
-        return copy(lvl = adjustedLevel, power = adjustedPower)
+        return copy(lvl = adjustedLevel, items = adjustedPower)
     }
 
     fun withPower(newPower: Int): Character {
@@ -57,7 +57,7 @@ data class Character(
         } else {
             newPower.coerceIn(MIN_POWER, MAX_POWER)
         }
-        return copy(power = adjustedPower)
+        return copy(items = adjustedPower)
     }
 
     fun addLevel(delta: Int): Character {
@@ -65,14 +65,14 @@ data class Character(
     }
 
     fun addPower(delta: Int): Character {
-        return withPower(power + delta)
+        return withPower(items + delta)
     }
 
     fun reset(): Character {
-        return copy(lvl = MIN_LEVEL, power = 0)
+        return copy(lvl = MIN_LEVEL, items = 0)
     }
 
     fun isValidForCombat(): Boolean {
-        return name.isNotBlank() && score > 0
+        return name.isNotBlank() && power > 0
     }
 }

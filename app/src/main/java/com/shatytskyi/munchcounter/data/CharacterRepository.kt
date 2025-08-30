@@ -32,7 +32,7 @@ class CharacterRepository @Inject constructor(
     suspend fun updateCharacter(id: Long, name: String, level: Int, power: Int) {
         val character = characterDao.getCharacterById(id)
         if (character != null) {
-            val updatedCharacter = character.copy(name = name, lvl = level, power = power)
+            val updatedCharacter = character.copy(name = name, lvl = level, items = power)
             characterDao.updateCharacter(updatedCharacter)
         }
     }
@@ -58,17 +58,13 @@ class CharacterRepository @Inject constructor(
         }
     }
     
-    suspend fun shuffleCharacters() {
-        characterDao.shuffleCharacters()
-    }
-    
     // Более эффективные операции с использованием прямых SQL запросов
     suspend fun changePower(id: Long, value: Int) {
         // Проверяем ограничения
         val character = characterDao.getCharacterById(id)
         if (character != null) {
-            val newPower = (character.power + value).coerceIn(Character.MIN_POWER, Character.MAX_POWER)
-            val adjustedValue = newPower - character.power
+            val newPower = (character.items + value).coerceIn(Character.MIN_POWER, Character.MAX_POWER)
+            val adjustedValue = newPower - character.items
             if (adjustedValue != 0) {
                 characterDao.updatePower(id, adjustedValue)
             }

@@ -1,5 +1,6 @@
 package com.shatytskyi.munchcounter
 
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,14 +24,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         
         setContent {
-            MunchkinTheme {
+            MunchkinTheme(
+                dynamicColor = true // Enable dynamic colors on Android 12+
+            ) {
                 MunchkinApp()
             }
         }
@@ -41,7 +44,6 @@ class MainActivity : ComponentActivity() {
 fun MunchkinApp() {
     val navController = rememberNavController()
     
-    // Hilt автоматически предоставляет ViewModel с зависимостями
     val sharedViewModel: CharacterViewModel = hiltViewModel()
     
     NavHost(
@@ -53,9 +55,6 @@ fun MunchkinApp() {
                 viewModel = sharedViewModel,
                 onCharacterClick = { characterId ->
                     navController.navigate("solo/$characterId")
-                },
-                onFightClick = { characterId ->
-                    navController.navigate("fight/$characterId")
                 }
             )
         }

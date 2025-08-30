@@ -1,34 +1,49 @@
 package com.shatytskyi.munchcounter.ui.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Casino
 import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,21 +55,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
-import com.shatytskyi.munchcounter.ui.components.MunchkinBackground
-import com.shatytskyi.munchcounter.ui.components.MunchkinButton
-import com.shatytskyi.munchcounter.ui.components.MunchkinPowerButton
-import com.shatytskyi.munchcounter.ui.theme.Black
+import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
+import com.shatytskyi.munchcounter.ui.components.CommonTopAppBar
 import com.shatytskyi.munchcounter.ui.theme.Dimens
-import com.shatytskyi.munchcounter.ui.theme.Primary
-import com.shatytskyi.munchcounter.ui.theme.Secondary
 import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,7 +91,7 @@ fun FightScreen(
     LaunchedEffect(player) {
         if (player != null && currentPlayer == null) {
             currentPlayer = player.copy()
-            initialPower = player.power
+            initialPower = player.items
         }
     }
 
@@ -92,79 +101,74 @@ fun FightScreen(
 
     if (currentPlayer == null) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = "Loading Fight...",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
         return
     }
 
     val playerScore = if (helper != null) {
-        currentPlayer!!.score + helper!!.score
+        currentPlayer!!.power + helper!!.power
     } else {
-        currentPlayer!!.score
+        currentPlayer!!.power
     }
-    val scoreDifference = playerScore - monster.score
+    val scoreDifference = playerScore - monster.power
     val isVictory = scoreDifference > 0
 
-    MunchkinBackground {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsPadding()
-        ) {
-            // Top bar with back button
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Dimens.screenPaddingHorizontal),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.icon_back),
-                    contentDescription = "Назад",
-                    modifier = Modifier
-                        .size(Dimens.iconSizeLarge)
-                        .clickable { onBack() },
-                    colorFilter = ColorFilter.tint(Secondary)
-                )
-
-                Text(
-                    text = "Сражение",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Black
-                )
-
-                Row {
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_dice),
-                        contentDescription = "Кубик",
-                        modifier = Modifier
-                            .size(Dimens.iconSizeLarge)
-                            .padding(Dimens.paddingMedium)
-                            .clickable { showDiceDialog = true },
-                        colorFilter = ColorFilter.tint(Primary)
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+        // Top App Bar
+        CommonTopAppBar(
+            title = "Fight",
+            onBack = onBack,
+            actions = {
+                IconButton(onClick = { showDiceDialog = true }) {
+                    Icon(
+                        Icons.Default.Casino,
+                        contentDescription = "Dice",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_info),
-                        contentDescription = "Информация",
-                        modifier = Modifier
-                            .size(Dimens.iconSizeLarge)
-                            .padding(Dimens.paddingMedium)
-                            .clickable { showInfoDialog = true },
-                        colorFilter = ColorFilter.tint(Primary)
+                }
+                IconButton(onClick = { showInfoDialog = true }) {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = "Info",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(Dimens.paddingMedium),
-                verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
-            ) {
+        )
+        // Content
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
+                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
+                .padding(Dimens.screenPaddingHorizontal),
+            verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+            }
+            
+            item {
                 // Control buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -172,23 +176,31 @@ fun FightScreen(
                 ) {
                     Button(
                         onClick = {
-                            // Reset fight
                             monster = Character.createMonster()
                             currentPlayer = player?.copy()
-                            initialPower = player?.power ?: 0
+                            initialPower = player?.items ?: 0
                             helper = null
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.secondary
                         )
                     ) {
-                        Text("Сбросить")
+                        Text("Reset")
                     }
 
                     Button(
-                        onClick = { showHelpersDialog = true }
+                        onClick = { showHelpersDialog = true },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiary
+                        )
                     ) {
-                        Text("Помощь")
+                        Icon(
+                            Icons.Default.PersonAdd,
+                            contentDescription = null,
+                            modifier = Modifier.size(Dimens.iconSizeSmall)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Helper")
                     }
 
                     Button(
@@ -197,14 +209,19 @@ fun FightScreen(
                             containerColor = MaterialTheme.colorScheme.outline
                         )
                     ) {
-                        Text("Выйти")
+                        Text("Exit")
                     }
                 }
+            }
 
-                // Fight table
+            item {
+                // Fight Results Card
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(Dimens.paddingLarge)
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    )
                 ) {
                     Column(
                         modifier = Modifier.padding(Dimens.paddingLarge)
@@ -215,26 +232,29 @@ fun FightScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = "ИГРОК",
+                                text = "PLAYER",
                                 style = MaterialTheme.typography.titleSmall,
                                 modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = "ПОМОЩНИК",
+                                text = "HELPER",
                                 style = MaterialTheme.typography.titleSmall,
                                 modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = "РЕЗУЛЬТАТ",
+                                text = "RESULT",
                                 style = MaterialTheme.typography.titleSmall,
                                 modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
 
-                        Divider(modifier = Modifier.padding(vertical = Dimens.paddingMedium))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = Dimens.paddingMedium))
 
                         // Values
                         Row(
@@ -252,13 +272,13 @@ fun FightScreen(
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                                 Text(
-                                    text = if (helper != null) playerScore.toString() else currentPlayer!!.score.toString(),
+                                    text = if (helper != null) playerScore.toString() else currentPlayer!!.power.toString(),
                                     style = MaterialTheme.typography.titleLarge.copy(
                                         fontWeight = FontWeight.Bold,
                                         color = when {
                                             helper != null -> MaterialTheme.colorScheme.onSurface
-                                            currentPlayer!!.power > initialPower -> MaterialTheme.colorScheme.tertiary
-                                            currentPlayer!!.power < initialPower -> MaterialTheme.colorScheme.error
+                                            currentPlayer!!.items > initialPower -> MaterialTheme.colorScheme.tertiary
+                                            currentPlayer!!.items < initialPower -> MaterialTheme.colorScheme.error
                                             else -> MaterialTheme.colorScheme.onSurface
                                         }
                                     )
@@ -276,7 +296,7 @@ fun FightScreen(
                                         style = MaterialTheme.typography.bodyMedium
                                     )
                                     Text(
-                                        text = "(${helper!!.score})",
+                                        text = "(${helper!!.power})",
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                     TextButton(
@@ -434,29 +454,35 @@ private fun PlayerFightControls(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                MunchkinButton(
-                    text = "LVL-",
+                Button(
                     onClick = { onLevelChange(-1) },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                )
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text("LVL-")
+                }
                 Spacer(modifier = Modifier.width(Dimens.paddingLarge))
-                MunchkinButton(
-                    text = "LVL+",
+                Button(
                     onClick = { onLevelChange(+1) },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
-                )
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary
+                    )
+                ) {
+                    Text("LVL+")
+                }
             }
 
             Spacer(modifier = Modifier.height(Dimens.paddingLarge))
 
             // Power controls
             Text(
-                text = "Силы: ${player.power}",
+text = "Power: ${player.items}",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 color = when {
-                    player.power > initialPower -> MaterialTheme.colorScheme.tertiary
-                    player.power < initialPower -> MaterialTheme.colorScheme.error
+                    player.items > initialPower -> MaterialTheme.colorScheme.tertiary
+                    player.items < initialPower -> MaterialTheme.colorScheme.error
                     else -> MaterialTheme.colorScheme.onSurface
                 }
             )
@@ -471,22 +497,62 @@ private fun PlayerFightControls(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    MunchkinPowerButton("-5", { onPowerChange(-5) }, isPositive = false)
-                    MunchkinPowerButton("-4", { onPowerChange(-4) }, isPositive = false)
-                    MunchkinPowerButton("-3", { onPowerChange(-3) }, isPositive = false)
-                    MunchkinPowerButton("-2", { onPowerChange(-2) }, isPositive = false)
-                    MunchkinPowerButton("-1", { onPowerChange(-1) }, isPositive = false)
+                    Button(
+                        onClick = { onPowerChange(-5) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-5") }
+                    Button(
+                        onClick = { onPowerChange(-4) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-4") }
+                    Button(
+                        onClick = { onPowerChange(-3) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-3") }
+                    Button(
+                        onClick = { onPowerChange(-2) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-2") }
+                    Button(
+                        onClick = { onPowerChange(-1) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-1") }
                 }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    MunchkinPowerButton("+1", { onPowerChange(+1) }, isPositive = true)
-                    MunchkinPowerButton("+2", { onPowerChange(+2) }, isPositive = true)
-                    MunchkinPowerButton("+3", { onPowerChange(+3) }, isPositive = true)
-                    MunchkinPowerButton("+4", { onPowerChange(+4) }, isPositive = true)
-                    MunchkinPowerButton("+5", { onPowerChange(+5) }, isPositive = true)
+                    Button(
+                        onClick = { onPowerChange(+1) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+1") }
+                    Button(
+                        onClick = { onPowerChange(+2) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+2") }
+                    Button(
+                        onClick = { onPowerChange(+3) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+3") }
+                    Button(
+                        onClick = { onPowerChange(+4) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+4") }
+                    Button(
+                        onClick = { onPowerChange(+5) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+5") }
                 }
             }
         }
@@ -506,7 +572,7 @@ private fun MonsterFightControls(
             modifier = Modifier.padding(Dimens.paddingLarge)
         ) {
             Text(
-                text = "Монстр - Сила ${monster.score}",
+                text = "Монстр - Сила ${monster.power}",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -521,22 +587,62 @@ private fun MonsterFightControls(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    MunchkinPowerButton("-5", { onPowerChange(-5) }, isPositive = false)
-                    MunchkinPowerButton("-4", { onPowerChange(-4) }, isPositive = false)
-                    MunchkinPowerButton("-3", { onPowerChange(-3) }, isPositive = false)
-                    MunchkinPowerButton("-2", { onPowerChange(-2) }, isPositive = false)
-                    MunchkinPowerButton("-1", { onPowerChange(-1) }, isPositive = false)
+                    Button(
+                        onClick = { onPowerChange(-5) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-5") }
+                    Button(
+                        onClick = { onPowerChange(-4) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-4") }
+                    Button(
+                        onClick = { onPowerChange(-3) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-3") }
+                    Button(
+                        onClick = { onPowerChange(-2) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-2") }
+                    Button(
+                        onClick = { onPowerChange(-1) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("-1") }
                 }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    MunchkinPowerButton("+1", { onPowerChange(+1) }, isPositive = true)
-                    MunchkinPowerButton("+2", { onPowerChange(+2) }, isPositive = true)
-                    MunchkinPowerButton("+3", { onPowerChange(+3) }, isPositive = true)
-                    MunchkinPowerButton("+4", { onPowerChange(+4) }, isPositive = true)
-                    MunchkinPowerButton("+5", { onPowerChange(+5) }, isPositive = true)
+                    Button(
+                        onClick = { onPowerChange(+1) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+1") }
+                    Button(
+                        onClick = { onPowerChange(+2) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+2") }
+                    Button(
+                        onClick = { onPowerChange(+3) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+3") }
+                    Button(
+                        onClick = { onPowerChange(+4) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+4") }
+                    Button(
+                        onClick = { onPowerChange(+5) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.weight(1f)
+                    ) { Text("+5") }
                 }
             }
         }
@@ -559,7 +665,7 @@ private fun HelpersDialog(
             Column {
                 characters.forEach { character ->
                     val helperName = if (character.name == playerName) "Близнец" else character.name
-                    val totalScore = scoreDifference + character.score
+                    val totalScore = scoreDifference + character.power
 
                     TextButton(
                         onClick = { onHelperSelected(character) },

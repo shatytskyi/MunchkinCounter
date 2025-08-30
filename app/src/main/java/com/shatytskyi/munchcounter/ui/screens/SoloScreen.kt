@@ -1,31 +1,50 @@
 package com.shatytskyi.munchcounter.ui.screens
 
-import androidx.compose.foundation.Image
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Casino
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -37,23 +56,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.R
+import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
+import com.shatytskyi.munchcounter.ui.components.CommonTopAppBar
 import com.shatytskyi.munchcounter.ui.components.EditCharacterDialog
-import com.shatytskyi.munchcounter.ui.components.MunchkinBackground
-import com.shatytskyi.munchcounter.ui.components.MunchkinCard
+import com.shatytskyi.munchcounter.ui.components.PowerControlGrid
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
-import com.shatytskyi.munchcounter.ui.theme.Black
-import com.shatytskyi.munchcounter.ui.theme.DarkGrey
-import com.shatytskyi.munchcounter.ui.theme.Primary
-import com.shatytskyi.munchcounter.ui.theme.Red
-import com.shatytskyi.munchcounter.ui.theme.Secondary
-import com.shatytskyi.munchcounter.ui.theme.White
 import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
 
@@ -66,7 +80,6 @@ fun SoloScreen(
     onFight: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val characters by viewModel.characters.collectAsState()
     val character = characters.find { it.id == characterId }
 
@@ -81,246 +94,349 @@ fun SoloScreen(
 
     if (character == null) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars),
             contentAlignment = Alignment.Center
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
             ) {
-                CircularProgressIndicator()
-                Spacer(modifier = Modifier.height(Dimens.paddingLarge))
-                Text("Загрузка персонажа...")
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = "Loading Character...",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
         return
     }
 
-    MunchkinBackground {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        // Top App Bar
+        CommonTopAppBar(
+            title = character.name,
+            onBack = onBack,
+            actions = {
+                IconButton(onClick = onFight) {
+                    Icon(
+                        Icons.Default.LocalFireDepartment,
+                        contentDescription = "Fight",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+        )
+
+        // Content
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsPadding()
-                .padding(horizontal = Dimens.screenPaddingHorizontal, vertical = Dimens.paddingMedium)
+                .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
+                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
+                .padding(vertical = Dimens.paddingMedium),
+            verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
         ) {
-            // Top section with name and action buttons
-            Row(
+            Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+            
+            // Hero Section - Total Power
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
-                    .padding(horizontal = Dimens.paddingExtraLarge, vertical = Dimens.paddingMedium),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = Dimens.screenPaddingHorizontal),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 8.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ),
+                shape = RoundedCornerShape(24.dp)
             ) {
-                // Back button
-                Image(
-                    painter = painterResource(id = R.drawable.icon_back),
-                    contentDescription = "Назад",
-                    modifier = Modifier
-                        .size(Dimens.iconSizeLarge)
-                        .clickable { onBack() },
-                    colorFilter = ColorFilter.tint(Secondary)
-                )
-
-                // Character name
-                Text(
-                    text = character.name,
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = Black,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = Dimens.paddingMedium),
-                    textAlign = TextAlign.Center
-                )
-
-                // Fight button
-                Image(
-                    painter = painterResource(id = R.drawable.icon_fight),
-                    contentDescription = "Сражение",
-                    modifier = Modifier
-                        .size(Dimens.iconSizeLarge)
-                        .padding(Dimens.paddingMedium)
-                        .clickable { onFight() },
-                    colorFilter = ColorFilter.tint(Red)
-                )
-            }
-
-            // Level section
-            Column(
-                modifier = Modifier.padding(Dimens.paddingMedium),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MunchkinCard(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(75.dp)
-                        .padding(horizontal = Dimens.paddingMedium)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Level minus button
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_left),
-                            contentDescription = "Уменьшить уровень",
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .clickable { viewModel.changeLevel(characterId, -1) },
-                            colorFilter = ColorFilter.tint(Primary)
-                        )
-
-                        // Level value
-                        Text(
-                            text = character.lvl.toString(),
-                            style = MaterialTheme.typography.displayLarge,
-                            color = Black,
-                            modifier = Modifier
-                                .width(100.dp)
-                                .padding(Dimens.paddingSmall),
-                            textAlign = TextAlign.Center
-                        )
-
-                        // Level plus button
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_right),
-                            contentDescription = "Увеличить уровень",
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .clickable { viewModel.changeLevel(characterId, +1) },
-                            colorFilter = ColorFilter.tint(Primary)
-                        )
-                    }
-                }
-
-                Text(
-                    text = "Уровень",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = DarkGrey,
-                    modifier = Modifier.padding(top = Dimens.paddingMedium)
-                )
-            }
-
-            // Power section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(Dimens.paddingMedium),
-                contentAlignment = Alignment.Center
-            ) {
-                // Reset button (left)
-                Image(
-                    painter = painterResource(id = R.drawable.icon_reset),
-                    contentDescription = "Сбросить",
-                    modifier = Modifier
-                        .size(Dimens.iconSizeLarge)
-                        .padding(Dimens.paddingMedium)
-                        .align(Alignment.CenterStart)
-                        .clickable { showResetDialog = true },
-                    colorFilter = ColorFilter.tint(Primary)
-                )
-
-                // Power value (center)
-                Column(
+                        .padding(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
+                        text = "TOTAL POWER",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Medium,
+                            letterSpacing = 1.5.sp
+                        ),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
                         text = character.power.toString(),
                         style = MaterialTheme.typography.displayLarge.copy(
-                            fontSize = 72.sp
+                            fontWeight = FontWeight.Black,
+                            fontSize = 80.sp
                         ),
-                        color = Black,
-                        modifier = Modifier.padding(Dimens.paddingMedium),
-                        textAlign = TextAlign.Center
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-
                     Text(
-                        text = "Силы",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = DarkGrey
+                        text = "Level ${character.lvl} • Items ${character.items}",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                     )
                 }
-
-                // Edit button (right)
-                Image(
-                    painter = painterResource(id = R.drawable.icon_edit),
-                    contentDescription = "Редактировать",
-                    modifier = Modifier
-                        .size(Dimens.iconSizeLarge)
-                        .padding(Dimens.paddingLarge)
-                        .align(Alignment.CenterEnd)
-                        .clickable { showEditDialog = true },
-                    colorFilter = ColorFilter.tint(Primary)
-                )
             }
-
-            // Power control buttons
-            MunchkinCard(
+            
+            Spacer(modifier = Modifier.height(Dimens.paddingSmall))
+            
+            // Stats Section
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-                    .padding(Dimens.paddingLarge)
+                    .padding(horizontal = Dimens.screenPaddingHorizontal),
+                horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(Dimens.cardSpacing),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                // Level Card
+                Card(
+                    modifier = Modifier.weight(1f),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 2.dp,
+                        pressedElevation = 6.dp
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    ),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
-                    // Power control columns
-                    listOf(
-                        Triple("1", +1, -1),
-                        Triple("2", +2, -2),
-                        Triple("3", +3, -3),
-                        Triple("4", +4, -4),
-                        Triple("5", +5, -5)
-                    ).forEach { (label, plusValue, minusValue) ->
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .background(White),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "LEVEL",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Medium,
+                                letterSpacing = 1.2.sp
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            // Plus button
-                            Image(
-                                painter = painterResource(id = R.drawable.icon_up),
-                                contentDescription = "Добавить $plusValue",
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth()
-                                    .clickable { viewModel.changePower(characterId, plusValue) },
-                                colorFilter = ColorFilter.tint(Primary)
-                            )
-
-                            // Number label
+                            IconButton(
+                                onClick = { viewModel.changeLevel(characterId, -1) },
+                                modifier = Modifier.size(36.dp),
+                                colors = IconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                    contentColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Icon(
+                                    Icons.Default.Remove,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
                             Text(
-                                text = label,
-                                style = MaterialTheme.typography.displayMedium,
-                                color = Black,
-                                modifier = Modifier
-                                    .height(45.dp)
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
+                                text = character.lvl.toString(),
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center
                             )
-
-                            // Minus button
-                            Image(
-                                painter = painterResource(id = R.drawable.icon_down),
-                                contentDescription = "Убавить $minusValue",
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth()
-                                    .clickable { viewModel.changePower(characterId, minusValue) },
-                                colorFilter = ColorFilter.tint(Primary)
+                            IconButton(
+                                onClick = { viewModel.changeLevel(characterId, +1) },
+                                modifier = Modifier.size(36.dp),
+                                colors = IconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                    contentColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+                
+                // Items Card
+                Card(
+                    modifier = Modifier.weight(1f),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 2.dp,
+                        pressedElevation = 6.dp
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "ITEMS",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Medium,
+                                letterSpacing = 1.2.sp
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            IconButton(
+                                onClick = { viewModel.changePower(characterId, -1) },
+                                modifier = Modifier.size(36.dp),
+                                colors = IconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f),
+                                    contentColor = MaterialTheme.colorScheme.tertiary
+                                )
+                            ) {
+                                Icon(
+                                    Icons.Default.Remove,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                            Text(
+                                text = character.items.toString(),
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = MaterialTheme.colorScheme.tertiary,
+                                modifier = Modifier.weight(1f),
+                                textAlign = TextAlign.Center
                             )
+                            IconButton(
+                                onClick = { viewModel.changePower(characterId, +1) },
+                                modifier = Modifier.size(36.dp),
+                                colors = IconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f),
+                                    contentColor = MaterialTheme.colorScheme.tertiary
+                                )
+                            ) {
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
                         }
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(Dimens.paddingSmall))
+            
+            // Quick Actions
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.screenPaddingHorizontal),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Button(
+                    onClick = { showResetDialog = true },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Refresh,
+                        contentDescription = "Reset",
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Reset",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
+
+                Button(
+                    onClick = { showEditDialog = true },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Edit,
+                        contentDescription = "Edit",
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Edit",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
+
+                Button(
+                    onClick = { showDiceDialog = true },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Casino,
+                        contentDescription = "Dice",
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Dice",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(Dimens.paddingSmall))
+            
+            // Power Control Grid
+            PowerControlGrid(
+                onPowerChange = { delta -> viewModel.changePower(characterId, delta) },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = Dimens.screenPaddingHorizontal)
+            )
+            
+            Spacer(modifier = Modifier.height(Dimens.paddingMedium))
         }
     }
 
@@ -349,7 +465,7 @@ fun SoloScreen(
     }
 
     if (showDiceDialog) {
-        DiceDialog(onDismiss = { showDiceDialog = false })
+        CommonDiceDialog(onDismiss = { showDiceDialog = false })
     }
 
     if (showInfoDialog) {
@@ -366,47 +482,3 @@ fun SoloScreen(
     }
 }
 
-@Composable
-private fun DiceDialog(
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var result by remember { mutableStateOf<Int?>(null) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Бросить кубик") },
-        text = {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (result != null) {
-                    Text(
-                        text = "Результат: $result",
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.height(Dimens.paddingLarge))
-                }
-
-                Button(
-                    onClick = { result = (1..6).random() }
-                ) {
-                    Icon(
-                        Icons.Default.Casino,
-                        contentDescription = null,
-                        modifier = Modifier.size(Dimens.iconSizeSmall)
-                    )
-                    Spacer(modifier = Modifier.width(Dimens.paddingMedium))
-                    Text("Бросить")
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Закрыть")
-            }
-        },
-        modifier = modifier
-    )
-}

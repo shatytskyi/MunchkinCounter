@@ -1,25 +1,25 @@
 package com.shatytskyi.munchcounter.ui.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
-import com.shatytskyi.munchcounter.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,7 +93,7 @@ fun CharacterCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = character.score.toString(),
+                        text = character.power.toString(),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -105,159 +105,3 @@ fun CharacterCard(
     }
 }
 
-@Composable
-fun CharacterListItem(
-    character: Character,
-    onClick: () -> Unit,
-    onLevelChange: (Int) -> Unit = {},
-    onPowerChange: (Int) -> Unit = {},
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-            .clickable { onClick() }
-    ) {
-        // Character name
-        Text(
-            text = character.name,
-            style = MaterialTheme.typography.titleLarge,
-            color = Black,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        
-        // Level and Power labels
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Text(
-                text = "Уровень",
-                style = MaterialTheme.typography.labelMedium,
-                color = DarkGrey
-            )
-            
-            Image(
-                painter = painterResource(id = R.drawable.icon_more),
-                contentDescription = null,
-                modifier = Modifier.size(32.dp),
-                colorFilter = ColorFilter.tint(Black)
-            )
-            
-            Text(
-                text = "Силы",
-                style = MaterialTheme.typography.labelMedium,
-                color = DarkGrey
-            )
-        }
-        
-        // Level and Power values with controls
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(75.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            // Level control
-            MunchkinCard(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(
-                        onClick = { onLevelChange(-1) },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_left),
-                            contentDescription = "Уменьшить уровень",
-                            colorFilter = ColorFilter.tint(Primary)
-                        )
-                    }
-                    
-                    Box(
-                        modifier = Modifier
-                            .width(64.dp)
-                            .fillMaxHeight()
-                            .padding(vertical = 4.dp)
-                            .background(White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = character.lvl.toString(),
-                            style = MaterialTheme.typography.displayMedium,
-                            color = Black,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    
-                    IconButton(
-                        onClick = { onLevelChange(+1) },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_right),
-                            contentDescription = "Увеличить уровень",
-                            colorFilter = ColorFilter.tint(Primary)
-                        )
-                    }
-                }
-            }
-            
-            // Power control
-            MunchkinCard(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(
-                        onClick = { onPowerChange(-1) },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_left),
-                            contentDescription = "Уменьшить силу",
-                            colorFilter = ColorFilter.tint(Primary)
-                        )
-                    }
-                    
-                    Box(
-                        modifier = Modifier
-                            .width(64.dp)
-                            .fillMaxHeight()
-                            .padding(vertical = 4.dp)
-                            .background(White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = character.score.toString(),
-                            style = MaterialTheme.typography.displayMedium,
-                            color = Black,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    
-                    IconButton(
-                        onClick = { onPowerChange(+1) },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_right),
-                            contentDescription = "Увеличить силу",
-                            colorFilter = ColorFilter.tint(Primary)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
