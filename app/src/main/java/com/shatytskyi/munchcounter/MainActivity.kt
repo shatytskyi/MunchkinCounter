@@ -31,9 +31,7 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         
         setContent {
-            MunchkinTheme(
-                dynamicColor = true // Enable dynamic colors on Android 12+
-            ) {
+            MunchkinTheme {
                 MunchkinApp()
             }
         }

@@ -55,100 +55,85 @@ fun PowerControlGrid(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            // Row 1: -5, -4, -3
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                PowerButton(
-                    value = -5,
-                    onClick = { onPowerChange(-5) },
-                    isNegative = true,
-                    modifier = Modifier.weight(1f)
-                )
-                PowerButton(
-                    value = -4,
-                    onClick = { onPowerChange(-4) },
-                    isNegative = true,
-                    modifier = Modifier.weight(1f)
-                )
-                PowerButton(
-                    value = -3,
-                    onClick = { onPowerChange(-3) },
-                    isNegative = true,
-                    modifier = Modifier.weight(1f)
-                )
-            }
             
-            // Row 2: -2, -1, +1
+            // Two columns layout: Minus on left, Plus on right
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-horizontalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                PowerButton(
-                    value = -2,
-                    onClick = { onPowerChange(-2) },
-                    isNegative = true,
-                    modifier = Modifier.weight(1f)
-                )
-                PowerButton(
-                    value = -1,
-                    onClick = { onPowerChange(-1) },
-                    isNegative = true,
-                    modifier = Modifier.weight(1f)
-                )
-                PowerButton(
-                    value = 1,
-                    onClick = { onPowerChange(1) },
-                    isNegative = false,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            
-            // Row 3: +2, +3, +4
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                PowerButton(
-                    value = 2,
-                    onClick = { onPowerChange(2) },
-                    isNegative = false,
-                    modifier = Modifier.weight(1f)
-                )
-                PowerButton(
-                    value = 3,
-                    onClick = { onPowerChange(3) },
-                    isNegative = false,
-                    modifier = Modifier.weight(1f)
-                )
-                PowerButton(
-                    value = 4,
-                    onClick = { onPowerChange(4) },
-                    isNegative = false,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-
-            // Row 4: +5 (centered)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                PowerButton(
-                    value = 5,
-                    onClick = { onPowerChange(5) },
-                    isNegative = false,
-                    modifier = Modifier.weight(0.33f)
-                )
+                // Left column - Minus buttons
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    PowerButton(
+                        value = -1,
+                        onClick = { onPowerChange(-1) },
+                        isNegative = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = -2,
+                        onClick = { onPowerChange(-2) },
+                        isNegative = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = -3,
+                        onClick = { onPowerChange(-3) },
+                        isNegative = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = -4,
+                        onClick = { onPowerChange(-4) },
+                        isNegative = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = -5,
+                        onClick = { onPowerChange(-5) },
+                        isNegative = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                
+                // Right column - Plus buttons
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    PowerButton(
+                        value = 1,
+                        onClick = { onPowerChange(1) },
+                        isNegative = false,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = 2,
+                        onClick = { onPowerChange(2) },
+                        isNegative = false,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = 3,
+                        onClick = { onPowerChange(3) },
+                        isNegative = false,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = 4,
+                        onClick = { onPowerChange(4) },
+                        isNegative = false,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PowerButton(
+                        value = 5,
+                        onClick = { onPowerChange(5) },
+                        isNegative = false,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }
