@@ -20,10 +20,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -34,15 +32,6 @@ import androidx.compose.material.icons.outlined.Casino
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -52,17 +41,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
+import com.shatytskyi.munchcounter.ui.components.MunchkinButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinButtonDefaults
+import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
+import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
+import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinText
+import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
 import com.shatytskyi.munchcounter.ui.theme.Dimens
+import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterListScreen(
     viewModel: CharacterViewModel,
@@ -84,50 +81,54 @@ fun CharacterListScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.primaryContainer)
+                .background(color = MunchkinTheme.colors.primaryContainer)
                 .statusBarsPadding()
                 .padding(vertical = Dimens.paddingLarge)
                 .padding(horizontal = Dimens.screenPaddingHorizontal),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(
+            MunchkinIconButton(
                 onClick = {
                     if (characters.isNotEmpty()) {
                         showResetAllDialog = true
                     }
                 }
             ) {
-                Icon(
+                MunchkinIcon(
                     imageVector = Icons.Outlined.Refresh,
-                    contentDescription = "Reset All"
+                    contentDescription = "Reset All",
+                    tint = MunchkinTheme.colors.onPrimaryContainer
                 )
             }
 
-            IconButton(
+            MunchkinIconButton(
                 onClick = {
                     if (characters.isNotEmpty()) {
                         showRemoveAllDialog = true
                     }
                 }
             ) {
-                Icon(
+                MunchkinIcon(
                     imageVector = Icons.Outlined.PlaylistRemove,
-                    contentDescription = "Delete All"
+                    contentDescription = "Delete All",
+                    tint = MunchkinTheme.colors.onPrimaryContainer
                 )
             }
 
-            IconButton(onClick = { showDiceDialog = true }) {
-                Icon(
+            MunchkinIconButton(onClick = { showDiceDialog = true }) {
+                MunchkinIcon(
                     imageVector = Icons.Outlined.Casino,
-                    contentDescription = "Dice"
+                    contentDescription = "Dice",
+                    tint = MunchkinTheme.colors.onPrimaryContainer
                 )
             }
 
-            IconButton(onClick = { showInfoDialog = true }) {
-                Icon(
+            MunchkinIconButton(onClick = { showInfoDialog = true }) {
+                MunchkinIcon(
                     imageVector = Icons.Outlined.Info,
-                    contentDescription = "Info"
+                    contentDescription = "Info",
+                    tint = MunchkinTheme.colors.onPrimaryContainer
                 )
             }
         }
@@ -201,14 +202,21 @@ fun CharacterListScreen(
     }
 
     if (showInfoDialog) {
-        AlertDialog(
+        MunchkinDialog(
             onDismissRequest = { showInfoDialog = false },
-            title = { Text("Information") },
-            text = { Text(stringResource(R.string.info)) },
+            title = "Information",
+            content = {
+                MunchkinText(
+                    text = stringResource(R.string.info),
+                    style = MunchkinTheme.typography.bodyMedium,
+                    color = MunchkinTheme.colors.onSurface
+                )
+            },
             confirmButton = {
-                TextButton(onClick = { showInfoDialog = false }) {
-                    Text("OK")
-                }
+                MunchkinTextButton(
+                    onClick = { showInfoDialog = false },
+                    text = "OK"
+                )
             }
         )
     }
@@ -230,35 +238,47 @@ private fun EmptyStateContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
         ) {
-            // Empty state icon could go here
-            Text(
+            MunchkinText(
                 text = "No Players Yet",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                style = MunchkinTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MunchkinTheme.colors.onSurface,
                 textAlign = TextAlign.Center
             )
 
-            Text(
+            MunchkinText(
                 text = "Add your first player to get started with Munchkin!",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MunchkinTheme.typography.bodyLarge,
+                color = MunchkinTheme.colors.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(Dimens.paddingLarge))
 
-            Button(
+            MunchkinButton(
                 onClick = onAddCharacterClick,
-                content = {
-                    Icon(
+                colors = MunchkinButtonDefaults.primaryColors()
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                ) {
+                    MunchkinIcon(
                         Icons.Default.Add,
                         contentDescription = null,
-                        modifier = Modifier.size(Dimens.iconSizeSmall)
+                        size = Dimens.iconSizeSmall,
+                        tint = MunchkinTheme.colors.onPrimary
                     )
-                    Spacer(modifier = Modifier.width(Dimens.paddingMedium))
-                    Text("Add Player")
+                    MunchkinText(
+                        text = "Add Player",
+                        style = MunchkinTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = MunchkinTheme.colors.onPrimary
+                    )
                 }
-            )
+            }
         }
     }
 }
@@ -298,24 +318,33 @@ private fun CharacterListContent(
         }
 
         item {
-            Button(
+            MunchkinButton(
                 onClick = onAddCharacterClick,
-                colors = ButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.38f),
-                    disabledContainerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
+                colors = MunchkinButtonDefaults.buttonColors(
+                    containerColor = MunchkinTheme.colors.primaryContainer,
+                    contentColor = MunchkinTheme.colors.onPrimaryContainer
                 ),
-                content = {
-                    Icon(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                ) {
+                    MunchkinIcon(
                         Icons.Default.Add,
                         contentDescription = null,
-                        modifier = Modifier.size(Dimens.iconSizeSmall)
+                        size = Dimens.iconSizeSmall,
+                        tint = MunchkinTheme.colors.onPrimaryContainer
                     )
-                    Spacer(modifier = Modifier.width(Dimens.paddingMedium))
-                    Text("Add Player")
+                    MunchkinText(
+                        text = "Add Player",
+                        style = MunchkinTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = MunchkinTheme.colors.onPrimaryContainer
+                    )
                 }
-            )
+            }
         }
     }
 }
@@ -327,15 +356,10 @@ private fun DiceDialog(
 ) {
     var result by remember { mutableStateOf<Int?>(null) }
 
-    AlertDialog(
+    MunchkinDialog(
         onDismissRequest = onDismiss,
-        title = {
-            Text(
-                "Roll Dice",
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
+        title = "Roll Dice",
+        content = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
@@ -346,31 +370,46 @@ private fun DiceDialog(
                     exit = scaleOut() + fadeOut()
                 ) {
                     result?.let { diceResult ->
-                        Text(
+                        MunchkinText(
                             text = "Result: $diceResult",
-                            style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            style = MunchkinTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MunchkinTheme.colors.primary
                         )
                     }
                 }
 
-                Button(
-                    onClick = { result = (1..6).random() }
+                MunchkinButton(
+                    onClick = { result = (1..6).random() },
+                    colors = MunchkinButtonDefaults.primaryColors()
                 ) {
-                    Icon(
-                        Icons.Default.Casino,
-                        contentDescription = null,
-                        modifier = Modifier.size(Dimens.iconSizeSmall)
-                    )
-                    Spacer(modifier = Modifier.width(Dimens.paddingMedium))
-                    Text("Roll")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                    ) {
+                        MunchkinIcon(
+                            Icons.Default.Casino,
+                            contentDescription = null,
+                            size = Dimens.iconSizeSmall,
+                            tint = MunchkinTheme.colors.onPrimary
+                        )
+                        MunchkinText(
+                            text = "Roll",
+                            style = MunchkinTheme.typography.labelLarge.copy(
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = MunchkinTheme.colors.onPrimary
+                        )
+                    }
                 }
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Close")
-            }
+            MunchkinTextButton(
+                onClick = onDismiss,
+                text = "Close"
+            )
         },
         modifier = modifier
     )

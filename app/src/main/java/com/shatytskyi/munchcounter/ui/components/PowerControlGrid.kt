@@ -8,34 +8,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.ui.theme.Dimens
+import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
 fun PowerControlGrid(
     onPowerChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    MunchkinCard(
         modifier = modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp,
-            pressedElevation = 12.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        elevation = 4.dp,
+        backgroundColor = MunchkinTheme.colors.surface,
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
@@ -45,13 +35,13 @@ fun PowerControlGrid(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Header
-            Text(
+            MunchkinText(
                 text = "POWER CONTROLS",
-                style = MaterialTheme.typography.titleSmall.copy(
+                style = MunchkinTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Medium,
                     letterSpacing = 1.2.sp
                 ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MunchkinTheme.colors.onSurfaceVariant,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -146,35 +136,26 @@ private fun PowerButton(
     isNegative: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    MunchkinButton(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
+        modifier = modifier.height(56.dp),
         shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isNegative) {
-                MaterialTheme.colorScheme.errorContainer
-            } else {
-                MaterialTheme.colorScheme.tertiaryContainer
-            },
-            contentColor = if (isNegative) {
-                MaterialTheme.colorScheme.onErrorContainer
-            } else {
-                MaterialTheme.colorScheme.onTertiaryContainer
-            }
-        ),
-        elevation = ButtonDefaults.buttonElevation(
-            defaultElevation = 3.dp,
-            pressedElevation = 8.dp,
-            disabledElevation = 0.dp
-        )
+        colors = if (isNegative) {
+            MunchkinButtonDefaults.errorColors()
+        } else {
+            MunchkinButtonDefaults.tertiaryColors()
+        }
     ) {
-        Text(
+        MunchkinText(
             text = if (value > 0) "+$value" else value.toString(),
-            style = MaterialTheme.typography.titleLarge.copy(
+            style = MunchkinTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
-            )
+            ),
+            color = if (isNegative) {
+                MunchkinTheme.colors.onErrorContainer
+            } else {
+                MunchkinTheme.colors.onTertiaryContainer
+            }
         )
     }
 }

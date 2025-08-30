@@ -1,22 +1,20 @@
 package com.shatytskyi.munchcounter.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.shatytskyi.munchcounter.ui.theme.Dimens
+import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
 fun CommonTopAppBar(
@@ -25,9 +23,10 @@ fun CommonTopAppBar(
     modifier: Modifier = Modifier,
     actions: @Composable () -> Unit = {}
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.primaryContainer
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color = MunchkinTheme.colors.primaryContainer)
     ) {
         Row(
             modifier = Modifier
@@ -40,21 +39,21 @@ fun CommonTopAppBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Back button
-            IconButton(onClick = onBack) {
-                Icon(
+            MunchkinIconButton(onClick = onBack) {
+                MunchkinIcon(
                     Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = MunchkinTheme.colors.onPrimaryContainer
                 )
             }
 
             // Title
-            Text(
+            MunchkinText(
                 text = title,
-                style = MaterialTheme.typography.headlineSmall.copy(
+                style = MunchkinTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                color = MunchkinTheme.colors.onPrimaryContainer,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center
             )

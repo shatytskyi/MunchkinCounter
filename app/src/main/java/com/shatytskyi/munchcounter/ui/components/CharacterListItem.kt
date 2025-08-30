@@ -11,30 +11,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.theme.Dimens
+import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
 fun CharacterListItem(
@@ -44,21 +35,13 @@ fun CharacterListItem(
     onLevelChange: (Int) -> Unit = {},
     onItemsChange: (Int) -> Unit = {}
 ) {
-    Card(
+    MunchkinCard(
         modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
-            ) { onClick() },
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 8.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        shape = RoundedCornerShape(Dimens.paddingLarge)
+            .fillMaxWidth(),
+        backgroundColor = MunchkinTheme.colors.surfaceContainer,
+        elevation = 2.dp,
+        shape = RoundedCornerShape(Dimens.paddingLarge),
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier
@@ -67,24 +50,29 @@ fun CharacterListItem(
             verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
         ) {
             // Character Name Header
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(Dimens.paddingMedium),
-                color = MaterialTheme.colorScheme.primaryContainer
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = MunchkinTheme.colors.primaryContainer,
+                        shape = RoundedCornerShape(Dimens.paddingMedium)
+                    )
             ) {
-                Text(
+                MunchkinText(
                     text = character.name,
-                    style = MaterialTheme.typography.titleLarge.copy(
+                    style = MunchkinTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.SemiBold
                     ),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MunchkinTheme.colors.onPrimaryContainer,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(
-                        horizontal = Dimens.paddingLarge,
-                        vertical = Dimens.paddingMedium
-                    )
+                    modifier = Modifier
+                        .padding(
+                            horizontal = Dimens.paddingLarge,
+                            vertical = Dimens.paddingMedium
+                        )
+                        .align(Alignment.Center)
                 )
             }
 
@@ -99,7 +87,7 @@ fun CharacterListItem(
                     value = character.lvl,
                     onDecrease = { onLevelChange(-1) },
                     onIncrease = { onLevelChange(+1) },
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MunchkinTheme.colors.primary,
                     modifier = Modifier.weight(1f)
                 )
 
@@ -107,7 +95,7 @@ fun CharacterListItem(
                     modifier = Modifier
                         .weight(0.6f)
                         .background(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            color = MunchkinTheme.colors.secondaryContainer,
                             shape = RoundedCornerShape(Dimens.paddingLarge)
                         )
                 ) {
@@ -117,19 +105,18 @@ fun CharacterListItem(
                             .padding(Dimens.paddingMedium),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
+                        MunchkinText(
                             text = "Power",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                            style = MunchkinTheme.typography.labelMedium,
+                            color = MunchkinTheme.colors.onSecondaryContainer
                         )
 
-
-                        Text(
+                        MunchkinText(
                             text = character.power.toString(),
-                            style = MaterialTheme.typography.headlineMedium.copy(
+                            style = MunchkinTheme.typography.headlineLarge.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                            color = MunchkinTheme.colors.onSecondaryContainer
                         )
                     }
                 }
@@ -139,11 +126,10 @@ fun CharacterListItem(
                     value = character.items,
                     onDecrease = { onItemsChange(-1) },
                     onIncrease = { onItemsChange(+1) },
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MunchkinTheme.colors.tertiary,
                     modifier = Modifier.weight(1f)
                 )
             }
-
         }
     }
 }
@@ -154,13 +140,13 @@ private fun StatCard(
     value: Int,
     onDecrease: () -> Unit,
     onIncrease: () -> Unit,
-    color: Color,
+    color: androidx.compose.ui.graphics.Color,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                color = MunchkinTheme.colors.surfaceContainerLow,
                 shape = RoundedCornerShape(Dimens.paddingLarge)
             )
     ) {
@@ -171,31 +157,29 @@ private fun StatCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
+            MunchkinText(
                 text = title,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = MunchkinTheme.typography.labelMedium,
+                color = MunchkinTheme.colors.onSurfaceVariant
             )
 
-            Spacer(
-                modifier = Modifier
-                    .height(Dimens.paddingSmall)
-            )
+            Spacer(modifier = Modifier.height(Dimens.paddingSmall))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                IconButton(
+                MunchkinIconButton(
                     onClick = onDecrease,
-                    modifier = Modifier.size(32.dp),
-                    colors = IconButtonDefaults.outlinedIconButtonColors(
+                    size = 32.dp,
+                    colors = MunchkinIconButtonDefaults.iconButtonColors(
                         contentColor = color
                     )
                 ) {
-                    Icon(
+                    MunchkinIcon(
                         Icons.Default.Remove,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = color
                     )
                 }
 
@@ -203,13 +187,13 @@ private fun StatCard(
                     modifier = Modifier
                         .weight(1f)
                         .background(
-                            color = MaterialTheme.colorScheme.surface,
+                            color = MunchkinTheme.colors.surface,
                             shape = RoundedCornerShape(Dimens.paddingMedium)
                         ),
                 ) {
-                    Text(
+                    MunchkinText(
                         text = value.toString(),
-                        style = MaterialTheme.typography.titleMedium.copy(
+                        style = MunchkinTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
                         color = color,
@@ -220,20 +204,20 @@ private fun StatCard(
                     )
                 }
 
-                IconButton(
+                MunchkinIconButton(
                     onClick = onIncrease,
-                    modifier = Modifier.size(32.dp),
-                    colors = IconButtonDefaults.outlinedIconButtonColors(
+                    size = 32.dp,
+                    colors = MunchkinIconButtonDefaults.iconButtonColors(
                         contentColor = color
                     )
                 ) {
-                    Icon(
+                    MunchkinIcon(
                         Icons.Default.Add,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = color
                     )
                 }
             }
         }
     }
 }
-

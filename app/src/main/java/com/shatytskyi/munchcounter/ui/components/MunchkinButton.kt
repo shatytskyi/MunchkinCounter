@@ -1,71 +1,95 @@
 package com.shatytskyi.munchcounter.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
 fun MunchkinButton(
-    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: ButtonColors = ButtonDefaults.buttonColors(),
-    width: Dp = 80.dp,
-    height: Dp = 48.dp
+    shape: Shape = RoundedCornerShape(8.dp),
+    colors: MunchkinButtonColors = MunchkinButtonDefaults.buttonColors(),
+    contentPadding: PaddingValues = PaddingValues(16.dp),
+    content: @Composable () -> Unit
 ) {
-    Button(
-        onClick = onClick,
-        enabled = enabled,
-        colors = colors,
-        shape = RoundedCornerShape(8.dp),
-        contentPadding = PaddingValues(4.dp),
+    val containerColor = if (enabled) colors.containerColor else colors.disabledContainerColor
+    val contentColor = if (enabled) colors.contentColor else colors.disabledContentColor
+    
+    Box(
         modifier = modifier
-            .width(width)
-            .height(height)
+            .clip(shape)
+            .background(containerColor)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(color = contentColor),
+                enabled = enabled,
+                onClick = onClick
+            )
+            .padding(contentPadding),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = text,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
-        )
+        content()
     }
 }
 
-@Composable
-fun MunchkinPowerButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    isPositive: Boolean = true
-) {
-    val colors = if (isPositive) {
-        ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.tertiary,
-            contentColor = MaterialTheme.colorScheme.onTertiary
-        )
-    } else {
-        ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.error,
-            contentColor = MaterialTheme.colorScheme.onError
-        )
-    }
+data class MunchkinButtonColors(
+    val containerColor: Color,
+    val contentColor: Color,
+    val disabledContainerColor: Color,
+    val disabledContentColor: Color
+)
+
+object MunchkinButtonDefaults {
+    @Composable
+    fun buttonColors(
+        containerColor: Color = MunchkinTheme.colors.primary,
+        contentColor: Color = MunchkinTheme.colors.onPrimary,
+        disabledContainerColor: Color = Color(0xFFE0E0E0),
+        disabledContentColor: Color = Color(0xFF9E9E9E)
+    ): MunchkinButtonColors = MunchkinButtonColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor
+    )
     
-    MunchkinButton(
-        text = text,
-        onClick = onClick,
-        colors = colors,
-        modifier = modifier,
-        width = 60.dp,
-        height = 40.dp
+    @Composable
+    fun primaryColors() = buttonColors(
+        containerColor = MunchkinTheme.colors.primary,
+        contentColor = MunchkinTheme.colors.onPrimary
+    )
+    
+    @Composable
+    fun secondaryColors() = buttonColors(
+        containerColor = MunchkinTheme.colors.secondaryContainer,
+        contentColor = MunchkinTheme.colors.onSecondaryContainer
+    )
+    
+    @Composable
+    fun tertiaryColors() = buttonColors(
+        containerColor = MunchkinTheme.colors.tertiaryContainer,
+        contentColor = MunchkinTheme.colors.onTertiaryContainer
+    )
+    
+    @Composable
+    fun errorColors() = buttonColors(
+        containerColor = MunchkinTheme.colors.errorContainer,
+        contentColor = MunchkinTheme.colors.onErrorContainer
     )
 }

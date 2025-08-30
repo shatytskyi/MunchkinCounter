@@ -1,10 +1,5 @@
 package com.shatytskyi.munchcounter.ui.screens
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,34 +14,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Casino
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -58,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,12 +42,19 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
 import com.shatytskyi.munchcounter.ui.components.CommonTopAppBar
 import com.shatytskyi.munchcounter.ui.components.EditCharacterDialog
+import com.shatytskyi.munchcounter.ui.components.MunchkinCard
+import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
+import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
+import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinIconButtonDefaults
+import com.shatytskyi.munchcounter.ui.components.MunchkinText
+import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
 import com.shatytskyi.munchcounter.ui.components.PowerControlGrid
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
 import com.shatytskyi.munchcounter.ui.theme.Dimens
+import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SoloScreen(
     viewModel: CharacterViewModel,
@@ -103,13 +86,16 @@ fun SoloScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
             ) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary
+                // Simple loading indicator without CircularProgressIndicator
+                MunchkinText(
+                    text = "●●●",
+                    style = MunchkinTheme.typography.headlineLarge,
+                    color = MunchkinTheme.colors.primary
                 )
-                Text(
+                MunchkinText(
                     text = "Loading Character...",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = MunchkinTheme.typography.bodyLarge,
+                    color = MunchkinTheme.colors.onSurface
                 )
             }
         }
@@ -125,32 +111,32 @@ fun SoloScreen(
             title = character.name,
             onBack = onBack,
             actions = {
-                IconButton(onClick = { showResetDialog = true }) {
-                    Icon(
+                MunchkinIconButton(onClick = { showResetDialog = true }) {
+                    MunchkinIcon(
                         Icons.Default.Refresh,
                         contentDescription = "Reset",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MunchkinTheme.colors.onPrimaryContainer
                     )
                 }
-                IconButton(onClick = { showEditDialog = true }) {
-                    Icon(
+                MunchkinIconButton(onClick = { showEditDialog = true }) {
+                    MunchkinIcon(
                         Icons.Default.Edit,
                         contentDescription = "Edit",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MunchkinTheme.colors.onPrimaryContainer
                     )
                 }
-                IconButton(onClick = { showDiceDialog = true }) {
-                    Icon(
+                MunchkinIconButton(onClick = { showDiceDialog = true }) {
+                    MunchkinIcon(
                         Icons.Default.Casino,
                         contentDescription = "Dice",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MunchkinTheme.colors.onPrimaryContainer
                     )
                 }
-                IconButton(onClick = onFight) {
-                    Icon(
+                MunchkinIconButton(onClick = onFight) {
+                    MunchkinIcon(
                         Icons.Default.LocalFireDepartment,
                         contentDescription = "Fight",
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MunchkinTheme.colors.error
                     )
                 }
             }
@@ -168,17 +154,12 @@ fun SoloScreen(
             Spacer(modifier = Modifier.height(Dimens.paddingMedium))
             
             // Hero Section - Total Power
-            Card(
+            MunchkinCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = Dimens.screenPaddingHorizontal),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 4.dp,
-                    pressedElevation = 8.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                ),
+                elevation = 4.dp,
+                backgroundColor = MunchkinTheme.colors.primaryContainer,
                 shape = RoundedCornerShape(24.dp)
             ) {
                 Column(
@@ -187,22 +168,22 @@ fun SoloScreen(
                         .padding(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
+                    MunchkinText(
                         text = "TOTAL POWER",
-                        style = MaterialTheme.typography.titleSmall.copy(
+                        style = MunchkinTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Medium,
                             letterSpacing = 1.5.sp
                         ),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                        color = MunchkinTheme.colors.onPrimaryContainer.copy(alpha = 0.8f)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    MunchkinText(
                         text = character.power.toString(),
-                        style = MaterialTheme.typography.displayLarge.copy(
+                        style = MunchkinTheme.typography.displayLarge.copy(
                             fontWeight = FontWeight.Black,
                             fontSize = 80.sp
                         ),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MunchkinTheme.colors.onPrimaryContainer
                     )
                 }
             }
@@ -217,15 +198,10 @@ fun SoloScreen(
                 horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
             ) {
                 // Level Card
-                Card(
+                MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 2.dp,
-                        pressedElevation = 6.dp
-                    ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer
-                    ),
+                    elevation = 2.dp,
+                    backgroundColor = MunchkinTheme.colors.surfaceContainer,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
@@ -234,54 +210,56 @@ fun SoloScreen(
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
+                        MunchkinText(
                             text = "LEVEL",
-                            style = MaterialTheme.typography.labelSmall.copy(
+                            style = MunchkinTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.Medium,
                                 letterSpacing = 1.2.sp
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MunchkinTheme.colors.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            IconButton(
+                            MunchkinIconButton(
                                 onClick = { viewModel.changeLevel(characterId, -1) },
-                                modifier = Modifier.size(36.dp),
-                                colors = IconButtonDefaults.filledIconButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                                    contentColor = MaterialTheme.colorScheme.primary
+                                size = 36.dp,
+                                colors = MunchkinIconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MunchkinTheme.colors.primary.copy(alpha = 0.1f),
+                                    contentColor = MunchkinTheme.colors.primary
                                 )
                             ) {
-                                Icon(
+                                MunchkinIcon(
                                     Icons.Default.Remove,
                                     contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
+                                    size = 18.dp,
+                                    tint = MunchkinTheme.colors.primary
                                 )
                             }
-                            Text(
+                            MunchkinText(
                                 text = character.lvl.toString(),
-                                style = MaterialTheme.typography.headlineLarge.copy(
+                                style = MunchkinTheme.typography.headlineLarge.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
-                                color = MaterialTheme.colorScheme.primary,
+                                color = MunchkinTheme.colors.primary,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center
                             )
-                            IconButton(
+                            MunchkinIconButton(
                                 onClick = { viewModel.changeLevel(characterId, +1) },
-                                modifier = Modifier.size(36.dp),
-                                colors = IconButtonDefaults.filledIconButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                                    contentColor = MaterialTheme.colorScheme.primary
+                                size = 36.dp,
+                                colors = MunchkinIconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MunchkinTheme.colors.primary.copy(alpha = 0.1f),
+                                    contentColor = MunchkinTheme.colors.primary
                                 )
                             ) {
-                                Icon(
+                                MunchkinIcon(
                                     Icons.Default.Add,
                                     contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
+                                    size = 18.dp,
+                                    tint = MunchkinTheme.colors.primary
                                 )
                             }
                         }
@@ -289,15 +267,10 @@ fun SoloScreen(
                 }
                 
                 // Items Card
-                Card(
+                MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 2.dp,
-                        pressedElevation = 6.dp
-                    ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer
-                    ),
+                    elevation = 2.dp,
+                    backgroundColor = MunchkinTheme.colors.surfaceContainer,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
@@ -306,54 +279,56 @@ fun SoloScreen(
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
+                        MunchkinText(
                             text = "ITEMS",
-                            style = MaterialTheme.typography.labelSmall.copy(
+                            style = MunchkinTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.Medium,
                                 letterSpacing = 1.2.sp
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MunchkinTheme.colors.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            IconButton(
+                            MunchkinIconButton(
                                 onClick = { viewModel.changePower(characterId, -1) },
-                                modifier = Modifier.size(36.dp),
-                                colors = IconButtonDefaults.filledIconButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f),
-                                    contentColor = MaterialTheme.colorScheme.tertiary
+                                size = 36.dp,
+                                colors = MunchkinIconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.1f),
+                                    contentColor = MunchkinTheme.colors.tertiary
                                 )
                             ) {
-                                Icon(
+                                MunchkinIcon(
                                     Icons.Default.Remove,
                                     contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
+                                    size = 18.dp,
+                                    tint = MunchkinTheme.colors.tertiary
                                 )
                             }
-                            Text(
+                            MunchkinText(
                                 text = character.items.toString(),
-                                style = MaterialTheme.typography.headlineLarge.copy(
+                                style = MunchkinTheme.typography.headlineLarge.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
-                                color = MaterialTheme.colorScheme.tertiary,
+                                color = MunchkinTheme.colors.tertiary,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center
                             )
-                            IconButton(
+                            MunchkinIconButton(
                                 onClick = { viewModel.changePower(characterId, +1) },
-                                modifier = Modifier.size(36.dp),
-                                colors = IconButtonDefaults.filledIconButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f),
-                                    contentColor = MaterialTheme.colorScheme.tertiary
+                                size = 36.dp,
+                                colors = MunchkinIconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.1f),
+                                    contentColor = MunchkinTheme.colors.tertiary
                                 )
                             ) {
-                                Icon(
+                                MunchkinIcon(
                                     Icons.Default.Add,
                                     contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
+                                    size = 18.dp,
+                                    tint = MunchkinTheme.colors.tertiary
                                 )
                             }
                         }
@@ -404,16 +379,22 @@ fun SoloScreen(
     }
 
     if (showInfoDialog) {
-        AlertDialog(
+        MunchkinDialog(
             onDismissRequest = { showInfoDialog = false },
-            title = { Text("Информация") },
-            text = { Text(stringResource(R.string.info)) },
+            title = "Информация",
+            content = {
+                MunchkinText(
+                    text = stringResource(R.string.info),
+                    style = MunchkinTheme.typography.bodyMedium,
+                    color = MunchkinTheme.colors.onSurface
+                )
+            },
             confirmButton = {
-                TextButton(onClick = { showInfoDialog = false }) {
-                    Text("OK")
-                }
+                MunchkinTextButton(
+                    onClick = { showInfoDialog = false },
+                    text = "OK"
+                )
             }
         )
     }
 }
-
