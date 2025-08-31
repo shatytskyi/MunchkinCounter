@@ -5,10 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,10 +20,23 @@ class CommonViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 
+    private val _isInitialLoading = MutableStateFlow(true)
+    
     val characters: StateFlow<List<Character>> = repository.characters.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = emptyList()
+    )
+    
+    val isLoading: StateFlow<Boolean> = combine(
+        _isInitialLoading,
+        characters
+    ) { isInitialLoading, characterList ->
+        isInitialLoading
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = true
     )
 
     init {
@@ -29,6 +46,9 @@ class CommonViewModel @Inject constructor(
     fun loadCharacters() {
         viewModelScope.launch {
             repository.loadCharacters()
+            // Небольшая задержка чтобы данные успели загрузиться
+            delay(300)
+            _isInitialLoading.value = false
         }
     }
 

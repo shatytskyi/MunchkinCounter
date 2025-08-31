@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.shatytskyi.munchcounter.ui.screens.DetailsScreen
 import com.shatytskyi.munchcounter.ui.screens.FightScreen
-import com.shatytskyi.munchcounter.ui.screens.ListScreen
+import com.shatytskyi.munchcounter.ui.screens.list.ListScreen
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
