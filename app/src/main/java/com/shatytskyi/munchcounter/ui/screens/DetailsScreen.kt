@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.outlined.Casino
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.PersonRemove
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -241,7 +242,7 @@ private fun DetailsScreenContent(
                 ) {
                     MunchkinIconTextButton(
                         onClick = onDeleteClick,
-                        icon = Icons.Outlined.Delete,
+                        icon = Icons.Outlined.PersonRemove,
                         text = "Delete Player",
                         modifier = Modifier.fillMaxWidth(0.7f),
                         textStyle = MunchkinTheme.typography.labelMedium,

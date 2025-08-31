@@ -1,3 +1,5 @@
 package com.shatytskyi.munchcounter.ui.components.icons
 
-object MunchkinIcons
+object MunchkinIcons {
+    object Dice
+}
