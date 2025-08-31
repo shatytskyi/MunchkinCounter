@@ -32,12 +32,12 @@ fun MunchkinDialog(
     Dialog(onDismissRequest = onDismissRequest) {
         Box(
             modifier = modifier
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(MunchkinTheme.colors.background)
-                .padding(24.dp)
+                .padding(32.dp)
         ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 // Title
                 title?.let {
@@ -63,7 +63,7 @@ fun MunchkinDialog(
                 ) {
                     dismissButton?.let {
                         it()
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(16.dp))
                     }
                     confirmButton()
                 }

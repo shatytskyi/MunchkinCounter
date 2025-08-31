@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
-import com.shatytskyi.munchcounter.ui.components.EditCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
@@ -47,7 +46,8 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIconButtonDefaults
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.PowerControlGrid
-import com.shatytskyi.munchcounter.ui.components.WarningDialog
+import com.shatytskyi.munchcounter.ui.dialogs.EditCharacterDialog
+import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 

@@ -56,49 +56,49 @@ data class MunchkinTypography(
     val titleMedium: TextStyle = TextStyle(
         fontFamily = MunchkinFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     val titleSmall: TextStyle = TextStyle(
         fontFamily = MunchkinFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     val bodyLarge: TextStyle = TextStyle(
         fontFamily = MunchkinFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     val bodyMedium: TextStyle = TextStyle(
         fontFamily = MunchkinFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
     val labelLarge: TextStyle = TextStyle(
         fontFamily = MunchkinFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     val labelMedium: TextStyle = TextStyle(
         fontFamily = MunchkinFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
+        fontSize = 14.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     val labelSmall: TextStyle = TextStyle(
         fontFamily = MunchkinFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
+        fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     )

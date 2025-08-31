@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
+const val APP_BAR_HEIGHT = 64
+
 @Composable
 fun MunchkinTopAppBar(
     title: String,
@@ -27,6 +30,7 @@ fun MunchkinTopAppBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .height(APP_BAR_HEIGHT.dp)
     ) {
         Row(
             modifier = Modifier
