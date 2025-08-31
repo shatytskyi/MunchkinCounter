@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.shatytskyi.munchcounter.ui.components.MunchkinBackground
 import com.shatytskyi.munchcounter.ui.screens.CharacterListScreen
 import com.shatytskyi.munchcounter.ui.screens.FightScreen
 import com.shatytskyi.munchcounter.ui.screens.SoloScreen
@@ -32,7 +33,9 @@ class MainActivity : ComponentActivity() {
         
         setContent {
             MunchkinTheme {
-                MunchkinApp()
+                MunchkinBackground {
+                    MunchkinApp()
+                }
             }
         }
     }

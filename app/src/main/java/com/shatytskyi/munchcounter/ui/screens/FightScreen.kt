@@ -13,17 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.DirectionsRun
 import androidx.compose.material.icons.filled.Casino
-import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.EmojiEvents
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
-import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.MunchkinButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinButtonDefaults
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
@@ -51,6 +48,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
@@ -74,7 +72,6 @@ fun FightScreen(
     var showHelpersDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
     var showEscapeDiceDialog by remember { mutableStateOf(false) }
-    var showInfoDialog by remember { mutableStateOf(false) }
 
     // Initialize player when found
     LaunchedEffect(player) {
@@ -136,12 +133,6 @@ fun FightScreen(
                         tint = MunchkinTheme.colors.onSurface
                     )
                 }
-                MunchkinIconButton(onClick = { showInfoDialog = true }) {
-                    MunchkinIcon(
-                        Icons.Default.Info,
-                        tint = MunchkinTheme.colors.onSurface
-                    )
-                }
             }
         )
 
@@ -157,7 +148,7 @@ fun FightScreen(
             item {
                 Spacer(modifier = Modifier.height(Dimens.paddingMedium))
             }
-            
+
             item {
                 // Control buttons
                 Row(
@@ -316,13 +307,15 @@ fun FightScreen(
                                 )
 
                                 MunchkinIcon(
-                                    if (isVictory) Icons.Default.EmojiEvents else Icons.Default.DirectionsRun,
+                                    if (isVictory) Icons.Default.EmojiEvents else Icons.AutoMirrored.Filled.DirectionsRun,
                                     tint = if (isVictory) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error,
                                     size = Dimens.iconSizeSmall
                                 )
 
                                 MunchkinText(
-                                    text = if (isVictory) stringResource(R.string.victory) else stringResource(R.string.escape),
+                                    text = if (isVictory) stringResource(R.string.victory) else stringResource(
+                                        R.string.escape
+                                    ),
                                     style = MunchkinTheme.typography.labelMedium,
                                     color = if (isVictory) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error
                                 )
@@ -351,7 +344,11 @@ fun FightScreen(
                                     },
                                     modifier = Modifier.padding(top = Dimens.paddingMedium)
                                 ) {
-                                    MunchkinText(if (isVictory) stringResource(R.string.win_button) else stringResource(R.string.run_button))
+                                    MunchkinText(
+                                        if (isVictory) stringResource(R.string.win_button) else stringResource(
+                                            R.string.run_button
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -412,26 +409,6 @@ fun FightScreen(
                     onBack()
                 }
                 showEscapeDiceDialog = false
-            }
-        )
-    }
-
-    if (showInfoDialog) {
-        MunchkinDialog(
-            onDismissRequest = { showInfoDialog = false },
-            title = stringResource(R.string.info),
-            content = {
-                MunchkinText(
-                    text = stringResource(R.string.info),
-                    style = MunchkinTheme.typography.bodyMedium,
-                    color = MunchkinTheme.colors.onSurface
-                )
-            },
-            confirmButton = {
-                MunchkinTextButton(
-                    onClick = { showInfoDialog = false },
-                    text = "OK"
-                )
             }
         )
     }
@@ -696,7 +673,8 @@ private fun HelpersDialog(
         content = {
             Column {
                 characters.forEach { character ->
-                    val helperName = if (character.name == playerName) stringResource(R.string.twin) else character.name
+                    val helperName =
+                        if (character.name == playerName) stringResource(R.string.twin) else character.name
                     val totalScore = scoreDifference + character.power
 
                     MunchkinButton(
@@ -764,7 +742,9 @@ private fun EscapeDiceDialog(
                     )
 
                     MunchkinText(
-                        text = if (result >= 5) stringResource(R.string.escape_success) else stringResource(R.string.escape_failed),
+                        text = if (result >= 5) stringResource(R.string.escape_success) else stringResource(
+                            R.string.escape_failed
+                        ),
                         style = MunchkinTheme.typography.bodyMedium,
                         color = if (result >= 5) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error
                     )
@@ -784,7 +764,9 @@ private fun EscapeDiceDialog(
                     enabled = !isRolling
                 ) {
                     MunchkinText(
-                        if (diceResult == null) stringResource(R.string.roll_dice) else stringResource(R.string.roll_again)
+                        if (diceResult == null) stringResource(R.string.roll_dice) else stringResource(
+                            R.string.roll_again
+                        )
                     )
                 }
             }
@@ -793,7 +775,9 @@ private fun EscapeDiceDialog(
             diceResult?.let { result ->
                 MunchkinTextButton(
                     onClick = { onEscapeResult(result >= 5) },
-                    text = if (result >= 5) stringResource(R.string.run_button) else stringResource(R.string.stay)
+                    text = if (result >= 5) stringResource(R.string.run_button) else stringResource(
+                        R.string.stay
+                    )
                 )
             }
         },

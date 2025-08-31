@@ -98,10 +98,6 @@
     <string name="reset_all">Reset All</string>
     <string name="remove_all">Remove All</string>
 
-    <!-- Info -->
-    <string name="info">Info</string>
-    <string name="info_text">Main screen:\n\nLevel - shows current level of the munchkin.\nScore - the sum of the level and equipped items, strength of the character.\nClick on the character card to open the extended menu.\n\nExtended character menu:\nUsing the buttons (1-5) you can increase or decrease the character\'s strength.\nThis action displays equipping and removing gear items.\n\nUsing the buttons \"Remove\" or \"Reset\" you can remove a character from the game or reset his parameters to the initial ones.\nPress the \"FIGHT\" button to open the battle screen.\n\nBattle screen:\nThe character window is displayed at the top of the screen, the monster at the bottom.\nChanging the character\'s strength using the buttons (1-5) is temporary and is valid only during this battle.\nThe level change is permanent and will remain after leaving the battle.\nThe current balance of forces is displayed in the center of the screen.\nTo the right of it is the end of the battle button.\nYou can also use the help of a partner, escape from the battle or start it over.\nThe six-sided die roll will help with the escape calculating.</string>
-
     <!-- Edit Character -->
     <string name="edit_character">Edit Character</string>
     <string name="name_label">Name:</string>
@@ -115,7 +111,7 @@
     <!-- Other -->
     <string name="shuffle">Shuffle</string>
     <string name="bonus_is">Bonus:</string>
-    
+
     <!-- Legacy XML Layout Strings (for backward compatibility) -->
     <string name="result">Result</string>
     <string name="reset_fight">Reset fight</string>
@@ -129,7 +125,7 @@
     <string name="fight_result_win">Victory!\n +1 LVL</string>
     <string name="fight_was_reset">Fight was reset</string>
     <string name="your_munchkin">Your munchkin</string>
-    
+
     <!-- Numbers (not translatable) -->
     <string name="_0" translatable="false">0</string>
     <string name="_1" translatable="false">1</string>

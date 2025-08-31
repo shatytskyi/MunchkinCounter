@@ -1,6 +1,5 @@
 package com.shatytskyi.munchcounter.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,15 +39,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
-import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.EditCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
-import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButtonDefaults
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
-import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.PowerControlGrid
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
 import com.shatytskyi.munchcounter.ui.theme.Dimens
@@ -69,7 +66,6 @@ fun SoloScreen(
     var showEditDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
-    var showInfoDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadCharacters()
@@ -148,7 +144,7 @@ fun SoloScreen(
             verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
         ) {
             Spacer(modifier = Modifier.height(Dimens.paddingMedium))
-            
+
             // Hero Section - Total Power
             MunchkinCard(
                 modifier = Modifier
@@ -183,9 +179,9 @@ fun SoloScreen(
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(Dimens.paddingSmall))
-            
+
             // Stats Section
             Row(
                 modifier = Modifier
@@ -261,7 +257,7 @@ fun SoloScreen(
                         }
                     }
                 }
-                
+
                 // Items Card
                 MunchkinCard(
                     modifier = Modifier.weight(1f),
@@ -333,7 +329,7 @@ fun SoloScreen(
             }
 
             Spacer(modifier = Modifier.height(Dimens.paddingSmall))
-            
+
             // Power Control Grid
             PowerControlGrid(
                 onPowerChange = { delta -> viewModel.changePower(characterId, delta) },
@@ -341,7 +337,7 @@ fun SoloScreen(
                     .weight(1f)
                     .padding(horizontal = Dimens.screenPaddingHorizontal)
             )
-            
+
             Spacer(modifier = Modifier.height(Dimens.paddingMedium))
         }
     }
@@ -372,25 +368,5 @@ fun SoloScreen(
 
     if (showDiceDialog) {
         CommonDiceDialog(onDismiss = { showDiceDialog = false })
-    }
-
-    if (showInfoDialog) {
-        MunchkinDialog(
-            onDismissRequest = { showInfoDialog = false },
-            title = stringResource(R.string.info),
-            content = {
-                MunchkinText(
-                    text = stringResource(R.string.info),
-                    style = MunchkinTheme.typography.bodyMedium,
-                    color = MunchkinTheme.colors.onSurface
-                )
-            },
-            confirmButton = {
-                MunchkinTextButton(
-                    onClick = { showInfoDialog = false },
-                    text = "OK"
-                )
-            }
-        )
     }
 }

@@ -27,7 +27,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Casino
 import androidx.compose.material.icons.outlined.Casino
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.Composable
@@ -46,7 +45,6 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
-import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.MunchkinButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinButtonDefaults
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
@@ -54,6 +52,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
 import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
@@ -71,14 +70,13 @@ fun CharacterListScreen(
     var showResetAllDialog by remember { mutableStateOf(false) }
     var showRemoveAllDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
-    var showInfoDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
         MunchkinTopAppBar(
-            title = "Munchkin Counter",
+            title = stringResource(R.string.app_name),
             actions = {
                 MunchkinIconButton(
                     onClick = {
@@ -109,13 +107,6 @@ fun CharacterListScreen(
                 MunchkinIconButton(onClick = { showDiceDialog = true }) {
                     MunchkinIcon(
                         imageVector = Icons.Outlined.Casino,
-                        tint = MunchkinTheme.colors.onSurface
-                    )
-                }
-
-                MunchkinIconButton(onClick = { showInfoDialog = true }) {
-                    MunchkinIcon(
-                        imageVector = Icons.Outlined.Info,
                         tint = MunchkinTheme.colors.onSurface
                     )
                 }
@@ -187,26 +178,6 @@ fun CharacterListScreen(
     if (showDiceDialog) {
         DiceDialog(
             onDismiss = { showDiceDialog = false }
-        )
-    }
-
-    if (showInfoDialog) {
-        MunchkinDialog(
-            onDismissRequest = { showInfoDialog = false },
-            title = "Information",
-            content = {
-                MunchkinText(
-                    text = stringResource(R.string.info),
-                    style = MunchkinTheme.typography.bodyMedium,
-                    color = MunchkinTheme.colors.onSurface
-                )
-            },
-            confirmButton = {
-                MunchkinTextButton(
-                    onClick = { showInfoDialog = false },
-                    text = "OK"
-                )
-            }
         )
     }
 }
