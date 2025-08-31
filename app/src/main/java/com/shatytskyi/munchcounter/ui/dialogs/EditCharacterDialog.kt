@@ -1,6 +1,7 @@
 package com.shatytskyi.munchcounter.ui.dialogs
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -142,6 +143,8 @@ fun EditCharacterDialog(
             MunchkinText(
                 modifier = Modifier.clickable(
                     enabled = name.trim().isNotEmpty(),
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = {
                         val lvl = level.toIntOrNull() ?: character.lvl
                         val itm = items.toIntOrNull() ?: character.items
@@ -154,6 +157,8 @@ fun EditCharacterDialog(
         dismissButton = {
             MunchkinText(
                 modifier = Modifier.clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = onDismiss,
                 ),
                 text = "Cancel"

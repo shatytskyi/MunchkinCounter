@@ -14,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.dialogs.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
@@ -70,6 +72,7 @@ private fun ListScreenContent(
     onRemoveAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val haptic = LocalHapticFeedback.current
     var showAddDialog by remember { mutableStateOf(false) }
     var showResetAllDialog by remember { mutableStateOf(false) }
     var showRemoveAllDialog by remember { mutableStateOf(false) }
@@ -95,35 +98,57 @@ private fun ListScreenContent(
             when (state) {
                 ScreenState.Loading -> {
                     ListScreenLoadingContent(
-                        onDiceClick = { showDiceDialog = true }
+                        onDiceClick = { 
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            showDiceDialog = true 
+                        }
                     )
                 }
 
                 ScreenState.Empty -> {
                     ListScreenEmptyContent(
                         onAddCharacterClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             showAddDialog = true
                         },
-                        onDiceClick = { showDiceDialog = true }
+                        onDiceClick = { 
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            showDiceDialog = true 
+                        }
                     )
                 }
 
                 ScreenState.Content -> {
                     ListScreenContent(
                         characters = characters,
-                        onCharacterClick = onCharacterClick,
+                        onCharacterClick = { id ->
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onCharacterClick(id)
+                        },
                         onAddCharacterClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             showAddDialog = true
                         },
-                        onLevelChange = onLevelChange,
-                        onPowerChange = onPowerChange,
+                        onLevelChange = { id, delta ->
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onLevelChange(id, delta)
+                        },
+                        onPowerChange = { id, delta ->
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onPowerChange(id, delta)
+                        },
                         onResetAllClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             showResetAllDialog = true
                         },
                         onRemoveAllClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             showRemoveAllDialog = true
                         },
-                        onDiceClick = { showDiceDialog = true }
+                        onDiceClick = { 
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            showDiceDialog = true 
+                        }
                     )
                 }
             }
@@ -135,6 +160,7 @@ private fun ListScreenContent(
         AddCharacterDialog(
             onDismiss = { showAddDialog = false },
             onConfirm = { name ->
+                haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                 onAddCharacter(name)
                 showAddDialog = false
             }
@@ -147,6 +173,7 @@ private fun ListScreenContent(
             message = "All players will be reset to level 1 with 0 power",
             onDismiss = { showResetAllDialog = false },
             onConfirm = {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 onResetAll()
                 showResetAllDialog = false
             }
@@ -159,6 +186,7 @@ private fun ListScreenContent(
             message = "All players will be permanently deleted",
             onDismiss = { showRemoveAllDialog = false },
             onConfirm = {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 onRemoveAll()
                 showRemoveAllDialog = false
             }

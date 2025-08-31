@@ -32,6 +32,8 @@ fun CharacterListItem(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     hideName: Boolean = false,
+    showLevelButtons: Boolean = true,
+    showItemsButtons: Boolean = true,
     onLevelChange: (Int) -> Unit = {},
     onItemsChange: (Int) -> Unit = {}
 ) {
@@ -85,7 +87,8 @@ fun CharacterListItem(
                     onDecrease = { onLevelChange(-1) },
                     onIncrease = { onLevelChange(+1) },
                     color = MunchkinTheme.colors.primary,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    showButtons = showLevelButtons
                 )
 
                 StatItem(
@@ -104,7 +107,8 @@ fun CharacterListItem(
                     onDecrease = { onItemsChange(-1) },
                     onIncrease = { onItemsChange(+1) },
                     color = MunchkinTheme.colors.primary,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    showButtons = showItemsButtons
                 )
             }
         }

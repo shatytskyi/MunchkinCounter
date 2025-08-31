@@ -1,7 +1,9 @@
 package com.shatytskyi.munchcounter.ui.dialogs
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
@@ -30,6 +32,8 @@ fun WarningDialog(
         confirmButton = {
             MunchkinText(
                 modifier = Modifier.clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = onConfirm,
                 ),
                 text = "Confirm",
@@ -39,6 +43,8 @@ fun WarningDialog(
         dismissButton = {
             MunchkinText(
                 modifier = Modifier.clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = onDismiss,
                 ),
                 text = "Cancel"

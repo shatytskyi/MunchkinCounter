@@ -1,6 +1,7 @@
 package com.shatytskyi.munchcounter.ui.dialogs
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -61,6 +62,8 @@ fun AddCharacterDialog(
             MunchkinText(
                 modifier = Modifier.clickable(
                     enabled = name.trim().isNotEmpty(),
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = { onConfirm(name.trim()) },
                 ),
                 text = "Add",
@@ -69,6 +72,8 @@ fun AddCharacterDialog(
         dismissButton = {
             MunchkinText(
                 modifier = Modifier.clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = onDismiss,
                 ),
                 text = "Cancel"

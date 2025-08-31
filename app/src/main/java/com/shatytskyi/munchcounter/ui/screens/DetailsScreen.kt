@@ -25,6 +25,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.PersonRemove
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,7 +35,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -157,6 +160,7 @@ private fun DetailsScreenContent(
     onDiceClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val haptic = LocalHapticFeedback.current
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -173,6 +177,8 @@ private fun DetailsScreenContent(
                 CharacterListItem(
                     character = character,
                     hideName = true,
+                    showLevelButtons = false,
+                    showItemsButtons = false,
                     onLevelChange = onLevelChange,
                     onItemsChange = onPowerChange
                 )
@@ -185,7 +191,10 @@ private fun DetailsScreenContent(
                     contentAlignment = Alignment.Center
                 ) {
                     MunchkinIconTextButton(
-                        onClick = onFightClick,
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                            onFightClick()
+                        },
                         icon = MunchkinIcons.Swords,
                         text = "Fight!",
                         modifier = Modifier.fillMaxWidth(0.6f),
@@ -199,8 +208,25 @@ private fun DetailsScreenContent(
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider()
+                Spacer(modifier = Modifier.height(16.dp))
+                LevelControlWidget(
+                    onLevelChange = { delta ->
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onLevelChange(delta)
+                    }
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+                HorizontalDivider()
+                Spacer(modifier = Modifier.height(16.dp))
                 PowerControlWidget(
-                    onPowerChange = onPowerChange
+                    onPowerChange = { delta ->
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onPowerChange(delta)
+                    }
                 )
             }
 
@@ -211,7 +237,10 @@ private fun DetailsScreenContent(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     MunchkinIconTextButton(
-                        onClick = onResetClick,
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onResetClick()
+                        },
                         icon = Icons.Outlined.Refresh,
                         text = "Reset Player",
                         modifier = Modifier.weight(1f),
@@ -222,7 +251,10 @@ private fun DetailsScreenContent(
                     )
 
                     MunchkinIconTextButton(
-                        onClick = onEditClick,
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onEditClick()
+                        },
                         icon = Icons.Outlined.Edit,
                         text = "Edit Player",
                         modifier = Modifier.weight(1f),
@@ -241,7 +273,10 @@ private fun DetailsScreenContent(
                     contentAlignment = Alignment.Center
                 ) {
                     MunchkinIconTextButton(
-                        onClick = onDeleteClick,
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onDeleteClick()
+                        },
                         icon = Icons.Outlined.PersonRemove,
                         text = "Delete Player",
                         modifier = Modifier.fillMaxWidth(0.7f),
@@ -267,13 +302,96 @@ private fun DetailsScreenContent(
                 title = character.name,
                 onBack = onBackClick,
                 actions = {
-                    MunchkinIconButton(onClick = onDiceClick) {
+                    MunchkinIconButton(onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onDiceClick()
+                    }) {
                         MunchkinIcon(
                             imageVector = Icons.Outlined.Casino,
                             tint = MunchkinTheme.colors.onBackground
                         )
                     }
                 }
+            )
+        }
+    }
+}
+
+@Composable
+private fun LevelControlWidget(
+    onLevelChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Title
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            MunchkinText(
+                text = "Level",
+                style = MunchkinTheme.typography.titleMedium,
+                color = MunchkinTheme.colors.onBackground
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Minus button
+            LevelControlCard(
+                value = -1,
+                onClick = { onLevelChange(-1) },
+                isNegative = true,
+                modifier = Modifier.weight(1f)
+            )
+
+            // Plus button
+            LevelControlCard(
+                value = +1,
+                onClick = { onLevelChange(+1) },
+                isNegative = false,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun LevelControlCard(
+    value: Int,
+    onClick: () -> Unit,
+    isNegative: Boolean,
+    modifier: Modifier = Modifier
+) {
+    MunchkinCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(64.dp),
+        color = if (isNegative) MunchkinTheme.colors.secondary else MunchkinTheme.colors.primary,
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            MunchkinIcon(
+                imageVector = if (isNegative) Icons.Default.Remove else Icons.Default.Add,
+                tint = MunchkinTheme.colors.onBackground,
+                size = 24.dp
+            )
+            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+            MunchkinText(
+                text = kotlin.math.abs(value).toString(),
+                style = MunchkinTheme.typography.headlineLarge,
+                color = MunchkinTheme.colors.onBackground
             )
         }
     }
@@ -294,7 +412,7 @@ private fun PowerControlWidget(
             contentAlignment = Alignment.Center
         ) {
             MunchkinText(
-                text = "Items Control",
+                text = "Items",
                 style = MunchkinTheme.typography.titleMedium,
                 color = MunchkinTheme.colors.onBackground
             )

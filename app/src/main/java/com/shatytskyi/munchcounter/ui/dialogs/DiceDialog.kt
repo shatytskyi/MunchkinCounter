@@ -135,6 +135,8 @@ fun DiceDialog(
         confirmButton = {
             MunchkinText(
                 modifier = Modifier.clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = onDismiss
                 ),
                 text = "Close"
