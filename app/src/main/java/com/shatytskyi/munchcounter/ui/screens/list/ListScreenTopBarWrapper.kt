@@ -19,6 +19,8 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
+import com.shatytskyi.munchcounter.ui.components.icons.Dice5
+import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -44,7 +46,7 @@ fun ListScreenTopBarWrapper(
                 actions = {
                     MunchkinIconButton(onClick = onDiceClick) {
                         MunchkinIcon(
-                            imageVector = Icons.Outlined.Casino,
+                            imageVector = MunchkinIcons.Dice.Dice5,
                             tint = MunchkinTheme.colors.onBackground
                         )
                     }
