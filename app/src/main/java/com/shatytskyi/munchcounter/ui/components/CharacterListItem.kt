@@ -103,7 +103,7 @@ fun CharacterListItem(
                     value = character.items,
                     onDecrease = { onItemsChange(-1) },
                     onIncrease = { onItemsChange(+1) },
-                    color = MunchkinTheme.colors.green,
+                    color = MunchkinTheme.colors.primary,
                     modifier = Modifier.weight(1f)
                 )
             }

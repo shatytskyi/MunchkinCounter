@@ -345,7 +345,7 @@ private fun PowerControlCard(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp),
-        color = if (isNegative) MunchkinTheme.colors.red else MunchkinTheme.colors.green,
+        color = if (isNegative) MunchkinTheme.colors.secondary else MunchkinTheme.colors.primary,
         onClick = onClick
     ) {
         Row(
