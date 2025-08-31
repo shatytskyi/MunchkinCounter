@@ -13,6 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.FastOutSlowInEasing
 import com.shatytskyi.munchcounter.ui.screens.DetailsScreen
 import com.shatytskyi.munchcounter.ui.screens.FightScreen
 import com.shatytskyi.munchcounter.ui.screens.list.ListScreen
@@ -47,7 +51,33 @@ fun MunchkinApp() {
         navController = navController,
         startDestination = "character_list"
     ) {
-        composable("character_list") {
+        composable(
+            route = "character_list",
+            enterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            exitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popEnterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popExitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            }
+        ) {
             ListScreen(
                 viewModel = sharedViewModel,
                 onCharacterClick = { characterId ->
@@ -58,7 +88,31 @@ fun MunchkinApp() {
 
         composable(
             route = "solo/{characterId}",
-            arguments = listOf(navArgument("characterId") { type = NavType.LongType })
+            arguments = listOf(navArgument("characterId") { type = NavType.LongType }),
+            enterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            exitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popEnterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popExitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            }
         ) { backStackEntry ->
             val characterId = backStackEntry.arguments?.getLong("characterId") ?: -1
             DetailsScreen(
@@ -71,7 +125,31 @@ fun MunchkinApp() {
 
         composable(
             route = "fight/{playerId}",
-            arguments = listOf(navArgument("playerId") { type = NavType.LongType })
+            arguments = listOf(navArgument("playerId") { type = NavType.LongType }),
+            enterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            exitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popEnterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popExitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            }
         ) { backStackEntry ->
             val playerId = backStackEntry.arguments?.getLong("playerId") ?: -1
             FightScreen(
