@@ -1,12 +1,15 @@
 package com.shatytskyi.munchcounter.ui.components
 
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -17,7 +20,9 @@ fun MunchkinText(
     style: TextStyle = MunchkinTheme.typography.bodyMedium,
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
+    minTextSize: TextUnit = 12.sp,
+    maxTextSize: TextUnit = style.fontSize
 ) {
     BasicText(
         text = text,
@@ -28,5 +33,10 @@ fun MunchkinText(
         ),
         overflow = overflow,
         maxLines = maxLines,
+        autoSize = TextAutoSize.StepBased(
+            minFontSize = minTextSize,
+            maxFontSize = maxTextSize,
+            stepSize = 1.sp
+        )
     )
 }

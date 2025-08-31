@@ -285,8 +285,7 @@ private fun CharacterListContent(
             end = 16.dp,
             top = topPadding,
             bottom = 100.dp
-        ),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        )
     ) {
         itemsIndexed(
             items = characters,
@@ -302,6 +301,8 @@ private fun CharacterListContent(
                     onPowerChange(character.id, delta)
                 }
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         item {
@@ -325,8 +326,7 @@ private fun CharacterListContent(
         item {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 MunchkinIconTextButton(
