@@ -90,7 +90,7 @@ fun DetailsScreen(
                 MunchkinText(
                     text = stringResource(R.string.loading_character),
                     style = MunchkinTheme.typography.bodyLarge,
-                    color = MunchkinTheme.colors.onSurface
+                    color = MunchkinTheme.colors.onBackground
                 )
             }
         }
@@ -109,25 +109,25 @@ fun DetailsScreen(
                 MunchkinIconButton(onClick = { showResetDialog = true }) {
                     MunchkinIcon(
                         Icons.Default.Refresh,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
                 MunchkinIconButton(onClick = { showEditDialog = true }) {
                     MunchkinIcon(
                         Icons.Default.Edit,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
                 MunchkinIconButton(onClick = { showDiceDialog = true }) {
                     MunchkinIcon(
                         Icons.Default.Casino,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
                 MunchkinIconButton(onClick = onFight) {
                     MunchkinIcon(
                         Icons.Default.LocalFireDepartment,
-                        tint = MunchkinTheme.colors.error
+                        tint = MunchkinTheme.colors.red
                     )
                 }
             }
@@ -149,7 +149,6 @@ fun DetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                backgroundColor = MunchkinTheme.colors.primaryContainer,
                 borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(24.dp)
             ) {
@@ -165,16 +164,13 @@ fun DetailsScreen(
                             fontWeight = FontWeight.Medium,
                             letterSpacing = 1.5.sp
                         ),
-                        color = MunchkinTheme.colors.onPrimaryContainer.copy(alpha = 0.8f)
+                        color = MunchkinTheme.colors.onBackground
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     MunchkinText(
                         text = character.power.toString(),
-                        style = MunchkinTheme.typography.displayLarge.copy(
-                            fontWeight = FontWeight.Black,
-                            fontSize = 80.sp
-                        ),
-                        color = MunchkinTheme.colors.onPrimaryContainer
+                        style = MunchkinTheme.typography.displayLarge,
+                        color = MunchkinTheme.colors.onBackground
                     )
                 }
             }
@@ -191,7 +187,6 @@ fun DetailsScreen(
                 // Level Card
                 MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    backgroundColor = MunchkinTheme.colors.surfaceContainer,
                     borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -207,7 +202,7 @@ fun DetailsScreen(
                                 fontWeight = FontWeight.Medium,
                                 letterSpacing = 1.2.sp
                             ),
-                            color = MunchkinTheme.colors.onSurfaceVariant
+                            color = MunchkinTheme.colors.onBackground
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(
@@ -260,8 +255,7 @@ fun DetailsScreen(
                 // Items Card
                 MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    backgroundColor = MunchkinTheme.colors.surfaceContainer,
-                    borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.2f),
+                    borderColor = MunchkinTheme.colors.green.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
@@ -276,7 +270,7 @@ fun DetailsScreen(
                                 fontWeight = FontWeight.Medium,
                                 letterSpacing = 1.2.sp
                             ),
-                            color = MunchkinTheme.colors.onSurfaceVariant
+                            color = MunchkinTheme.colors.onBackground
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(
@@ -287,15 +281,15 @@ fun DetailsScreen(
                                 onClick = { viewModel.changePower(characterId, -1) },
                                 size = 36.dp,
                                 colors = MunchkinIconButtonDefaults.filledIconButtonColors(
-                                    containerColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.1f),
-                                    contentColor = MunchkinTheme.colors.tertiary
+                                    containerColor = MunchkinTheme.colors.green.copy(alpha = 0.1f),
+                                    contentColor = MunchkinTheme.colors.green
                                 ),
-                                borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
+                                borderColor = MunchkinTheme.colors.green.copy(alpha = 0.5f)
                             ) {
                                 MunchkinIcon(
                                     Icons.Default.Remove,
                                     size = 18.dp,
-                                    tint = MunchkinTheme.colors.tertiary
+                                    tint = MunchkinTheme.colors.green
                                 )
                             }
                             MunchkinText(
@@ -303,7 +297,7 @@ fun DetailsScreen(
                                 style = MunchkinTheme.typography.headlineLarge.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
-                                color = MunchkinTheme.colors.tertiary,
+                                color = MunchkinTheme.colors.green,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center
                             )
@@ -311,15 +305,15 @@ fun DetailsScreen(
                                 onClick = { viewModel.changePower(characterId, +1) },
                                 size = 36.dp,
                                 colors = MunchkinIconButtonDefaults.filledIconButtonColors(
-                                    containerColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.1f),
-                                    contentColor = MunchkinTheme.colors.tertiary
+                                    containerColor = MunchkinTheme.colors.green.copy(alpha = 0.1f),
+                                    contentColor = MunchkinTheme.colors.green
                                 ),
-                                borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
+                                borderColor = MunchkinTheme.colors.green.copy(alpha = 0.5f)
                             ) {
                                 MunchkinIcon(
                                     Icons.Default.Add,
                                     size = 18.dp,
-                                    tint = MunchkinTheme.colors.tertiary
+                                    tint = MunchkinTheme.colors.green
                                 )
                             }
                         }

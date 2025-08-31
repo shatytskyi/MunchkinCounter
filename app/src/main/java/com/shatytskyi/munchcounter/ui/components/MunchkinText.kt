@@ -13,7 +13,7 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 fun MunchkinText(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = MunchkinTheme.colors.onSurface,
+    color: Color = MunchkinTheme.colors.onBackground,
     style: TextStyle = MunchkinTheme.typography.bodyMedium,
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,

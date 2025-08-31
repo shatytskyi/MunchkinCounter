@@ -45,11 +45,10 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
-import com.shatytskyi.munchcounter.ui.components.MunchkinButton
-import com.shatytskyi.munchcounter.ui.components.MunchkinButtonDefaults
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinOutlinedButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
@@ -58,7 +57,7 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
 @Composable
-fun CharacterListScreen(
+fun ListScreen(
     viewModel: CommonViewModel,
     onCharacterClick: (Long) -> Unit,
     modifier: Modifier = Modifier
@@ -86,7 +85,7 @@ fun CharacterListScreen(
                 ) {
                     MunchkinIcon(
                         imageVector = Icons.Outlined.Refresh,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
 
@@ -99,14 +98,14 @@ fun CharacterListScreen(
                 ) {
                     MunchkinIcon(
                         imageVector = Icons.Outlined.PlaylistRemove,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
 
                 MunchkinIconButton(onClick = { showDiceDialog = true }) {
                     MunchkinIcon(
                         imageVector = Icons.Outlined.Casino,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
             }
@@ -202,22 +201,22 @@ private fun EmptyStateContent(
                 style = MunchkinTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
-                color = MunchkinTheme.colors.onSurface,
+                color = MunchkinTheme.colors.onBackground,
                 textAlign = TextAlign.Center
             )
 
             MunchkinText(
                 text = "Add your first player to get started with Munchkin!",
                 style = MunchkinTheme.typography.bodyLarge,
-                color = MunchkinTheme.colors.onSurfaceVariant,
+                color = MunchkinTheme.colors.onBackground,
                 textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            MunchkinButton(
+            MunchkinOutlinedButton(
                 onClick = onAddCharacterClick,
-                colors = MunchkinButtonDefaults.primaryColors()
+                containerColor = MunchkinTheme.colors.primary,
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -226,14 +225,14 @@ private fun EmptyStateContent(
                     MunchkinIcon(
                         Icons.Default.Add,
                         size = 24.dp,
-                        tint = MunchkinTheme.colors.onPrimary
+                        tint = MunchkinTheme.colors.onBackground
                     )
                     MunchkinText(
                         text = "Add Player",
                         style = MunchkinTheme.typography.labelLarge.copy(
                             fontWeight = FontWeight.Medium
                         ),
-                        color = MunchkinTheme.colors.onPrimary
+                        color = MunchkinTheme.colors.onBackground
                     )
                 }
             }
@@ -276,12 +275,9 @@ private fun CharacterListContent(
         }
 
         item {
-            MunchkinButton(
+            MunchkinOutlinedButton(
                 onClick = onAddCharacterClick,
-                colors = MunchkinButtonDefaults.buttonColors(
-                    containerColor = MunchkinTheme.colors.primaryContainer,
-                    contentColor = MunchkinTheme.colors.onSurface
-                ),
+                containerColor = MunchkinTheme.colors.primary,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
@@ -291,14 +287,14 @@ private fun CharacterListContent(
                     MunchkinIcon(
                         Icons.Default.Add,
                         size = 24.dp,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                     MunchkinText(
                         text = "Add Player",
                         style = MunchkinTheme.typography.labelLarge.copy(
                             fontWeight = FontWeight.Medium
                         ),
-                        color = MunchkinTheme.colors.onSurface
+                        color = MunchkinTheme.colors.onBackground
                     )
                 }
             }
@@ -337,9 +333,9 @@ private fun DiceDialog(
                     }
                 }
 
-                MunchkinButton(
+                MunchkinOutlinedButton(
                     onClick = { result = (1..6).random() },
-                    colors = MunchkinButtonDefaults.primaryColors()
+                    containerColor = MunchkinTheme.colors.primary,
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -348,14 +344,14 @@ private fun DiceDialog(
                         MunchkinIcon(
                             Icons.Default.Casino,
                             size = 24.dp,
-                            tint = MunchkinTheme.colors.onPrimary
+                            tint = MunchkinTheme.colors.onBackground
                         )
                         MunchkinText(
                             text = "Roll",
                             style = MunchkinTheme.typography.labelLarge.copy(
                                 fontWeight = FontWeight.Medium
                             ),
-                            color = MunchkinTheme.colors.onPrimary
+                            color = MunchkinTheme.colors.onBackground
                         )
                     }
                 }

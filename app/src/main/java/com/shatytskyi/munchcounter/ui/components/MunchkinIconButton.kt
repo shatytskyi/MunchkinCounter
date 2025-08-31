@@ -76,9 +76,9 @@ object MunchkinIconButtonDefaults {
     @Composable
     fun iconButtonColors(
         containerColor: Color = Color.Transparent,
-        contentColor: Color = MunchkinTheme.colors.onSurface,
+        contentColor: Color = MunchkinTheme.colors.onBackground,
         disabledContainerColor: Color = Color.Transparent,
-        disabledContentColor: Color = MunchkinTheme.colors.onSurface.copy(alpha = 0.38f)
+        disabledContentColor: Color = MunchkinTheme.colors.onBackground.copy(alpha = 0.38f)
     ): MunchkinIconButtonColors = MunchkinIconButtonColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -89,9 +89,9 @@ object MunchkinIconButtonDefaults {
     @Composable
     fun filledIconButtonColors(
         containerColor: Color = MunchkinTheme.colors.primary,
-        contentColor: Color = MunchkinTheme.colors.onPrimary,
-        disabledContainerColor: Color = MunchkinTheme.colors.onSurface.copy(alpha = 0.12f),
-        disabledContentColor: Color = MunchkinTheme.colors.onSurface.copy(alpha = 0.38f)
+        contentColor: Color = MunchkinTheme.colors.onBackground,
+        disabledContainerColor: Color = MunchkinTheme.colors.onBackground.copy(alpha = 0.12f),
+        disabledContentColor: Color = MunchkinTheme.colors.onBackground.copy(alpha = 0.38f)
     ): MunchkinIconButtonColors = MunchkinIconButtonColors(
         containerColor = containerColor,
         contentColor = contentColor,

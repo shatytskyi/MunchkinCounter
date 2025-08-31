@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,7 +33,7 @@ fun MunchkinDialog(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(MunchkinTheme.colors.surface)
+                .background(MunchkinTheme.colors.background)
                 .padding(24.dp)
         ) {
             Column(
@@ -47,7 +46,7 @@ fun MunchkinDialog(
                         style = MunchkinTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
-                        color = MunchkinTheme.colors.onSurface,
+                        color = MunchkinTheme.colors.onBackground,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -70,38 +69,5 @@ fun MunchkinDialog(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MunchkinTextButton(
-    onClick: () -> Unit,
-    text: String,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    color: Color = MunchkinTheme.colors.primary
-) {
-    MunchkinButton(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        colors = MunchkinButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = color,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = color.copy(alpha = 0.38f)
-        ),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(
-            horizontal = 16.dp,
-            vertical = 8.dp
-        )
-    ) {
-        MunchkinText(
-            text = text,
-            style = MunchkinTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.Medium
-            ),
-            color = if (enabled) color else color.copy(alpha = 0.38f)
-        )
     }
 }

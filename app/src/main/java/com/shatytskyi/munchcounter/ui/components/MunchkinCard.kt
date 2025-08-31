@@ -21,9 +21,9 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 fun MunchkinCard(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(8.dp),
-    backgroundColor: Color = MunchkinTheme.colors.surface,
-    borderColor: Color = MunchkinTheme.colors.outline,
-    borderWidth: Dp = 1.dp,
+    backgroundColor: Color = Color.Transparent,
+    borderColor: Color = MunchkinTheme.colors.primary,
+    borderWidth: Dp = 2.dp,
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
@@ -34,7 +34,7 @@ fun MunchkinCard(
             .background(backgroundColor)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = MunchkinTheme.colors.onSurface),
+                indication = rememberRipple(color = MunchkinTheme.colors.onBackground),
                 onClick = onClick
             )
     } else {

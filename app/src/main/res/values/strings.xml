@@ -38,7 +38,7 @@
     <string name="gear">Gear</string>
     <string name="items">Items:</string>
     <string name="total_power">TOTAL POWER</string>
-    <string name="power_controls">POWER CONTROLS</string>
+    <string name="items_controls">EQUIP CONTROLS</string>
 
     <!-- Fight Screen -->
     <string name="fight">Fight</string>

@@ -40,12 +40,11 @@ import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
-import com.shatytskyi.munchcounter.ui.components.MunchkinButton
-import com.shatytskyi.munchcounter.ui.components.MunchkinButtonDefaults
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinOutlinedButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
@@ -103,7 +102,7 @@ fun FightScreen(
                 MunchkinText(
                     text = stringResource(R.string.loading_fight),
                     style = MunchkinTheme.typography.bodyLarge,
-                    color = MunchkinTheme.colors.onSurface
+                    color = MunchkinTheme.colors.onBackground
                 )
             }
         }
@@ -129,7 +128,7 @@ fun FightScreen(
                 MunchkinIconButton(onClick = { showDiceDialog = true }) {
                     MunchkinIcon(
                         Icons.Default.Casino,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
             }
@@ -154,23 +153,21 @@ fun FightScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = {
                             monster = Character.createMonster()
                             currentPlayer = player?.copy()
                             initialPower = player?.items ?: 0
                             helper = null
                         },
-                        colors = MunchkinButtonDefaults.secondaryColors(),
-                        borderColor = MunchkinTheme.colors.secondary.copy(alpha = 0.5f)
+                        containerColor = MunchkinTheme.colors.grey,
                     ) {
                         MunchkinText(stringResource(R.string.reset))
                     }
 
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { showHelpersDialog = true },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
+                        containerColor = MunchkinTheme.colors.green,
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             MunchkinIcon(
@@ -182,13 +179,9 @@ fun FightScreen(
                         }
                     }
 
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = onBack,
-                        colors = MunchkinButtonDefaults.buttonColors(
-                            containerColor = MunchkinTheme.colors.outline,
-                            contentColor = MunchkinTheme.colors.onSurface
-                        ),
-                        borderColor = MunchkinTheme.colors.outline.copy(alpha = 0.5f)
+                        containerColor = MunchkinTheme.colors.grey,
                     ) {
                         MunchkinText(stringResource(R.string.exit))
                     }
@@ -199,8 +192,7 @@ fun FightScreen(
                 // Fight Results Card
                 MunchkinCard(
                     modifier = Modifier.fillMaxWidth(),
-                    backgroundColor = MunchkinTheme.colors.surfaceContainer,
-                    borderColor = MunchkinTheme.colors.outline.copy(alpha = 0.3f),
+                    borderColor = MunchkinTheme.colors.grey.copy(alpha = 0.3f),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
@@ -216,21 +208,21 @@ fun FightScreen(
                                 style = MunchkinTheme.typography.titleSmall,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center,
-                                color = MunchkinTheme.colors.onSurfaceVariant
+                                color = MunchkinTheme.colors.onBackground
                             )
                             MunchkinText(
                                 text = stringResource(R.string.helper_header),
                                 style = MunchkinTheme.typography.titleSmall,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center,
-                                color = MunchkinTheme.colors.onSurfaceVariant
+                                color = MunchkinTheme.colors.onBackground
                             )
                             MunchkinText(
                                 text = stringResource(R.string.result_header),
                                 style = MunchkinTheme.typography.titleSmall,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center,
-                                color = MunchkinTheme.colors.onSurfaceVariant
+                                color = MunchkinTheme.colors.onBackground
                             )
                         }
 
@@ -257,10 +249,10 @@ fun FightScreen(
                                         fontWeight = FontWeight.Bold
                                     ),
                                     color = when {
-                                        helper != null -> MunchkinTheme.colors.onSurface
-                                        currentPlayer!!.items > initialPower -> MunchkinTheme.colors.tertiary
-                                        currentPlayer!!.items < initialPower -> MunchkinTheme.colors.error
-                                        else -> MunchkinTheme.colors.onSurface
+                                        helper != null -> MunchkinTheme.colors.onBackground
+                                        currentPlayer!!.items > initialPower -> MunchkinTheme.colors.green
+                                        currentPlayer!!.items < initialPower -> MunchkinTheme.colors.red
+                                        else -> MunchkinTheme.colors.onBackground
                                     }
                                 )
                             }
@@ -287,7 +279,7 @@ fun FightScreen(
                                     MunchkinText(
                                         text = "-",
                                         style = MunchkinTheme.typography.bodyMedium,
-                                        color = MunchkinTheme.colors.onSurfaceVariant
+                                        color = MunchkinTheme.colors.onBackground
                                     )
                                 }
                             }
@@ -302,12 +294,12 @@ fun FightScreen(
                                     style = MunchkinTheme.typography.titleLarge.copy(
                                         fontWeight = FontWeight.Bold
                                     ),
-                                    color = if (isVictory) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error
+                                    color = if (isVictory) MunchkinTheme.colors.green else MunchkinTheme.colors.red
                                 )
 
                                 MunchkinIcon(
                                     if (isVictory) Icons.Default.EmojiEvents else Icons.AutoMirrored.Filled.DirectionsRun,
-                                    tint = if (isVictory) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error,
+                                    tint = if (isVictory) MunchkinTheme.colors.green else MunchkinTheme.colors.red,
                                     size = 24.dp
                                 )
 
@@ -316,11 +308,11 @@ fun FightScreen(
                                         R.string.escape
                                     ),
                                     style = MunchkinTheme.typography.labelMedium,
-                                    color = if (isVictory) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error
+                                    color = if (isVictory) MunchkinTheme.colors.green else MunchkinTheme.colors.red
                                 )
 
                                 // Result button
-                                MunchkinButton(
+                                MunchkinOutlinedButton(
                                     onClick = {
                                         if (isVictory) {
                                             // Victory - level up
@@ -331,15 +323,10 @@ fun FightScreen(
                                             showEscapeDiceDialog = true
                                         }
                                     },
-                                    colors = if (isVictory) {
-                                        MunchkinButtonDefaults.tertiaryColors()
+                                    containerColor = if (isVictory) {
+                                        MunchkinTheme.colors.green
                                     } else {
-                                        MunchkinButtonDefaults.errorColors()
-                                    },
-                                    borderColor = if (isVictory) {
-                                        MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
-                                    } else {
-                                        MunchkinTheme.colors.error.copy(alpha = 0.5f)
+                                        MunchkinTheme.colors.red
                                     },
                                     modifier = Modifier.padding(top = 8.dp)
                                 ) {
@@ -442,18 +429,16 @@ private fun PlayerFightControls(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                MunchkinButton(
+                MunchkinOutlinedButton(
                     onClick = { onLevelChange(-1) },
-                    colors = MunchkinButtonDefaults.errorColors(),
-                    borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f)
+                    containerColor = MunchkinTheme.colors.red,
                 ) {
                     MunchkinText("LVL-")
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                MunchkinButton(
+                MunchkinOutlinedButton(
                     onClick = { onLevelChange(+1) },
-                    colors = MunchkinButtonDefaults.tertiaryColors(),
-                    borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
+                    containerColor = MunchkinTheme.colors.green,
                 ) {
                     MunchkinText("LVL+")
                 }
@@ -467,9 +452,9 @@ private fun PlayerFightControls(
                 style = MunchkinTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 color = when {
-                    player.items > initialPower -> MunchkinTheme.colors.tertiary
-                    player.items < initialPower -> MunchkinTheme.colors.error
-                    else -> MunchkinTheme.colors.onSurface
+                    player.items > initialPower -> MunchkinTheme.colors.green
+                    player.items < initialPower -> MunchkinTheme.colors.red
+                    else -> MunchkinTheme.colors.onBackground
                 }
             )
 
@@ -483,34 +468,29 @@ private fun PlayerFightControls(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-5) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-5") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-4) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-4") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-3) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-3") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-2) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-2") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-1) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-1") }
                 }
@@ -519,34 +499,29 @@ private fun PlayerFightControls(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+1) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+1") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+2) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+2") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+3) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+3") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+4) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+4") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+5) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+5") }
                 }
@@ -563,7 +538,7 @@ private fun MonsterFightControls(
 ) {
     MunchkinCard(
         modifier = modifier.fillMaxWidth(),
-        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.3f),
+        borderColor = MunchkinTheme.colors.red.copy(alpha = 0.3f),
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(
@@ -585,34 +560,29 @@ private fun MonsterFightControls(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-5) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-5") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-4) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-4") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-3) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-3") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-2) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-2") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(-1) },
-                        colors = MunchkinButtonDefaults.errorColors(),
-                        borderColor = MunchkinTheme.colors.error.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.red,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("-1") }
                 }
@@ -621,34 +591,29 @@ private fun MonsterFightControls(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+1) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+1") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+2) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+2") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+3) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+3") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+4) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+4") }
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onPowerChange(+5) },
-                        colors = MunchkinButtonDefaults.tertiaryColors(),
-                        borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f),
+                        containerColor = MunchkinTheme.colors.green,
                         modifier = Modifier.weight(1f)
                     ) { MunchkinText("+5") }
                 }
@@ -676,13 +641,10 @@ private fun HelpersDialog(
                         if (character.name == playerName) stringResource(R.string.twin) else character.name
                     val totalScore = scoreDifference + character.power
 
-                    MunchkinButton(
+                    MunchkinOutlinedButton(
                         onClick = { onHelperSelected(character) },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = MunchkinButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
-                            contentColor = MunchkinTheme.colors.onSurface
-                        )
+                        containerColor = Color.Transparent,
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -691,7 +653,7 @@ private fun HelpersDialog(
                             MunchkinText(helperName)
                             MunchkinText(
                                 text = if (totalScore > 0) "+$totalScore" else totalScore.toString(),
-                                color = if (totalScore > 0) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error
+                                color = if (totalScore > 0) MunchkinTheme.colors.green else MunchkinTheme.colors.red
                             )
                         }
                     }
@@ -737,7 +699,7 @@ private fun EscapeDiceDialog(
                         style = MunchkinTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         ),
-                        color = if (result >= 5) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error
+                        color = if (result >= 5) MunchkinTheme.colors.green else MunchkinTheme.colors.red
                     )
 
                     MunchkinText(
@@ -745,11 +707,11 @@ private fun EscapeDiceDialog(
                             R.string.escape_failed
                         ),
                         style = MunchkinTheme.typography.bodyMedium,
-                        color = if (result >= 5) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error
+                        color = if (result >= 5) MunchkinTheme.colors.green else MunchkinTheme.colors.red
                     )
                 }
 
-                MunchkinButton(
+                MunchkinOutlinedButton(
                     onClick = {
                         if (!isRolling) {
                             isRolling = true
@@ -758,8 +720,7 @@ private fun EscapeDiceDialog(
                             isRolling = false
                         }
                     },
-                    colors = MunchkinButtonDefaults.primaryColors(),
-                    borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.5f),
+                    containerColor = MunchkinTheme.colors.primary,
                     enabled = !isRolling
                 ) {
                     MunchkinText(

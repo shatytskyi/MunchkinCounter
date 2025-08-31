@@ -18,7 +18,7 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 fun MunchkinIcon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
-    tint: Color = MunchkinTheme.colors.onSurface,
+    tint: Color = MunchkinTheme.colors.onBackground,
     size: Dp = 24.dp
 ) {
     val painter = rememberVectorPainter(imageVector)

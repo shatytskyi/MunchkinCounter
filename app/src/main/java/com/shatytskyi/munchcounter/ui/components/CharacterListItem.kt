@@ -16,9 +16,11 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
@@ -34,8 +36,7 @@ fun CharacterListItem(
     MunchkinCard(
         modifier = modifier
             .fillMaxWidth(),
-        backgroundColor = MunchkinTheme.colors.surfaceContainer,
-        borderColor = MunchkinTheme.colors.outline.copy(alpha = 0.3f),
+        borderColor = MunchkinTheme.colors.primary,
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
     ) {
@@ -45,37 +46,26 @@ fun CharacterListItem(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Character Name Header
-            Box(
+            MunchkinText(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        color = MunchkinTheme.colors.primaryContainer,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-            ) {
-                MunchkinText(
-                    text = character.name,
-                    style = MunchkinTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.SemiBold
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp
                     ),
-                    color = MunchkinTheme.colors.onPrimaryContainer,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 8.dp
-                        )
-                        .align(Alignment.Center)
-                )
-            }
+                text = character.name,
+                style = MunchkinTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MunchkinTheme.colors.onBackground,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
 
             // Stats Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 StatCard(
@@ -88,12 +78,7 @@ fun CharacterListItem(
                 )
 
                 Box(
-                    modifier = Modifier
-                        .weight(0.6f)
-                        .background(
-                            color = MunchkinTheme.colors.secondaryContainer,
-                            shape = RoundedCornerShape(16.dp)
-                        )
+                    modifier = Modifier.weight(0.6f)
                 ) {
                     Column(
                         modifier = Modifier
@@ -104,15 +89,17 @@ fun CharacterListItem(
                         MunchkinText(
                             text = "Power",
                             style = MunchkinTheme.typography.labelMedium,
-                            color = MunchkinTheme.colors.onSecondaryContainer
+                            color = MunchkinTheme.colors.onBackground
                         )
+
+                        Spacer(modifier = Modifier.height(8.dp))
 
                         MunchkinText(
                             text = character.power.toString(),
                             style = MunchkinTheme.typography.headlineLarge.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            color = MunchkinTheme.colors.onSecondaryContainer
+                            color = MunchkinTheme.colors.onBackground
                         )
                     }
                 }
@@ -122,7 +109,7 @@ fun CharacterListItem(
                     value = character.items,
                     onDecrease = { onItemsChange(-1) },
                     onIncrease = { onItemsChange(+1) },
-                    color = MunchkinTheme.colors.tertiary,
+                    color = MunchkinTheme.colors.green,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -136,15 +123,11 @@ private fun StatCard(
     value: Int,
     onDecrease: () -> Unit,
     onIncrease: () -> Unit,
-    color: androidx.compose.ui.graphics.Color,
+    color: Color,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .background(
-                color = MunchkinTheme.colors.surfaceContainerLow,
-                shape = RoundedCornerShape(16.dp)
-            )
     ) {
         Column(
             modifier = Modifier
@@ -156,7 +139,7 @@ private fun StatCard(
             MunchkinText(
                 text = title,
                 style = MunchkinTheme.typography.labelMedium,
-                color = MunchkinTheme.colors.onSurfaceVariant
+                color = MunchkinTheme.colors.onBackground
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -167,7 +150,7 @@ private fun StatCard(
             ) {
                 MunchkinIconButton(
                     onClick = onDecrease,
-                    size = 32.dp,
+                    size = 48.dp,
                     colors = MunchkinIconButtonDefaults.iconButtonColors(
                         contentColor = color
                     )
@@ -182,26 +165,23 @@ private fun StatCard(
                     modifier = Modifier
                         .weight(1f)
                         .background(
-                            color = MunchkinTheme.colors.surface,
+                            color = MunchkinTheme.colors.background,
                             shape = RoundedCornerShape(8.dp)
                         ),
                 ) {
                     MunchkinText(
                         text = value.toString(),
-                        style = MunchkinTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
+                        style = MunchkinTheme.typography.titleLarge,
                         color = color,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(vertical = 4.dp)
                             .align(Alignment.Center)
                     )
                 }
 
                 MunchkinIconButton(
                     onClick = onIncrease,
-                    size = 32.dp,
+                    size = 48.dp,
                     colors = MunchkinIconButtonDefaults.iconButtonColors(
                         contentColor = color
                     )
@@ -212,6 +192,30 @@ private fun StatCard(
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CharacterListItemPreview() {
+    MunchkinTheme {
+        Box(
+            modifier = Modifier
+                .background(MunchkinTheme.colors.background)
+                .padding(16.dp)
+        ) {
+            CharacterListItem(
+                character = Character(
+                    id = 1,
+                    name = "Aragorn",
+                    lvl = 99,
+                    items = 99
+                ),
+                onClick = {},
+                onLevelChange = {},
+                onItemsChange = {}
+            )
         }
     }
 }

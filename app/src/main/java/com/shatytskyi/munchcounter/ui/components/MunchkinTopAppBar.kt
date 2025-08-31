@@ -44,7 +44,7 @@ fun MunchkinTopAppBar(
                 ) {
                     MunchkinIcon(
                         Icons.AutoMirrored.Filled.ArrowBack,
-                        tint = MunchkinTheme.colors.onSurface
+                        tint = MunchkinTheme.colors.onBackground
                     )
                 }
 
@@ -58,7 +58,7 @@ fun MunchkinTopAppBar(
                 style = MunchkinTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
-                color = MunchkinTheme.colors.onSurface,
+                color = MunchkinTheme.colors.onBackground,
                 textAlign = TextAlign.Start,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,

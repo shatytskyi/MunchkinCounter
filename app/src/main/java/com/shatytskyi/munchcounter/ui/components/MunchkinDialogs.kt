@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -40,7 +39,7 @@ fun WarningDialog(
             MunchkinText(
                 text = message,
                 style = MunchkinTheme.typography.bodyMedium,
-                color = MunchkinTheme.colors.onSurface,
+                color = MunchkinTheme.colors.onBackground,
                 textAlign = TextAlign.Center
             )
         },
@@ -48,7 +47,7 @@ fun WarningDialog(
             MunchkinTextButton(
                 onClick = onConfirm,
                 text = "Confirm",
-                color = MunchkinTheme.colors.error
+                color = MunchkinTheme.colors.red
             )
         },
         dismissButton = {
@@ -68,7 +67,7 @@ fun AddCharacterDialog(
     modifier: Modifier = Modifier
 ) {
     var name by remember { mutableStateOf("") }
-    
+
     MunchkinDialog(
         onDismissRequest = onDismiss,
         title = "Add New Player",
@@ -79,18 +78,17 @@ fun AddCharacterDialog(
                 MunchkinText(
                     text = "Player Name:",
                     style = MunchkinTheme.typography.labelMedium,
-                    color = MunchkinTheme.colors.onSurface
+                    color = MunchkinTheme.colors.onBackground
                 )
-                
+
                 MunchkinCard(
-                    backgroundColor = MunchkinTheme.colors.surfaceContainer,
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     BasicTextField(
                         value = name,
                         onValueChange = { name = it },
                         textStyle = MunchkinTheme.typography.bodyMedium.copy(
-                            color = MunchkinTheme.colors.onSurface
+                            color = MunchkinTheme.colors.onBackground
                         ),
                         singleLine = true,
                         modifier = Modifier
@@ -127,7 +125,7 @@ fun EditCharacterDialog(
     var name by remember { mutableStateOf(character.name) }
     var level by remember { mutableStateOf(character.lvl.toString()) }
     var items by remember { mutableStateOf(character.items.toString()) }
-    
+
     MunchkinDialog(
         onDismissRequest = onDismiss,
         title = "Edit Player",
@@ -140,17 +138,16 @@ fun EditCharacterDialog(
                     MunchkinText(
                         text = "Name:",
                         style = MunchkinTheme.typography.labelMedium,
-                        color = MunchkinTheme.colors.onSurface
+                        color = MunchkinTheme.colors.onBackground
                     )
                     MunchkinCard(
-                        backgroundColor = MunchkinTheme.colors.surfaceContainer,
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         BasicTextField(
                             value = name,
                             onValueChange = { name = it },
                             textStyle = MunchkinTheme.typography.bodyMedium.copy(
-                                color = MunchkinTheme.colors.onSurface
+                                color = MunchkinTheme.colors.onBackground
                             ),
                             singleLine = true,
                             modifier = Modifier
@@ -159,7 +156,7 @@ fun EditCharacterDialog(
                         )
                     }
                 }
-                
+
                 // Level and Items row
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -172,21 +169,20 @@ fun EditCharacterDialog(
                         MunchkinText(
                             text = "Level:",
                             style = MunchkinTheme.typography.labelMedium,
-                            color = MunchkinTheme.colors.onSurface
+                            color = MunchkinTheme.colors.onBackground
                         )
                         MunchkinCard(
-                            backgroundColor = MunchkinTheme.colors.surfaceContainer,
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             BasicTextField(
                                 value = level,
-                                onValueChange = { 
+                                onValueChange = {
                                     if (it.isEmpty() || it.toIntOrNull() != null) {
                                         level = it
                                     }
                                 },
                                 textStyle = MunchkinTheme.typography.bodyMedium.copy(
-                                    color = MunchkinTheme.colors.onSurface,
+                                    color = MunchkinTheme.colors.onBackground,
                                     textAlign = TextAlign.Center
                                 ),
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -197,7 +193,7 @@ fun EditCharacterDialog(
                             )
                         }
                     }
-                    
+
                     // Items field
                     Column(
                         modifier = Modifier.weight(1f),
@@ -206,21 +202,20 @@ fun EditCharacterDialog(
                         MunchkinText(
                             text = "Items:",
                             style = MunchkinTheme.typography.labelMedium,
-                            color = MunchkinTheme.colors.onSurface
+                            color = MunchkinTheme.colors.onBackground
                         )
                         MunchkinCard(
-                            backgroundColor = MunchkinTheme.colors.surfaceContainer,
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             BasicTextField(
                                 value = items,
-                                onValueChange = { 
+                                onValueChange = {
                                     if (it.isEmpty() || it.toIntOrNull() != null) {
                                         items = it
                                     }
                                 },
                                 textStyle = MunchkinTheme.typography.bodyMedium.copy(
-                                    color = MunchkinTheme.colors.onSurface,
+                                    color = MunchkinTheme.colors.onBackground,
                                     textAlign = TextAlign.Center
                                 ),
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -261,7 +256,7 @@ fun CommonDiceDialog(
     modifier: Modifier = Modifier
 ) {
     var result by remember { mutableStateOf<Int?>(null) }
-    
+
     MunchkinDialog(
         onDismissRequest = onDismiss,
         title = "Roll Dice",
@@ -280,20 +275,20 @@ fun CommonDiceDialog(
                         color = MunchkinTheme.colors.primary
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 // Roll button
-                MunchkinButton(
+                MunchkinOutlinedButton(
                     onClick = { result = (1..6).random() },
-                    colors = MunchkinButtonDefaults.primaryColors()
+                    containerColor = MunchkinTheme.colors.primary
                 ) {
                     MunchkinText(
                         text = "Roll",
                         style = MunchkinTheme.typography.labelLarge.copy(
                             fontWeight = FontWeight.Medium
                         ),
-                        color = MunchkinTheme.colors.onPrimary
+                        color = MunchkinTheme.colors.onBackground
                     )
                 }
             }
