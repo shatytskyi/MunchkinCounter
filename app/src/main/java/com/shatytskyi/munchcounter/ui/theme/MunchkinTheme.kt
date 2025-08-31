@@ -1,14 +1,11 @@
 package com.shatytskyi.munchcounter.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.shatytskyi.munchcounter.ui.components.MunchkinBackground
 
 val LocalMunchkinColors = staticCompositionLocalOf { MunchkinColors() }
 val LocalMunchkinTypography = staticCompositionLocalOf { MunchkinTypography() }
@@ -41,7 +38,7 @@ object MunchkinTheme {
     val colors: MunchkinColors
         @Composable
         get() = LocalMunchkinColors.current
-    
+
     val typography: MunchkinTypography
         @Composable
         get() = LocalMunchkinTypography.current

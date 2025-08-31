@@ -49,14 +49,13 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
-import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
-import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
+import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 import kotlin.random.Random
 
 @Composable
 fun FightScreen(
-    viewModel: CharacterViewModel,
+    viewModel: CommonViewModel,
     playerId: Long,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
@@ -94,7 +93,7 @@ fun FightScreen(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 MunchkinText(
                     text = "●●●",
@@ -142,11 +141,11 @@ fun FightScreen(
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
-                .padding(Dimens.screenPaddingHorizontal),
-            verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
             item {
@@ -176,7 +175,7 @@ fun FightScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             MunchkinIcon(
                                 Icons.Default.PersonAdd,
-                                size = Dimens.iconSizeSmall
+                                size = 24.dp
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             MunchkinText(stringResource(R.string.helper))
@@ -205,7 +204,7 @@ fun FightScreen(
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
-                        modifier = Modifier.padding(Dimens.paddingLarge)
+                        modifier = Modifier.padding(16.dp)
                     ) {
                         // Header
                         Row(
@@ -235,7 +234,7 @@ fun FightScreen(
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+                        Spacer(modifier = Modifier.height(8.dp))
 
                         // Values
                         Row(
@@ -309,7 +308,7 @@ fun FightScreen(
                                 MunchkinIcon(
                                     if (isVictory) Icons.Default.EmojiEvents else Icons.AutoMirrored.Filled.DirectionsRun,
                                     tint = if (isVictory) MunchkinTheme.colors.tertiary else MunchkinTheme.colors.error,
-                                    size = Dimens.iconSizeSmall
+                                    size = 24.dp
                                 )
 
                                 MunchkinText(
@@ -342,7 +341,7 @@ fun FightScreen(
                                     } else {
                                         MunchkinTheme.colors.error.copy(alpha = 0.5f)
                                     },
-                                    modifier = Modifier.padding(top = Dimens.paddingMedium)
+                                    modifier = Modifier.padding(top = 8.dp)
                                 ) {
                                     MunchkinText(
                                         if (isVictory) stringResource(R.string.win_button) else stringResource(
@@ -428,7 +427,7 @@ private fun PlayerFightControls(
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(
-            modifier = Modifier.padding(Dimens.paddingLarge)
+            modifier = Modifier.padding(16.dp)
         ) {
             MunchkinText(
                 text = stringResource(R.string.player_level, player.name, player.lvl),
@@ -436,7 +435,7 @@ private fun PlayerFightControls(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Level controls
             Row(
@@ -450,7 +449,7 @@ private fun PlayerFightControls(
                 ) {
                     MunchkinText("LVL-")
                 }
-                Spacer(modifier = Modifier.width(Dimens.paddingLarge))
+                Spacer(modifier = Modifier.width(16.dp))
                 MunchkinButton(
                     onClick = { onLevelChange(+1) },
                     colors = MunchkinButtonDefaults.tertiaryColors(),
@@ -460,7 +459,7 @@ private fun PlayerFightControls(
                 }
             }
 
-            Spacer(modifier = Modifier.height(Dimens.paddingLarge))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Power controls
             MunchkinText(
@@ -474,11 +473,11 @@ private fun PlayerFightControls(
                 }
             )
 
-            Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Power buttons grid
             Column(
-                verticalArrangement = Arrangement.spacedBy(Dimens.paddingSmall)
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -568,7 +567,7 @@ private fun MonsterFightControls(
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(
-            modifier = Modifier.padding(Dimens.paddingLarge)
+            modifier = Modifier.padding(16.dp)
         ) {
             MunchkinText(
                 text = stringResource(R.string.monster_power, monster.power),
@@ -576,11 +575,11 @@ private fun MonsterFightControls(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            Spacer(modifier = Modifier.height(Dimens.paddingLarge))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Monster power buttons
             Column(
-                verticalArrangement = Arrangement.spacedBy(Dimens.paddingSmall)
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),

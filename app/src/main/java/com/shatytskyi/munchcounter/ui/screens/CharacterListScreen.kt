@@ -54,13 +54,12 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
-import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
-import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
+import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
 @Composable
 fun CharacterListScreen(
-    viewModel: CharacterViewModel,
+    viewModel: CommonViewModel,
     onCharacterClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -191,12 +190,12 @@ private fun EmptyStateContent(
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
             .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
-            .padding(Dimens.paddingExtraLarge),
+            .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             MunchkinText(
                 text = "No Players Yet",
@@ -214,7 +213,7 @@ private fun EmptyStateContent(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(Dimens.paddingLarge))
+            Spacer(modifier = Modifier.height(16.dp))
 
             MunchkinButton(
                 onClick = onAddCharacterClick,
@@ -222,11 +221,11 @@ private fun EmptyStateContent(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     MunchkinIcon(
                         Icons.Default.Add,
-                        size = Dimens.iconSizeSmall,
+                        size = 24.dp,
                         tint = MunchkinTheme.colors.onPrimary
                     )
                     MunchkinText(
@@ -253,12 +252,12 @@ private fun CharacterListContent(
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
-            start = Dimens.screenPaddingHorizontal,
-            end = Dimens.screenPaddingHorizontal,
-            top = Dimens.paddingMedium,
+            start = 16.dp,
+            end = 16.dp,
+            top = 8.dp,
             bottom = 100.dp // Space for FAB
         ),
-        verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         itemsIndexed(
             items = characters,
@@ -287,11 +286,11 @@ private fun CharacterListContent(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     MunchkinIcon(
                         Icons.Default.Add,
-                        size = Dimens.iconSizeSmall,
+                        size = 24.dp,
                         tint = MunchkinTheme.colors.onSurface
                     )
                     MunchkinText(
@@ -320,7 +319,7 @@ private fun DiceDialog(
         content = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 AnimatedVisibility(
                     visible = result != null,
@@ -344,11 +343,11 @@ private fun DiceDialog(
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         MunchkinIcon(
                             Icons.Default.Casino,
-                            size = Dimens.iconSizeSmall,
+                            size = 24.dp,
                             tint = MunchkinTheme.colors.onPrimary
                         )
                         MunchkinText(

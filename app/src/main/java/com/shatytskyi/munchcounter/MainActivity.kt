@@ -7,35 +7,31 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.shatytskyi.munchcounter.ui.components.MunchkinBackground
 import com.shatytskyi.munchcounter.ui.screens.CharacterListScreen
+import com.shatytskyi.munchcounter.ui.screens.DetailsScreen
 import com.shatytskyi.munchcounter.ui.screens.FightScreen
-import com.shatytskyi.munchcounter.ui.screens.SoloScreen
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
-import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
+import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    
+
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        
+
         setContent {
             MunchkinTheme {
-                MunchkinBackground {
-                    MunchkinApp()
-                }
+                MunchkinApp()
             }
         }
     }
@@ -44,9 +40,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MunchkinApp() {
     val navController = rememberNavController()
-    
-    val sharedViewModel: CharacterViewModel = hiltViewModel()
-    
+
+    val sharedViewModel: CommonViewModel = hiltViewModel()
+
     NavHost(
         navController = navController,
         startDestination = "character_list"
@@ -59,20 +55,20 @@ fun MunchkinApp() {
                 }
             )
         }
-        
+
         composable(
             route = "solo/{characterId}",
             arguments = listOf(navArgument("characterId") { type = NavType.LongType })
         ) { backStackEntry ->
             val characterId = backStackEntry.arguments?.getLong("characterId") ?: -1
-            SoloScreen(
+            DetailsScreen(
                 viewModel = sharedViewModel,
                 characterId = characterId,
                 onBack = { navController.popBackStack() },
                 onFight = { navController.navigate("fight/$characterId") }
             )
         }
-        
+
         composable(
             route = "fight/{playerId}",
             arguments = listOf(navArgument("playerId") { type = NavType.LongType })

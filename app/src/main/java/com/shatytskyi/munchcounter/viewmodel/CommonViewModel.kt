@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor(
+class CommonViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 
@@ -73,12 +73,6 @@ class CharacterViewModel @Inject constructor(
         }
     }
 
-    fun undoRemoveAll() {
-        viewModelScope.launch {
-            repository.restoreFromBackup()
-        }
-    }
-
     fun changePower(id: Long, value: Int) {
         viewModelScope.launch {
             repository.changePower(id, value)
@@ -88,13 +82,6 @@ class CharacterViewModel @Inject constructor(
     fun changeLevel(id: Long, value: Int) {
         viewModelScope.launch {
             repository.changeLevel(id, value)
-        }
-    }
-
-    fun findCharacterById(id: Long, callback: (Character?) -> Unit) {
-        viewModelScope.launch {
-            val character = repository.findCharacterById(id)
-            callback(character)
         }
     }
 }

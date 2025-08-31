@@ -48,13 +48,12 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.PowerControlGrid
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
-import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
-import com.shatytskyi.munchcounter.viewmodel.CharacterViewModel
+import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
 @Composable
-fun SoloScreen(
-    viewModel: CharacterViewModel,
+fun DetailsScreen(
+    viewModel: CommonViewModel,
     characterId: Long,
     onBack: () -> Unit,
     onFight: () -> Unit,
@@ -80,7 +79,7 @@ fun SoloScreen(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(Dimens.paddingLarge)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Simple loading indicator without CircularProgressIndicator
                 MunchkinText(
@@ -140,16 +139,16 @@ fun SoloScreen(
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
-                .padding(vertical = Dimens.paddingMedium),
-            verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                .padding(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Hero Section - Total Power
             MunchkinCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = Dimens.screenPaddingHorizontal),
+                    .padding(horizontal = 16.dp),
                 backgroundColor = MunchkinTheme.colors.primaryContainer,
                 borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(24.dp)
@@ -180,14 +179,14 @@ fun SoloScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(Dimens.paddingSmall))
+            Spacer(modifier = Modifier.height(4.dp))
 
             // Stats Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = Dimens.screenPaddingHorizontal),
-                horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // Level Card
                 MunchkinCard(
@@ -328,17 +327,17 @@ fun SoloScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(Dimens.paddingSmall))
+            Spacer(modifier = Modifier.height(4.dp))
 
             // Power Control Grid
             PowerControlGrid(
                 onPowerChange = { delta -> viewModel.changePower(characterId, delta) },
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = Dimens.screenPaddingHorizontal)
+                    .padding(horizontal = 16.dp)
             )
 
-            Spacer(modifier = Modifier.height(Dimens.paddingMedium))
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 

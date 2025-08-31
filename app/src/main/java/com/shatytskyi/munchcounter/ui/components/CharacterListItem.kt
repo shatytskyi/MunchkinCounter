@@ -1,8 +1,6 @@
 package com.shatytskyi.munchcounter.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.data.Character
-import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -40,14 +36,14 @@ fun CharacterListItem(
             .fillMaxWidth(),
         backgroundColor = MunchkinTheme.colors.surfaceContainer,
         borderColor = MunchkinTheme.colors.outline.copy(alpha = 0.3f),
-        shape = RoundedCornerShape(Dimens.paddingLarge),
+        shape = RoundedCornerShape(16.dp),
         onClick = onClick
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimens.paddingLarge),
-            verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Character Name Header
             Box(
@@ -55,7 +51,7 @@ fun CharacterListItem(
                     .fillMaxWidth()
                     .background(
                         color = MunchkinTheme.colors.primaryContainer,
-                        shape = RoundedCornerShape(Dimens.paddingMedium)
+                        shape = RoundedCornerShape(8.dp)
                     )
             ) {
                 MunchkinText(
@@ -69,8 +65,8 @@ fun CharacterListItem(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .padding(
-                            horizontal = Dimens.paddingLarge,
-                            vertical = Dimens.paddingMedium
+                            horizontal = 16.dp,
+                            vertical = 8.dp
                         )
                         .align(Alignment.Center)
                 )
@@ -79,7 +75,7 @@ fun CharacterListItem(
             // Stats Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(Dimens.paddingMedium),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 StatCard(
@@ -96,13 +92,13 @@ fun CharacterListItem(
                         .weight(0.6f)
                         .background(
                             color = MunchkinTheme.colors.secondaryContainer,
-                            shape = RoundedCornerShape(Dimens.paddingLarge)
+                            shape = RoundedCornerShape(16.dp)
                         )
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(Dimens.paddingMedium),
+                            .padding(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         MunchkinText(
@@ -147,13 +143,13 @@ private fun StatCard(
         modifier = modifier
             .background(
                 color = MunchkinTheme.colors.surfaceContainerLow,
-                shape = RoundedCornerShape(Dimens.paddingLarge)
+                shape = RoundedCornerShape(16.dp)
             )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimens.paddingMedium),
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -163,7 +159,7 @@ private fun StatCard(
                 color = MunchkinTheme.colors.onSurfaceVariant
             )
 
-            Spacer(modifier = Modifier.height(Dimens.paddingSmall))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -187,7 +183,7 @@ private fun StatCard(
                         .weight(1f)
                         .background(
                             color = MunchkinTheme.colors.surface,
-                            shape = RoundedCornerShape(Dimens.paddingMedium)
+                            shape = RoundedCornerShape(8.dp)
                         ),
                 ) {
                     MunchkinText(
@@ -198,7 +194,7 @@ private fun StatCard(
                         color = color,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(vertical = Dimens.paddingSmall)
+                            .padding(vertical = 4.dp)
                             .align(Alignment.Center)
                     )
                 }

@@ -13,7 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.shatytskyi.munchcounter.ui.theme.Dimens
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -32,8 +33,8 @@ fun MunchkinTopAppBar(
                 .fillMaxWidth()
                 .statusBarsPadding()
                 .padding(
-                    horizontal = Dimens.screenPaddingHorizontal,
-                    vertical = Dimens.paddingLarge
+                    horizontal = 16.dp,
+                    vertical = 16.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -48,21 +49,22 @@ fun MunchkinTopAppBar(
                 }
 
                 Spacer(
-                    modifier = Modifier.padding(horizontal = Dimens.paddingMedium)
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 )
             }
 
-            // Title
             MunchkinText(
                 text = title,
                 style = MunchkinTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
                 color = MunchkinTheme.colors.onSurface,
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier.weight(1f)
             )
 
-            // Actions
             actions()
         }
     }

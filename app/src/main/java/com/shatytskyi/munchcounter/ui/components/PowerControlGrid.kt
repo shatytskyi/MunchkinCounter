@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shatytskyi.munchcounter.ui.theme.Dimens
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -45,7 +44,7 @@ fun PowerControlGrid(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Two columns layout: Minus on left, Plus on right
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -87,7 +86,7 @@ fun PowerControlGrid(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                
+
                 // Right column - Plus buttons
                 Column(
                     modifier = Modifier.weight(1f),

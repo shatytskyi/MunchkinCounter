@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.shatytskyi.munchcounter.ui.theme.Dimens
+import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -33,8 +33,8 @@ fun CommonTopAppBar(
                 .fillMaxWidth()
                 .statusBarsPadding()
                 .padding(
-                    horizontal = Dimens.screenPaddingHorizontal,
-                    vertical = Dimens.paddingLarge
+                    horizontal = 16.dp,
+                    vertical = 16.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {

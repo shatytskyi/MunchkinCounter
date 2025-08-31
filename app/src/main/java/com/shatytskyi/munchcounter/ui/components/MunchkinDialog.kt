@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,12 +23,12 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
 fun MunchkinDialog(
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     title: String? = null,
     content: @Composable () -> Unit,
     confirmButton: @Composable () -> Unit,
-    dismissButton: @Composable (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    dismissButton: @Composable (() -> Unit)? = null
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Box(
@@ -53,10 +52,10 @@ fun MunchkinDialog(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                
+
                 // Content
                 content()
-                
+
                 // Buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
