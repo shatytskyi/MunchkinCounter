@@ -81,12 +81,12 @@ fun DiceDialog(
 
     MunchkinDialog(
         onDismissRequest = onDismiss,
-        title = "Roll Dice",
+        title = "Roll the dice",
         content = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(vertical = 48.dp)
+                modifier = Modifier.padding(vertical = 24.dp)
             ) {
                 AnimatedVisibility(
                     visible = true,
@@ -105,7 +105,7 @@ fun DiceDialog(
                                 onClick = {
                                     result = (1..6).random()
                                     currentDuration =
-                                        (500..2000).random()
+                                        (500..1500).random()
                                     isRolling = true
                                 }
                             )
