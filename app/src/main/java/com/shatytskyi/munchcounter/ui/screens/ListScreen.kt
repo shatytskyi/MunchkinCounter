@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -45,14 +47,15 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
+import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
-import com.shatytskyi.munchcounter.ui.components.MunchkinOutlinedButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
-import com.shatytskyi.munchcounter.ui.components.MunchkinTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.WarningDialog
+import com.shatytskyi.munchcounter.ui.components.munchkinClickable
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
@@ -132,6 +135,12 @@ fun ListScreen(
                     },
                     onPowerChange = { characterId, delta ->
                         viewModel.changePower(characterId, delta)
+                    },
+                    onResetAllClick = {
+                        showResetAllDialog = true
+                    },
+                    onRemoveAllClick = {
+                        showRemoveAllDialog = true
                     }
                 )
             }
@@ -214,9 +223,9 @@ private fun EmptyStateContent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            MunchkinOutlinedButton(
+            MunchkinCard(
                 onClick = onAddCharacterClick,
-                containerColor = MunchkinTheme.colors.primary,
+                color = MunchkinTheme.colors.primary,
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -246,7 +255,9 @@ private fun CharacterListContent(
     onAddCharacterClick: () -> Unit,
     onCharacterClick: (Long) -> Unit,
     onLevelChange: (Long, Int) -> Unit,
-    onPowerChange: (Long, Int) -> Unit
+    onPowerChange: (Long, Int) -> Unit,
+    onResetAllClick: () -> Unit,
+    onRemoveAllClick: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -275,28 +286,40 @@ private fun CharacterListContent(
         }
 
         item {
-            MunchkinOutlinedButton(
+            MunchkinIconTextButton(
                 onClick = onAddCharacterClick,
-                containerColor = MunchkinTheme.colors.primary,
-                modifier = Modifier.fillMaxWidth()
+                icon = Icons.Default.Add,
+                text = "Add Player",
+                modifier = Modifier.fillMaxWidth(),
+                iconSize = 24.dp,
+                textStyle = MunchkinTheme.typography.labelLarge,
+                contentPadding = 24.dp,
+                rippleColor = MunchkinTheme.colors.primary
+            )
+        }
+
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    MunchkinIcon(
-                        Icons.Default.Add,
-                        size = 24.dp,
-                        tint = MunchkinTheme.colors.onBackground
-                    )
-                    MunchkinText(
-                        text = "Add Player",
-                        style = MunchkinTheme.typography.labelLarge.copy(
-                            fontWeight = FontWeight.Medium
-                        ),
-                        color = MunchkinTheme.colors.onBackground
-                    )
-                }
+                MunchkinIconTextButton(
+                    onClick = onResetAllClick,
+                    icon = Icons.Outlined.Refresh,
+                    text = "Reset All",
+                    modifier = Modifier.weight(1f),
+                    rippleColor = MunchkinTheme.colors.secondary
+                )
+
+                MunchkinIconTextButton(
+                    onClick = onRemoveAllClick,
+                    icon = Icons.Outlined.PlaylistRemove,
+                    text = "Remove All",
+                    modifier = Modifier.weight(1f),
+                    rippleColor = MunchkinTheme.colors.red
+                )
             }
         }
     }
@@ -333,9 +356,9 @@ private fun DiceDialog(
                     }
                 }
 
-                MunchkinOutlinedButton(
+                MunchkinCard(
                     onClick = { result = (1..6).random() },
-                    containerColor = MunchkinTheme.colors.primary,
+                    color = MunchkinTheme.colors.primary,
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -358,8 +381,10 @@ private fun DiceDialog(
             }
         },
         confirmButton = {
-            MunchkinTextButton(
-                onClick = onDismiss,
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    onClick = onDismiss
+                ),
                 text = "Close"
             )
         },

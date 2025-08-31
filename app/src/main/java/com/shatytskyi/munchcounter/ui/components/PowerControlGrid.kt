@@ -123,10 +123,10 @@ private fun PowerButton(
     isNegative: Boolean,
     modifier: Modifier = Modifier
 ) {
-    MunchkinOutlinedButton(
+    MunchkinCard(
         onClick = onClick,
         modifier = modifier.height(56.dp),
-        containerColor = if (isNegative) {
+        color = if (isNegative) {
             MunchkinTheme.colors.red
         } else {
             MunchkinTheme.colors.green

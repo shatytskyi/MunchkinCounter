@@ -1,5 +1,6 @@
 package com.shatytskyi.munchcounter.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,15 +45,19 @@ fun WarningDialog(
             )
         },
         confirmButton = {
-            MunchkinTextButton(
-                onClick = onConfirm,
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    onClick = onConfirm,
+                ),
                 text = "Confirm",
                 color = MunchkinTheme.colors.red
             )
         },
         dismissButton = {
-            MunchkinTextButton(
-                onClick = onDismiss,
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    onClick = onDismiss,
+                ),
                 text = "Cancel"
             )
         },
@@ -99,15 +104,19 @@ fun AddCharacterDialog(
             }
         },
         confirmButton = {
-            MunchkinTextButton(
-                onClick = { onConfirm(name.trim()) },
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    enabled = name.trim().isNotEmpty(),
+                    onClick = { onConfirm(name.trim()) },
+                ),
                 text = "Add",
-                enabled = name.trim().isNotEmpty()
             )
         },
         dismissButton = {
-            MunchkinTextButton(
-                onClick = onDismiss,
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    onClick = onDismiss,
+                ),
                 text = "Cancel"
             )
         },
@@ -230,19 +239,23 @@ fun EditCharacterDialog(
             }
         },
         confirmButton = {
-            MunchkinTextButton(
-                onClick = {
-                    val lvl = level.toIntOrNull() ?: character.lvl
-                    val itm = items.toIntOrNull() ?: character.items
-                    onConfirm(name.trim(), lvl, itm)
-                },
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    enabled = name.trim().isNotEmpty(),
+                    onClick = {
+                        val lvl = level.toIntOrNull() ?: character.lvl
+                        val itm = items.toIntOrNull() ?: character.items
+                        onConfirm(name.trim(), lvl, itm)
+                    },
+                ),
                 text = "Save",
-                enabled = name.trim().isNotEmpty()
             )
         },
         dismissButton = {
-            MunchkinTextButton(
-                onClick = onDismiss,
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    onClick = onDismiss,
+                ),
                 text = "Cancel"
             )
         },
@@ -279,9 +292,9 @@ fun CommonDiceDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Roll button
-                MunchkinOutlinedButton(
+                MunchkinCard(
                     onClick = { result = (1..6).random() },
-                    containerColor = MunchkinTheme.colors.primary
+                    color = MunchkinTheme.colors.primary
                 ) {
                     MunchkinText(
                         text = "Roll",
@@ -294,8 +307,10 @@ fun CommonDiceDialog(
             }
         },
         confirmButton = {
-            MunchkinTextButton(
-                onClick = onDismiss,
+            MunchkinText(
+                modifier = Modifier.clickable(
+                    onClick = onDismiss,
+                ),
                 text = "Close"
             )
         },

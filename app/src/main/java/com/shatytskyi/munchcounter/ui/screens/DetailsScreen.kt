@@ -149,7 +149,7 @@ fun DetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.3f),
+                color = MunchkinTheme.colors.primary.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(24.dp)
             ) {
                 Column(
@@ -187,7 +187,7 @@ fun DetailsScreen(
                 // Level Card
                 MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.2f),
+                    color = MunchkinTheme.colors.primary.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
@@ -255,7 +255,7 @@ fun DetailsScreen(
                 // Items Card
                 MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    borderColor = MunchkinTheme.colors.green.copy(alpha = 0.2f),
+                    color = MunchkinTheme.colors.green.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(

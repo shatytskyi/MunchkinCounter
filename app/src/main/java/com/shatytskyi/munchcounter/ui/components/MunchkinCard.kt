@@ -21,30 +21,31 @@ fun MunchkinCard(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(8.dp),
     backgroundColor: Color = Color.Transparent,
-    borderColor: Color = MunchkinTheme.colors.primary,
+    color: Color = MunchkinTheme.colors.primary,
     borderWidth: Dp = 2.dp,
     onClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val cardModifier = if (onClick != null) {
-        modifier
-            .border(borderWidth, borderColor, shape)
-            .clip(shape)
-            .background(backgroundColor)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = munchkinRipple(
-                    bounded = true,
-                    color = borderColor
-                ),
-                onClick = onClick
-            )
-    } else {
-        modifier
-            .border(borderWidth, borderColor, shape)
-            .clip(shape)
-            .background(backgroundColor)
-    }
+    val cardModifier = modifier
+        .border(borderWidth, color, shape)
+        .clip(shape)
+        .background(backgroundColor)
+        .then(
+            if (onClick != null) {
+                Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = munchkinRipple(
+                        bounded = true,
+                        color = color
+                    ),
+                    enabled = enabled,
+                    onClick = onClick
+                )
+            } else {
+                Modifier
+            }
+        )
 
     Box(modifier = cardModifier) {
         content()
