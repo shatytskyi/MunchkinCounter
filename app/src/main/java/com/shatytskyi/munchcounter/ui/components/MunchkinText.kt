@@ -27,6 +27,6 @@ fun MunchkinText(
             textAlign = textAlign ?: TextAlign.Unspecified
         ),
         overflow = overflow,
-        maxLines = maxLines
+        maxLines = maxLines,
     )
 }

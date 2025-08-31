@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -34,7 +33,10 @@ fun MunchkinCard(
             .background(backgroundColor)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = MunchkinTheme.colors.onBackground),
+                indication = munchkinRipple(
+                    bounded = true,
+                    color = borderColor
+                ),
                 onClick = onClick
             )
     } else {
