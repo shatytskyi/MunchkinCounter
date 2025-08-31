@@ -88,7 +88,6 @@ fun DetailsScreen(
     DetailsScreenContent(
         character = character,
         topPadding = topPadding,
-        onCharacterClick = {},
         onLevelChange = { delta -> viewModel.changeLevel(characterId, delta) },
         onPowerChange = { delta -> viewModel.changePower(characterId, delta) },
         onFightClick = onFight,
@@ -147,7 +146,6 @@ fun DetailsScreen(
 private fun DetailsScreenContent(
     character: Character,
     topPadding: Dp,
-    onCharacterClick: () -> Unit,
     onLevelChange: (Int) -> Unit,
     onPowerChange: (Int) -> Unit,
     onFightClick: () -> Unit,
@@ -173,7 +171,7 @@ private fun DetailsScreenContent(
             item {
                 CharacterListItem(
                     character = character,
-                    onClick = onCharacterClick,
+                    hideName = true,
                     onLevelChange = onLevelChange,
                     onItemsChange = onPowerChange
                 )
@@ -365,7 +363,7 @@ private fun PowerControlCard(
             Spacer(modifier = Modifier.padding(horizontal = 4.dp))
             MunchkinText(
                 text = kotlin.math.abs(value).toString(),
-                style = MunchkinTheme.typography.titleLarge,
+                style = MunchkinTheme.typography.headlineLarge,
                 color = MunchkinTheme.colors.onBackground
             )
         }
@@ -386,7 +384,6 @@ private fun DetailsScreenPreview() {
         DetailsScreenContent(
             character = mockCharacter,
             topPadding = 100.dp,
-            onCharacterClick = {},
             onLevelChange = {},
             onPowerChange = {},
             onFightClick = {},

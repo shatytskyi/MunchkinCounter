@@ -29,8 +29,9 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 @Composable
 fun CharacterListItem(
     character: Character,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    hideName: Boolean = false,
     onLevelChange: (Int) -> Unit = {},
     onItemsChange: (Int) -> Unit = {}
 ) {
@@ -49,23 +50,25 @@ fun CharacterListItem(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                MunchkinText(
-                    text = character.name,
-                    style = MunchkinTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                    color = MunchkinTheme.colors.onBackground,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            if (!hideName) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    MunchkinText(
+                        text = character.name,
+                        style = MunchkinTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        color = MunchkinTheme.colors.onBackground,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
