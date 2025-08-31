@@ -27,8 +27,8 @@ data class MunchkinColors(
 
 // Dark theme colors
 val DarkMunchkinColors = MunchkinColors(
-    primary = Color(0xFF4dd0e7),
-    secondary = Color(0xFFd4c441),
+    primary = Color(0xFF7AB8C4),
+    secondary = Color(0xFFBFA76A),
     green = Color(0xFF4caf50),
     red = Color(0xFFef5350),
     background = Color(0xFF1a1a1a),
