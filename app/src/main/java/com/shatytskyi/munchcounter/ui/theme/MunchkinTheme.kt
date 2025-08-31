@@ -1,9 +1,13 @@
 package com.shatytskyi.munchcounter.ui.theme
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
@@ -14,6 +18,7 @@ val LocalMunchkinTypography = staticCompositionLocalOf { MunchkinTypography() }
 fun MunchkinTheme(
     content: @Composable () -> Unit
 ) {
+    val colors = MunchkinColors()
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -28,10 +33,17 @@ fun MunchkinTheme(
     }
 
     CompositionLocalProvider(
-        LocalMunchkinColors provides MunchkinColors(),
-        LocalMunchkinTypography provides MunchkinTypography(),
-        content = content
-    )
+        LocalMunchkinColors provides colors,
+        LocalMunchkinTypography provides MunchkinTypography()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colors.background)
+        ) {
+            content()
+        }
+    }
 }
 
 object MunchkinTheme {

@@ -202,7 +202,6 @@ fun CharacterListItemPreview() {
     MunchkinTheme {
         Box(
             modifier = Modifier
-                .background(MunchkinTheme.colors.background)
                 .padding(16.dp)
         ) {
             CharacterListItem(

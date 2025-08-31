@@ -16,9 +16,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.Casino
-import androidx.compose.material.icons.outlined.PlaylistRemove
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +35,6 @@ fun MunchkinIconTextButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     bounded: Boolean = false,
-    iconSize: Dp = 20.dp,
-    spacerWidth: Dp = 4.dp,
     rippleColor: Color = MunchkinTheme.colors.primary,
     iconTint: Color = MunchkinTheme.colors.onBackground,
     textColor: Color = MunchkinTheme.colors.onBackground,
@@ -60,10 +55,10 @@ fun MunchkinIconTextButton(
     ) {
         MunchkinIcon(
             imageVector = icon,
-            size = iconSize,
+            size = 24.dp,
             tint = iconTint
         )
-        Spacer(modifier = Modifier.width(spacerWidth))
+        Spacer(modifier = Modifier.width(8.dp))
         MunchkinText(
             text = text,
             style = textStyle,
@@ -96,7 +91,7 @@ private fun MunchkinIconTextButtonGrid() {
             color = MunchkinTheme.colors.onBackground,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        
+
         // Стандартные кнопки
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -108,14 +103,14 @@ private fun MunchkinIconTextButtonGrid() {
                 text = "Add",
                 modifier = Modifier.weight(1f)
             )
-            
+
             MunchkinIconTextButton(
                 onClick = {},
                 icon = Icons.Default.Edit,
                 text = "Edit",
                 modifier = Modifier.weight(1f)
             )
-            
+
             MunchkinIconTextButton(
                 onClick = {},
                 icon = Icons.Default.Delete,
@@ -123,7 +118,7 @@ private fun MunchkinIconTextButtonGrid() {
                 modifier = Modifier.weight(1f)
             )
         }
-        
+
         // Кнопки с разными цветами
         MunchkinText(
             text = "Colored Buttons",
@@ -131,7 +126,7 @@ private fun MunchkinIconTextButtonGrid() {
             color = MunchkinTheme.colors.onBackground,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -145,7 +140,7 @@ private fun MunchkinIconTextButtonGrid() {
                 iconTint = MunchkinTheme.colors.red,
                 textColor = MunchkinTheme.colors.red
             )
-            
+
             MunchkinIconTextButton(
                 onClick = {},
                 icon = Icons.Default.Share,
@@ -155,7 +150,7 @@ private fun MunchkinIconTextButtonGrid() {
                 iconTint = MunchkinTheme.colors.green,
                 textColor = MunchkinTheme.colors.green
             )
-            
+
             MunchkinIconTextButton(
                 onClick = {},
                 icon = Icons.Default.Settings,
@@ -166,46 +161,7 @@ private fun MunchkinIconTextButtonGrid() {
                 textColor = MunchkinTheme.colors.primary
             )
         }
-        
-        // Кнопки с разными размерами
-        MunchkinText(
-            text = "Different Sizes",
-            style = MunchkinTheme.typography.labelLarge,
-            color = MunchkinTheme.colors.onBackground,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-        
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            MunchkinIconTextButton(
-                onClick = {},
-                icon = Icons.Outlined.Casino,
-                text = "Small Button",
-                iconSize = 16.dp,
-                textStyle = MunchkinTheme.typography.labelSmall,
-                contentPadding = 8.dp
-            )
-            
-            MunchkinIconTextButton(
-                onClick = {},
-                icon = Icons.Outlined.Refresh,
-                text = "Medium Button",
-                iconSize = 20.dp,
-                textStyle = MunchkinTheme.typography.labelMedium,
-                contentPadding = 12.dp
-            )
-            
-            MunchkinIconTextButton(
-                onClick = {},
-                icon = Icons.Outlined.PlaylistRemove,
-                text = "Large Button",
-                iconSize = 24.dp,
-                textStyle = MunchkinTheme.typography.labelLarge,
-                contentPadding = 16.dp
-            )
-        }
-        
+
         // Кнопки с разными стилями ripple
         MunchkinText(
             text = "Ripple Styles",
@@ -213,7 +169,7 @@ private fun MunchkinIconTextButtonGrid() {
             color = MunchkinTheme.colors.onBackground,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -225,7 +181,7 @@ private fun MunchkinIconTextButtonGrid() {
                 modifier = Modifier.weight(1f),
                 bounded = true
             )
-            
+
             MunchkinIconTextButton(
                 onClick = {},
                 icon = Icons.Default.Add,
@@ -234,7 +190,7 @@ private fun MunchkinIconTextButtonGrid() {
                 bounded = false
             )
         }
-        
+
         // Disabled кнопка
         MunchkinText(
             text = "Disabled State",
@@ -242,7 +198,7 @@ private fun MunchkinIconTextButtonGrid() {
             color = MunchkinTheme.colors.onBackground,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        
+
         MunchkinIconTextButton(
             onClick = {},
             icon = Icons.Default.Add,

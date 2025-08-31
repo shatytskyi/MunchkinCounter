@@ -314,7 +314,6 @@ private fun CharacterListContent(
                     icon = Icons.Default.Add,
                     text = "Add Player",
                     modifier = Modifier.fillMaxWidth(0.5f),
-                    iconSize = 24.dp,
                     textStyle = MunchkinTheme.typography.labelLarge,
                     contentPadding = 24.dp,
                     rippleColor = MunchkinTheme.colors.primary,
@@ -335,10 +334,9 @@ private fun CharacterListContent(
                     icon = Icons.Outlined.Refresh,
                     text = "Reset All",
                     modifier = Modifier.weight(1f),
-                    iconSize = 20.dp,
                     textStyle = MunchkinTheme.typography.labelMedium,
-                    contentPadding = 16.dp,
-                    rippleColor = MunchkinTheme.colors.primary,
+                    contentPadding = 24.dp,
+                    rippleColor = MunchkinTheme.colors.secondary,
                     bounded = false
                 )
 
@@ -347,9 +345,8 @@ private fun CharacterListContent(
                     icon = Icons.Outlined.PlaylistRemove,
                     text = "Remove All",
                     modifier = Modifier.weight(1f),
-                    iconSize = 20.dp,
                     textStyle = MunchkinTheme.typography.labelMedium,
-                    contentPadding = 16.dp,
+                    contentPadding = 24.dp,
                     rippleColor = MunchkinTheme.colors.red,
                     bounded = false
                 )
