@@ -1,6 +1,7 @@
 package com.shatytskyi.munchcounter.ui.theme
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -16,9 +17,10 @@ val LocalMunchkinTypography = staticCompositionLocalOf { MunchkinTypography() }
 
 @Composable
 fun MunchkinTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = MunchkinColors()
+    val colors = if (darkTheme) DarkMunchkinColors else LightMunchkinColors
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -27,8 +29,8 @@ fun MunchkinTheme(
             window.statusBarColor = android.graphics.Color.TRANSPARENT
             window.navigationBarColor = android.graphics.Color.TRANSPARENT
             val insetsController = WindowCompat.getInsetsController(window, view)
-            insetsController.isAppearanceLightStatusBars = true
-            insetsController.isAppearanceLightNavigationBars = true
+            insetsController.isAppearanceLightStatusBars = !darkTheme
+            insetsController.isAppearanceLightNavigationBars = !darkTheme
         }
     }
 

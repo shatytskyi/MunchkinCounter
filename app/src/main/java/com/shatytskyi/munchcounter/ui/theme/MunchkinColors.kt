@@ -24,3 +24,17 @@ data class MunchkinColors(
     // Outline
     val grey: Color = Color(0xFF616161),
 )
+
+// Dark theme colors
+val DarkMunchkinColors = MunchkinColors(
+    primary = Color(0xFF4dd0e7),
+    secondary = Color(0xFFd4c441),
+    green = Color(0xFF4caf50),
+    red = Color(0xFFef5350),
+    background = Color(0xFF1a1a1a),
+    onBackground = Color(0xFFf5f5f5),
+    grey = Color(0xFF9e9e9e),
+)
+
+// Light theme colors (default)
+val LightMunchkinColors = MunchkinColors()

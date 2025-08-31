@@ -8,4 +8,7 @@
     <color name="secondary">#AF9D15</color>
     <color name="red">#A51B1B</color>
     <color name="green">#218E3C</color>
+    
+    <!-- App background color matching Compose theme -->
+    <color name="app_background">#fff9ed</color>
 </resources>
