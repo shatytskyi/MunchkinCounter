@@ -39,7 +39,7 @@ fun CharacterListItem(
         modifier = modifier
             .fillMaxWidth(),
         backgroundColor = MunchkinTheme.colors.surfaceContainer,
-        elevation = 2.dp,
+        borderColor = MunchkinTheme.colors.outline.copy(alpha = 0.3f),
         shape = RoundedCornerShape(Dimens.paddingLarge),
         onClick = onClick
     ) {
@@ -178,7 +178,6 @@ private fun StatCard(
                 ) {
                     MunchkinIcon(
                         Icons.Default.Remove,
-                        contentDescription = null,
                         tint = color
                     )
                 }
@@ -213,7 +212,6 @@ private fun StatCard(
                 ) {
                     MunchkinIcon(
                         Icons.Default.Add,
-                        contentDescription = null,
                         tint = color
                     )
                 }

@@ -30,7 +30,7 @@ fun CharacterCard(
             .padding(horizontal = 8.dp, vertical = 4.dp),
         shape = RoundedCornerShape(12.dp),
         backgroundColor = MunchkinTheme.colors.surface,
-        elevation = 4.dp
+        borderColor = MunchkinTheme.colors.outline.copy(alpha = 0.5f)
     ) {
         Row(
             modifier = Modifier

@@ -1,59 +1,137 @@
 <resources>
+    <!-- App Name (not translatable) -->
+    <string name="app_name" translatable="false">Munchkin Counter</string>
+
+    <!-- Common Actions -->
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="add_player">Add player</string>
-    <string name="enter_name">Enter the name</string>
-    <string name="warning_all_remove">All players will be removed!</string>
-    <string name="player">Player</string>
-    <string name="warning_all_reset">All players will be reset!</string>
-    <string name="power">Power</string>
-    <string name="level">Level</string>
-    <string name="reset">Reset</string>
+    <string name="close">Close</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
     <string name="remove">Remove</string>
-    <string name="fight">FIGHT</string>
-    <string name="des_remove_unit_from_list">Remove player from list</string>
-    <string name="des_reset_unit_parameters">Reset player parameters</string>
-    <string name="no_players">There\'s no players yet \n You can add one using button below</string>
-    <string name="des_get_help">Get help from other players</string>
+    <string name="reset">Reset</string>
+    <string name="clear">Clear</string>
+    <string name="undo">UNDO</string>
+    <string name="leave">Leave</string>
+    <string name="exit">Exit</string>
+
+    <!-- Player Management -->
+    <string name="add_player">Add Player</string>
+    <string name="player">Player</string>
+    <string name="player_name">Player Name:</string>
+    <string name="enter_name">Enter the name</string>
+    <string name="new_name">New name</string>
+    <string name="no_players">No Players Yet</string>
+    <string name="no_players_description">Add your first player to get started with Munchkin!</string>
+    <string name="no_name_warning">Unnamed players are not allowed</string>
+    <string name="toast_no_players">No players in list</string>
+    <string name="all_was_removed">All players were removed</string>
+    <string name="expand_player_card">Expand player\'s card</string>
+
+    <!-- Stats -->
+    <string name="level">Level</string>
+    <string name="level_short">LVL</string>
+    <string name="power">Power</string>
+    <string name="score">Score</string>
+    <string name="score_short">SCORE</string>
+    <string name="gear">Gear</string>
+    <string name="items">Items:</string>
+    <string name="total_power">TOTAL POWER</string>
+    <string name="power_controls">POWER CONTROLS</string>
+
+    <!-- Fight Screen -->
+    <string name="fight">Fight</string>
+    <string name="fight_title">Fight</string>
+    <string name="loading_fight">Loading Fight...</string>
+    <string name="loading_player">Loading Player...</string>
+    <string name="loading_character">Loading Character...</string>
+    <string name="player_header">PLAYER</string>
+    <string name="helper_header">HELPER</string>
+    <string name="result_header">RESULT</string>
+    <string name="monster">Monster</string>
+    <string name="monster_power">Monster - Power %d</string>
+    <string name="player_level">%1$s - Level %2$d</string>
+    <string name="player_power">Power: %d</string>
+    <string name="victory">VICTORY</string>
+    <string name="escape">ESCAPE</string>
+    <string name="win_button">Win!</string>
+    <string name="run_button">Run!</string>
+    <string name="fight_adjustments">FIGHT ADJUSTMENTS</string>
+    <string name="fight_tips">💡 FIGHT TIPS</string>
+    <string name="fight_tips_description">Use the buttons above to adjust power during combat.\nItems and curses can temporarily change your power!</string>
+
+    <!-- Helper/Partner -->
+    <string name="partner">Ally</string>
+    <string name="helper">Helper</string>
+    <string name="choose_helper">Choose Helper</string>
+    <string name="twin">Twin</string>
+    <string name="partner_removed">Partner removed</string>
+    <string name="remove_helper">Remove</string>
+    <string name="custom_partner_power">Custom partner\'s power</string>
+
+    <!-- Escape Dialog -->
+    <string name="escape_attempt">Escape Attempt</string>
+    <string name="roll_dice_to_escape">Roll dice to escape</string>
+    <string name="dice_result">Result: %d</string>
+    <string name="escape_success">Successful escape!</string>
+    <string name="escape_failed">Escape failed!</string>
+    <string name="roll_dice">Roll Dice</string>
+    <string name="roll_again">Roll Again</string>
+    <string name="stay">Stay</string>
+
+    <!-- Dice -->
+    <string name="dice">Dice</string>
+    <string name="throw_dice">Roll Dice</string>
+    <string name="roll">Roll</string>
+    <string name="dice_success">Success! Run, Forest, run!</string>
+    <string name="dice_fail">Monster catches you</string>
+    <string name="toast_run_fail">Don\'t forget to punish munchkin</string>
+
+    <!-- Warnings & Dialogs -->
+    <string name="warning_all_remove">All players will be removed!</string>
+    <string name="warning_all_reset">All players will be reset!</string>
+    <string name="reset_character_warning">Character will be reset to level 1 with 0 power</string>
+    <string name="reset_character_title">Reset %s?</string>
+    <string name="warning_will_reset">%s will lose all stats</string>
+    <string name="warning_will_removed">%s will be permanently removed</string>
+    <string name="reset_all">Reset All</string>
+    <string name="remove_all">Remove All</string>
+
+    <!-- Info -->
+    <string name="info">Info</string>
+    <string name="info_text">Main screen:\n\nLevel - shows current level of the munchkin.\nScore - the sum of the level and equipped items, strength of the character.\nClick on the character card to open the extended menu.\n\nExtended character menu:\nUsing the buttons (1-5) you can increase or decrease the character\'s strength.\nThis action displays equipping and removing gear items.\n\nUsing the buttons \"Remove\" or \"Reset\" you can remove a character from the game or reset his parameters to the initial ones.\nPress the \"FIGHT\" button to open the battle screen.\n\nBattle screen:\nThe character window is displayed at the top of the screen, the monster at the bottom.\nChanging the character\'s strength using the buttons (1-5) is temporary and is valid only during this battle.\nThe level change is permanent and will remain after leaving the battle.\nThe current balance of forces is displayed in the center of the screen.\nTo the right of it is the end of the battle button.\nYou can also use the help of a partner, escape from the battle or start it over.\nThe six-sided die roll will help with the escape calculating.</string>
+
+    <!-- Edit Character -->
+    <string name="edit_character">Edit Character</string>
+    <string name="name_label">Name:</string>
+    <string name="level_label">Level:</string>
+    <string name="items_label">Items:</string>
+
+    <!-- Death -->
+    <string name="death">Death</string>
+    <string name="toast_munchkin_died">Munchkin died, all items were lost</string>
+
+    <!-- Other -->
+    <string name="shuffle">Shuffle</string>
+    <string name="bonus_is">Bonus:</string>
+    
+    <!-- Legacy XML Layout Strings (for backward compatibility) -->
+    <string name="result">Result</string>
     <string name="reset_fight">Reset fight</string>
     <string name="run">Run away</string>
-    <string name="fight_was_reset">Fight was reset</string>
-    <string name="choose_helper">Choose your partner</string>
-    <string name="result">Result</string>
-    <string name="no_name_warning">Unnamed players are not allowed</string>
-    <string name="expand_player_s_card">Expand player\'s card</string>
+    <string name="try_to_run">Try to run</string>
     <string name="result_is">Result:</string>
-    <string name="clear">Clear</string>
-    <string name="reset_all">Reset all</string>
-    <string name="warning_will_reset"> will lose all stats</string>
-    <string name="warning_will_removed">\" will be permanently removed\n\"</string>
-    <string name="toast_no_players">No players in list</string>
-    <string name="throw_dice">Throw dice</string>
-    <string name="victory">Victory</string>
-    <string name="fight_result_win">Victory!\n +1 LVL</string>
-
+    <string name="throw_dice_b">Throw</string>
+    <string name="custom_partner_s_power">Custom partner\'s power</string>
+    <string name="expand_player_s_card">Expand player\'s card</string>
     <string name="inf">Info</string>
-    <string name="info">Main screen:
-\nLevel - shows current level of the munchkin.
-\nScore - the sum of the level and equipped items, strength of the character.
-\nClick on the character card to open the extended menu.
-\n
-\nExtended character menu:
-        \nUsing the buttons (1-5) you can increase or decrease the character\'s strength.
-        \nThis action displays equipping and removing gear items.
-\nUsing the buttons \"Remove\" or \"Reset\" you can remove a character from the game or reset his parameters to the initial ones.
-\nPress the \"FIGHT\" button to open the battle screen.
-\n
-\nBattle screen:
-\nThe character window is displayed at the top of the screen, the monster at the bottom.
-\nChanging the character\'s strength using the buttons (1-5) is temporary and is valid only during this battle.
-\nThe level change is permanent and will remain after leaving the battle.
-\nThe current balance of forces is displayed in the center of the screen.
-        \nTo the right of it is the end of the battle button.
-\nYou can also use the help of a partner, escape from the battle or start it over.
-\nThe six-sided die roll will help with the escape calculating.</string>
-
-    <string name="app_name" translatable="false">Munchkin Counter</string>
-    <string name="ok" translatable="false">OK</string>
+    <string name="fight_result_win">Victory!\n +1 LVL</string>
+    <string name="fight_was_reset">Fight was reset</string>
+    <string name="your_munchkin">Your munchkin</string>
+    
+    <!-- Numbers (not translatable) -->
+    <string name="_0" translatable="false">0</string>
     <string name="_1" translatable="false">1</string>
     <string name="_2" translatable="false">2</string>
     <string name="_3" translatable="false">3</string>
@@ -61,25 +139,4 @@
     <string name="_5" translatable="false">5</string>
     <string name="minus" translatable="false">−</string>
     <string name="plus" translatable="false">+</string>
-    <string name="your_munchkin">Your munchkin </string>
-    <string name="all_was_removed">All players was removed</string>
-    <string name="undo">UNDO</string>
-    <string name="throw_dice_b">Throw</string>
-    <string name="bonus_is">Bonus:</string>
-    <string name="dice_success">Success! Run, Forest, run!</string>
-    <string name="dice_fail">Monster catches you</string>
-    <string name="toast_run_fail">Don\'t forget to punish munchkin</string>
-    <string name="leave">Leave</string>
-    <string name="toast_munchkin_died">Munchkin died, all items was lost</string>
-    <string name="try_to_run">Try to run</string>
-    <string name="death">Death</string>
-    <string name="new_name">New name</string>
-    <string name="gear">Gear</string>
-    <string name="shuffle">Shuffle</string>
-    <string name="custom_partner_s_power">Custom partner\'s power</string>
-    <string name="partner">Ally</string>
-    <string name="_0">0</string>
-    <string name="twin">Twin</string>
-    <string name="partner_removed">Partner removed</string>
-
 </resources>

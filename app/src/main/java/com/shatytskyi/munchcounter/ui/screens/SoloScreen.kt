@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
-import com.shatytskyi.munchcounter.ui.components.CommonTopAppBar
+import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.EditCharacterDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
@@ -93,7 +93,7 @@ fun SoloScreen(
                     color = MunchkinTheme.colors.primary
                 )
                 MunchkinText(
-                    text = "Loading Character...",
+                    text = stringResource(R.string.loading_character),
                     style = MunchkinTheme.typography.bodyLarge,
                     color = MunchkinTheme.colors.onSurface
                 )
@@ -107,35 +107,31 @@ fun SoloScreen(
             .fillMaxSize()
     ) {
         // Top App Bar
-        CommonTopAppBar(
+        MunchkinTopAppBar(
             title = character.name,
             onBack = onBack,
             actions = {
                 MunchkinIconButton(onClick = { showResetDialog = true }) {
                     MunchkinIcon(
                         Icons.Default.Refresh,
-                        contentDescription = "Reset",
-                        tint = MunchkinTheme.colors.onPrimaryContainer
+                        tint = MunchkinTheme.colors.onSurface
                     )
                 }
                 MunchkinIconButton(onClick = { showEditDialog = true }) {
                     MunchkinIcon(
                         Icons.Default.Edit,
-                        contentDescription = "Edit",
-                        tint = MunchkinTheme.colors.onPrimaryContainer
+                        tint = MunchkinTheme.colors.onSurface
                     )
                 }
                 MunchkinIconButton(onClick = { showDiceDialog = true }) {
                     MunchkinIcon(
                         Icons.Default.Casino,
-                        contentDescription = "Dice",
-                        tint = MunchkinTheme.colors.onPrimaryContainer
+                        tint = MunchkinTheme.colors.onSurface
                     )
                 }
                 MunchkinIconButton(onClick = onFight) {
                     MunchkinIcon(
                         Icons.Default.LocalFireDepartment,
-                        contentDescription = "Fight",
                         tint = MunchkinTheme.colors.error
                     )
                 }
@@ -158,8 +154,8 @@ fun SoloScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = Dimens.screenPaddingHorizontal),
-                elevation = 4.dp,
                 backgroundColor = MunchkinTheme.colors.primaryContainer,
+                borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(24.dp)
             ) {
                 Column(
@@ -200,8 +196,8 @@ fun SoloScreen(
                 // Level Card
                 MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    elevation = 2.dp,
                     backgroundColor = MunchkinTheme.colors.surfaceContainer,
+                    borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
@@ -229,11 +225,11 @@ fun SoloScreen(
                                 colors = MunchkinIconButtonDefaults.filledIconButtonColors(
                                     containerColor = MunchkinTheme.colors.primary.copy(alpha = 0.1f),
                                     contentColor = MunchkinTheme.colors.primary
-                                )
+                                ),
+                                borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.5f)
                             ) {
                                 MunchkinIcon(
                                     Icons.Default.Remove,
-                                    contentDescription = null,
                                     size = 18.dp,
                                     tint = MunchkinTheme.colors.primary
                                 )
@@ -253,11 +249,11 @@ fun SoloScreen(
                                 colors = MunchkinIconButtonDefaults.filledIconButtonColors(
                                     containerColor = MunchkinTheme.colors.primary.copy(alpha = 0.1f),
                                     contentColor = MunchkinTheme.colors.primary
-                                )
+                                ),
+                                borderColor = MunchkinTheme.colors.primary.copy(alpha = 0.5f)
                             ) {
                                 MunchkinIcon(
                                     Icons.Default.Add,
-                                    contentDescription = null,
                                     size = 18.dp,
                                     tint = MunchkinTheme.colors.primary
                                 )
@@ -269,8 +265,8 @@ fun SoloScreen(
                 // Items Card
                 MunchkinCard(
                     modifier = Modifier.weight(1f),
-                    elevation = 2.dp,
                     backgroundColor = MunchkinTheme.colors.surfaceContainer,
+                    borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
@@ -298,11 +294,11 @@ fun SoloScreen(
                                 colors = MunchkinIconButtonDefaults.filledIconButtonColors(
                                     containerColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.1f),
                                     contentColor = MunchkinTheme.colors.tertiary
-                                )
+                                ),
+                                borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
                             ) {
                                 MunchkinIcon(
                                     Icons.Default.Remove,
-                                    contentDescription = null,
                                     size = 18.dp,
                                     tint = MunchkinTheme.colors.tertiary
                                 )
@@ -322,11 +318,11 @@ fun SoloScreen(
                                 colors = MunchkinIconButtonDefaults.filledIconButtonColors(
                                     containerColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.1f),
                                     contentColor = MunchkinTheme.colors.tertiary
-                                )
+                                ),
+                                borderColor = MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
                             ) {
                                 MunchkinIcon(
                                     Icons.Default.Add,
-                                    contentDescription = null,
                                     size = 18.dp,
                                     tint = MunchkinTheme.colors.tertiary
                                 )
@@ -364,8 +360,8 @@ fun SoloScreen(
 
     if (showResetDialog) {
         WarningDialog(
-            title = "Сбросить ${character.name}?",
-            message = "Персонаж будет сброшен до 1 уровня с 0 силы",
+            title = stringResource(R.string.reset_character_title, character.name),
+            message = stringResource(R.string.reset_character_warning),
             onDismiss = { showResetDialog = false },
             onConfirm = {
                 viewModel.resetCharacter(characterId)
@@ -381,7 +377,7 @@ fun SoloScreen(
     if (showInfoDialog) {
         MunchkinDialog(
             onDismissRequest = { showInfoDialog = false },
-            title = "Информация",
+            title = stringResource(R.string.info),
             content = {
                 MunchkinText(
                     text = stringResource(R.string.info),

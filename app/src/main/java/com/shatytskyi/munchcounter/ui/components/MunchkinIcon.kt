@@ -17,7 +17,6 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 @Composable
 fun MunchkinIcon(
     imageVector: ImageVector,
-    contentDescription: String?,
     modifier: Modifier = Modifier,
     tint: Color = MunchkinTheme.colors.onSurface,
     size: Dp = 24.dp

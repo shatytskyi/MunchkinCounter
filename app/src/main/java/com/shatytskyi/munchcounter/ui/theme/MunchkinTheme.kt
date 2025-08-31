@@ -8,6 +8,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.shatytskyi.munchcounter.ui.components.MunchkinBackground
 
 val LocalMunchkinColors = staticCompositionLocalOf { MunchkinColors() }
 val LocalMunchkinTypography = staticCompositionLocalOf { MunchkinTypography() }

@@ -1,6 +1,7 @@
 package com.shatytskyi.munchcounter.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -26,16 +27,28 @@ fun MunchkinIconButton(
     shape: Shape = CircleShape,
     colors: MunchkinIconButtonColors = MunchkinIconButtonDefaults.iconButtonColors(),
     size: Dp = 48.dp,
+    borderColor: Color? = null,
+    borderWidth: Dp = 1.dp,
     content: @Composable () -> Unit
 ) {
     val containerColor = if (enabled) colors.containerColor else colors.disabledContainerColor
     val contentColor = if (enabled) colors.contentColor else colors.disabledContentColor
     
-    Box(
-        modifier = modifier
+    val buttonModifier = if (borderColor != null) {
+        modifier
+            .size(size)
+            .border(borderWidth, borderColor, shape)
+            .clip(shape)
+            .background(containerColor)
+    } else {
+        modifier
             .size(size)
             .clip(shape)
             .background(containerColor)
+    }
+    
+    Box(
+        modifier = buttonModifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(

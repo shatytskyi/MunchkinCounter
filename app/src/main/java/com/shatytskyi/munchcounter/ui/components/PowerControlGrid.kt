@@ -24,8 +24,8 @@ fun PowerControlGrid(
 ) {
     MunchkinCard(
         modifier = modifier.fillMaxWidth(),
-        elevation = 4.dp,
         backgroundColor = MunchkinTheme.colors.surface,
+        borderColor = MunchkinTheme.colors.outline.copy(alpha = 0.4f),
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
@@ -144,6 +144,11 @@ private fun PowerButton(
             MunchkinButtonDefaults.errorColors()
         } else {
             MunchkinButtonDefaults.tertiaryColors()
+        },
+        borderColor = if (isNegative) {
+            MunchkinTheme.colors.error.copy(alpha = 0.5f)
+        } else {
+            MunchkinTheme.colors.tertiary.copy(alpha = 0.5f)
         }
     ) {
         MunchkinText(

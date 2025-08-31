@@ -26,7 +26,7 @@ fun CommonTopAppBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = MunchkinTheme.colors.primaryContainer)
+            .background(color = MunchkinTheme.colors.surface)
     ) {
         Row(
             modifier = Modifier
@@ -42,8 +42,7 @@ fun CommonTopAppBar(
             MunchkinIconButton(onClick = onBack) {
                 MunchkinIcon(
                     Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = MunchkinTheme.colors.onPrimaryContainer
+                    tint = MunchkinTheme.colors.onSurface
                 )
             }
 
@@ -53,7 +52,7 @@ fun CommonTopAppBar(
                 style = MunchkinTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
-                color = MunchkinTheme.colors.onPrimaryContainer,
+                color = MunchkinTheme.colors.onSurface,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center
             )
