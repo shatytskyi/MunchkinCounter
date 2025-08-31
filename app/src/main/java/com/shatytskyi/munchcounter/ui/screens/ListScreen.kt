@@ -1,5 +1,6 @@
 package com.shatytskyi.munchcounter.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -218,6 +221,22 @@ private fun EmptyStateContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.pic_knight),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp)
+                )
+                Image(
+                    painter = painterResource(R.drawable.pic_knight_fem),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp)
+                )
+            }
+
             MunchkinText(
                 text = "No Players Yet",
                 style = MunchkinTheme.typography.headlineSmall.copy(
@@ -234,30 +253,34 @@ private fun EmptyStateContent(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            MunchkinCard(
-                onClick = onAddCharacterClick,
-                color = MunchkinTheme.colors.primary,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.padding(top = 8.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    MunchkinIcon(
-                        Icons.Default.Add,
-                        size = 24.dp,
-                        tint = MunchkinTheme.colors.onBackground
-                    )
-                    MunchkinText(
-                        text = "Add Player",
-                        style = MunchkinTheme.typography.labelLarge.copy(
-                            fontWeight = FontWeight.Medium
-                        ),
-                        color = MunchkinTheme.colors.onBackground
-                    )
-                }
+                Image(
+                    painter = painterResource(R.drawable.pic_witch),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp)
+                )
+                Image(
+                    painter = painterResource(R.drawable.pic_wizard),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp)
+                )
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            MunchkinIconTextButton(
+                onClick = onAddCharacterClick,
+                icon = Icons.Default.Add,
+                text = "Add Player",
+                modifier = Modifier.fillMaxWidth(0.6f),
+                textStyle = MunchkinTheme.typography.labelLarge,
+                contentPadding = 24.dp,
+                rippleColor = MunchkinTheme.colors.primary,
+                bounded = false
+            )
         }
     }
 }
