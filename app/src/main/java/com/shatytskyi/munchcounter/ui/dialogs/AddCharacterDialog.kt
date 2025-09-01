@@ -127,7 +127,7 @@ fun AddCharacterDialog(
                 modifier = Modifier.munchkinClickable(
                     enabled = name.trim().isNotEmpty(),
                     bounded = false,
-                    color = MunchkinTheme.colors.primary,
+                    rippleColor = MunchkinTheme.colors.primary,
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                         onConfirm(name.trim(), selectedGender)
@@ -145,7 +145,7 @@ fun AddCharacterDialog(
                         onDismiss()
                     },
                     bounded = false,
-                    color = MunchkinTheme.colors.secondary,
+                    rippleColor = MunchkinTheme.colors.secondary,
                 ),
                 style = MunchkinTheme.typography.bodyMedium,
                 text = stringResource(R.string.cancel)
@@ -167,7 +167,7 @@ private fun GenderOption(
             .munchkinClickable(
                 onClick = onClick,
                 bounded = false,
-                color = when (gender) {
+                rippleColor = when (gender) {
                     Gender.MALE -> MunchkinTheme.colors.primary
                     else -> MunchkinTheme.colors.secondary
                 }

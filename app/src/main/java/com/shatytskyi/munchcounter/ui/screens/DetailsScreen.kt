@@ -104,6 +104,7 @@ fun DetailsScreen(
         topPadding = topPadding,
         onLevelChange = { delta -> viewModel.changeLevel(characterId, delta) },
         onPowerChange = { delta -> viewModel.changePower(characterId, delta) },
+        onGenderToggle = { id -> viewModel.toggleGender(id) },
         onFightClick = onFight,
         onResetClick = { showResetDialog = true },
         onEditClick = { showEditDialog = true },
@@ -162,6 +163,7 @@ private fun DetailsScreenContent(
     topPadding: Dp,
     onLevelChange: (Int) -> Unit,
     onPowerChange: (Int) -> Unit,
+    onGenderToggle: (Long) -> Unit,
     onFightClick: () -> Unit,
     onResetClick: () -> Unit,
     onEditClick: () -> Unit,
@@ -200,7 +202,11 @@ private fun DetailsScreenContent(
                     showLevelButtons = false,
                     showItemsButtons = false,
                     onLevelChange = onLevelChange,
-                    onItemsChange = onPowerChange
+                    onItemsChange = onPowerChange,
+                    onGenderToggle = {
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onGenderToggle(character.id)
+                    }
                 )
             }
 
@@ -608,6 +614,7 @@ private fun DetailsScreenPreview() {
             topPadding = 100.dp,
             onLevelChange = {},
             onPowerChange = {},
+            onGenderToggle = {},
             onFightClick = {},
             onResetClick = {},
             onEditClick = {},

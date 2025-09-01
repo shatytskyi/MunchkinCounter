@@ -16,15 +16,17 @@ fun Modifier.munchkinClickable(
     enabled: Boolean = true,
     bounded: Boolean = true,
     radius: Dp = Dp.Unspecified,
-    color: Color = Color.Unspecified,
+    rippleColor: Color? = null,
     onClick: () -> Unit
 ): Modifier = this.clickable(
     interactionSource = remember { MutableInteractionSource() },
-    indication = munchkinRipple(
-        bounded = bounded,
-        radius = radius,
-        color = color
-    ),
+    indication = rippleColor?.let {
+        munchkinRipple(
+            bounded = bounded,
+            radius = radius,
+            color = rippleColor
+        )
+    },
     enabled = enabled,
     onClick = onClick
 )
@@ -39,7 +41,7 @@ fun Modifier.munchkinClickableDebounced(
     onClick: () -> Unit
 ): Modifier {
     var lastClickTime by remember { mutableLongStateOf(0L) }
-    
+
     return this.clickable(
         interactionSource = remember { MutableInteractionSource() },
         indication = munchkinRipple(

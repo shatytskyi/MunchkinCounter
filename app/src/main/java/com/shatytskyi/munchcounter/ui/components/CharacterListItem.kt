@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -21,12 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
@@ -41,8 +42,10 @@ fun CharacterListItem(
     showLevelButtons: Boolean = true,
     showItemsButtons: Boolean = true,
     onLevelChange: (Int) -> Unit = {},
-    onItemsChange: (Int) -> Unit = {}
+    onItemsChange: (Int) -> Unit = {},
+    onGenderToggle: () -> Unit = {}
 ) {
+    val haptic = LocalHapticFeedback.current
     MunchkinCard(
         modifier = modifier
             .fillMaxWidth(),
@@ -75,9 +78,36 @@ fun CharacterListItem(
                             color = MunchkinTheme.colors.onBackground,
                             textAlign = TextAlign.Center,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.fillMaxWidth()
+                            overflow = TextOverflow.Ellipsis
                         )
+
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+                                .munchkinClickable(
+                                    onClick = {
+                                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                                        onGenderToggle()
+                                    },
+                                    bounded = false,
+                                    rippleColor = when (character.gender) {
+                                        Gender.MALE -> MunchkinTheme.colors.primary
+                                        Gender.FEMALE -> MunchkinTheme.colors.secondary
+                                    }
+                                )
+                        ) {
+                            MunchkinIcon(
+                                imageVector = when (character.gender) {
+                                    Gender.MALE -> Icons.Outlined.Male
+                                    Gender.FEMALE -> Icons.Outlined.Female
+                                },
+                                tint = when (character.gender) {
+                                    Gender.MALE -> MunchkinTheme.colors.primary
+                                    Gender.FEMALE -> MunchkinTheme.colors.secondary
+                                },
+                                size = 24.dp
+                            )
+                        }
                     }
                 }
 
@@ -121,29 +151,6 @@ fun CharacterListItem(
                 }
             }
 
-            // Gender icon in top right corner
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(12.dp)
-                    .background(
-                        color = MunchkinTheme.colors.background.copy(alpha = 0.8f),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(6.dp)
-            ) {
-                MunchkinIcon(
-                    imageVector = when (character.gender) {
-                        Gender.MALE -> Icons.Outlined.Male
-                        Gender.FEMALE -> Icons.Outlined.Female
-                    },
-                    tint = when (character.gender) {
-                        Gender.MALE -> MunchkinTheme.colors.primary
-                        Gender.FEMALE -> MunchkinTheme.colors.secondary
-                    },
-                    size = 16.dp
-                )
-            }
         }
     }
 }

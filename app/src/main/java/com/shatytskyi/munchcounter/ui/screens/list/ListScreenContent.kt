@@ -42,6 +42,7 @@ fun ListScreenContent(
     onCharacterClick: (Long) -> Unit,
     onLevelChange: (Long, Int) -> Unit,
     onPowerChange: (Long, Int) -> Unit,
+    onGenderToggle: (Long) -> Unit,
     onResetAllClick: () -> Unit,
     onRemoveAllClick: () -> Unit,
     onDiceClick: () -> Unit = {},
@@ -77,6 +78,9 @@ fun ListScreenContent(
                     },
                     onItemsChange = { delta ->
                         onPowerChange(character.id, delta)
+                    },
+                    onGenderToggle = {
+                        onGenderToggle(character.id)
                     }
                 )
 
@@ -181,6 +185,7 @@ private fun CharacterListContentPreview() {
             onCharacterClick = {},
             onLevelChange = { _, _ -> },
             onPowerChange = { _, _ -> },
+            onGenderToggle = { _ -> },
             onResetAllClick = {},
             onRemoveAllClick = {}
         )

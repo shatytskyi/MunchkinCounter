@@ -102,4 +102,17 @@ class CommonViewModel(
             repository.changeLevel(id, value)
         }
     }
+    
+    fun toggleGender(id: Long) {
+        viewModelScope.launch {
+            val character = characters.value.find { it.id == id }
+            character?.let {
+                val newGender = when (it.gender) {
+                    Gender.MALE -> Gender.FEMALE
+                    Gender.FEMALE -> Gender.MALE
+                }
+                repository.updateCharacter(id, it.name, it.lvl, it.items, newGender)
+            }
+        }
+    }
 }

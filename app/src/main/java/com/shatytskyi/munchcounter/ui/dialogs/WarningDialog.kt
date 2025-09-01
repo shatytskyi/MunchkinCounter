@@ -53,7 +53,7 @@ fun WarningDialog(
                         onConfirm()
                     },
                     bounded = false,
-                    color = MunchkinTheme.colors.red
+                    rippleColor = MunchkinTheme.colors.red
                 ),
                 text = stringResource(R.string.confirm),
                 style = MunchkinTheme.typography.bodyMedium,
@@ -68,7 +68,7 @@ fun WarningDialog(
                         onDismiss()
                     },
                     bounded = false,
-                    color = MunchkinTheme.colors.secondary
+                    rippleColor = MunchkinTheme.colors.secondary
                 ),
                 text = stringResource(R.string.cancel),
                 style = MunchkinTheme.typography.bodyLarge.copy(

@@ -35,7 +35,7 @@ fun MunchkinIconTextButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     bounded: Boolean = false,
-    rippleColor: Color = MunchkinTheme.colors.primary,
+    rippleColor: Color? = MunchkinTheme.colors.primary,
     iconTint: Color = MunchkinTheme.colors.onBackground,
     textColor: Color = MunchkinTheme.colors.onBackground,
     textStyle: TextStyle = MunchkinTheme.typography.labelMedium,
@@ -47,7 +47,7 @@ fun MunchkinIconTextButton(
                 onClick = onClick,
                 enabled = enabled,
                 bounded = bounded,
-                color = rippleColor
+                rippleColor = rippleColor
             )
             .padding(vertical = contentPadding),
         verticalAlignment = Alignment.CenterVertically,

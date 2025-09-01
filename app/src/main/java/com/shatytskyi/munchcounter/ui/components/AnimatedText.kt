@@ -31,12 +31,20 @@ fun AnimatedNumber(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        valueString.forEach { digitChar ->
-            AnimatedDigit(
-                digit = digitChar.digitToInt(),
-                textStyle = textStyle,
-                color = color
-            )
+        valueString.forEach { char ->
+            if (char == '-') {
+                MunchkinText(
+                    text = "-",
+                    style = textStyle,
+                    color = color
+                )
+            } else {
+                AnimatedDigit(
+                    digit = char.digitToInt(),
+                    textStyle = textStyle,
+                    color = color
+                )
+            }
         }
     }
 }

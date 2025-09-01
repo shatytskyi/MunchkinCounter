@@ -54,6 +54,9 @@ fun ListScreen(
         onPowerChange = { characterId, delta ->
             viewModel.changePower(characterId, delta)
         },
+        onGenderToggle = { characterId ->
+            viewModel.toggleGender(characterId)
+        },
         onResetAll = {
             viewModel.resetAllCharacters()
         },
@@ -73,6 +76,7 @@ private fun ListScreenContent(
     onAddCharacter: (String, Gender) -> Unit,
     onLevelChange: (Long, Int) -> Unit,
     onPowerChange: (Long, Int) -> Unit,
+    onGenderToggle: (Long) -> Unit,
     onResetAll: () -> Unit,
     onRemoveAll: () -> Unit,
     onSettingsClick: () -> Unit = {},
@@ -146,6 +150,10 @@ private fun ListScreenContent(
                         onPowerChange = { id, delta ->
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             onPowerChange(id, delta)
+                        },
+                        onGenderToggle = { id ->
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onGenderToggle(id)
                         },
                         onResetAllClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)

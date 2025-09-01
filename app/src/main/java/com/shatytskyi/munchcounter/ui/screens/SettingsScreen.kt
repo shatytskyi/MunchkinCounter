@@ -23,9 +23,11 @@ import androidx.compose.material.icons.outlined.BrightnessHigh
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -162,11 +164,7 @@ private fun ThemeSwitchGroup(
                         ThemeMode.DARK -> stringResource(R.string.theme_dark)
                     },
                     modifier = Modifier.weight(1f),
-                    rippleColor = when (mode) {
-                        ThemeMode.LIGHT -> MunchkinTheme.colors.primary
-                        ThemeMode.AUTO -> MunchkinTheme.colors.secondary
-                        else -> MunchkinTheme.colors.primary
-                    },
+                    rippleColor = null,
                     iconTint = if (selectedMode == mode) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
                     textColor = if (selectedMode == mode) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
                     textStyle = MunchkinTheme.typography.labelMedium.copy(
@@ -199,7 +197,7 @@ private fun DynamicColorsToggle(
         icon = Icons.Outlined.Palette,
         text = stringResource(R.string.dynamic_colors),
         modifier = modifier.fillMaxWidth(),
-        rippleColor = MunchkinTheme.colors.secondary,
+        rippleColor = null,
         iconTint = if (isEnabled) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
         textColor = if (isEnabled) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
         textStyle = MunchkinTheme.typography.bodyMedium.copy(
@@ -237,7 +235,7 @@ private fun LanguageSelector(
             icon = Icons.Outlined.Language,
             text = stringResource(R.string.language_description),
             modifier = Modifier.fillMaxWidth(),
-            rippleColor = MunchkinTheme.colors.primary,
+            rippleColor = null,
             iconTint = MunchkinTheme.colors.grey,
             textColor = MunchkinTheme.colors.onBackground,
             textStyle = MunchkinTheme.typography.bodyMedium,
