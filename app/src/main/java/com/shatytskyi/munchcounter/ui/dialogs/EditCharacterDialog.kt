@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Female
@@ -29,6 +28,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
+import com.shatytskyi.munchcounter.ui.components.MunchkinTextField
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -57,21 +57,12 @@ fun EditCharacterDialog(
                         style = MunchkinTheme.typography.labelMedium,
                         color = MunchkinTheme.colors.onBackground
                     )
-                    MunchkinCard(
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        BasicTextField(
-                            value = name,
-                            onValueChange = { name = it },
-                            textStyle = MunchkinTheme.typography.bodyMedium.copy(
-                                color = MunchkinTheme.colors.onBackground
-                            ),
-                            singleLine = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        )
-                    }
+                    MunchkinTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        placeholder = "Enter player name...",
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
 
                 // Level and Items row
@@ -88,27 +79,18 @@ fun EditCharacterDialog(
                             style = MunchkinTheme.typography.labelMedium,
                             color = MunchkinTheme.colors.onBackground
                         )
-                        MunchkinCard(
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            BasicTextField(
-                                value = level,
-                                onValueChange = {
-                                    if (it.isEmpty() || it.toIntOrNull() != null) {
-                                        level = it
-                                    }
-                                },
-                                textStyle = MunchkinTheme.typography.bodyMedium.copy(
-                                    color = MunchkinTheme.colors.onBackground,
-                                    textAlign = TextAlign.Center
-                                ),
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                singleLine = true,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            )
-                        }
+                        MunchkinTextField(
+                            value = level,
+                            onValueChange = {
+                                if (it.isEmpty() || it.toIntOrNull() != null) {
+                                    level = it
+                                }
+                            },
+                            placeholder = "0",
+                            keyboardType = KeyboardType.Number,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
 
                     // Items field
@@ -121,27 +103,18 @@ fun EditCharacterDialog(
                             style = MunchkinTheme.typography.labelMedium,
                             color = MunchkinTheme.colors.onBackground
                         )
-                        MunchkinCard(
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            BasicTextField(
-                                value = items,
-                                onValueChange = {
-                                    if (it.isEmpty() || it.toIntOrNull() != null) {
-                                        items = it
-                                    }
-                                },
-                                textStyle = MunchkinTheme.typography.bodyMedium.copy(
-                                    color = MunchkinTheme.colors.onBackground,
-                                    textAlign = TextAlign.Center
-                                ),
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                singleLine = true,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            )
-                        }
+                        MunchkinTextField(
+                            value = items,
+                            onValueChange = {
+                                if (it.isEmpty() || it.toIntOrNull() != null) {
+                                    items = it
+                                }
+                            },
+                            placeholder = "0",
+                            keyboardType = KeyboardType.Number,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
 

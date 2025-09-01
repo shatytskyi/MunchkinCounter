@@ -19,7 +19,7 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 @Composable
 fun MunchkinCard(
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(16.dp),
     backgroundColor: Color = Color.Transparent,
     color: Color = MunchkinTheme.colors.primary,
     borderWidth: Dp = 2.5.dp,

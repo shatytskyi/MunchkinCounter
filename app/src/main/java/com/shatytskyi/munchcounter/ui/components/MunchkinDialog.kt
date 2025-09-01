@@ -32,13 +32,16 @@ fun MunchkinDialog(
     Dialog(onDismissRequest = onDismissRequest) {
         Box(
             modifier = modifier
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(24.dp))
                 .background(MunchkinTheme.colors.background)
-                .padding(32.dp)
+                .padding(
+                    start = 16.dp,
+                    top = 16.dp,
+                    end = 16.dp,
+                    bottom = 24.dp,
+                )
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp)
-            ) {
+            Column {
                 // Title
                 title?.let {
                     MunchkinText(
