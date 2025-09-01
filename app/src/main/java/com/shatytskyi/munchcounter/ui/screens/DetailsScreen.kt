@@ -20,8 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.icons.outlined.Casino
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.PersonRemove
 import androidx.compose.material.icons.outlined.Refresh
@@ -51,6 +49,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
+import com.shatytskyi.munchcounter.ui.components.icons.Dice5
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.components.icons.Swords
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
@@ -307,7 +306,7 @@ private fun DetailsScreenContent(
                         onDiceClick()
                     }) {
                         MunchkinIcon(
-                            imageVector = Icons.Outlined.Casino,
+                            imageVector = MunchkinIcons.Dice.Dice5,
                             tint = MunchkinTheme.colors.onBackground
                         )
                     }
