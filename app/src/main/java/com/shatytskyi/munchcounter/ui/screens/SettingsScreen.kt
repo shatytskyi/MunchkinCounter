@@ -6,17 +6,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Brightness4
@@ -32,6 +33,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,18 +61,17 @@ fun SettingsScreen(
     val topPadding = remember(statusBarHeight) {
         with(density) { statusBarHeight.toDp() + APP_BAR_HEIGHT.dp + 16.dp }
     }
-    
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
-                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)),
+                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom)),
             contentPadding = PaddingValues(
-                start = 24.dp,
-                end = 24.dp,
+                start = 16.dp,
+                end = 16.dp,
                 top = topPadding,
                 bottom = 24.dp
             ),
@@ -83,7 +84,7 @@ fun SettingsScreen(
                 )
             }
         }
-        
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -107,29 +108,31 @@ private fun ThemeSwitchGroup(
 ) {
     val haptic = LocalHapticFeedback.current
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    MunchkinCard(
+        modifier = Modifier
+            .fillMaxWidth(),
+        backgroundColor = MunchkinTheme.colors.background,
+        color = MunchkinTheme.colors.primary
     ) {
-        MunchkinText(
-            text = "Theme",
-            style = MunchkinTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Medium
-            ),
-            color = MunchkinTheme.colors.onBackground
-        )
+        Column {
+            Spacer(modifier = Modifier.height(24.dp))
 
-        MunchkinCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .selectableGroup(),
-            backgroundColor = MunchkinTheme.colors.background,
-            color = MunchkinTheme.colors.grey.copy(alpha = 0.3f)
-        ) {
+            MunchkinText(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = "Theme",
+                style = MunchkinTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MunchkinTheme.colors.onBackground
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(horizontal = 16.dp)
             ) {
                 ThemeMode.entries.forEach { mode ->
                     ThemeOption(
@@ -143,6 +146,8 @@ private fun ThemeSwitchGroup(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -175,12 +180,12 @@ private fun ThemeOption(
         MunchkinIcon(
             imageVector = icon,
             tint = if (isSelected) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
-            size = 32.dp
+            size = 24.dp
         )
 
         MunchkinText(
             text = mode.displayName,
-            style = MunchkinTheme.typography.labelLarge.copy(
+            style = MunchkinTheme.typography.labelMedium.copy(
                 fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal
             ),
             color = if (isSelected) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground
@@ -190,7 +195,7 @@ private fun ThemeOption(
 
 @Preview(
     name = "Settings Screen",
-    device = Devices.PIXEL_4,
+    device = Devices.PIXEL_7_PRO,
     showSystemUi = true,
     showBackground = true
 )

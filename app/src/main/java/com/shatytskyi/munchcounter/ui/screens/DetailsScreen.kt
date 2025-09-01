@@ -230,6 +230,8 @@ private fun DetailsScreenContent(
             }
 
             item {
+                Spacer(modifier = Modifier.height(24.dp))
+                HorizontalDivider()
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -244,7 +246,7 @@ private fun DetailsScreenContent(
                         text = "Reset Player",
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
-                        contentPadding = 24.dp,
+                        contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.secondary,
                         bounded = false
                     )
@@ -258,7 +260,7 @@ private fun DetailsScreenContent(
                         text = "Edit Player",
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
-                        contentPadding = 24.dp,
+                        contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.primary,
                         bounded = false
                     )
@@ -280,7 +282,7 @@ private fun DetailsScreenContent(
                         text = "Delete Player",
                         modifier = Modifier.fillMaxWidth(0.7f),
                         textStyle = MunchkinTheme.typography.labelMedium,
-                        contentPadding = 24.dp,
+                        contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.red,
                         bounded = false
                     )
@@ -371,7 +373,7 @@ private fun LevelControlCard(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp),
-        color = if (isNegative) MunchkinTheme.colors.secondary else MunchkinTheme.colors.primary,
+        color = if (isNegative) MunchkinTheme.colors.onBackground else MunchkinTheme.colors.onBackground,
         onClick = onClick
     ) {
         Row(
@@ -384,13 +386,7 @@ private fun LevelControlCard(
             MunchkinIcon(
                 imageVector = if (isNegative) Icons.Default.Remove else Icons.Default.Add,
                 tint = MunchkinTheme.colors.onBackground,
-                size = 24.dp
-            )
-            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-            MunchkinText(
-                text = kotlin.math.abs(value).toString(),
-                style = MunchkinTheme.typography.headlineLarge,
-                color = MunchkinTheme.colors.onBackground
+                size = 36.dp
             )
         }
     }

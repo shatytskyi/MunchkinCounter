@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -80,6 +81,12 @@ fun ListScreenContent(
             }
 
             item {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                HorizontalDivider()
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
@@ -90,7 +97,7 @@ fun ListScreenContent(
                         text = "Add Player",
                         modifier = Modifier.fillMaxWidth(0.5f),
                         textStyle = MunchkinTheme.typography.labelLarge,
-                        contentPadding = 24.dp,
+                        contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.primary,
                         bounded = false
                     )
@@ -109,7 +116,7 @@ fun ListScreenContent(
                         text = "Reset All",
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
-                        contentPadding = 24.dp,
+                        contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.secondary,
                         bounded = false
                     )
@@ -120,7 +127,7 @@ fun ListScreenContent(
                         text = "Remove All",
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
-                        contentPadding = 24.dp,
+                        contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.red,
                         bounded = false
                     )

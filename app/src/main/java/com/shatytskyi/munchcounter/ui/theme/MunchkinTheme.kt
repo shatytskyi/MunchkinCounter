@@ -72,9 +72,7 @@ fun MunchkinTheme(
         LocalMunchkinTypography provides MunchkinTypography()
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colors.background)
+            modifier = Modifier.background(colors.background)
         ) {
             content()
         }
