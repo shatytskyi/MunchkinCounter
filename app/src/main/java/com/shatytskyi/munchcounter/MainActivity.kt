@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.androidx.compose.koinViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,9 +26,7 @@ import com.shatytskyi.munchcounter.ui.screens.list.ListScreen
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 import com.shatytskyi.munchcounter.viewmodel.ThemeViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -38,7 +36,7 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
-            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val themeViewModel: ThemeViewModel = koinViewModel()
             val themeMode by themeViewModel.themeMode.collectAsState()
             
             MunchkinTheme(themeMode = themeMode) {
@@ -52,7 +50,7 @@ class MainActivity : ComponentActivity() {
 fun MunchkinApp(themeViewModel: ThemeViewModel) {
     val navController = rememberNavController()
 
-    val sharedViewModel: CommonViewModel = hiltViewModel()
+    val sharedViewModel: CommonViewModel = koinViewModel()
 
     NavHost(
         navController = navController,

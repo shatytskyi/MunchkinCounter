@@ -1,11 +1,8 @@
 package com.shatytskyi.munchcounter.data
 
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CharacterRepository @Inject constructor(
+class CharacterRepository(
     private val characterDao: CharacterDao
 ) {
     

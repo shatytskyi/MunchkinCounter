@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -89,10 +88,10 @@ dependencies {
     // SharedPreferences extensions (deprecated - will remove after Room migration)
     implementation(libs.androidx.preference.ktx)
 
-    // Hilt for dependency injection
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+    // Koin for dependency injection
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     
     // Compose UI Tooling for Previews
     debugImplementation(libs.compose.ui.tooling)

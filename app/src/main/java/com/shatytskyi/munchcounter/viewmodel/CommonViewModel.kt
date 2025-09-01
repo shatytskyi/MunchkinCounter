@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.CharacterRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,10 +12,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
-import javax.inject.Inject
 
-@HiltViewModel
-class CommonViewModel @Inject constructor(
+class CommonViewModel(
     private val repository: CharacterRepository
 ) : ViewModel() {
 

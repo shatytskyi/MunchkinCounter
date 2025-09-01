@@ -3,40 +3,31 @@ package com.shatytskyi.munchcounter.di
 import android.content.Context
 import androidx.room.Room
 import com.shatytskyi.munchcounter.data.CharacterDao
+import com.shatytskyi.munchcounter.data.CharacterRepository
 import com.shatytskyi.munchcounter.data.MunchkinDatabase
 import com.shatytskyi.munchcounter.data.ThemePreferences
 import com.shatytskyi.munchcounter.data.ThemePreferencesImpl
-import dagger.Binds
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class DatabaseModule {
+val databaseModule = module {
     
-    companion object {
-        @Provides
-        @Singleton
-        fun provideMunchkinDatabase(@ApplicationContext context: Context): MunchkinDatabase {
-            return Room.databaseBuilder(
-                context.applicationContext,
-                MunchkinDatabase::class.java,
-                "munchkin_database"
-            ).build()
-        }
-    
-        @Provides
-        @Singleton
-        fun provideCharacterDao(database: MunchkinDatabase): CharacterDao {
-            return database.characterDao()
-        }
+    single<MunchkinDatabase> {
+        Room.databaseBuilder(
+            get<Context>().applicationContext,
+            MunchkinDatabase::class.java,
+            "munchkin_database"
+        ).build()
     }
     
-    @Binds
-    @Singleton
-    abstract fun bindThemePreferences(impl: ThemePreferencesImpl): ThemePreferences
+    single<CharacterDao> {
+        get<MunchkinDatabase>().characterDao()
+    }
+    
+    single<ThemePreferences> {
+        ThemePreferencesImpl(get())
+    }
+    
+    single<CharacterRepository> {
+        CharacterRepository(get())
+    }
 }
