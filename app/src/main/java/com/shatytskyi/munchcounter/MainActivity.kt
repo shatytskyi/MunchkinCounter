@@ -17,11 +17,15 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.shatytskyi.munchcounter.ui.screens.DetailsScreen
 import com.shatytskyi.munchcounter.ui.screens.FightScreen
+import com.shatytskyi.munchcounter.ui.screens.SettingsScreen
 import com.shatytskyi.munchcounter.ui.screens.list.ListScreen
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
+import com.shatytskyi.munchcounter.viewmodel.ThemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,15 +38,18 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
-            MunchkinTheme {
-                MunchkinApp()
+            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val themeMode by themeViewModel.themeMode.collectAsState()
+            
+            MunchkinTheme(themeMode = themeMode) {
+                MunchkinApp(themeViewModel = themeViewModel)
             }
         }
     }
 }
 
 @Composable
-fun MunchkinApp() {
+fun MunchkinApp(themeViewModel: ThemeViewModel) {
     val navController = rememberNavController()
 
     val sharedViewModel: CommonViewModel = hiltViewModel()
@@ -82,6 +89,9 @@ fun MunchkinApp() {
                 viewModel = sharedViewModel,
                 onCharacterClick = { characterId ->
                     navController.navigate("solo/$characterId")
+                },
+                onSettingsClick = {
+                    navController.navigate("settings")
                 }
             )
         }
@@ -156,6 +166,45 @@ fun MunchkinApp() {
                 viewModel = sharedViewModel,
                 playerId = playerId,
                 onBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(
+            route = "settings",
+            enterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            exitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popEnterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            },
+            popExitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            }
+        ) {
+            val themeMode by themeViewModel.themeMode.collectAsState()
+            SettingsScreen(
+                currentThemeMode = themeMode,
+                onThemeModeChange = { mode ->
+                    themeViewModel.setThemeMode(mode)
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
             )
         }
     }

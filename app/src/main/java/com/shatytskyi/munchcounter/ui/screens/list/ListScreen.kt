@@ -32,6 +32,7 @@ private enum class ScreenState {
 fun ListScreen(
     viewModel: CommonViewModel,
     onCharacterClick: (Long) -> Unit,
+    onSettingsClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val characters by viewModel.characters.collectAsState()
@@ -56,6 +57,7 @@ fun ListScreen(
         onRemoveAll = {
             viewModel.removeAllCharacters()
         },
+        onSettingsClick = onSettingsClick,
         modifier = modifier
     )
 }
@@ -70,6 +72,7 @@ private fun ListScreenContent(
     onPowerChange: (Long, Int) -> Unit,
     onResetAll: () -> Unit,
     onRemoveAll: () -> Unit,
+    onSettingsClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
@@ -114,6 +117,10 @@ private fun ListScreenContent(
                         onDiceClick = { 
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             showDiceDialog = true 
+                        },
+                        onSettingsClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onSettingsClick()
                         }
                     )
                 }
@@ -148,6 +155,10 @@ private fun ListScreenContent(
                         onDiceClick = { 
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             showDiceDialog = true 
+                        },
+                        onSettingsClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onSettingsClick()
                         }
                     )
                 }

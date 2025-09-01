@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,7 +39,8 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 @Composable
 fun ListScreenEmptyContent(
     onAddCharacterClick: () -> Unit,
-    onDiceClick: () -> Unit = {}
+    onDiceClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -119,6 +121,19 @@ fun ListScreenEmptyContent(
                 textStyle = MunchkinTheme.typography.labelLarge,
                 contentPadding = 24.dp,
                 rippleColor = MunchkinTheme.colors.primary,
+                bounded = false
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            MunchkinIconTextButton(
+                onClick = onSettingsClick,
+                icon = Icons.Outlined.Settings,
+                text = "Settings",
+                modifier = Modifier.fillMaxWidth(0.5f),
+                textStyle = MunchkinTheme.typography.labelMedium,
+                contentPadding = 20.dp,
+                rippleColor = MunchkinTheme.colors.grey,
                 bounded = false
             )
         }

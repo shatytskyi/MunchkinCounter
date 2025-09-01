@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,7 +40,8 @@ fun ListScreenContent(
     onPowerChange: (Long, Int) -> Unit,
     onResetAllClick: () -> Unit,
     onRemoveAllClick: () -> Unit,
-    onDiceClick: () -> Unit = {}
+    onDiceClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -120,6 +122,25 @@ fun ListScreenContent(
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 24.dp,
                         rippleColor = MunchkinTheme.colors.red,
+                        bounded = false
+                    )
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    MunchkinIconTextButton(
+                        onClick = onSettingsClick,
+                        icon = Icons.Outlined.Settings,
+                        text = "Settings",
+                        modifier = Modifier.fillMaxWidth(0.6f),
+                        textStyle = MunchkinTheme.typography.labelMedium,
+                        contentPadding = 20.dp,
+                        rippleColor = MunchkinTheme.colors.grey,
                         bounded = false
                     )
                 }

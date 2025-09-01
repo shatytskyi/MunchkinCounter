@@ -14,16 +14,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.shatytskyi.munchcounter.ui.screens.ThemeMode
 
 val LocalMunchkinColors = staticCompositionLocalOf { MunchkinColors() }
 val LocalMunchkinTypography = staticCompositionLocalOf { MunchkinTypography() }
 
 @Composable
 fun MunchkinTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeMode: ThemeMode = ThemeMode.AUTO,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
+    val systemInDarkTheme = isSystemInDarkTheme()
+    val darkTheme = when (themeMode) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.AUTO -> systemInDarkTheme
+    }
     val colors = when {
         dynamicColor -> {
             val context = LocalContext.current

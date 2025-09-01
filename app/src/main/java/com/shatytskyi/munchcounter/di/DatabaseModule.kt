@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.shatytskyi.munchcounter.data.CharacterDao
 import com.shatytskyi.munchcounter.data.MunchkinDatabase
+import com.shatytskyi.munchcounter.data.ThemePreferences
+import com.shatytskyi.munchcounter.data.ThemePreferencesImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,21 +16,27 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
+abstract class DatabaseModule {
     
-    @Provides
-    @Singleton
-    fun provideMunchkinDatabase(@ApplicationContext context: Context): MunchkinDatabase {
-        return Room.databaseBuilder(
-            context.applicationContext,
-            MunchkinDatabase::class.java,
-            "munchkin_database"
-        ).build()
+    companion object {
+        @Provides
+        @Singleton
+        fun provideMunchkinDatabase(@ApplicationContext context: Context): MunchkinDatabase {
+            return Room.databaseBuilder(
+                context.applicationContext,
+                MunchkinDatabase::class.java,
+                "munchkin_database"
+            ).build()
+        }
+    
+        @Provides
+        @Singleton
+        fun provideCharacterDao(database: MunchkinDatabase): CharacterDao {
+            return database.characterDao()
+        }
     }
     
-    @Provides
+    @Binds
     @Singleton
-    fun provideCharacterDao(database: MunchkinDatabase): CharacterDao {
-        return database.characterDao()
-    }
+    abstract fun bindThemePreferences(impl: ThemePreferencesImpl): ThemePreferences
 }
