@@ -28,7 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
@@ -139,7 +141,7 @@ fun DiceDialog(
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = onDismiss
                 ),
-                text = "Close"
+                text = stringResource(R.string.close)
             )
         },
         modifier = modifier

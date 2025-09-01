@@ -3,53 +3,46 @@
     <string name="app_name" translatable="false">Munchkin Counter</string>
 
     <!-- Common Actions -->
-    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <string name="save">Save</string>
     <string name="add">Add</string>
-    <string name="remove">Remove</string>
     <string name="reset">Reset</string>
-    <string name="clear">Clear</string>
-    <string name="undo">UNDO</string>
-    <string name="leave">Leave</string>
+    <string name="close">Close</string>
     <string name="exit">Exit</string>
 
     <!-- Player Management -->
     <string name="add_player">Add Player</string>
-    <string name="player">Player</string>
-    <string name="player_name">Player Name:</string>
-    <string name="enter_name">Enter the name</string>
-    <string name="new_name">New name</string>
+    <string name="add_new_player">Add new player</string>
+    <string name="player_name">Player Name</string>
     <string name="no_players">No Players Yet</string>
     <string name="no_players_description">Add your first player to get started with Munchkin!</string>
-    <string name="no_name_warning">Unnamed players are not allowed</string>
-    <string name="toast_no_players">No players in list</string>
-    <string name="all_was_removed">All players were removed</string>
-    <string name="expand_player_card">Expand player\'s card</string>
+    <string name="reset_player">Reset Player</string>
+    <string name="delete_player">Delete Player</string>
+    <string name="player_will_be_reset">Player will be reset to level 1 with 0 items</string>
+    <string name="player_will_be_deleted">Player will be permanently deleted</string>
+    <string name="delete_character_title">Delete %s?</string>
+    <string name="loading_players">Loading Players...</string>
+    <string name="reset_all">Reset All</string>
+    <string name="remove_all">Remove All</string>
+    <string name="warning_reset_all_title">Reset All Players?</string>
+    <string name="warning_reset_all_message">All players will be reset to level 1 with 0 power</string>
+    <string name="warning_delete_all_title">Delete All Players?</string>
+    <string name="warning_delete_all_message">All players will be permanently deleted</string>
 
     <!-- Stats -->
     <string name="level">Level</string>
-    <string name="level_short">LVL</string>
     <string name="power">Power</string>
-    <string name="score">Score</string>
-    <string name="score_short">SCORE</string>
-    <string name="gear">Gear</string>
-    <string name="items">Items:</string>
-    <string name="total_power">TOTAL POWER</string>
+    <string name="items">Items</string>
     <string name="items_controls">EQUIP CONTROLS</string>
 
     <!-- Fight Screen -->
-    <string name="fight">Fight</string>
+    <string name="fight">Fight!</string>
     <string name="fight_title">Fight</string>
-    <string name="loading_fight">Loading Fight...</string>
-    <string name="loading_player">Loading Player...</string>
-    <string name="loading_character">Loading Character...</string>
+    <string name="loading_fight">Loading Fight…</string>
     <string name="player_header">PLAYER</string>
     <string name="helper_header">HELPER</string>
     <string name="result_header">RESULT</string>
-    <string name="monster">Monster</string>
     <string name="monster_power">Monster - Power %d</string>
     <string name="player_level">%1$s - Level %2$d</string>
     <string name="player_power">Power: %d</string>
@@ -57,18 +50,26 @@
     <string name="escape">ESCAPE</string>
     <string name="win_button">Win!</string>
     <string name="run_button">Run!</string>
-    <string name="fight_adjustments">FIGHT ADJUSTMENTS</string>
-    <string name="fight_tips">💡 FIGHT TIPS</string>
-    <string name="fight_tips_description">Use the buttons above to adjust power during combat.\nItems and curses can temporarily change your power!</string>
+    
+    <!-- New Fight Screen strings -->
+    <string name="player_stats">Player Stats</string>
+    <string name="current_power">Current Power</string>
+    <string name="no_helper">No helper selected</string>
+    <string name="remove">Remove</string>
+    <string name="power_comparison">Power Comparison</string>
+    <string name="player">Player</string>
+    <string name="monster">Monster</string>
+    <string name="winning_by">Winning by %d</string>
+    <string name="losing_by">Losing by %d</string>
+    <string name="player_power_control">Player Power Control</string>
+    <string name="monster_power_control">Monster Power Control</string>
+    <string name="name">Name</string>
 
     <!-- Helper/Partner -->
-    <string name="partner">Ally</string>
     <string name="helper">Helper</string>
     <string name="choose_helper">Choose Helper</string>
     <string name="twin">Twin</string>
-    <string name="partner_removed">Partner removed</string>
     <string name="remove_helper">Remove</string>
-    <string name="custom_partner_power">Custom partner\'s power</string>
 
     <!-- Escape Dialog -->
     <string name="escape_attempt">Escape Attempt</string>
@@ -81,58 +82,32 @@
     <string name="stay">Stay</string>
 
     <!-- Dice -->
-    <string name="dice">Dice</string>
-    <string name="throw_dice">Roll Dice</string>
-    <string name="roll">Roll</string>
-    <string name="dice_success">Success! Run, Forest, run!</string>
-    <string name="dice_fail">Monster catches you</string>
-    <string name="toast_run_fail">Don\'t forget to punish munchkin</string>
 
     <!-- Warnings & Dialogs -->
-    <string name="warning_all_remove">All players will be removed!</string>
-    <string name="warning_all_reset">All players will be reset!</string>
-    <string name="reset_character_warning">Character will be reset to level 1 with 0 power</string>
     <string name="reset_character_title">Reset %s?</string>
-    <string name="warning_will_reset">%s will lose all stats</string>
-    <string name="warning_will_removed">%s will be permanently removed</string>
-    <string name="reset_all">Reset All</string>
-    <string name="remove_all">Remove All</string>
 
     <!-- Edit Character -->
-    <string name="edit_character">Edit Character</string>
+    <string name="edit_player">Edit Player</string>
     <string name="name_label">Name:</string>
     <string name="level_label">Level:</string>
     <string name="items_label">Items:</string>
+    <string name="gender_label">Gender:</string>
+    <string name="enter_player_name">Enter player name…</string>
 
     <!-- Death -->
-    <string name="death">Death</string>
-    <string name="toast_munchkin_died">Munchkin died, all items were lost</string>
 
     <!-- Other -->
-    <string name="shuffle">Shuffle</string>
-    <string name="bonus_is">Bonus:</string>
+    <string name="settings">Settings</string>
+    <string name="theme">Theme</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_auto">Auto</string>
+    <string name="theme_dark">Dark</string>
+    <string name="dynamic_colors">Dynamic Colors</string>
+    <string name="language">Language</string>
+    <string name="language_description">Change app language</string>
+    <string name="gender">Gender</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="zero">0</string>
 
-    <!-- Legacy XML Layout Strings (for backward compatibility) -->
-    <string name="result">Result</string>
-    <string name="reset_fight">Reset fight</string>
-    <string name="run">Run away</string>
-    <string name="try_to_run">Try to run</string>
-    <string name="result_is">Result:</string>
-    <string name="throw_dice_b">Throw</string>
-    <string name="custom_partner_s_power">Custom partner\'s power</string>
-    <string name="expand_player_s_card">Expand player\'s card</string>
-    <string name="inf">Info</string>
-    <string name="fight_result_win">Victory!\n +1 LVL</string>
-    <string name="fight_was_reset">Fight was reset</string>
-    <string name="your_munchkin">Your munchkin</string>
-
-    <!-- Numbers (not translatable) -->
-    <string name="_0" translatable="false">0</string>
-    <string name="_1" translatable="false">1</string>
-    <string name="_2" translatable="false">2</string>
-    <string name="_3" translatable="false">3</string>
-    <string name="_4" translatable="false">4</string>
-    <string name="_5" translatable="false">5</string>
-    <string name="minus" translatable="false">−</string>
-    <string name="plus" translatable="false">+</string>
 </resources>

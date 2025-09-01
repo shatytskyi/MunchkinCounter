@@ -10,7 +10,9 @@ import androidx.core.content.edit
 
 interface ThemePreferences {
     val themeMode: Flow<ThemeMode>
+    val dynamicColors: Flow<Boolean>
     fun setThemeMode(mode: ThemeMode)
+    fun setDynamicColors(enabled: Boolean)
 }
 
 class ThemePreferencesImpl(
@@ -20,12 +22,16 @@ class ThemePreferencesImpl(
     companion object {
         private const val PREFS_NAME = "theme_preferences"
         private const val KEY_THEME_MODE = "theme_mode"
+        private const val KEY_DYNAMIC_COLORS = "dynamic_colors"
     }
     
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     
     private val _themeMode = MutableStateFlow(getCurrentThemeMode())
     override val themeMode: Flow<ThemeMode> = _themeMode.asStateFlow()
+    
+    private val _dynamicColors = MutableStateFlow(getCurrentDynamicColors())
+    override val dynamicColors: Flow<Boolean> = _dynamicColors.asStateFlow()
     
     private fun getCurrentThemeMode(): ThemeMode {
         val savedMode = sharedPrefs.getString(KEY_THEME_MODE, ThemeMode.AUTO.name)
@@ -36,8 +42,17 @@ class ThemePreferencesImpl(
         }
     }
     
+    private fun getCurrentDynamicColors(): Boolean {
+        return sharedPrefs.getBoolean(KEY_DYNAMIC_COLORS, false)
+    }
+    
     override fun setThemeMode(mode: ThemeMode) {
         sharedPrefs.edit { putString(KEY_THEME_MODE, mode.name) }
         _themeMode.value = mode
+    }
+    
+    override fun setDynamicColors(enabled: Boolean) {
+        sharedPrefs.edit { putBoolean(KEY_DYNAMIC_COLORS, enabled) }
+        _dynamicColors.value = enabled
     }
 }

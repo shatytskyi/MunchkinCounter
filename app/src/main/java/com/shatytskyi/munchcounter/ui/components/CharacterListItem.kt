@@ -26,6 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
@@ -88,7 +90,7 @@ fun CharacterListItem(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     StatItem(
-                        title = "Level",
+                        title = stringResource(R.string.level),
                         value = character.lvl,
                         onDecrease = { onLevelChange(-1) },
                         onIncrease = { onLevelChange(+1) },
@@ -98,7 +100,7 @@ fun CharacterListItem(
                     )
 
                     StatItem(
-                        title = "Power",
+                        title = stringResource(R.string.power),
                         value = character.power,
                         onDecrease = {},
                         onIncrease = {},
@@ -108,7 +110,7 @@ fun CharacterListItem(
                     )
 
                     StatItem(
-                        title = "Items",
+                        title = stringResource(R.string.items),
                         value = character.items,
                         onDecrease = { onItemsChange(-1) },
                         onIncrease = { onItemsChange(+1) },

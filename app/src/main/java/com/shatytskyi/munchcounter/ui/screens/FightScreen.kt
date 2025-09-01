@@ -1,9 +1,10 @@
 package com.shatytskyi.munchcounter.ui.screens
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,45 +12,54 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.DirectionsRun
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Casino
-import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.outlined.Compare
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
-import com.shatytskyi.munchcounter.ui.components.CommonDiceDialog
+import com.shatytskyi.munchcounter.data.Gender
+import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
+import com.shatytskyi.munchcounter.ui.components.AnimatedNumber
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
+import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
+import com.shatytskyi.munchcounter.ui.components.munchkinClickable
+import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
-import kotlin.random.Random
 
 @Composable
 fun FightScreen(
@@ -61,20 +71,15 @@ fun FightScreen(
     val characters by viewModel.characters.collectAsState()
     val player = characters.find { it.id == playerId }
 
-    var currentPlayer by remember { mutableStateOf<Character?>(null) }
-    var monster by remember { mutableStateOf(Character.createMonster()) }
+    var playerPower by remember { mutableIntStateOf(0) }
+    var monsterPower by remember { mutableIntStateOf(10) }
     var helper by remember { mutableStateOf<Character?>(null) }
-    var initialPower by remember { mutableStateOf(0) }
-
     var showHelpersDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
-    var showEscapeDiceDialog by remember { mutableStateOf(false) }
 
-    // Initialize player when found
     LaunchedEffect(player) {
-        if (player != null && currentPlayer == null) {
-            currentPlayer = player.copy()
-            initialPower = player.items
+        if (player != null) {
+            playerPower = player.lvl + player.items
         }
     }
 
@@ -82,7 +87,7 @@ fun FightScreen(
         viewModel.loadCharacters()
     }
 
-    if (currentPlayer == null) {
+    if (player == null) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -108,274 +113,29 @@ fun FightScreen(
         return
     }
 
-    val playerScore = if (helper != null) {
-        currentPlayer!!.power + helper!!.power
-    } else {
-        currentPlayer!!.power
-    }
-    val scoreDifference = playerScore - monster.power
-    val isVictory = scoreDifference > 0
-
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        // Top App Bar
-        MunchkinTopAppBar(
-            title = stringResource(R.string.fight_title),
-            onBack = onBack,
-            actions = {
-                MunchkinIconButton(onClick = { showDiceDialog = true }) {
-                    MunchkinIcon(
-                        Icons.Default.Casino,
-                        tint = MunchkinTheme.colors.onBackground
-                    )
-                }
-            }
-        )
-
-        // Content
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
-                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            item {
-                // Control buttons
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    MunchkinCard(
-                        onClick = {
-                            monster = Character.createMonster()
-                            currentPlayer = player?.copy()
-                            initialPower = player?.items ?: 0
-                            helper = null
-                        },
-                        color = MunchkinTheme.colors.grey,
-                    ) {
-                        MunchkinText(stringResource(R.string.reset))
-                    }
-
-                    MunchkinCard(
-                        onClick = { showHelpersDialog = true },
-                        color = MunchkinTheme.colors.green,
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            MunchkinIcon(
-                                Icons.Default.PersonAdd,
-                                size = 24.dp
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            MunchkinText(stringResource(R.string.helper))
-                        }
-                    }
-
-                    MunchkinCard(
-                        onClick = onBack,
-                        color = MunchkinTheme.colors.grey,
-                    ) {
-                        MunchkinText(stringResource(R.string.exit))
-                    }
-                }
-            }
-
-            item {
-                // Fight Results Card
-                MunchkinCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MunchkinTheme.colors.grey.copy(alpha = 0.3f),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        // Header
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            MunchkinText(
-                                text = stringResource(R.string.player_header),
-                                style = MunchkinTheme.typography.titleSmall,
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center,
-                                color = MunchkinTheme.colors.onBackground
-                            )
-                            MunchkinText(
-                                text = stringResource(R.string.helper_header),
-                                style = MunchkinTheme.typography.titleSmall,
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center,
-                                color = MunchkinTheme.colors.onBackground
-                            )
-                            MunchkinText(
-                                text = stringResource(R.string.result_header),
-                                style = MunchkinTheme.typography.titleSmall,
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center,
-                                color = MunchkinTheme.colors.onBackground
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        // Values
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // Player
-                            Column(
-                                modifier = Modifier.weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                MunchkinText(
-                                    text = currentPlayer!!.name,
-                                    style = MunchkinTheme.typography.bodyMedium
-                                )
-                                MunchkinText(
-                                    text = if (helper != null) playerScore.toString() else currentPlayer!!.power.toString(),
-                                    style = MunchkinTheme.typography.titleLarge.copy(
-                                        fontWeight = FontWeight.Bold
-                                    ),
-                                    color = when {
-                                        helper != null -> MunchkinTheme.colors.onBackground
-                                        currentPlayer!!.items > initialPower -> MunchkinTheme.colors.green
-                                        currentPlayer!!.items < initialPower -> MunchkinTheme.colors.red
-                                        else -> MunchkinTheme.colors.onBackground
-                                    }
-                                )
-                            }
-
-                            // Helper
-                            Column(
-                                modifier = Modifier.weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                if (helper != null) {
-                                    MunchkinText(
-                                        text = "+${helper!!.name}",
-                                        style = MunchkinTheme.typography.bodyMedium
-                                    )
-                                    MunchkinText(
-                                        text = "(${helper!!.power})",
-                                        style = MunchkinTheme.typography.titleMedium
-                                    )
-                                    MunchkinText(
-                                        modifier = Modifier.clickable(
-                                            onClick = { helper = null }
-                                        ),
-                                        text = stringResource(R.string.remove_helper)
-                                    )
-                                } else {
-                                    MunchkinText(
-                                        text = "-",
-                                        style = MunchkinTheme.typography.bodyMedium,
-                                        color = MunchkinTheme.colors.onBackground
-                                    )
-                                }
-                            }
-
-                            // Result
-                            Column(
-                                modifier = Modifier.weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                MunchkinText(
-                                    text = if (scoreDifference > 0) "+$scoreDifference" else scoreDifference.toString(),
-                                    style = MunchkinTheme.typography.titleLarge.copy(
-                                        fontWeight = FontWeight.Bold
-                                    ),
-                                    color = if (isVictory) MunchkinTheme.colors.green else MunchkinTheme.colors.red
-                                )
-
-                                MunchkinIcon(
-                                    if (isVictory) Icons.Default.EmojiEvents else Icons.AutoMirrored.Filled.DirectionsRun,
-                                    tint = if (isVictory) MunchkinTheme.colors.green else MunchkinTheme.colors.red,
-                                    size = 24.dp
-                                )
-
-                                MunchkinText(
-                                    text = if (isVictory) stringResource(R.string.victory) else stringResource(
-                                        R.string.escape
-                                    ),
-                                    style = MunchkinTheme.typography.labelMedium,
-                                    color = if (isVictory) MunchkinTheme.colors.green else MunchkinTheme.colors.red
-                                )
-
-                                // Result button
-                                MunchkinCard(
-                                    onClick = {
-                                        if (isVictory) {
-                                            // Victory - level up
-                                            viewModel.changeLevel(playerId, +1)
-                                            onBack()
-                                        } else {
-                                            // Show dice for escape attempt
-                                            showEscapeDiceDialog = true
-                                        }
-                                    },
-                                    color = if (isVictory) {
-                                        MunchkinTheme.colors.green
-                                    } else {
-                                        MunchkinTheme.colors.red
-                                    },
-                                    modifier = Modifier.padding(top = 8.dp)
-                                ) {
-                                    MunchkinText(
-                                        if (isVictory) stringResource(R.string.win_button) else stringResource(
-                                            R.string.run_button
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            item {
-                // Player stats and controls
-                PlayerFightControls(
-                    player = currentPlayer!!,
-                    initialPower = initialPower,
-                    onPowerChange = { delta ->
-                        currentPlayer = currentPlayer!!.addPower(delta)
-                    },
-                    onLevelChange = { delta ->
-                        currentPlayer = currentPlayer!!.addLevel(delta)
-                        viewModel.changeLevel(playerId, delta)
-                    }
-                )
-            }
-
-            item {
-                // Monster controls
-                MonsterFightControls(
-                    monster = monster,
-                    onPowerChange = { delta ->
-                        monster = monster.addPower(delta)
-                    }
-                )
-            }
-        }
+    val density = LocalDensity.current
+    val statusBarHeight = WindowInsets.systemBars.getTop(density)
+    val topPadding = remember(statusBarHeight) {
+        with(density) { statusBarHeight.toDp() + APP_BAR_HEIGHT.dp + 16.dp }
     }
 
-    // Dialogs
+    FightScreenContent(
+        player = player,
+        playerPower = playerPower,
+        monsterPower = monsterPower,
+        helper = helper,
+        topPadding = topPadding,
+        onPlayerPowerChange = { playerPower += it },
+        onMonsterPowerChange = { monsterPower += it },
+        onHelpersClick = { showHelpersDialog = true },
+        onDiceClick = { showDiceDialog = true },
+        onBackClick = onBack,
+        modifier = modifier
+    )
+
     if (showHelpersDialog) {
         HelpersDialog(
             characters = characters.filter { it.id != playerId },
-            playerName = currentPlayer!!.name,
-            scoreDifference = scoreDifference,
             onDismiss = { showHelpersDialog = false },
             onHelperSelected = { selectedHelper ->
                 helper = selectedHelper
@@ -385,146 +145,212 @@ fun FightScreen(
     }
 
     if (showDiceDialog) {
-        CommonDiceDialog(onDismiss = { showDiceDialog = false })
-    }
-
-    if (showEscapeDiceDialog) {
-        EscapeDiceDialog(
-            onDismiss = { showEscapeDiceDialog = false },
-            onEscapeResult = { success ->
-                if (success || !isVictory) {
-                    onBack()
-                }
-                showEscapeDiceDialog = false
-            }
+        DiceDialog(
+            onDismiss = { showDiceDialog = false }
         )
     }
 }
 
 @Composable
-private fun PlayerFightControls(
+private fun FightScreenContent(
     player: Character,
-    initialPower: Int,
-    onPowerChange: (Int) -> Unit,
-    onLevelChange: (Int) -> Unit,
+    playerPower: Int,
+    monsterPower: Int,
+    helper: Character?,
+    topPadding: Dp,
+    onPlayerPowerChange: (Int) -> Unit,
+    onMonsterPowerChange: (Int) -> Unit,
+    onHelpersClick: () -> Unit,
+    onDiceClick: () -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val haptic = LocalHapticFeedback.current
+
+    val totalPlayerPower = if (helper != null) {
+        playerPower + helper.lvl + helper.items
+    } else {
+        playerPower
+    }
+    val powerDifference = totalPlayerPower - monsterPower
+
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                top = topPadding,
+                bottom = 24.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            // 1. Статистика игрока
+            item {
+                PlayerStatsSection(
+                    player = player,
+                    currentPower = playerPower,
+                    originalPower = player.lvl + player.items
+                )
+            }
+
+            // 2. Помощник
+            item {
+                HelperSection(
+                    helper = helper,
+                    onHelpersClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onHelpersClick()
+                    }
+                )
+            }
+
+            // 3. Сравнение сил
+            item {
+                PowerComparisonSection(
+                    playerPower = totalPlayerPower,
+                    monsterPower = monsterPower,
+                    difference = powerDifference
+                )
+            }
+
+            // 4. Управление силой игрока
+            item {
+                PlayerPowerControlSection(
+                    onPowerChange = { delta ->
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onPlayerPowerChange(delta)
+                    }
+                )
+            }
+
+            // 5. Управление силой монстра
+            item {
+                MonsterPowerControlSection(
+                    onPowerChange = { delta ->
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onMonsterPowerChange(delta)
+                    }
+                )
+            }
+        }
+
+        // Top App Bar
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MunchkinTheme.colors.background.copy(alpha = 0.95f))
+        ) {
+            MunchkinTopAppBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
+                title = stringResource(R.string.fight_title),
+                onBack = onBackClick,
+                actions = {
+                    MunchkinIconButton(onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onDiceClick()
+                    }) {
+                        MunchkinIcon(
+                            imageVector = Icons.Default.Casino,
+                            tint = MunchkinTheme.colors.onBackground
+                        )
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlayerStatsSection(
+    player: Character,
+    currentPower: Int,
+    originalPower: Int,
     modifier: Modifier = Modifier
 ) {
     MunchkinCard(
         modifier = modifier.fillMaxWidth(),
-        color = MunchkinTheme.colors.primary.copy(alpha = 0.3f),
-        shape = RoundedCornerShape(16.dp)
+        backgroundColor = MunchkinTheme.colors.background,
+        color = MunchkinTheme.colors.primary
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MunchkinText(
-                text = stringResource(R.string.player_level, player.name, player.lvl),
-                style = MunchkinTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                text = stringResource(R.string.player_stats),
+                style = MunchkinTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MunchkinTheme.colors.onBackground
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Level controls
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                MunchkinCard(
-                    onClick = { onLevelChange(-1) },
-                    color = MunchkinTheme.colors.red,
-                ) {
-                    MunchkinText("LVL-")
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                MunchkinCard(
-                    onClick = { onLevelChange(+1) },
-                    color = MunchkinTheme.colors.green,
-                ) {
-                    MunchkinText("LVL+")
-                }
-            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Power controls
-            MunchkinText(
-                text = stringResource(R.string.player_power, player.items),
-                style = MunchkinTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                color = when {
-                    player.items > initialPower -> MunchkinTheme.colors.green
-                    player.items < initialPower -> MunchkinTheme.colors.red
-                    else -> MunchkinTheme.colors.onBackground
-                }
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Power buttons grid
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                // Name
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    MunchkinCard(
-                        onClick = { onPowerChange(-5) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-5") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-4) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-4") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-3) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-3") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-2) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-2") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-1) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-1") }
+                    MunchkinText(
+                        text = stringResource(R.string.name),
+                        style = MunchkinTheme.typography.labelSmall,
+                        color = MunchkinTheme.colors.grey
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    MunchkinText(
+                        text = player.name,
+                        style = MunchkinTheme.typography.titleMedium,
+                        color = MunchkinTheme.colors.onBackground
+                    )
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                // Level
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    MunchkinCard(
-                        onClick = { onPowerChange(+1) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+1") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+2) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+2") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+3) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+3") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+4) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+4") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+5) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+5") }
+                    MunchkinText(
+                        text = stringResource(R.string.level),
+                        style = MunchkinTheme.typography.labelSmall,
+                        color = MunchkinTheme.colors.grey
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    AnimatedNumber(
+                        value = player.lvl,
+                        textStyle = MunchkinTheme.typography.titleLarge,
+                        color = MunchkinTheme.colors.primary
+                    )
+                }
+
+                // Current Power
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    MunchkinText(
+                        text = stringResource(R.string.current_power),
+                        style = MunchkinTheme.typography.labelSmall,
+                        color = MunchkinTheme.colors.grey
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    AnimatedNumber(
+                        value = currentPower,
+                        textStyle = MunchkinTheme.typography.headlineLarge,
+                        color = when {
+                            currentPower > originalPower -> MunchkinTheme.colors.secondary
+                            currentPower < originalPower -> MunchkinTheme.colors.red
+                            else -> MunchkinTheme.colors.secondary
+                        }
+                    )
                 }
             }
         }
@@ -532,93 +358,308 @@ private fun PlayerFightControls(
 }
 
 @Composable
-private fun MonsterFightControls(
-    monster: Character,
+private fun HelperSection(
+    helper: Character?,
+    onHelpersClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    MunchkinCard(
+        modifier = modifier.fillMaxWidth(),
+        backgroundColor = MunchkinTheme.colors.background,
+        color = MunchkinTheme.colors.primary
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MunchkinIcon(
+                imageVector = Icons.Default.PersonAdd,
+                tint = MunchkinTheme.colors.primary,
+                size = 24.dp
+            )
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                MunchkinText(
+                    text = stringResource(R.string.helper),
+                    style = MunchkinTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    color = MunchkinTheme.colors.onBackground
+                )
+
+                if (helper != null) {
+                    MunchkinText(
+                        text = "${helper.name} (${helper.lvl + helper.items})",
+                        style = MunchkinTheme.typography.bodyMedium,
+                        color = MunchkinTheme.colors.secondary
+                    )
+                } else {
+                    MunchkinText(
+                        text = stringResource(R.string.no_helper),
+                        style = MunchkinTheme.typography.bodyMedium,
+                        color = MunchkinTheme.colors.grey
+                    )
+                }
+            }
+
+            MunchkinIconTextButton(
+                onClick = onHelpersClick,
+                icon = if (helper != null) Icons.Default.Remove else Icons.Default.Add,
+                text = if (helper != null) stringResource(R.string.remove) else stringResource(R.string.add),
+                rippleColor = MunchkinTheme.colors.primary,
+                bounded = false
+            )
+        }
+    }
+}
+
+@Composable
+private fun PowerComparisonSection(
+    playerPower: Int,
+    monsterPower: Int,
+    difference: Int,
+    modifier: Modifier = Modifier
+) {
+    MunchkinCard(
+        modifier = modifier.fillMaxWidth(),
+        backgroundColor = MunchkinTheme.colors.background,
+        color = MunchkinTheme.colors.primary
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            MunchkinText(
+                text = stringResource(R.string.power_comparison),
+                style = MunchkinTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MunchkinTheme.colors.onBackground
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Player Power
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    MunchkinText(
+                        text = stringResource(R.string.player),
+                        style = MunchkinTheme.typography.labelSmall,
+                        color = MunchkinTheme.colors.grey
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    AnimatedNumber(
+                        value = playerPower,
+                        textStyle = MunchkinTheme.typography.headlineLarge,
+                        color = MunchkinTheme.colors.primary
+                    )
+                }
+
+                // VS
+                MunchkinIcon(
+                    imageVector = Icons.Outlined.Compare,
+                    tint = MunchkinTheme.colors.grey,
+                    size = 32.dp
+                )
+
+                // Monster Power
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    MunchkinText(
+                        text = stringResource(R.string.monster),
+                        style = MunchkinTheme.typography.labelSmall,
+                        color = MunchkinTheme.colors.grey
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    AnimatedNumber(
+                        value = monsterPower,
+                        textStyle = MunchkinTheme.typography.headlineLarge,
+                        color = MunchkinTheme.colors.red
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Difference
+            MunchkinText(
+                text = if (difference >= 0) {
+                    stringResource(R.string.winning_by, difference)
+                } else {
+                    stringResource(R.string.losing_by, -difference)
+                },
+                style = MunchkinTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = if (difference >= 0) MunchkinTheme.colors.secondary else MunchkinTheme.colors.red
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlayerPowerControlSection(
     onPowerChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     MunchkinCard(
         modifier = modifier.fillMaxWidth(),
-        color = MunchkinTheme.colors.red.copy(alpha = 0.3f),
-        shape = RoundedCornerShape(16.dp)
+        backgroundColor = MunchkinTheme.colors.background,
+        color = MunchkinTheme.colors.primary
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             MunchkinText(
-                text = stringResource(R.string.monster_power, monster.power),
+                text = stringResource(R.string.player_power_control),
                 style = MunchkinTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                color = MunchkinTheme.colors.onBackground,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Monster power buttons
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                // Minus buttons column
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    MunchkinCard(
-                        onClick = { onPowerChange(-5) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-5") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-4) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-4") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-3) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-3") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-2) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-2") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(-1) },
-                        color = MunchkinTheme.colors.red,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("-1") }
+                    for (value in listOf(-1, -2, -3, -4, -5)) {
+                        PowerControlButton(
+                            value = value,
+                            onClick = { onPowerChange(value) },
+                            isNegative = true
+                        )
+                    }
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                // Plus buttons column
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    MunchkinCard(
-                        onClick = { onPowerChange(+1) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+1") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+2) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+2") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+3) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+3") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+4) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+4") }
-                    MunchkinCard(
-                        onClick = { onPowerChange(+5) },
-                        color = MunchkinTheme.colors.green,
-                        modifier = Modifier.weight(1f)
-                    ) { MunchkinText("+5") }
+                    for (value in listOf(+1, +2, +3, +4, +5)) {
+                        PowerControlButton(
+                            value = value,
+                            onClick = { onPowerChange(value) },
+                            isNegative = false
+                        )
+                    }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun MonsterPowerControlSection(
+    onPowerChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    MunchkinCard(
+        modifier = modifier.fillMaxWidth(),
+        backgroundColor = MunchkinTheme.colors.background,
+        color = MunchkinTheme.colors.red
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            MunchkinText(
+                text = stringResource(R.string.monster_power_control),
+                style = MunchkinTheme.typography.titleMedium,
+                color = MunchkinTheme.colors.onBackground,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Minus buttons column
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    for (value in listOf(-1, -2, -3, -4, -5)) {
+                        PowerControlButton(
+                            value = value,
+                            onClick = { onPowerChange(value) },
+                            isNegative = true
+                        )
+                    }
+                }
+
+                // Plus buttons column
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    for (value in listOf(+1, +2, +3, +4, +5)) {
+                        PowerControlButton(
+                            value = value,
+                            onClick = { onPowerChange(value) },
+                            isNegative = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PowerControlButton(
+    value: Int,
+    onClick: () -> Unit,
+    isNegative: Boolean,
+    modifier: Modifier = Modifier
+) {
+    MunchkinCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        color = if (isNegative) MunchkinTheme.colors.red else MunchkinTheme.colors.secondary,
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            MunchkinIcon(
+                imageVector = if (isNegative) Icons.Default.Remove else Icons.Default.Add,
+                tint = MunchkinTheme.colors.onBackground,
+                size = 20.dp
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            MunchkinText(
+                text = kotlin.math.abs(value).toString(),
+                style = MunchkinTheme.typography.titleMedium,
+                color = MunchkinTheme.colors.onBackground
+            )
         }
     }
 }
@@ -626,8 +667,6 @@ private fun MonsterFightControls(
 @Composable
 private fun HelpersDialog(
     characters: List<Character>,
-    playerName: String,
-    scoreDifference: Int,
     onDismiss: () -> Unit,
     onHelperSelected: (Character) -> Unit,
     modifier: Modifier = Modifier
@@ -638,122 +677,74 @@ private fun HelpersDialog(
         content = {
             Column {
                 characters.forEach { character ->
-                    val helperName =
-                        if (character.name == playerName) stringResource(R.string.twin) else character.name
-                    val totalScore = scoreDifference + character.power
-
                     MunchkinCard(
                         onClick = { onHelperSelected(character) },
-                        modifier = Modifier.fillMaxWidth(),
-                        color = Color.Transparent,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .munchkinClickable(
+                                onClick = { onHelperSelected(character) }
+                            ),
+                        backgroundColor = MunchkinTheme.colors.background,
+                        color = MunchkinTheme.colors.primary
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            MunchkinText(helperName)
                             MunchkinText(
-                                text = if (totalScore > 0) "+$totalScore" else totalScore.toString(),
-                                color = if (totalScore > 0) MunchkinTheme.colors.green else MunchkinTheme.colors.red
+                                text = character.name,
+                                style = MunchkinTheme.typography.bodyLarge,
+                                color = MunchkinTheme.colors.onBackground
+                            )
+                            MunchkinText(
+                                text = "(${character.lvl + character.items})",
+                                style = MunchkinTheme.typography.titleMedium,
+                                color = MunchkinTheme.colors.secondary
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         },
         confirmButton = {
-            MunchkinText(
-                modifier = Modifier.clickable(
-                    onClick = onDismiss
-                ),
-                text = stringResource(R.string.cancel)
+            MunchkinIconTextButton(
+                onClick = onDismiss,
+                icon = Icons.Default.Remove,
+                text = stringResource(R.string.cancel),
+                rippleColor = MunchkinTheme.colors.grey,
+                bounded = false
             )
         },
         modifier = modifier
     )
 }
 
+@Preview(
+    name = "Fight Screen",
+    device = Devices.PIXEL_4,
+    showSystemUi = true,
+    showBackground = true
+)
 @Composable
-private fun EscapeDiceDialog(
-    onDismiss: () -> Unit,
-    onEscapeResult: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var diceResult by remember { mutableStateOf<Int?>(null) }
-    var isRolling by remember { mutableStateOf(false) }
+private fun FightScreenPreview() {
+    val mockCharacter = Character(1, "Aragorn", 5, 8, Gender.MALE)
 
-    MunchkinDialog(
-        onDismissRequest = onDismiss,
-        title = stringResource(R.string.escape_attempt),
-        content = {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                MunchkinText(
-                    text = stringResource(R.string.roll_dice_to_escape),
-                    style = MunchkinTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
-                )
-
-                diceResult?.let { result ->
-                    MunchkinText(
-                        text = stringResource(R.string.dice_result, result),
-                        style = MunchkinTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = if (result >= 5) MunchkinTheme.colors.green else MunchkinTheme.colors.red
-                    )
-
-                    MunchkinText(
-                        text = if (result >= 5) stringResource(R.string.escape_success) else stringResource(
-                            R.string.escape_failed
-                        ),
-                        style = MunchkinTheme.typography.bodyMedium,
-                        color = if (result >= 5) MunchkinTheme.colors.green else MunchkinTheme.colors.red
-                    )
-                }
-
-                MunchkinCard(
-                    onClick = {
-                        if (!isRolling) {
-                            isRolling = true
-                            val result = Random.nextInt(1, 7)
-                            diceResult = result
-                            isRolling = false
-                        }
-                    },
-                    color = MunchkinTheme.colors.primary,
-                    enabled = !isRolling
-                ) {
-                    MunchkinText(
-                        if (diceResult == null) stringResource(R.string.roll_dice) else stringResource(
-                            R.string.roll_again
-                        )
-                    )
-                }
-            }
-        },
-        confirmButton = {
-            diceResult?.let { result ->
-                MunchkinText(
-                    modifier = Modifier.clickable(
-                        onClick = { onEscapeResult(result >= 5) },
-                    ),
-                    text = if (result >= 5) stringResource(R.string.run_button) else stringResource(
-                        R.string.stay
-                    )
-                )
-            }
-        },
-        dismissButton = {
-            MunchkinText(
-                modifier = Modifier.clickable(
-                    onClick = onDismiss
-                ),
-                text = stringResource(R.string.cancel)
-            )
-        },
-        modifier = modifier
-    )
+    MunchkinTheme {
+        FightScreenContent(
+            player = mockCharacter,
+            playerPower = 13,
+            monsterPower = 10,
+            helper = null,
+            topPadding = 100.dp,
+            onPlayerPowerChange = {},
+            onMonsterPowerChange = {},
+            onHelpersClick = {},
+            onDiceClick = {},
+            onBackClick = {}
+        )
+    }
 }

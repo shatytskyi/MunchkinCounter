@@ -31,7 +31,7 @@ val DarkMunchkinColors = MunchkinColors(
     secondary = Color(0xFFBFA76A),
     green = Color(0xFF4caf50),
     red = Color(0xFFef5350),
-    background = Color(0xFF1a1a1a),
+    background = Color(0xFF212121),
     onBackground = Color(0xFFf5f5f5),
     grey = Color(0xFF9e9e9e),
 )

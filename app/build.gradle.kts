@@ -48,6 +48,11 @@ android {
     buildFeatures {
         compose = true
     }
+    
+    // Support for per-app language preferences
+    androidResources {
+        localeFilters.addAll(listOf("en", "ru", "uk", "pl"))
+    }
 }
 
 dependencies {

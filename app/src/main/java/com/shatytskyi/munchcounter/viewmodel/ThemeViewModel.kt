@@ -18,7 +18,17 @@ class ThemeViewModel(
         initialValue = ThemeMode.AUTO
     )
     
+    val dynamicColors: StateFlow<Boolean> = themePreferences.dynamicColors.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = false
+    )
+    
     fun setThemeMode(mode: ThemeMode) {
         themePreferences.setThemeMode(mode)
+    }
+    
+    fun setDynamicColors(enabled: Boolean) {
+        themePreferences.setDynamicColors(enabled)
     }
 }

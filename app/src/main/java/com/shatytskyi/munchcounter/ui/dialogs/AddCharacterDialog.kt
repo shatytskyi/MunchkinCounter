@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextField
 import com.shatytskyi.munchcounter.ui.components.munchkinClickable
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
+import com.shatytskyi.munchcounter.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -52,14 +54,14 @@ fun AddCharacterDialog(
 
     MunchkinDialog(
         onDismissRequest = onDismiss,
-        title = "Add new player",
+        title = stringResource(R.string.add_new_player),
         content = {
             Column {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Column {
                     MunchkinText(
-                        text = "Player Name",
+                        text = stringResource(R.string.player_name),
                         style = MunchkinTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
@@ -71,7 +73,7 @@ fun AddCharacterDialog(
                     MunchkinTextField(
                         value = name,
                         onValueChange = { name = it },
-                        placeholder = "Enter player name...",
+                        placeholder = stringResource(R.string.enter_player_name),
                         focusRequester = focusRequester,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -83,7 +85,7 @@ fun AddCharacterDialog(
                     MunchkinText(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Start,
-                        text = "Gender",
+                        text = stringResource(R.string.gender),
                         style = MunchkinTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
@@ -132,7 +134,7 @@ fun AddCharacterDialog(
                     }
                 ),
                 style = MunchkinTheme.typography.bodyLarge,
-                text = "Add",
+                text = stringResource(R.string.add),
             )
         },
         dismissButton = {
@@ -146,7 +148,7 @@ fun AddCharacterDialog(
                     color = MunchkinTheme.colors.secondary,
                 ),
                 style = MunchkinTheme.typography.bodyMedium,
-                text = "Cancel"
+                text = stringResource(R.string.cancel)
             )
         },
         modifier = modifier
@@ -183,7 +185,10 @@ private fun GenderOption(
         )
 
         MunchkinText(
-            text = gender.displayName,
+            text = when (gender) {
+                Gender.MALE -> stringResource(R.string.gender_male)
+                Gender.FEMALE -> stringResource(R.string.gender_female)
+            },
             style = MunchkinTheme.typography.labelMedium.copy(
                 fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal
             ),

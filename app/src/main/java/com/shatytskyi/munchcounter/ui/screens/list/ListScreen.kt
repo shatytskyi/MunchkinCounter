@@ -16,6 +16,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
+import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.dialogs.AddCharacterDialog
@@ -181,8 +183,8 @@ private fun ListScreenContent(
 
     if (showResetAllDialog) {
         WarningDialog(
-            title = "Reset All Players?",
-            message = "All players will be reset to level 1 with 0 power",
+            title = stringResource(R.string.warning_reset_all_title),
+            message = stringResource(R.string.warning_reset_all_message),
             onDismiss = { showResetAllDialog = false },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -194,8 +196,8 @@ private fun ListScreenContent(
 
     if (showRemoveAllDialog) {
         WarningDialog(
-            title = "Delete All Players?",
-            message = "All players will be permanently deleted",
+            title = stringResource(R.string.warning_delete_all_title),
+            message = stringResource(R.string.warning_delete_all_message),
             onDismiss = { showRemoveAllDialog = false },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)

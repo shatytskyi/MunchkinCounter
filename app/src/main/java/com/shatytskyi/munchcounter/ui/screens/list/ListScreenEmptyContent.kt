@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
@@ -79,7 +80,7 @@ fun ListScreenEmptyContent(
             }
 
             MunchkinText(
-                text = "No Players Yet",
+                text = stringResource(R.string.no_players),
                 style = MunchkinTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
@@ -88,7 +89,7 @@ fun ListScreenEmptyContent(
             )
 
             MunchkinText(
-                text = "Add your first player to get started with Munchkin!",
+                text = stringResource(R.string.no_players_description),
                 style = MunchkinTheme.typography.bodyLarge,
                 color = MunchkinTheme.colors.onBackground,
                 textAlign = TextAlign.Center
@@ -116,7 +117,7 @@ fun ListScreenEmptyContent(
             MunchkinIconTextButton(
                 onClick = onAddCharacterClick,
                 icon = Icons.Default.Add,
-                text = "Add Player",
+                text = stringResource(R.string.add_player),
                 modifier = Modifier.fillMaxWidth(0.6f),
                 textStyle = MunchkinTheme.typography.labelLarge,
                 contentPadding = 24.dp,
@@ -129,7 +130,7 @@ fun ListScreenEmptyContent(
             MunchkinIconTextButton(
                 onClick = onSettingsClick,
                 icon = Icons.Outlined.Settings,
-                text = "Settings",
+                text = stringResource(R.string.settings),
                 modifier = Modifier.fillMaxWidth(0.5f),
                 textStyle = MunchkinTheme.typography.labelMedium,
                 contentPadding = 20.dp,

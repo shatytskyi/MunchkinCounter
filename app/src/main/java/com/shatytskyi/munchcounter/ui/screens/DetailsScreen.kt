@@ -47,6 +47,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
@@ -125,8 +127,8 @@ fun DetailsScreen(
 
     if (showResetDialog) {
         WarningDialog(
-            title = "Reset ${character.name}?",
-            message = "Player will be reset to level 1 with 0 items",
+            title = stringResource(R.string.reset_character_title, character.name),
+            message = stringResource(R.string.player_will_be_reset),
             onDismiss = { showResetDialog = false },
             onConfirm = {
                 viewModel.resetCharacter(characterId)
@@ -137,8 +139,8 @@ fun DetailsScreen(
 
     if (showDeleteDialog) {
         WarningDialog(
-            title = "Delete ${character.name}?",
-            message = "Player will be permanently deleted",
+            title = stringResource(R.string.delete_character_title, character.name),
+            message = stringResource(R.string.player_will_be_deleted),
             onDismiss = { showDeleteDialog = false },
             onConfirm = {
                 viewModel.removeCharacter(characterId)
@@ -214,7 +216,7 @@ private fun DetailsScreenContent(
                             onFightClick()
                         },
                         icon = MunchkinIcons.Swords,
-                        text = "Fight!",
+                        text = stringResource(R.string.fight),
                         modifier = Modifier.fillMaxWidth(0.6f),
                         textStyle = MunchkinTheme.typography.labelLarge,
                         contentPadding = 24.dp,
@@ -262,7 +264,7 @@ private fun DetailsScreenContent(
                             onResetClick()
                         },
                         icon = Icons.Outlined.Refresh,
-                        text = "Reset Player",
+                        text = stringResource(R.string.reset_player),
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
@@ -276,7 +278,7 @@ private fun DetailsScreenContent(
                             onEditClick()
                         },
                         icon = Icons.Outlined.Edit,
-                        text = "Edit Player",
+                        text = stringResource(R.string.edit_player),
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
@@ -298,7 +300,7 @@ private fun DetailsScreenContent(
                             onDeleteClick()
                         },
                         icon = Icons.Outlined.PersonRemove,
-                        text = "Delete Player",
+                        text = stringResource(R.string.delete_player),
                         modifier = Modifier.fillMaxWidth(0.7f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
@@ -373,7 +375,7 @@ private fun CompactCharacterWidget(
                 modifier = Modifier.weight(1f)
             ) {
                 MunchkinText(
-                    text = "Level",
+                    text = stringResource(R.string.level),
                     style = MunchkinTheme.typography.labelSmall,
                     color = MunchkinTheme.colors.grey
                 )
@@ -391,7 +393,7 @@ private fun CompactCharacterWidget(
                 modifier = Modifier.weight(1f)
             ) {
                 MunchkinText(
-                    text = "Power",
+                    text = stringResource(R.string.power),
                     style = MunchkinTheme.typography.labelSmall,
                     color = MunchkinTheme.colors.grey
                 )
@@ -409,7 +411,7 @@ private fun CompactCharacterWidget(
                 modifier = Modifier.weight(1f)
             ) {
                 MunchkinText(
-                    text = "Items",
+                    text = stringResource(R.string.items),
                     style = MunchkinTheme.typography.labelSmall,
                     color = MunchkinTheme.colors.grey
                 )
@@ -439,7 +441,7 @@ private fun LevelControlWidget(
             contentAlignment = Alignment.Center
         ) {
             MunchkinText(
-                text = "Level",
+                text = stringResource(R.string.level),
                 style = MunchkinTheme.typography.titleMedium,
                 color = MunchkinTheme.colors.onBackground
             )
@@ -513,7 +515,7 @@ private fun PowerControlWidget(
             contentAlignment = Alignment.Center
         ) {
             MunchkinText(
-                text = "Items",
+                text = stringResource(R.string.items),
                 style = MunchkinTheme.typography.titleMedium,
                 color = MunchkinTheme.colors.onBackground
             )

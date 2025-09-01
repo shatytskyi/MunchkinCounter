@@ -1,8 +1,11 @@
 package com.shatytskyi.munchcounter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -38,16 +41,26 @@ class MainActivity : ComponentActivity() {
         setContent {
             val themeViewModel: ThemeViewModel = koinViewModel()
             val themeMode by themeViewModel.themeMode.collectAsState()
+            val dynamicColors by themeViewModel.dynamicColors.collectAsState()
             
-            MunchkinTheme(themeMode = themeMode) {
-                MunchkinApp(themeViewModel = themeViewModel)
+            MunchkinTheme(
+                themeMode = themeMode,
+                dynamicColor = dynamicColors
+            ) {
+                MunchkinApp(
+                    themeViewModel = themeViewModel,
+                    activity = this
+                )
             }
         }
     }
 }
 
 @Composable
-fun MunchkinApp(themeViewModel: ThemeViewModel) {
+fun MunchkinApp(
+    themeViewModel: ThemeViewModel,
+    activity: ComponentActivity
+) {
     val navController = rememberNavController()
 
     val sharedViewModel: CommonViewModel = koinViewModel()
@@ -195,13 +208,34 @@ fun MunchkinApp(themeViewModel: ThemeViewModel) {
             }
         ) {
             val themeMode by themeViewModel.themeMode.collectAsState()
+            val dynamicColors by themeViewModel.dynamicColors.collectAsState()
             SettingsScreen(
                 currentThemeMode = themeMode,
+                dynamicColors = dynamicColors,
                 onThemeModeChange = { mode ->
                     themeViewModel.setThemeMode(mode)
                 },
+                onDynamicColorsChange = { enabled ->
+                    themeViewModel.setDynamicColors(enabled)
+                },
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onLanguageClick = {
+                    // Open system language settings for the app
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        // Android 13+ - Direct app language settings
+                        val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
+                            data = android.net.Uri.fromParts("package", activity.packageName, null)
+                        }
+                        activity.startActivity(intent)
+                    } else {
+                        // Android 12 and below - Open app info settings
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = android.net.Uri.fromParts("package", activity.packageName, null)
+                        }
+                        activity.startActivity(intent)
+                    }
                 }
             )
         }

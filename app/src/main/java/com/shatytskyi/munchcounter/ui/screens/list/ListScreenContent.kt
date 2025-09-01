@@ -26,6 +26,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
@@ -95,7 +97,7 @@ fun ListScreenContent(
                     MunchkinIconTextButton(
                         onClick = onAddCharacterClick,
                         icon = Icons.Default.Add,
-                        text = "Add Player",
+                        text = stringResource(R.string.add_player),
                         modifier = Modifier.fillMaxWidth(0.5f),
                         textStyle = MunchkinTheme.typography.labelLarge,
                         contentPadding = 16.dp,
@@ -114,7 +116,7 @@ fun ListScreenContent(
                     MunchkinIconTextButton(
                         onClick = onResetAllClick,
                         icon = Icons.Outlined.Refresh,
-                        text = "Reset All",
+                        text = stringResource(R.string.reset_all),
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
@@ -125,7 +127,7 @@ fun ListScreenContent(
                     MunchkinIconTextButton(
                         onClick = onRemoveAllClick,
                         icon = Icons.Outlined.PlaylistRemove,
-                        text = "Remove All",
+                        text = stringResource(R.string.remove_all),
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
@@ -144,7 +146,7 @@ fun ListScreenContent(
                     MunchkinIconTextButton(
                         onClick = onSettingsClick,
                         icon = Icons.Outlined.Settings,
-                        text = "Settings",
+                        text = stringResource(R.string.settings),
                         modifier = Modifier.fillMaxWidth(0.6f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 20.dp,

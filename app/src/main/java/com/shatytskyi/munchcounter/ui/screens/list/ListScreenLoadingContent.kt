@@ -21,6 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
@@ -54,7 +56,7 @@ fun ListScreenLoadingContent(
                 )
                 
                 MunchkinText(
-                    text = "Loading Players...",
+                    text = stringResource(R.string.loading_players),
                     style = MunchkinTheme.typography.bodyLarge,
                     color = MunchkinTheme.colors.onBackground,
                     textAlign = TextAlign.Center
