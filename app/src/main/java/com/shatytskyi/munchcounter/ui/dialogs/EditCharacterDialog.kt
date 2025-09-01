@@ -7,9 +7,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Female
+import androidx.compose.material.icons.outlined.Male
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,8 +24,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.data.Character
+import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
+import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
@@ -29,12 +35,13 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 fun EditCharacterDialog(
     character: Character,
     onDismiss: () -> Unit,
-    onConfirm: (String, Int, Int) -> Unit,
+    onConfirm: (String, Int, Int, Gender) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var name by remember { mutableStateOf(character.name) }
     var level by remember { mutableStateOf(character.lvl.toString()) }
     var items by remember { mutableStateOf(character.items.toString()) }
+    var selectedGender by remember { mutableStateOf(character.gender) }
 
     MunchkinDialog(
         onDismissRequest = onDismiss,
@@ -137,6 +144,54 @@ fun EditCharacterDialog(
                         }
                     }
                 }
+
+                // Gender selection
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MunchkinText(
+                        text = "Gender:",
+                        style = MunchkinTheme.typography.labelMedium,
+                        color = MunchkinTheme.colors.onBackground
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Gender.entries.forEach { gender ->
+                            MunchkinCard(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .selectable(
+                                        selected = selectedGender == gender,
+                                        onClick = { selectedGender = gender }
+                                    ),
+                                shape = RoundedCornerShape(8.dp),
+                                color = if (selectedGender == gender) MunchkinTheme.colors.primary else MunchkinTheme.colors.background
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(12.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    MunchkinIcon(
+                                        imageVector = when (gender) {
+                                            Gender.MALE -> Icons.Outlined.Male
+                                            Gender.FEMALE -> Icons.Outlined.Female
+                                        },
+                                        tint = if (selectedGender == gender) MunchkinTheme.colors.onBackground else MunchkinTheme.colors.grey,
+                                        size = 16.dp
+                                    )
+                                    MunchkinText(
+                                        text = gender.displayName,
+                                        style = MunchkinTheme.typography.bodyMedium,
+                                        color = if (selectedGender == gender) MunchkinTheme.colors.onBackground else MunchkinTheme.colors.grey
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
@@ -148,7 +203,7 @@ fun EditCharacterDialog(
                     onClick = {
                         val lvl = level.toIntOrNull() ?: character.lvl
                         val itm = items.toIntOrNull() ?: character.items
-                        onConfirm(name.trim(), lvl, itm)
+                        onConfirm(name.trim(), lvl, itm, selectedGender)
                     },
                 ),
                 text = "Save",

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import com.shatytskyi.munchcounter.data.Character
+import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.dialogs.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
@@ -42,8 +43,8 @@ fun ListScreen(
         characters = characters,
         isLoading = isLoading,
         onCharacterClick = onCharacterClick,
-        onAddCharacter = { name ->
-            viewModel.addCharacter(name)
+        onAddCharacter = { name, gender ->
+            viewModel.addCharacter(name, gender)
         },
         onLevelChange = { characterId, delta ->
             viewModel.changeLevel(characterId, delta)
@@ -67,7 +68,7 @@ private fun ListScreenContent(
     characters: List<Character>,
     isLoading: Boolean,
     onCharacterClick: (Long) -> Unit,
-    onAddCharacter: (String) -> Unit,
+    onAddCharacter: (String, Gender) -> Unit,
     onLevelChange: (Long, Int) -> Unit,
     onPowerChange: (Long, Int) -> Unit,
     onResetAll: () -> Unit,
@@ -170,9 +171,9 @@ private fun ListScreenContent(
     if (showAddDialog) {
         AddCharacterDialog(
             onDismiss = { showAddDialog = false },
-            onConfirm = { name ->
+            onConfirm = { name, gender ->
                 haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                onAddCharacter(name)
+                onAddCharacter(name, gender)
                 showAddDialog = false
             }
         )

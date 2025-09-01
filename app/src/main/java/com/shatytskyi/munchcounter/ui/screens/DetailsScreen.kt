@@ -48,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.data.Character
+import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.munchcounter.ui.components.AnimatedNumber
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
@@ -115,8 +116,8 @@ fun DetailsScreen(
         EditCharacterDialog(
             character = character,
             onDismiss = { showEditDialog = false },
-            onConfirm = { name, level, power ->
-                viewModel.updateCharacter(characterId, name, level, power)
+            onConfirm = { name, level, power, gender ->
+                viewModel.updateCharacter(characterId, name, level, power, gender)
                 showEditDialog = false
             }
         )
@@ -597,7 +598,7 @@ private fun PowerControlCard(
 )
 @Composable
 private fun DetailsScreenPreview() {
-    val mockCharacter = Character(1, "Aragorn", 5, 8)
+    val mockCharacter = Character(1, "Aragorn", 5, 8, Gender.MALE)
 
     MunchkinTheme {
         DetailsScreenContent(

@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.data.Character
+import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
@@ -165,10 +166,10 @@ fun ListScreenContent(
 @Composable
 private fun CharacterListContentPreview() {
     val mockCharacters = listOf(
-        Character(1, "Aragorn", 5, 8),
-        Character(2, "Legolas", 3, 5),
-        Character(3, "Gimli", 7, 12),
-        Character(4, "Gandalf", 10, 15)
+        Character(1, "Aragorn", 5, 8, Gender.MALE),
+        Character(2, "Legolas", 3, 5, Gender.MALE),
+        Character(3, "Gimli", 7, 12, Gender.MALE),
+        Character(4, "Gandalf", 10, 15, Gender.MALE)
     )
 
     MunchkinTheme {

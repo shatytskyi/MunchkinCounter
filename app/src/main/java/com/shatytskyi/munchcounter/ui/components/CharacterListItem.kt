@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.outlined.Female
+import androidx.compose.material.icons.outlined.Male
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.data.Character
+import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
@@ -44,71 +48,98 @@ fun CharacterListItem(
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(140.dp)
         ) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+                if (!hideName) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        MunchkinText(
+                            text = character.name,
+                            style = MunchkinTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                            color = MunchkinTheme.colors.onBackground,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
 
-            if (!hideName) {
-                Box(
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(horizontal = 16.dp),
-                    contentAlignment = Alignment.Center
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    MunchkinText(
-                        text = character.name,
-                        style = MunchkinTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                        color = MunchkinTheme.colors.onBackground,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.fillMaxWidth()
+                    StatItem(
+                        title = "Level",
+                        value = character.lvl,
+                        onDecrease = { onLevelChange(-1) },
+                        onIncrease = { onLevelChange(+1) },
+                        color = MunchkinTheme.colors.primary,
+                        modifier = Modifier.weight(1f),
+                        showButtons = showLevelButtons
+                    )
+
+                    StatItem(
+                        title = "Power",
+                        value = character.power,
+                        onDecrease = {},
+                        onIncrease = {},
+                        color = MunchkinTheme.colors.secondary,
+                        modifier = Modifier.weight(1f),
+                        showButtons = false
+                    )
+
+                    StatItem(
+                        title = "Items",
+                        value = character.items,
+                        onDecrease = { onItemsChange(-1) },
+                        onIncrease = { onItemsChange(+1) },
+                        color = MunchkinTheme.colors.primary,
+                        modifier = Modifier.weight(1f),
+                        showButtons = showItemsButtons
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
+            // Gender icon in top right corner
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp)
+                    .background(
+                        color = MunchkinTheme.colors.background.copy(alpha = 0.8f),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(6.dp)
             ) {
-                StatItem(
-                    title = "Level",
-                    value = character.lvl,
-                    onDecrease = { onLevelChange(-1) },
-                    onIncrease = { onLevelChange(+1) },
-                    color = MunchkinTheme.colors.primary,
-                    modifier = Modifier.weight(1f),
-                    showButtons = showLevelButtons
-                )
-
-                StatItem(
-                    title = "Power",
-                    value = character.power,
-                    onDecrease = {},
-                    onIncrease = {},
-                    color = MunchkinTheme.colors.secondary,
-                    modifier = Modifier.weight(1f),
-                    showButtons = false
-                )
-
-                StatItem(
-                    title = "Items",
-                    value = character.items,
-                    onDecrease = { onItemsChange(-1) },
-                    onIncrease = { onItemsChange(+1) },
-                    color = MunchkinTheme.colors.primary,
-                    modifier = Modifier.weight(1f),
-                    showButtons = showItemsButtons
+                MunchkinIcon(
+                    imageVector = when (character.gender) {
+                        Gender.MALE -> Icons.Outlined.Male
+                        Gender.FEMALE -> Icons.Outlined.Female
+                    },
+                    tint = when (character.gender) {
+                        Gender.MALE -> MunchkinTheme.colors.primary
+                        Gender.FEMALE -> MunchkinTheme.colors.secondary
+                    },
+                    size = 16.dp
                 )
             }
         }

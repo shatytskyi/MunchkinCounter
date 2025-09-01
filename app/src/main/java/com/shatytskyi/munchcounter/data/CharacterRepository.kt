@@ -17,8 +17,8 @@ class CharacterRepository(
         // Room автоматически обновляет Flow, этот метод сохранен для совместимости
     }
     
-    suspend fun addCharacter(name: String) {
-        val newCharacter = Character.createDefault(name)
+    suspend fun addCharacter(name: String, gender: Gender = Gender.MALE) {
+        val newCharacter = Character.createDefault(name, gender)
         characterDao.insertCharacter(newCharacter)
     }
     
@@ -26,10 +26,10 @@ class CharacterRepository(
         characterDao.deleteCharacterById(id)
     }
     
-    suspend fun updateCharacter(id: Long, name: String, level: Int, power: Int) {
+    suspend fun updateCharacter(id: Long, name: String, level: Int, power: Int, gender: Gender) {
         val character = characterDao.getCharacterById(id)
         if (character != null) {
-            val updatedCharacter = character.copy(name = name, lvl = level, items = power)
+            val updatedCharacter = character.copy(name = name, lvl = level, items = power, gender = gender)
             characterDao.updateCharacter(updatedCharacter)
         }
     }

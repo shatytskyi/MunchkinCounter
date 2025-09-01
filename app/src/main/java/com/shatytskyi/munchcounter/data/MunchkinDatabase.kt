@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 @Database(
     entities = [Character::class],
-    version = 1,
+    version = 2,
     exportSchema = false // Поскольку мы не поддерживаем миграции
 )
+@TypeConverters(GenderConverter::class)
 abstract class MunchkinDatabase : RoomDatabase() {
     
     abstract fun characterDao(): CharacterDao

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.CharacterRepository
+import com.shatytskyi.munchcounter.data.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -49,13 +50,13 @@ class CommonViewModel(
         }
     }
 
-    fun addCharacter(name: String) {
+    fun addCharacter(name: String, gender: Gender = Gender.MALE) {
         if (name.isBlank()) {
             return
         }
 
         viewModelScope.launch {
-            repository.addCharacter(name)
+            repository.addCharacter(name, gender)
         }
     }
 
@@ -65,9 +66,9 @@ class CommonViewModel(
         }
     }
 
-    fun updateCharacter(id: Long, name: String, level: Int, power: Int) {
+    fun updateCharacter(id: Long, name: String, level: Int, power: Int, gender: Gender) {
         viewModelScope.launch {
-            repository.updateCharacter(id, name, level, power)
+            repository.updateCharacter(id, name, level, power, gender)
         }
     }
 

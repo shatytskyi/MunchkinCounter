@@ -10,7 +10,8 @@ data class Character(
     val id: Long = 0,
     val name: String,
     val lvl: Int,
-    val items: Int
+    val items: Int,
+    val gender: Gender = Gender.MALE
 ) : Serializable {
 
     init {
@@ -31,8 +32,8 @@ data class Character(
         const val MAX_POWER = 999
         const val MAX_SCORE = 999
         
-        fun createDefault(name: String): Character {
-            return Character(name = name.trim(), lvl = MIN_LEVEL, items = 0)
+        fun createDefault(name: String, gender: Gender = Gender.MALE): Character {
+            return Character(name = name.trim(), lvl = MIN_LEVEL, items = 0, gender = gender)
         }
         
         fun createMonster(power: Int = 0): Character {
