@@ -35,7 +35,7 @@ fun MunchkinTopAppBar(
             .height(APP_BAR_HEIGHT.dp)
             .padding(
                 horizontal = 16.dp,
-                vertical = 16.dp
+                vertical = 8.dp
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {

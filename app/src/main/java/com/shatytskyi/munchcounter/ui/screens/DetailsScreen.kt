@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -24,15 +25,21 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.PersonRemove
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -160,16 +167,26 @@ private fun DetailsScreenContent(
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
+    val lazyListState = rememberLazyListState()
+    
+    val isCharacterCardVisible by remember {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex == 0 && 
+            lazyListState.firstVisibleItemScrollOffset < 600
+        }
+    }
+    
     Box(
         modifier = modifier.fillMaxSize()
     ) {
         LazyColumn(
+            state = lazyListState,
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
                 start = 16.dp,
                 end = 16.dp,
                 top = topPadding,
-                bottom = 100.dp
+                bottom = 120.dp
             )
         ) {
             item {
@@ -314,6 +331,93 @@ private fun DetailsScreenContent(
                     }
                 }
             )
+        }
+        
+        // Compact bottom widget - appears when character card is scrolled out of view
+        AnimatedVisibility(
+            visible = !isCharacterCardVisible,
+            enter = slideInVertically { it },
+            exit = slideOutVertically { it },
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            CompactCharacterWidget(character = character)
+        }
+    }
+}
+
+@Composable
+private fun CompactCharacterWidget(
+    character: Character,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+            .background(MunchkinTheme.colors.background.copy(alpha = 0.95f))
+            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .padding(top = 20.dp, bottom = 20.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Level section
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(1f)
+            ) {
+                MunchkinText(
+                    text = "Level",
+                    style = MunchkinTheme.typography.labelSmall,
+                    color = MunchkinTheme.colors.grey
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                MunchkinText(
+                    text = character.lvl.toString(),
+                    style = MunchkinTheme.typography.titleLarge,
+                    color = MunchkinTheme.colors.primary
+                )
+            }
+            
+            // Total power display
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(1f)
+            ) {
+                MunchkinText(
+                    text = "Power",
+                    style = MunchkinTheme.typography.labelSmall,
+                    color = MunchkinTheme.colors.grey
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                MunchkinText(
+                    text = (character.lvl + character.items).toString(),
+                    style = MunchkinTheme.typography.headlineLarge,
+                    color = MunchkinTheme.colors.secondary
+                )
+            }
+            
+            // Items section
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(1f)
+            ) {
+                MunchkinText(
+                    text = "Items",
+                    style = MunchkinTheme.typography.labelSmall,
+                    color = MunchkinTheme.colors.grey
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                MunchkinText(
+                    text = character.items.toString(),
+                    style = MunchkinTheme.typography.titleLarge,
+                    color = MunchkinTheme.colors.primary
+                )
+            }
         }
     }
 }

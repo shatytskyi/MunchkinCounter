@@ -22,7 +22,7 @@ fun MunchkinCard(
     shape: Shape = RoundedCornerShape(8.dp),
     backgroundColor: Color = Color.Transparent,
     color: Color = MunchkinTheme.colors.primary,
-    borderWidth: Dp = 2.dp,
+    borderWidth: Dp = 2.5.dp,
     onClick: (() -> Unit)? = null,
     enabled: Boolean = true,
     content: @Composable () -> Unit
