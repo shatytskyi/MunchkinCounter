@@ -170,13 +170,11 @@ private fun StatItem(
                         )
                     }
 
-                    MunchkinText(
-                        text = value.toString(),
-                        style = MunchkinTheme.typography.displayLarge,
+                    AnimatedNumber(
+                        value = value,
+                        textStyle = MunchkinTheme.typography.displayLarge,
                         color = color,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.weight(1f),
-                        maxLines = 1
+                        modifier = Modifier.weight(1f)
                     )
 
                     MunchkinIconButton(
@@ -194,13 +192,11 @@ private fun StatItem(
                     }
                 }
             } else {
-                MunchkinText(
-                    text = value.toString(),
-                    style = MunchkinTheme.typography.displayLarge,
+                AnimatedNumber(
+                    value = value,
+                    textStyle = MunchkinTheme.typography.displayLarge,
                     color = color,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                    maxLines = 1
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
