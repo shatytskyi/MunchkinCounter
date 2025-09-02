@@ -8,7 +8,6 @@ import com.shatytskyi.munchcounter.data.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -111,7 +110,7 @@ class CommonViewModel(
                     Gender.MALE -> Gender.FEMALE
                     Gender.FEMALE -> Gender.MALE
                 }
-                repository.updateCharacter(id, it.name, it.lvl, it.items, newGender)
+                repository.updateCharacter(id, it.name, it.level, it.items, newGender)
             }
         }
     }

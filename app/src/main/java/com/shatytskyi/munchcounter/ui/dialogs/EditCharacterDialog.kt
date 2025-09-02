@@ -44,7 +44,7 @@ fun EditCharacterDialog(
     modifier: Modifier = Modifier
 ) {
     var name by remember { mutableStateOf(character.name) }
-    var level by remember { mutableStateOf(character.lvl.toString()) }
+    var level by remember { mutableStateOf(character.level.toString()) }
     var items by remember { mutableStateOf(character.items.toString()) }
     var selectedGender by remember { mutableStateOf(character.gender) }
     val haptic = LocalHapticFeedback.current
@@ -191,7 +191,7 @@ fun EditCharacterDialog(
                     rippleColor = MunchkinTheme.colors.primary,
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                        val lvl = level.toIntOrNull() ?: character.lvl
+                        val lvl = level.toIntOrNull() ?: character.level
                         val itm = items.toIntOrNull() ?: character.items
                         onConfirm(name.trim(), lvl, itm, selectedGender)
                     }

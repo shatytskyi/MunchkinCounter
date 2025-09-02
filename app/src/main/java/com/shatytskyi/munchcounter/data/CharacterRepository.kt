@@ -29,7 +29,7 @@ class CharacterRepository(
     suspend fun updateCharacter(id: Long, name: String, level: Int, power: Int, gender: Gender) {
         val character = characterDao.getCharacterById(id)
         if (character != null) {
-            val updatedCharacter = character.copy(name = name, lvl = level, items = power, gender = gender)
+            val updatedCharacter = character.copy(name = name, level = level, items = power, gender = gender)
             characterDao.updateCharacter(updatedCharacter)
         }
     }
@@ -72,8 +72,8 @@ class CharacterRepository(
         // Проверяем ограничения
         val character = characterDao.getCharacterById(id)
         if (character != null) {
-            val newLevel = (character.lvl + value).coerceIn(Character.MIN_LEVEL, Character.MAX_LEVEL)
-            val adjustedValue = newLevel - character.lvl
+            val newLevel = (character.level + value).coerceIn(Character.MIN_LEVEL, Character.MAX_LEVEL)
+            val adjustedValue = newLevel - character.level
             if (adjustedValue != 0) {
                 characterDao.updateLevel(id, adjustedValue)
             }

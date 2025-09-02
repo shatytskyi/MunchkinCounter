@@ -122,7 +122,7 @@ fun CharacterListItem(
                 ) {
                     StatItem(
                         title = stringResource(R.string.level),
-                        value = character.lvl,
+                        value = character.level,
                         onDecrease = { onLevelChange(-1) },
                         onIncrease = { onLevelChange(+1) },
                         color = MunchkinTheme.colors.primary,
@@ -211,10 +211,11 @@ private fun StatItem(
                         )
                     }
 
-                    AnimatedNumber(
+                    MunchkinText(
                         modifier = Modifier.weight(1f),
-                        value = value,
-                        textStyle = MunchkinTheme.typography.displayLarge,
+                        textAlign = TextAlign.Center,
+                        text = value.toString(),
+                        style = MunchkinTheme.typography.displayMedium,
                         color = color
                     )
 
@@ -233,10 +234,11 @@ private fun StatItem(
                     }
                 }
             } else {
-                AnimatedNumber(
+                MunchkinText(
                     modifier = Modifier.fillMaxWidth(),
-                    value = value,
-                    textStyle = MunchkinTheme.typography.displayLarge,
+                    textAlign = TextAlign.Center,
+                    text = value.toString(),
+                    style = MunchkinTheme.typography.displayMedium,
                     color = color
                 )
             }
@@ -258,7 +260,7 @@ fun CharacterListItemPreview() {
                 character = Character(
                     id = 1,
                     name = "Aragorn Son of Arathorn the King of Gondor",
-                    lvl = 5,
+                    level = 5,
                     items = 15
                 ),
                 onClick = {},

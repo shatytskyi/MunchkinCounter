@@ -48,11 +48,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
-import com.shatytskyi.munchcounter.ui.components.AnimatedNumber
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
@@ -386,9 +386,10 @@ private fun CompactCharacterWidget(
                     color = MunchkinTheme.colors.grey
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                AnimatedNumber(
-                    value = character.lvl,
-                    textStyle = MunchkinTheme.typography.titleLarge,
+                MunchkinText(
+                    text = character.level.toString(),
+                    textAlign = TextAlign.Center,
+                    style = MunchkinTheme.typography.titleLarge,
                     color = MunchkinTheme.colors.primary
                 )
             }
@@ -404,9 +405,10 @@ private fun CompactCharacterWidget(
                     color = MunchkinTheme.colors.grey
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                AnimatedNumber(
-                    value = character.lvl + character.items,
-                    textStyle = MunchkinTheme.typography.headlineLarge,
+                MunchkinText(
+                    text = (character.level + character.items).toString(),
+                    textAlign = TextAlign.Center,
+                    style = MunchkinTheme.typography.headlineLarge,
                     color = MunchkinTheme.colors.secondary
                 )
             }
@@ -422,9 +424,10 @@ private fun CompactCharacterWidget(
                     color = MunchkinTheme.colors.grey
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                AnimatedNumber(
-                    value = character.items,
-                    textStyle = MunchkinTheme.typography.titleLarge,
+                MunchkinText(
+                    text = character.items.toString(),
+                    textAlign = TextAlign.Center,
+                    style = MunchkinTheme.typography.titleLarge,
                     color = MunchkinTheme.colors.primary
                 )
             }

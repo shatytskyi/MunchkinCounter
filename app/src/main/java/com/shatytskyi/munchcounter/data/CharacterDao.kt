@@ -34,16 +34,16 @@ interface CharacterDao {
     suspend fun getCharacterCount(): Int
     
     // Batch operations for better performance
-    @Query("UPDATE characters SET lvl = lvl + :delta WHERE id = :id")
+    @Query("UPDATE characters SET level = level + :delta WHERE id = :id")
     suspend fun updateLevel(id: Long, delta: Int)
     
     @Query("UPDATE characters SET items = items + :delta WHERE id = :id")
     suspend fun updatePower(id: Long, delta: Int)
     
-    @Query("UPDATE characters SET lvl = 1, items = 0 WHERE id = :id")
+    @Query("UPDATE characters SET level = 1, items = 0 WHERE id = :id")
     suspend fun resetCharacter(id: Long)
     
-    @Query("UPDATE characters SET lvl = 1, items = 0")
+    @Query("UPDATE characters SET level = 1, items = 0")
     suspend fun resetAllCharacters()
     
     @Query("SELECT * FROM characters ORDER BY id")

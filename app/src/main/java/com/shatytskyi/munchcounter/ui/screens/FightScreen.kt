@@ -48,7 +48,6 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
-import com.shatytskyi.munchcounter.ui.components.AnimatedNumber
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
@@ -79,7 +78,7 @@ fun FightScreen(
 
     LaunchedEffect(player) {
         if (player != null) {
-            playerPower = player.lvl + player.items
+            playerPower = player.level + player.items
         }
     }
 
@@ -168,7 +167,7 @@ private fun FightScreenContent(
     val haptic = LocalHapticFeedback.current
 
     val totalPlayerPower = if (helper != null) {
-        playerPower + helper.lvl + helper.items
+        playerPower + helper.level + helper.items
     } else {
         playerPower
     }
@@ -192,7 +191,7 @@ private fun FightScreenContent(
                 PlayerStatsSection(
                     player = player,
                     currentPower = playerPower,
-                    originalPower = player.lvl + player.items
+                    originalPower = player.level + player.items
                 )
             }
 
@@ -324,9 +323,10 @@ private fun PlayerStatsSection(
                         color = MunchkinTheme.colors.grey
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    AnimatedNumber(
-                        value = player.lvl,
-                        textStyle = MunchkinTheme.typography.titleLarge,
+                    MunchkinText(
+                        text = player.level.toString(),
+                        textAlign = TextAlign.Center,
+                        style = MunchkinTheme.typography.titleLarge,
                         color = MunchkinTheme.colors.primary
                     )
                 }
@@ -342,9 +342,10 @@ private fun PlayerStatsSection(
                         color = MunchkinTheme.colors.grey
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    AnimatedNumber(
-                        value = currentPower,
-                        textStyle = MunchkinTheme.typography.headlineLarge,
+                    MunchkinText(
+                        text = currentPower.toString(),
+                        textAlign = TextAlign.Center,
+                        style = MunchkinTheme.typography.headlineLarge,
                         color = when {
                             currentPower > originalPower -> MunchkinTheme.colors.secondary
                             currentPower < originalPower -> MunchkinTheme.colors.red
@@ -395,7 +396,8 @@ private fun HelperSection(
 
                 if (helper != null) {
                     MunchkinText(
-                        text = "${helper.name} (${helper.lvl + helper.items})",
+                        text = "${helper.name} (${helper.level + helper.items})",
+                        textAlign = TextAlign.Center,
                         style = MunchkinTheme.typography.bodyMedium,
                         color = MunchkinTheme.colors.secondary
                     )
@@ -461,9 +463,10 @@ private fun PowerComparisonSection(
                         color = MunchkinTheme.colors.grey
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    AnimatedNumber(
-                        value = playerPower,
-                        textStyle = MunchkinTheme.typography.headlineLarge,
+                    MunchkinText(
+                        text = playerPower.toString(),
+                        textAlign = TextAlign.Center,
+                        style = MunchkinTheme.typography.headlineLarge,
                         color = MunchkinTheme.colors.primary
                     )
                 }
@@ -486,9 +489,10 @@ private fun PowerComparisonSection(
                         color = MunchkinTheme.colors.grey
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    AnimatedNumber(
-                        value = monsterPower,
-                        textStyle = MunchkinTheme.typography.headlineLarge,
+                    MunchkinText(
+                        text = monsterPower.toString(),
+                        textAlign = TextAlign.Center,
+                        style = MunchkinTheme.typography.headlineLarge,
                         color = MunchkinTheme.colors.red
                     )
                 }
@@ -700,7 +704,8 @@ private fun HelpersDialog(
                                 color = MunchkinTheme.colors.onBackground
                             )
                             MunchkinText(
-                                text = "(${character.lvl + character.items})",
+                                text = "(${character.level + character.items})",
+                                textAlign = TextAlign.Center,
                                 style = MunchkinTheme.typography.titleMedium,
                                 color = MunchkinTheme.colors.secondary
                             )
