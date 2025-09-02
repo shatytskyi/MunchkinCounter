@@ -211,10 +211,9 @@ private fun StatItem(
                         )
                     }
 
-                    MunchkinText(
+                    AnimatedNumber(
                         modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center,
-                        text = value.toString(),
+                        value = value,
                         style = MunchkinTheme.typography.displayMedium,
                         color = color
                     )
@@ -234,10 +233,9 @@ private fun StatItem(
                     }
                 }
             } else {
-                MunchkinText(
+                AnimatedNumber(
                     modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = value.toString(),
+                    value = value,
                     style = MunchkinTheme.typography.displayMedium,
                     color = color
                 )
@@ -247,6 +245,7 @@ private fun StatItem(
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
+
 
 @Preview
 @Composable
