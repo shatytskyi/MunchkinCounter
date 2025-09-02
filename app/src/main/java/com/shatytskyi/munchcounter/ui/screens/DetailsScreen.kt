@@ -63,6 +63,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.components.icons.Swords
+import com.shatytskyi.munchcounter.ui.components.icons.Timer
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.EditCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
@@ -75,7 +76,8 @@ fun DetailsScreen(
     characterId: Long,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onFight: () -> Unit = {}
+    onFight: () -> Unit = {},
+    onTimerClick: () -> Unit = {}
 ) {
     val characters by viewModel.characters.collectAsState()
     val character = characters.find { it.id == characterId }
@@ -110,6 +112,7 @@ fun DetailsScreen(
         onEditClick = { showEditDialog = true },
         onDeleteClick = { showDeleteDialog = true },
         onBackClick = onBack,
+        onTimerClick = onTimerClick,
         onDiceClick = { showDiceDialog = true },
         modifier = modifier
     )
@@ -169,6 +172,7 @@ private fun DetailsScreenContent(
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onBackClick: () -> Unit,
+    onTimerClick: () -> Unit,
     onDiceClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -330,6 +334,15 @@ private fun DetailsScreenContent(
                 title = character.name,
                 onBack = onBackClick,
                 actions = {
+                    MunchkinIconButton(onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onTimerClick()
+                    }) {
+                        MunchkinIcon(
+                            imageVector = MunchkinIcons.Timer,
+                            tint = MunchkinTheme.colors.onBackground
+                        )
+                    }
                     MunchkinIconButton(onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                         onDiceClick()
@@ -620,6 +633,7 @@ private fun DetailsScreenPreview() {
             onEditClick = {},
             onDeleteClick = {},
             onBackClick = {},
+            onTimerClick = {},
             onDiceClick = {}
         )
     }

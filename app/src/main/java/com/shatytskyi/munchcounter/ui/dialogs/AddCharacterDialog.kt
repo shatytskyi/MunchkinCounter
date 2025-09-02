@@ -74,6 +74,7 @@ fun AddCharacterDialog(
                         value = name,
                         onValueChange = { name = it },
                         focusRequester = focusRequester,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

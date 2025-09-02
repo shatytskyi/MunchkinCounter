@@ -146,7 +146,8 @@ fun MunchkinApp(
                 viewModel = sharedViewModel,
                 characterId = characterId,
                 onBack = { navController.popBackStack() },
-                onFight = { navController.navigate("fight/$characterId") }
+                onFight = { navController.navigate("fight/$characterId") },
+                onTimerClick = { navController.navigate("timer") }
             )
         }
 
