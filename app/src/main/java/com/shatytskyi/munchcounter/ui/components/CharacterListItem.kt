@@ -212,10 +212,10 @@ private fun StatItem(
                     }
 
                     AnimatedNumber(
+                        modifier = Modifier.weight(1f),
                         value = value,
                         textStyle = MunchkinTheme.typography.displayLarge,
-                        color = color,
-                        modifier = Modifier.weight(1f)
+                        color = color
                     )
 
                     MunchkinIconButton(
@@ -234,10 +234,10 @@ private fun StatItem(
                 }
             } else {
                 AnimatedNumber(
+                    modifier = Modifier.fillMaxWidth(),
                     value = value,
                     textStyle = MunchkinTheme.typography.displayLarge,
-                    color = color,
-                    modifier = Modifier.fillMaxWidth()
+                    color = color
                 )
             }
         }

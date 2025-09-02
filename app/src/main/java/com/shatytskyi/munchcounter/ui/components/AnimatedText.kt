@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -25,12 +24,9 @@ fun AnimatedNumber(
     textStyle: TextStyle,
     color: Color,
     modifier: Modifier = Modifier,
-    autoSize: Boolean = false,
-    minTextSize: TextUnit = 14.sp,
-    maxTextSize: TextUnit = textStyle.fontSize
 ) {
     val valueString = value.toString()
-    
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
@@ -42,17 +38,14 @@ fun AnimatedNumber(
                     text = "-",
                     style = textStyle,
                     color = color,
-                    minTextSize = if (autoSize) minTextSize else textStyle.fontSize,
-                    maxTextSize = maxTextSize
+                    minTextSize = 14.sp,
+                    maxTextSize = textStyle.fontSize
                 )
             } else {
                 AnimatedDigit(
                     digit = char.digitToInt(),
                     textStyle = textStyle,
-                    color = color,
-                    autoSize = autoSize,
-                    minTextSize = minTextSize,
-                    maxTextSize = maxTextSize
+                    color = color
                 )
             }
         }
@@ -65,29 +58,23 @@ private fun AnimatedDigit(
     textStyle: TextStyle,
     color: Color,
     modifier: Modifier = Modifier,
-    autoSize: Boolean = false,
-    minTextSize: TextUnit = 14.sp,
-    maxTextSize: TextUnit = textStyle.fontSize
 ) {
     AnimatedContent(
         targetState = digit,
         transitionSpec = {
-            // Special case: 0 -> 9 is counting down (like 10 -> 09)
-            // Special case: 9 -> 0 is counting up (reset or increment)
             val isCountingDown = when {
                 initialState == 0 && targetState == 9 -> true  // 0 -> 9 is countdown
                 initialState == 9 && targetState == 0 -> false // 9 -> 0 is count up/reset
                 else -> targetState < initialState // Normal comparison for other cases
             }
-            
+
             if (isCountingDown) {
-                // Counting down - new digit slides up from bottom with spring
                 (slideInVertically(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioLowBouncy,
                         stiffness = Spring.StiffnessLow
                     ),
-                    initialOffsetY = { it } // Start from bottom
+                    initialOffsetY = { it }
                 ) + fadeIn(
                     animationSpec = tween(300)
                 )) togetherWith (slideOutVertically(
@@ -95,18 +82,17 @@ private fun AnimatedDigit(
                         dampingRatio = Spring.DampingRatioLowBouncy,
                         stiffness = Spring.StiffnessLow
                     ),
-                    targetOffsetY = { -it } // Exit to top
+                    targetOffsetY = { -it }
                 ) + fadeOut(
                     animationSpec = tween(300)
                 ))
             } else {
-                // Counting up or reset - new digit slides down from top with spring
                 (slideInVertically(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioLowBouncy,
                         stiffness = Spring.StiffnessLow
                     ),
-                    initialOffsetY = { -it } // Start from top
+                    initialOffsetY = { -it }
                 ) + fadeIn(
                     animationSpec = tween(300)
                 )) togetherWith (slideOutVertically(
@@ -114,7 +100,7 @@ private fun AnimatedDigit(
                         dampingRatio = Spring.DampingRatioLowBouncy,
                         stiffness = Spring.StiffnessLow
                     ),
-                    targetOffsetY = { it } // Exit to bottom
+                    targetOffsetY = { it }
                 ) + fadeOut(
                     animationSpec = tween(300)
                 ))
@@ -127,8 +113,8 @@ private fun AnimatedDigit(
             text = animatedDigit.toString(),
             style = textStyle,
             color = color,
-            minTextSize = if (autoSize) minTextSize else textStyle.fontSize,
-            maxTextSize = maxTextSize
+            minTextSize = 14.sp,
+            maxTextSize = textStyle.fontSize
         )
     }
 }
