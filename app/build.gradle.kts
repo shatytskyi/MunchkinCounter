@@ -6,6 +6,11 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+repositories {
+    google()
+    mavenCentral()
+}
+
 android {
     namespace = "com.shatytskyi.munchcounter"
     compileSdk = 36
@@ -49,10 +54,6 @@ android {
         compose = true
     }
     
-    // Support for per-app language preferences
-    androidResources {
-        localeFilters.addAll(listOf("en", "ru", "uk", "pl"))
-    }
 }
 
 dependencies {
