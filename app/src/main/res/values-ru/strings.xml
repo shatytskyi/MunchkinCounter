@@ -6,6 +6,8 @@
     <string name="add">Добавить</string>
     <string name="reset">Сбросить</string>
     <string name="clear">Очистить</string>
+    <string name="edit">Изменить</string>
+    <string name="delete">Удалить</string>
     <string name="close">Закрыть</string>
     <string name="exit">Выход</string>
 

@@ -44,8 +44,8 @@ fun MunchkinTheme(
 
             MunchkinColors(
                 primary = dynamicColorScheme.primary,
-                secondary = dynamicColorScheme.secondary,
-                green = dynamicColorScheme.tertiary,
+                secondary = dynamicColorScheme.tertiary,
+                green = dynamicColorScheme.secondary,
                 red = dynamicColorScheme.error,
                 background = dynamicColorScheme.background,
                 onBackground = dynamicColorScheme.onBackground,
@@ -62,7 +62,6 @@ fun MunchkinTheme(
             val window = (view.context as android.app.Activity).window
             WindowCompat.setDecorFitsSystemWindows(window, false)
             window.statusBarColor = android.graphics.Color.TRANSPARENT
-            // Set navigation bar color to match app background
             window.navigationBarColor = colors.background.toArgb()
             val insetsController = WindowCompat.getInsetsController(window, view)
             insetsController.isAppearanceLightStatusBars = !darkTheme

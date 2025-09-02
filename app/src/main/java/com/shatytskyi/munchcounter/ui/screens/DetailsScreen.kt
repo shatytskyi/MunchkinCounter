@@ -25,8 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -59,9 +57,11 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
+import com.shatytskyi.munchcounter.ui.components.icons.Edit
+import com.shatytskyi.munchcounter.ui.components.icons.Fight
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.components.icons.Remove
-import com.shatytskyi.munchcounter.ui.components.icons.Swords
+import com.shatytskyi.munchcounter.ui.components.icons.Reset
 import com.shatytskyi.munchcounter.ui.components.icons.Timer
 import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
@@ -182,7 +182,7 @@ private fun DetailsScreenContent(
     val isCharacterCardVisible by remember {
         derivedStateOf {
             lazyListState.firstVisibleItemIndex == 0 &&
-                    lazyListState.firstVisibleItemScrollOffset < 600
+                    lazyListState.firstVisibleItemScrollOffset < 300
         }
     }
 
@@ -214,27 +214,6 @@ private fun DetailsScreenContent(
                 )
             }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    MunchkinIconTextButton(
-                        onClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                            onFightClick()
-                        },
-                        icon = MunchkinIcons.Swords,
-                        text = stringResource(R.string.fight),
-                        modifier = Modifier.fillMaxWidth(0.6f),
-                        textStyle = MunchkinTheme.typography.labelLarge,
-                        contentPadding = 24.dp,
-                        rippleColor = MunchkinTheme.colors.red,
-                        bounded = false
-                    )
-                }
-            }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -264,17 +243,19 @@ private fun DetailsScreenContent(
                 Spacer(modifier = Modifier.height(24.dp))
                 HorizontalDivider()
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
+                    // Reset button
                     MunchkinIconTextButton(
                         onClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             onResetClick()
                         },
-                        icon = Icons.Outlined.Refresh,
-                        text = stringResource(R.string.reset_player),
+                        icon = MunchkinIcons.Reset,
+                        text = stringResource(R.string.reset),
                         modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
@@ -282,36 +263,30 @@ private fun DetailsScreenContent(
                         bounded = false
                     )
 
+                    // Edit button (slightly larger)
                     MunchkinIconTextButton(
                         onClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             onEditClick()
                         },
-                        icon = Icons.Outlined.Edit,
-                        text = stringResource(R.string.edit_player),
-                        modifier = Modifier.weight(1f),
+                        icon = MunchkinIcons.Edit,
+                        text = stringResource(R.string.edit),
+                        modifier = Modifier.weight(1.3f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.primary,
                         bounded = false
                     )
-                }
-            }
 
-            item {
-                Spacer(modifier = Modifier.height(12.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
+                    // Delete button
                     MunchkinIconTextButton(
                         onClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onDeleteClick()
                         },
                         icon = MunchkinIcons.Remove,
-                        text = stringResource(R.string.delete_player),
-                        modifier = Modifier.fillMaxWidth(0.7f),
+                        text = stringResource(R.string.delete),
+                        modifier = Modifier.weight(1f),
                         textStyle = MunchkinTheme.typography.labelMedium,
                         contentPadding = 16.dp,
                         rippleColor = MunchkinTheme.colors.red,
@@ -350,6 +325,15 @@ private fun DetailsScreenContent(
                         MunchkinIcon(
                             imageVector = MunchkinIcons.Dice.Dice5,
                             tint = MunchkinTheme.colors.onBackground
+                        )
+                    }
+                    MunchkinIconButton(onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                        onFightClick()
+                    }) {
+                        MunchkinIcon(
+                            imageVector = MunchkinIcons.Fight,
+                            tint = MunchkinTheme.colors.red
                         )
                     }
                 }

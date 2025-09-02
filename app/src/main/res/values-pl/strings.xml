@@ -6,6 +6,8 @@
     <string name="add">Dodaj</string>
     <string name="reset">Zresetuj</string>
     <string name="clear">Wyczyść</string>
+    <string name="edit">Edytuj</string>
+    <string name="delete">Usuń</string>
     <string name="close">Zamknij</string>
     <string name="exit">Wyjście</string>
 
