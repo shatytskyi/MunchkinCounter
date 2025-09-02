@@ -49,7 +49,7 @@ fun CharacterListItem(
     MunchkinCard(
         modifier = modifier
             .fillMaxWidth(),
-        color = MunchkinTheme.colors.primary,
+        color = MunchkinTheme.colors.onBackground,
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
     ) {

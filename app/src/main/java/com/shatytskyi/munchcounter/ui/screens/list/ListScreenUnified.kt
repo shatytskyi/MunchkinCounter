@@ -3,6 +3,7 @@ package com.shatytskyi.munchcounter.ui.screens.list
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +18,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
@@ -67,7 +67,7 @@ fun ListScreenUnified(
     val topPadding = remember(statusBarHeight) {
         with(density) { statusBarHeight.toDp() + APP_BAR_HEIGHT.dp + 16.dp }
     }
-    
+
     val isEmpty = characters.isEmpty()
 
     ListScreenTopBarWrapper(
@@ -111,9 +111,9 @@ fun ListScreenUnified(
                                 modifier = Modifier.size(64.dp),
                                 colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
                             )
-                            
+
                             Spacer(modifier = Modifier.width(24.dp))
-                            
+
                             Image(
                                 painter = painterResource(R.drawable.pic_knight_fem),
                                 contentDescription = null,
@@ -121,9 +121,9 @@ fun ListScreenUnified(
                                 colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.height(24.dp))
-                        
+
                         MunchkinText(
                             text = stringResource(R.string.no_players),
                             style = MunchkinTheme.typography.headlineSmall.copy(
@@ -132,16 +132,18 @@ fun ListScreenUnified(
                             color = MunchkinTheme.colors.onBackground,
                             textAlign = TextAlign.Center
                         )
-                        
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
                         MunchkinText(
                             text = stringResource(R.string.no_players_description),
                             style = MunchkinTheme.typography.bodyLarge,
                             color = MunchkinTheme.colors.onBackground,
                             textAlign = TextAlign.Center
                         )
-                        
+
                         Spacer(modifier = Modifier.height(24.dp))
-                        
+
                         Row(
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.fillMaxWidth()
@@ -152,9 +154,9 @@ fun ListScreenUnified(
                                 modifier = Modifier.size(64.dp),
                                 colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
                             )
-                            
+
                             Spacer(modifier = Modifier.width(16.dp))
-                            
+
                             Image(
                                 painter = painterResource(R.drawable.pic_wizard),
                                 contentDescription = null,
@@ -162,12 +164,12 @@ fun ListScreenUnified(
                                 colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
             }
-            
+
             // Character items
             itemsIndexed(
                 items = characters,
@@ -190,11 +192,11 @@ fun ListScreenUnified(
                             onGenderToggle(character.id)
                         }
                     )
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
-            
+
             // Divider and Add Player button
             item(
                 key = "divider-add",
@@ -204,11 +206,11 @@ fun ListScreenUnified(
                     modifier = Modifier.animateItem()
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    
+
                     HorizontalDivider()
-                    
+
                     Spacer(modifier = Modifier.height(16.dp))
-                    
+
                     Box(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
@@ -226,7 +228,7 @@ fun ListScreenUnified(
                     }
                 }
             }
-            
+
             // Reset and Remove buttons - only shown when there are characters
             if (!isEmpty) {
                 item(
@@ -249,7 +251,7 @@ fun ListScreenUnified(
                             rippleColor = MunchkinTheme.colors.secondary,
                             bounded = false
                         )
-                        
+
                         MunchkinIconTextButton(
                             onClick = onRemoveAllClick,
                             icon = Icons.Outlined.PlaylistRemove,
@@ -263,7 +265,7 @@ fun ListScreenUnified(
                     }
                 }
             }
-            
+
             // Settings button
             item(
                 key = "settings",
@@ -329,7 +331,7 @@ private fun ListScreenUnifiedWithCharactersPreview() {
         Character(2, "Legolas", 3, 5, Gender.MALE),
         Character(3, "Gimli", 7, 12, Gender.MALE)
     )
-    
+
     MunchkinTheme {
         ListScreenUnified(
             characters = mockCharacters,

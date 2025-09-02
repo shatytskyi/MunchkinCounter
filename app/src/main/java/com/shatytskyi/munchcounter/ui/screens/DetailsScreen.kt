@@ -192,7 +192,7 @@ private fun DetailsScreenContent(
                 start = 16.dp,
                 end = 16.dp,
                 top = topPadding,
-                bottom = 120.dp
+                bottom = 140.dp
             )
         ) {
             item {

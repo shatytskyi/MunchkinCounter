@@ -71,6 +71,7 @@ fun EditCharacterDialog(
                     MunchkinTextField(
                         value = name,
                         onValueChange = { name = it },
+                        textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -99,8 +100,8 @@ fun EditCharacterDialog(
                             value = level,
                             onValueChange = {
                                 if (it.isEmpty() || it.toIntOrNull()?.let { value ->
-                                    value in -999..999
-                                } == true) {
+                                        value in -999..999
+                                    } == true) {
                                     level = it
                                 }
                             },
@@ -128,8 +129,8 @@ fun EditCharacterDialog(
                             value = items,
                             onValueChange = {
                                 if (it.isEmpty() || it.toIntOrNull()?.let { value ->
-                                    value in -999..999
-                                } == true) {
+                                        value in -999..999
+                                    } == true) {
                                     items = it
                                 }
                             },
