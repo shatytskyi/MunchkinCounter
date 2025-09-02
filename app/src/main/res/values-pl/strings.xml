@@ -78,6 +78,12 @@
     <string name="roll_again">Rzuć ponownie</string>
     <string name="stay">Zostań</string>
 
+    <!-- Timer -->
+    <string name="timer_title">Timer</string>
+    <string name="timer_start">START</string>
+    <string name="timer_select_seconds">Wybierz sekundy na podjęcie decyzji</string>
+    <string name="volume">Głośność</string>
+
     <!-- Warnings & Dialogs -->
     <string name="reset_character_title">Zresetować %s?</string>
 

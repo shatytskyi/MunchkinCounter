@@ -22,6 +22,13 @@ data class MunchkinTypography(
 ) {
     private val fontFamily = if (useSystemFont) FontFamily.Default else MunchkinFontFamily
     
+    val displayExtraLarge: TextStyle = TextStyle(
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 95.sp,
+        lineHeight = 64.sp,
+        letterSpacing = (-0.25).sp
+    )
     val displayLarge: TextStyle = TextStyle(
         fontFamily = fontFamily,
         fontWeight = FontWeight.Normal,

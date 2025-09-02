@@ -60,6 +60,7 @@ fun ListScreenUnified(
     onResetAllClick: () -> Unit,
     onRemoveAllClick: () -> Unit,
     onDiceClick: () -> Unit = {},
+    onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
     val density = LocalDensity.current
@@ -71,7 +72,8 @@ fun ListScreenUnified(
     val isEmpty = characters.isEmpty()
 
     ListScreenTopBarWrapper(
-        onDiceClick = onDiceClick
+        onDiceClick = onDiceClick,
+        onTimerClick = onTimerClick
     ) {
         LazyColumn(
             modifier = Modifier

@@ -81,6 +81,12 @@
     <string name="roll_again">Roll Again</string>
     <string name="stay">Stay</string>
 
+    <!-- Timer -->
+    <string name="timer_title">Timer</string>
+    <string name="timer_start">START</string>
+    <string name="timer_select_seconds">Select seconds for decision making</string>
+    <string name="volume">Volume</string>
+
     <!-- Dice -->
 
     <!-- Warnings & Dialogs -->

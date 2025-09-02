@@ -64,6 +64,12 @@
     <string name="roll_again">Бросить ещё раз</string>
     <string name="stay">Остаться</string>
 
+    <!-- Timer -->
+    <string name="timer_title">Таймер</string>
+    <string name="timer_start">СТАРТ</string>
+    <string name="timer_select_seconds">Выберите секунды для принятия решения</string>
+    <string name="volume">Громкость</string>
+
     <!-- Warnings & Dialogs -->
     <string name="reset_character_title">Сбросить %s?</string>
 

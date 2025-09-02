@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import com.shatytskyi.munchcounter.ui.screens.DetailsScreen
 import com.shatytskyi.munchcounter.ui.screens.FightScreen
 import com.shatytskyi.munchcounter.ui.screens.SettingsScreen
+import com.shatytskyi.munchcounter.ui.screens.TimerScreen
 import com.shatytskyi.munchcounter.ui.screens.list.ListScreen
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
@@ -103,6 +104,9 @@ fun MunchkinApp(
                 onCharacterClick = { characterId ->
                     navController.navigate("solo/$characterId")
                 },
+                onTimerClick = {
+                    navController.navigate("timer")
+                },
                 onSettingsClick = {
                     navController.navigate("settings")
                 }
@@ -178,6 +182,38 @@ fun MunchkinApp(
             FightScreen(
                 viewModel = sharedViewModel,
                 playerId = playerId,
+                onBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(
+            route = "timer",
+            enterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                )
+            },
+            exitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                )
+            },
+            popEnterTransition = { 
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                )
+            },
+            popExitTransition = { 
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+                )
+            }
+        ) {
+            TimerScreen(
                 onBack = { navController.popBackStack() }
             )
         }

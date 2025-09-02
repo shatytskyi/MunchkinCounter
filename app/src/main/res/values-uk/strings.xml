@@ -78,6 +78,12 @@
     <string name="roll_again">Кинути ще раз</string>
     <string name="stay">Залишитися</string>
 
+    <!-- Timer -->
+    <string name="timer_title">Таймер</string>
+    <string name="timer_start">СТАРТ</string>
+    <string name="timer_select_seconds">Оберіть секунди для прийняття рішення</string>
+    <string name="volume">Гучність</string>
+
     <!-- Warnings & Dialogs -->
     <string name="reset_character_title">Скинути %s?</string>
 

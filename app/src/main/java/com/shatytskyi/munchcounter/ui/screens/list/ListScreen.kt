@@ -24,6 +24,7 @@ import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 fun ListScreen(
     viewModel: CommonViewModel,
     onCharacterClick: (Long) -> Unit,
+    onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -52,6 +53,7 @@ fun ListScreen(
         onRemoveAll = {
             viewModel.removeAllCharacters()
         },
+        onTimerClick = onTimerClick,
         onSettingsClick = onSettingsClick,
         modifier = modifier
     )
@@ -68,6 +70,7 @@ private fun ListScreenContent(
     onGenderToggle: (Long) -> Unit,
     onResetAll: () -> Unit,
     onRemoveAll: () -> Unit,
+    onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -85,6 +88,10 @@ private fun ListScreenContent(
                 onDiceClick = { 
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     showDiceDialog = true 
+                },
+                onTimerClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onTimerClick()
                 }
             )
         } else {
@@ -121,6 +128,10 @@ private fun ListScreenContent(
                 onDiceClick = { 
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     showDiceDialog = true 
+                },
+                onTimerClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onTimerClick()
                 },
                 onSettingsClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
