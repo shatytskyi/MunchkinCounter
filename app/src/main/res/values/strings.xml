@@ -110,7 +110,7 @@
     <string name="theme_dark">Dark</string>
     <string name="colors">Colors</string>
     <string name="colors_app">App Colors</string>
-    <string name="colors_dynamic">Dynamic Colors</string>
+    <string name="colors_dynamic">Themed Colors</string>
     <string name="fonts">Fonts</string>
     <string name="fonts_app">App Fonts</string>
     <string name="fonts_system">System Font</string>

@@ -16,15 +16,17 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
-import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
+import com.shatytskyi.munchcounter.ui.components.icons.Settings
 import com.shatytskyi.munchcounter.ui.components.icons.Timer
+import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @Composable
 fun ListScreenTopBarWrapper(
     onDiceClick: () -> Unit = {},
     onTimerClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     Box(
@@ -52,6 +54,12 @@ fun ListScreenTopBarWrapper(
                     MunchkinIconButton(onClick = onDiceClick) {
                         MunchkinIcon(
                             imageVector = MunchkinIcons.Dice.Dice5,
+                            tint = MunchkinTheme.colors.onBackground
+                        )
+                    }
+                    MunchkinIconButton(onClick = onSettingsClick) {
+                        MunchkinIcon(
+                            imageVector = MunchkinIcons.Settings,
                             tint = MunchkinTheme.colors.onBackground
                         )
                     }

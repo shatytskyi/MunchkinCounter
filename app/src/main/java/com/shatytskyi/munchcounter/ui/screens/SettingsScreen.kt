@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Brightness4
 import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.BrightnessHigh
-import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material3.HorizontalDivider
@@ -41,6 +40,12 @@ import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
+import com.shatytskyi.munchcounter.ui.components.icons.ColorsOff
+import com.shatytskyi.munchcounter.ui.components.icons.ColorsOn
+import com.shatytskyi.munchcounter.ui.components.icons.Font
+import com.shatytskyi.munchcounter.ui.components.icons.FontOff
+import com.shatytskyi.munchcounter.ui.components.icons.Language
+import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 enum class ThemeMode {
@@ -222,7 +227,7 @@ private fun ColorSwitchGroup(
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     onDynamicColorsChange(false)
                 },
-                icon = Icons.Outlined.Palette,
+                icon = MunchkinIcons.ColorsOn,
                 text = stringResource(R.string.colors_app),
                 modifier = Modifier.weight(1f),
                 iconTint = if (!dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
@@ -238,7 +243,7 @@ private fun ColorSwitchGroup(
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     onDynamicColorsChange(true)
                 },
-                icon = Icons.Outlined.Palette,
+                icon = MunchkinIcons.ColorsOff,
                 text = stringResource(R.string.colors_dynamic),
                 modifier = Modifier.weight(1f),
                 iconTint = if (dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
@@ -283,7 +288,7 @@ private fun FontSwitchGroup(
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     onSystemFontChange(false)
                 },
-                icon = Icons.Outlined.TextFields,
+                icon = MunchkinIcons.Font,
                 text = stringResource(R.string.fonts_app),
                 modifier = Modifier.weight(1f),
                 iconTint = if (!systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
@@ -300,7 +305,7 @@ private fun FontSwitchGroup(
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     onSystemFontChange(true)
                 },
-                icon = Icons.Outlined.TextFields,
+                icon = MunchkinIcons.FontOff,
                 text = stringResource(R.string.fonts_system),
                 modifier = Modifier.weight(1f),
                 iconTint = if (systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
@@ -339,7 +344,7 @@ private fun LanguageSelector(
                 haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                 onClick()
             },
-            icon = Icons.Outlined.Language,
+            icon = MunchkinIcons.Language,
             text = stringResource(R.string.language_description),
             modifier = Modifier.fillMaxWidth(),
             rippleColor = null,

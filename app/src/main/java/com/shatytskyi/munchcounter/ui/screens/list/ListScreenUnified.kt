@@ -46,6 +46,10 @@ import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.munchcounter.ui.components.CharacterListItem
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
+import com.shatytskyi.munchcounter.ui.components.icons.Add
+import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
+import com.shatytskyi.munchcounter.ui.components.icons.RemoveAll
+import com.shatytskyi.munchcounter.ui.components.icons.Reset
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -73,7 +77,8 @@ fun ListScreenUnified(
 
     ListScreenTopBarWrapper(
         onDiceClick = onDiceClick,
-        onTimerClick = onTimerClick
+        onTimerClick = onTimerClick,
+        onSettingsClick = onSettingsClick
     ) {
         LazyColumn(
             modifier = Modifier
@@ -219,7 +224,7 @@ fun ListScreenUnified(
                     ) {
                         MunchkinIconTextButton(
                             onClick = onAddCharacterClick,
-                            icon = Icons.Default.Add,
+                            icon = MunchkinIcons.Add,
                             text = stringResource(R.string.add_player),
                             modifier = Modifier.fillMaxWidth(0.5f),
                             textStyle = MunchkinTheme.typography.labelLarge,
@@ -245,7 +250,7 @@ fun ListScreenUnified(
                     ) {
                         MunchkinIconTextButton(
                             onClick = onResetAllClick,
-                            icon = Icons.Outlined.Refresh,
+                            icon = MunchkinIcons.Reset,
                             text = stringResource(R.string.reset_all),
                             modifier = Modifier.weight(1f),
                             textStyle = MunchkinTheme.typography.labelMedium,
@@ -256,7 +261,7 @@ fun ListScreenUnified(
 
                         MunchkinIconTextButton(
                             onClick = onRemoveAllClick,
-                            icon = Icons.Outlined.PlaylistRemove,
+                            icon = MunchkinIcons.RemoveAll,
                             text = stringResource(R.string.remove_all),
                             modifier = Modifier.weight(1f),
                             textStyle = MunchkinTheme.typography.labelMedium,
@@ -268,32 +273,6 @@ fun ListScreenUnified(
                 }
             }
 
-            // Settings button
-            item(
-                key = "settings",
-                contentType = "settings"
-            ) {
-                Column(
-                    modifier = Modifier.animateItem()
-                ) {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        MunchkinIconTextButton(
-                            onClick = onSettingsClick,
-                            icon = Icons.Outlined.Settings,
-                            text = stringResource(R.string.settings),
-                            modifier = Modifier.fillMaxWidth(0.6f),
-                            textStyle = MunchkinTheme.typography.labelMedium,
-                            contentPadding = 20.dp,
-                            rippleColor = MunchkinTheme.colors.grey,
-                            bounded = false
-                        )
-                    }
-                }
-            }
         }
     }
 }

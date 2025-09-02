@@ -30,7 +30,8 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 @Composable
 fun ListScreenLoadingContent(
     onDiceClick: () -> Unit = {},
-    onTimerClick: () -> Unit = {}
+    onTimerClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -40,7 +41,8 @@ fun ListScreenLoadingContent(
 
     ListScreenTopBarWrapper(
         onDiceClick = onDiceClick,
-        onTimerClick = onTimerClick
+        onTimerClick = onTimerClick,
+        onSettingsClick = onSettingsClick
     ) {
         Box(
             modifier = Modifier

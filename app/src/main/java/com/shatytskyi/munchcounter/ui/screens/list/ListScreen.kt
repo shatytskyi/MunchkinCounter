@@ -92,6 +92,10 @@ private fun ListScreenContent(
                 onTimerClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     onTimerClick()
+                },
+                onSettingsClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onSettingsClick()
                 }
             )
         } else {

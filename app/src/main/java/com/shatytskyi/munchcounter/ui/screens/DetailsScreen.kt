@@ -1,5 +1,8 @@
 package com.shatytskyi.munchcounter.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,17 +21,13 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.PersonRemove
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -43,11 +42,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
@@ -60,10 +59,11 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
-import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
+import com.shatytskyi.munchcounter.ui.components.icons.Remove
 import com.shatytskyi.munchcounter.ui.components.icons.Swords
 import com.shatytskyi.munchcounter.ui.components.icons.Timer
+import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.EditCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
@@ -178,14 +178,14 @@ private fun DetailsScreenContent(
 ) {
     val haptic = LocalHapticFeedback.current
     val lazyListState = rememberLazyListState()
-    
+
     val isCharacterCardVisible by remember {
         derivedStateOf {
-            lazyListState.firstVisibleItemIndex == 0 && 
-            lazyListState.firstVisibleItemScrollOffset < 600
+            lazyListState.firstVisibleItemIndex == 0 &&
+                    lazyListState.firstVisibleItemScrollOffset < 600
         }
     }
-    
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -309,7 +309,7 @@ private fun DetailsScreenContent(
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onDeleteClick()
                         },
-                        icon = Icons.Outlined.PersonRemove,
+                        icon = MunchkinIcons.Remove,
                         text = stringResource(R.string.delete_player),
                         modifier = Modifier.fillMaxWidth(0.7f),
                         textStyle = MunchkinTheme.typography.labelMedium,
@@ -355,7 +355,7 @@ private fun DetailsScreenContent(
                 }
             )
         }
-        
+
         // Compact bottom widget - appears when character card is scrolled out of view
         AnimatedVisibility(
             visible = !isCharacterCardVisible,
@@ -405,7 +405,7 @@ private fun CompactCharacterWidget(
                     color = MunchkinTheme.colors.primary
                 )
             }
-            
+
             // Total power display
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -423,7 +423,7 @@ private fun CompactCharacterWidget(
                     color = MunchkinTheme.colors.secondary
                 )
             }
-            
+
             // Items section
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
