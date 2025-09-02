@@ -6,10 +6,12 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import org.koin.androidx.compose.koinViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -65,6 +67,7 @@ fun MunchkinApp(
     activity: ComponentActivity
 ) {
     val navController = rememberNavController()
+    val context = LocalContext.current
 
     val sharedViewModel: CommonViewModel = koinViewModel()
 
@@ -146,7 +149,9 @@ fun MunchkinApp(
                 viewModel = sharedViewModel,
                 characterId = characterId,
                 onBack = { navController.popBackStack() },
-                onFight = { navController.navigate("fight/$characterId") },
+                onFight = { 
+                    Toast.makeText(context, "Coming Soon!", Toast.LENGTH_SHORT).show()
+                },
                 onTimerClick = { navController.navigate("timer") }
             )
         }
