@@ -162,6 +162,8 @@ fun ListScreenUnified(
                                 colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
                             )
                         }
+                        
+                        Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
             }
