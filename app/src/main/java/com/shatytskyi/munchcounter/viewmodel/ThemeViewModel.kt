@@ -24,11 +24,21 @@ class ThemeViewModel(
         initialValue = false
     )
     
+    val systemFont: StateFlow<Boolean> = themePreferences.systemFont.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = false
+    )
+    
     fun setThemeMode(mode: ThemeMode) {
         themePreferences.setThemeMode(mode)
     }
     
     fun setDynamicColors(enabled: Boolean) {
         themePreferences.setDynamicColors(enabled)
+    }
+    
+    fun setSystemFont(enabled: Boolean) {
+        themePreferences.setSystemFont(enabled)
     }
 }

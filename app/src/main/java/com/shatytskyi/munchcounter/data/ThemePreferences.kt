@@ -11,8 +11,10 @@ import androidx.core.content.edit
 interface ThemePreferences {
     val themeMode: Flow<ThemeMode>
     val dynamicColors: Flow<Boolean>
+    val systemFont: Flow<Boolean>
     fun setThemeMode(mode: ThemeMode)
     fun setDynamicColors(enabled: Boolean)
+    fun setSystemFont(enabled: Boolean)
 }
 
 class ThemePreferencesImpl(
@@ -23,6 +25,7 @@ class ThemePreferencesImpl(
         private const val PREFS_NAME = "theme_preferences"
         private const val KEY_THEME_MODE = "theme_mode"
         private const val KEY_DYNAMIC_COLORS = "dynamic_colors"
+        private const val KEY_SYSTEM_FONT = "system_font"
     }
     
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -32,6 +35,9 @@ class ThemePreferencesImpl(
     
     private val _dynamicColors = MutableStateFlow(getCurrentDynamicColors())
     override val dynamicColors: Flow<Boolean> = _dynamicColors.asStateFlow()
+    
+    private val _systemFont = MutableStateFlow(getCurrentSystemFont())
+    override val systemFont: Flow<Boolean> = _systemFont.asStateFlow()
     
     private fun getCurrentThemeMode(): ThemeMode {
         val savedMode = sharedPrefs.getString(KEY_THEME_MODE, ThemeMode.AUTO.name)
@@ -46,6 +52,10 @@ class ThemePreferencesImpl(
         return sharedPrefs.getBoolean(KEY_DYNAMIC_COLORS, false)
     }
     
+    private fun getCurrentSystemFont(): Boolean {
+        return sharedPrefs.getBoolean(KEY_SYSTEM_FONT, false)
+    }
+    
     override fun setThemeMode(mode: ThemeMode) {
         sharedPrefs.edit { putString(KEY_THEME_MODE, mode.name) }
         _themeMode.value = mode
@@ -54,5 +64,10 @@ class ThemePreferencesImpl(
     override fun setDynamicColors(enabled: Boolean) {
         sharedPrefs.edit { putBoolean(KEY_DYNAMIC_COLORS, enabled) }
         _dynamicColors.value = enabled
+    }
+    
+    override fun setSystemFont(enabled: Boolean) {
+        sharedPrefs.edit { putBoolean(KEY_SYSTEM_FONT, enabled) }
+        _systemFont.value = enabled
     }
 }

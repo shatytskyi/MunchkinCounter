@@ -16,13 +16,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun AnimatedNumber(
     value: Int,
     textStyle: TextStyle,
     color: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autoSize: Boolean = false,
+    minTextSize: TextUnit = 14.sp,
+    maxTextSize: TextUnit = textStyle.fontSize
 ) {
     val valueString = value.toString()
     
@@ -36,13 +41,18 @@ fun AnimatedNumber(
                 MunchkinText(
                     text = "-",
                     style = textStyle,
-                    color = color
+                    color = color,
+                    minTextSize = if (autoSize) minTextSize else textStyle.fontSize,
+                    maxTextSize = maxTextSize
                 )
             } else {
                 AnimatedDigit(
                     digit = char.digitToInt(),
                     textStyle = textStyle,
-                    color = color
+                    color = color,
+                    autoSize = autoSize,
+                    minTextSize = minTextSize,
+                    maxTextSize = maxTextSize
                 )
             }
         }
@@ -54,7 +64,10 @@ private fun AnimatedDigit(
     digit: Int,
     textStyle: TextStyle,
     color: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autoSize: Boolean = false,
+    minTextSize: TextUnit = 14.sp,
+    maxTextSize: TextUnit = textStyle.fontSize
 ) {
     AnimatedContent(
         targetState = digit,
@@ -113,7 +126,9 @@ private fun AnimatedDigit(
         MunchkinText(
             text = animatedDigit.toString(),
             style = textStyle,
-            color = color
+            color = color,
+            minTextSize = if (autoSize) minTextSize else textStyle.fontSize,
+            maxTextSize = maxTextSize
         )
     }
 }

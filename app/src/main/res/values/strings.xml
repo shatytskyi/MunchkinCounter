@@ -102,7 +102,12 @@
     <string name="theme_light">Light</string>
     <string name="theme_auto">Auto</string>
     <string name="theme_dark">Dark</string>
-    <string name="dynamic_colors">Dynamic Colors</string>
+    <string name="colors">Colors</string>
+    <string name="colors_app">App Colors</string>
+    <string name="colors_dynamic">Dynamic Colors</string>
+    <string name="fonts">Fonts</string>
+    <string name="fonts_app">App Fonts</string>
+    <string name="fonts_system">System Font</string>
     <string name="language">Language</string>
     <string name="language_description">Change app language</string>
     <string name="gender">Gender</string>

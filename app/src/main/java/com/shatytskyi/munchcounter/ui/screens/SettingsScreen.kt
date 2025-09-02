@@ -22,12 +22,11 @@ import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.BrightnessHigh
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -54,8 +53,10 @@ enum class ThemeMode {
 fun SettingsScreen(
     currentThemeMode: ThemeMode = ThemeMode.AUTO,
     dynamicColors: Boolean = false,
+    systemFont: Boolean = false,
     onThemeModeChange: (ThemeMode) -> Unit = {},
     onDynamicColorsChange: (Boolean) -> Unit = {},
+    onSystemFontChange: (Boolean) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {}
 ) {
@@ -82,9 +83,23 @@ fun SettingsScreen(
             item {
                 ThemeSwitchGroup(
                     selectedMode = currentThemeMode,
+                    onModeSelected = onThemeModeChange
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+                ColorSwitchGroup(
                     dynamicColors = dynamicColors,
-                    onModeSelected = onThemeModeChange,
                     onDynamicColorsChange = onDynamicColorsChange
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+                FontSwitchGroup(
+                    systemFont = systemFont,
+                    onSystemFontChange = onSystemFontChange
                 )
             }
 
@@ -122,9 +137,7 @@ fun SettingsScreen(
 @Composable
 private fun ThemeSwitchGroup(
     selectedMode: ThemeMode,
-    dynamicColors: Boolean,
-    onModeSelected: (ThemeMode) -> Unit,
-    onDynamicColorsChange: (Boolean) -> Unit
+    onModeSelected: (ThemeMode) -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
 
@@ -175,37 +188,131 @@ private fun ThemeSwitchGroup(
             }
         }
 
-        // Dynamic colors toggle
-        DynamicColorsToggle(
-            isEnabled = dynamicColors,
-            onToggle = { enabled ->
-                haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                onDynamicColorsChange(enabled)
-            }
-        )
     }
 }
 
 @Composable
-private fun DynamicColorsToggle(
-    isEnabled: Boolean,
-    onToggle: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+private fun ColorSwitchGroup(
+    dynamicColors: Boolean,
+    onDynamicColorsChange: (Boolean) -> Unit
 ) {
-    MunchkinIconTextButton(
-        onClick = { onToggle(!isEnabled) },
-        icon = Icons.Outlined.Palette,
-        text = stringResource(R.string.dynamic_colors),
-        modifier = modifier.fillMaxWidth(),
-        rippleColor = null,
-        iconTint = if (isEnabled) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
-        textColor = if (isEnabled) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
-        textStyle = MunchkinTheme.typography.bodyMedium.copy(
-            fontWeight = if (isEnabled) FontWeight.Medium else FontWeight.Normal
-        ),
-        bounded = false,
-        contentPadding = 16.dp
-    )
+    val haptic = LocalHapticFeedback.current
+
+    Column {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        MunchkinText(
+            text = stringResource(R.string.colors),
+            style = MunchkinTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.SemiBold
+            ),
+            color = MunchkinTheme.colors.onBackground,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onDynamicColorsChange(false)
+                },
+                icon = Icons.Outlined.Palette,
+                text = stringResource(R.string.colors_app),
+                modifier = Modifier.weight(1f),
+                iconTint = if (!dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
+                textColor = if (!dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
+                textStyle = MunchkinTheme.typography.labelMedium.copy(
+                    fontWeight = if (!dynamicColors) FontWeight.Medium else FontWeight.Normal
+                ),
+                bounded = false
+            )
+
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onDynamicColorsChange(true)
+                },
+                icon = Icons.Outlined.Palette,
+                text = stringResource(R.string.colors_dynamic),
+                modifier = Modifier.weight(1f),
+                iconTint = if (dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
+                textColor = if (dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
+                textStyle = MunchkinTheme.typography.labelMedium.copy(
+                    fontWeight = if (dynamicColors) FontWeight.Medium else FontWeight.Normal
+                ),
+                bounded = false
+            )
+        }
+    }
+}
+
+@Composable
+private fun FontSwitchGroup(
+    systemFont: Boolean,
+    onSystemFontChange: (Boolean) -> Unit
+) {
+    val haptic = LocalHapticFeedback.current
+
+    Column {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        MunchkinText(
+            text = stringResource(R.string.fonts),
+            style = MunchkinTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.SemiBold
+            ),
+            color = MunchkinTheme.colors.onBackground,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onSystemFontChange(false)
+                },
+                icon = Icons.Outlined.TextFields,
+                text = stringResource(R.string.fonts_app),
+                modifier = Modifier.weight(1f),
+                iconTint = if (!systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
+                textColor = if (!systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
+                rippleColor = null,
+                textStyle = MunchkinTheme.typography.labelMedium.copy(
+                    fontWeight = if (!systemFont) FontWeight.Medium else FontWeight.Normal
+                ),
+                bounded = false
+            )
+
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onSystemFontChange(true)
+                },
+                icon = Icons.Outlined.TextFields,
+                text = stringResource(R.string.fonts_system),
+                modifier = Modifier.weight(1f),
+                iconTint = if (systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
+                textColor = if (systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
+                rippleColor = null,
+                textStyle = MunchkinTheme.typography.labelMedium.copy(
+                    fontWeight = if (systemFont) FontWeight.Medium else FontWeight.Normal
+                ),
+                bounded = false
+            )
+        }
+    }
 }
 
 @Composable

@@ -24,6 +24,7 @@ val LocalMunchkinTypography = staticCompositionLocalOf { MunchkinTypography() }
 fun MunchkinTheme(
     themeMode: ThemeMode = ThemeMode.AUTO,
     dynamicColor: Boolean = false,
+    systemFont: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val systemInDarkTheme = isSystemInDarkTheme()
@@ -71,7 +72,7 @@ fun MunchkinTheme(
 
     CompositionLocalProvider(
         LocalMunchkinColors provides colors,
-        LocalMunchkinTypography provides MunchkinTypography()
+        LocalMunchkinTypography provides MunchkinTypography(useSystemFont = systemFont)
     ) {
         Box(
             modifier = Modifier.background(colors.background)

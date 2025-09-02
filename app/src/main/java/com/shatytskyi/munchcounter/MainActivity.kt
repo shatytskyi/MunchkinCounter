@@ -42,10 +42,12 @@ class MainActivity : ComponentActivity() {
             val themeViewModel: ThemeViewModel = koinViewModel()
             val themeMode by themeViewModel.themeMode.collectAsState()
             val dynamicColors by themeViewModel.dynamicColors.collectAsState()
+            val systemFont by themeViewModel.systemFont.collectAsState()
             
             MunchkinTheme(
                 themeMode = themeMode,
-                dynamicColor = dynamicColors
+                dynamicColor = dynamicColors,
+                systemFont = systemFont
             ) {
                 MunchkinApp(
                     themeViewModel = themeViewModel,
@@ -74,25 +76,25 @@ fun MunchkinApp(
             enterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             exitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popEnterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popExitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             }
         ) {
@@ -113,25 +115,25 @@ fun MunchkinApp(
             enterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             exitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popEnterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popExitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             }
         ) { backStackEntry ->
@@ -150,25 +152,25 @@ fun MunchkinApp(
             enterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             exitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popEnterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popExitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             }
         ) { backStackEntry ->
@@ -185,38 +187,43 @@ fun MunchkinApp(
             enterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             exitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popEnterTransition = { 
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             },
             popExitTransition = { 
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    animationSpec = tween(400, easing = FastOutSlowInEasing)
                 )
             }
         ) {
             val themeMode by themeViewModel.themeMode.collectAsState()
             val dynamicColors by themeViewModel.dynamicColors.collectAsState()
+            val systemFont by themeViewModel.systemFont.collectAsState()
             SettingsScreen(
                 currentThemeMode = themeMode,
                 dynamicColors = dynamicColors,
+                systemFont = systemFont,
                 onThemeModeChange = { mode ->
                     themeViewModel.setThemeMode(mode)
                 },
                 onDynamicColorsChange = { enabled ->
                     themeViewModel.setDynamicColors(enabled)
+                },
+                onSystemFontChange = { enabled ->
+                    themeViewModel.setSystemFont(enabled)
                 },
                 onBackClick = {
                     navController.popBackStack()
