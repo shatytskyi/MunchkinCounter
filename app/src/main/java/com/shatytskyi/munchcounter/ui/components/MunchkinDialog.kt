@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,9 +37,9 @@ fun MunchkinDialog(
                 .background(MunchkinTheme.colors.background)
                 .padding(
                     start = 16.dp,
-                    top = 16.dp,
+                    top = 32.dp,
                     end = 16.dp,
-                    bottom = 24.dp,
+                    bottom = 32.dp,
                 )
         ) {
             Column {
@@ -58,6 +59,8 @@ fun MunchkinDialog(
                 // Content
                 content()
 
+                Spacer(modifier = Modifier.height(32.dp))
+
                 // Buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -66,7 +69,7 @@ fun MunchkinDialog(
                 ) {
                     dismissButton?.let {
                         it()
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(32.dp))
                     }
                     confirmButton()
                 }

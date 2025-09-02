@@ -21,7 +21,7 @@ fun MunchkinText(
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
-    minTextSize: TextUnit = 12.sp,
+    minTextSize: TextUnit = 14.sp,
     maxTextSize: TextUnit = style.fontSize
 ) {
     BasicText(

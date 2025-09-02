@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
@@ -33,7 +34,6 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextField
 import com.shatytskyi.munchcounter.ui.components.munchkinClickable
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
-import com.shatytskyi.munchcounter.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -68,7 +68,7 @@ fun AddCharacterDialog(
                         color = MunchkinTheme.colors.onBackground
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     MunchkinTextField(
                         value = name,
@@ -92,7 +92,7 @@ fun AddCharacterDialog(
                         color = MunchkinTheme.colors.onBackground
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     MunchkinCard(
                         modifier = Modifier.fillMaxWidth(),
@@ -118,8 +118,6 @@ fun AddCharacterDialog(
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(24.dp))
             }
         },
         confirmButton = {

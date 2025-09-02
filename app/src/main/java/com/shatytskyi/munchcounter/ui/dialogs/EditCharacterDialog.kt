@@ -66,7 +66,7 @@ fun EditCharacterDialog(
                         color = MunchkinTheme.colors.onBackground
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     MunchkinTextField(
                         value = name,
@@ -94,7 +94,7 @@ fun EditCharacterDialog(
                             color = MunchkinTheme.colors.onBackground
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         MunchkinTextField(
                             value = level,
@@ -122,7 +122,7 @@ fun EditCharacterDialog(
                             color = MunchkinTheme.colors.onBackground
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         MunchkinTextField(
                             value = items,
@@ -153,7 +153,7 @@ fun EditCharacterDialog(
                         color = MunchkinTheme.colors.onBackground
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     MunchkinCard(
                         modifier = Modifier.fillMaxWidth(),

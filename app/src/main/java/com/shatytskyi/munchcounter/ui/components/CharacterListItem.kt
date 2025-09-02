@@ -71,6 +71,7 @@ fun CharacterListItem(
                         contentAlignment = Alignment.Center
                     ) {
                         MunchkinText(
+                            modifier = Modifier.padding(horizontal = 32.dp),
                             text = character.name,
                             style = MunchkinTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.SemiBold
@@ -256,7 +257,7 @@ fun CharacterListItemPreview() {
             CharacterListItem(
                 character = Character(
                     id = 1,
-                    name = "Aragorn",
+                    name = "Aragorn Son of Arathorn the King of Gondor",
                     lvl = 5,
                     items = 15
                 ),
