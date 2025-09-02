@@ -71,7 +71,6 @@ fun EditCharacterDialog(
                     MunchkinTextField(
                         value = name,
                         onValueChange = { name = it },
-                        placeholder = stringResource(R.string.enter_player_name),
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -99,11 +98,12 @@ fun EditCharacterDialog(
                         MunchkinTextField(
                             value = level,
                             onValueChange = {
-                                if (it.isEmpty() || it.toIntOrNull() != null) {
+                                if (it.isEmpty() || it.toIntOrNull()?.let { value ->
+                                    value in -999..999
+                                } == true) {
                                     level = it
                                 }
                             },
-                            placeholder = stringResource(R.string.zero),
                             keyboardType = KeyboardType.Number,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
@@ -127,11 +127,12 @@ fun EditCharacterDialog(
                         MunchkinTextField(
                             value = items,
                             onValueChange = {
-                                if (it.isEmpty() || it.toIntOrNull() != null) {
+                                if (it.isEmpty() || it.toIntOrNull()?.let { value ->
+                                    value in -999..999
+                                } == true) {
                                     items = it
                                 }
                             },
-                            placeholder = stringResource(R.string.zero),
                             keyboardType = KeyboardType.Number,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
@@ -191,8 +192,8 @@ fun EditCharacterDialog(
                     rippleColor = MunchkinTheme.colors.primary,
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                        val lvl = level.toIntOrNull() ?: character.level
-                        val itm = items.toIntOrNull() ?: character.items
+                        val lvl = level.toIntOrNull()?.coerceIn(-999, 999) ?: character.level
+                        val itm = items.toIntOrNull()?.coerceIn(-999, 999) ?: character.items
                         onConfirm(name.trim(), lvl, itm, selectedGender)
                     }
                 ),

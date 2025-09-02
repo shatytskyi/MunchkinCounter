@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -33,7 +34,6 @@ fun MunchkinTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "",
     singleLine: Boolean = true,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
@@ -44,6 +44,7 @@ fun MunchkinTextField(
 ) {
     Box(
         modifier = modifier
+            .height(56.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(MunchkinTheme.colors.background)
             .border(
@@ -51,18 +52,14 @@ fun MunchkinTextField(
                 color = MunchkinTheme.colors.primary,
                 shape = RoundedCornerShape(12.dp)
             ),
-        contentAlignment = Alignment.CenterStart
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            BasicTextField(
-                value = value,
-                onValueChange = onValueChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
                     .then(
                         if (focusRequester != null) Modifier.focusRequester(focusRequester)
                         else Modifier
@@ -80,18 +77,9 @@ fun MunchkinTextField(
                 cursorBrush = SolidColor(MunchkinTheme.colors.primary),
                 enabled = enabled,
                 decorationBox = { innerTextField ->
-                    if (value.isEmpty() && placeholder.isNotEmpty()) {
-                        MunchkinText(
-                            text = placeholder,
-                            style = MunchkinTheme.typography.bodyLarge,
-                            color = MunchkinTheme.colors.grey,
-                            textAlign = textAlign
-                        )
-                    }
                     innerTextField()
                 }
-            )
-        }
+        )
     }
 }
 
@@ -104,7 +92,6 @@ private fun MunchkinTextFieldPreview() {
         MunchkinTextField(
             value = text,
             onValueChange = { text = it },
-            placeholder = "Enter player name...",
             modifier = Modifier.fillMaxWidth()
         )
     }

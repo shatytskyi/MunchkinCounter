@@ -73,7 +73,6 @@ fun AddCharacterDialog(
                     MunchkinTextField(
                         value = name,
                         onValueChange = { name = it },
-                        placeholder = stringResource(R.string.enter_player_name),
                         focusRequester = focusRequester,
                         modifier = Modifier.fillMaxWidth()
                     )

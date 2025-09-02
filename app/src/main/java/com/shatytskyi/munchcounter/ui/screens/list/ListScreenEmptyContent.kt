@@ -1,7 +1,6 @@
 package com.shatytskyi.munchcounter.ui.screens.list
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,14 +14,17 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -56,88 +58,95 @@ fun ListScreenEmptyContent(
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
                 .padding(top = topPadding, start = 24.dp, end = 24.dp, bottom = 24.dp),
-            contentAlignment = Alignment.Center
         ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Hero images - top row
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(bottom = 8.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(R.drawable.pic_knight),
-                    contentDescription = null,
-                    modifier = Modifier.size(64.dp)
+                Row {
+                    Image(
+                        painter = painterResource(R.drawable.pic_knight),
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
+                    )
+
+                    Spacer(modifier = Modifier.width(24.dp))
+
+                    Image(
+                        painter = painterResource(R.drawable.pic_knight_fem),
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                MunchkinText(
+                    text = stringResource(R.string.no_players),
+                    style = MunchkinTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    color = MunchkinTheme.colors.onBackground,
+                    textAlign = TextAlign.Center
                 )
-                Image(
-                    painter = painterResource(R.drawable.pic_knight_fem),
-                    contentDescription = null,
-                    modifier = Modifier.size(64.dp)
+
+                MunchkinText(
+                    text = stringResource(R.string.no_players_description),
+                    style = MunchkinTheme.typography.bodyLarge,
+                    color = MunchkinTheme.colors.onBackground,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Hero images - bottom row
+                Row {
+                    Image(
+                        painter = painterResource(R.drawable.pic_witch),
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
+                    )
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Image(
+                        painter = painterResource(R.drawable.pic_wizard),
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                HorizontalDivider()
+
+                Spacer(modifier = Modifier.height(26.dp))
+
+                MunchkinIconTextButton(
+                    onClick = onAddCharacterClick,
+                    icon = Icons.Default.Add,
+                    text = stringResource(R.string.add_player),
+                    modifier = Modifier.fillMaxWidth(0.6f),
+                    textStyle = MunchkinTheme.typography.labelLarge,
+                    contentPadding = 24.dp,
+                    rippleColor = MunchkinTheme.colors.primary,
+                    bounded = false
+                )
+
+                MunchkinIconTextButton(
+                    onClick = onSettingsClick,
+                    icon = Icons.Outlined.Settings,
+                    text = stringResource(R.string.settings),
+                    modifier = Modifier.fillMaxWidth(0.5f),
+                    textStyle = MunchkinTheme.typography.labelMedium,
+                    contentPadding = 24.dp,
+                    rippleColor = MunchkinTheme.colors.grey,
+                    bounded = false
                 )
             }
-
-            MunchkinText(
-                text = stringResource(R.string.no_players),
-                style = MunchkinTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.SemiBold
-                ),
-                color = MunchkinTheme.colors.onBackground,
-                textAlign = TextAlign.Center
-            )
-
-            MunchkinText(
-                text = stringResource(R.string.no_players_description),
-                style = MunchkinTheme.typography.bodyLarge,
-                color = MunchkinTheme.colors.onBackground,
-                textAlign = TextAlign.Center
-            )
-
-            // Hero images - bottom row
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(top = 8.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.pic_witch),
-                    contentDescription = null,
-                    modifier = Modifier.size(64.dp)
-                )
-                Image(
-                    painter = painterResource(R.drawable.pic_wizard),
-                    contentDescription = null,
-                    modifier = Modifier.size(64.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            MunchkinIconTextButton(
-                onClick = onAddCharacterClick,
-                icon = Icons.Default.Add,
-                text = stringResource(R.string.add_player),
-                modifier = Modifier.fillMaxWidth(0.6f),
-                textStyle = MunchkinTheme.typography.labelLarge,
-                contentPadding = 24.dp,
-                rippleColor = MunchkinTheme.colors.primary,
-                bounded = false
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            MunchkinIconTextButton(
-                onClick = onSettingsClick,
-                icon = Icons.Outlined.Settings,
-                text = stringResource(R.string.settings),
-                modifier = Modifier.fillMaxWidth(0.5f),
-                textStyle = MunchkinTheme.typography.labelMedium,
-                contentPadding = 20.dp,
-                rippleColor = MunchkinTheme.colors.grey,
-                bounded = false
-            )
-        }
         }
     }
 }
