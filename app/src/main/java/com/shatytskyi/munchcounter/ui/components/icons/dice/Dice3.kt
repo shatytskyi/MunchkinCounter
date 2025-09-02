@@ -1,10 +1,11 @@
-package com.shatytskyi.munchcounter.ui.components.icons
+package com.shatytskyi.munchcounter.ui.components.icons.dice
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
+import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 
 val MunchkinIcons.Dice.Dice3: ImageVector
     get() {

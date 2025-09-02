@@ -1,44 +1,43 @@
 package com.shatytskyi.munchcounter.ui.components.icons
 
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.ui.graphics.vector.ImageVector
 
-public val MunchkinIcons.Timer: ImageVector
+val MunchkinIcons.Timer: ImageVector
     get() {
         if (_timer != null) {
             return _timer!!
         }
         _timer = materialIcon(name = "Timer") {
             materialPath {
-                moveTo(15.0f, 1.0f)
-                horizontalLineTo(9.0f)
-                verticalLineTo(3.0f)
-                horizontalLineToRelative(6.0f)
-                verticalLineTo(1.0f)
+                moveTo(14.2f, 1.2f)
+                horizontalLineTo(9.8f)
+                verticalLineTo(2.8f)
+                horizontalLineToRelative(4.4f)
+                verticalLineTo(1.2f)
                 close()
-                moveTo(11.0f, 14.0f)
-                horizontalLineToRelative(2.0f)
-                verticalLineTo(8.0f)
-                horizontalLineToRelative(-2.0f)
-                verticalLineTo(14.0f)
+                moveTo(11.2f, 13.8f)
+                horizontalLineToRelative(1.6f)
+                verticalLineTo(8.2f)
+                horizontalLineToRelative(-1.6f)
+                verticalLineTo(13.8f)
                 close()
-                moveTo(19.03f, 7.39f)
-                lineToRelative(1.42f, -1.42f)
-                curveToRelative(-0.43f, -0.51f, -0.9f, -0.99f, -1.41f, -1.41f)
-                lineToRelative(-1.42f, 1.42f)
-                curveTo(16.07f, 4.74f, 14.12f, 4.0f, 12.0f, 4.0f)
-                curveToRelative(-4.97f, 0.0f, -9.0f, 4.03f, -9.0f, 9.0f)
-                reflectiveCurveToRelative(4.02f, 9.0f, 9.0f, 9.0f)
-                reflectiveCurveToRelative(9.0f, -4.03f, 9.0f, -9.0f)
-                curveTo(21.0f, 10.88f, 20.26f, 8.93f, 19.03f, 7.39f)
+                moveTo(18.63f, 7.51f)
+                lineToRelative(1.14f, -1.14f)
+                curveToRelative(-0.34f, -0.41f, -0.72f, -0.79f, -1.13f, -1.13f)
+                lineToRelative(-1.14f, 1.14f)
+                curveTo(16.26f, 4.99f, 14.52f, 4.2f, 12.0f, 4.2f)
+                curveToRelative(-4.31f, 0.0f, -7.8f, 3.49f, -7.8f, 7.8f)
+                reflectiveCurveToRelative(3.49f, 7.8f, 7.8f, 7.8f)
+                reflectiveCurveToRelative(7.8f, -3.49f, 7.8f, -7.8f)
+                curveTo(19.8f, 10.9f, 19.21f, 9.14f, 18.63f, 7.51f)
                 close()
-                moveTo(12.0f, 20.0f)
-                curveToRelative(-3.87f, 0.0f, -7.0f, -3.13f, -7.0f, -7.0f)
-                reflectiveCurveToRelative(3.13f, -7.0f, 7.0f, -7.0f)
-                reflectiveCurveToRelative(7.0f, 3.13f, 7.0f, 7.0f)
-                reflectiveCurveTo(15.87f, 20.0f, 12.0f, 20.0f)
+                moveTo(12.0f, 18.4f)
+                curveToRelative(-3.42f, 0.0f, -6.2f, -2.78f, -6.2f, -6.2f)
+                reflectiveCurveToRelative(2.78f, -6.2f, 6.2f, -6.2f)
+                reflectiveCurveToRelative(6.2f, 2.78f, 6.2f, 6.2f)
+                reflectiveCurveTo(15.42f, 18.4f, 12.0f, 18.4f)
                 close()
             }
         }

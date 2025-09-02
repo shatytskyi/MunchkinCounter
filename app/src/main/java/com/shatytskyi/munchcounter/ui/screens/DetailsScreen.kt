@@ -60,7 +60,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
-import com.shatytskyi.munchcounter.ui.components.icons.Dice5
+import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.components.icons.Swords
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
