@@ -11,7 +11,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +45,11 @@ fun MunchkinTextField(
     focusRequester: FocusRequester? = null,
     enabled: Boolean = true
 ) {
+    val customTextSelectionColors = TextSelectionColors(
+        handleColor = MunchkinTheme.colors.primary,
+        backgroundColor = MunchkinTheme.colors.primary.copy(alpha = 0.4f)
+    )
+
     Box(
         modifier = modifier
             .height(56.dp)
@@ -54,7 +62,8 @@ fun MunchkinTextField(
             ),
         contentAlignment = Alignment.Center
     ) {
-        BasicTextField(
+        CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
+            BasicTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
@@ -79,7 +88,8 @@ fun MunchkinTextField(
                 decorationBox = { innerTextField ->
                     innerTextField()
                 }
-        )
+            )
+        }
     }
 }
 
