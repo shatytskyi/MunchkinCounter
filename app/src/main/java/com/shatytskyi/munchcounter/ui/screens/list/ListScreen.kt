@@ -1,10 +1,5 @@
 package com.shatytskyi.munchcounter.ui.screens.list
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -24,12 +19,6 @@ import com.shatytskyi.munchcounter.ui.dialogs.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
-
-private enum class ScreenState {
-    Loading,
-    Empty,
-    Content
-}
 
 @Composable
 fun ListScreen(
@@ -91,89 +80,53 @@ private fun ListScreenContent(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
-        val currentState = when {
-            isLoading -> ScreenState.Loading
-            characters.isEmpty() -> ScreenState.Empty
-            else -> ScreenState.Content
-        }
-
-        AnimatedContent(
-            targetState = currentState,
-            transitionSpec = {
-                fadeIn(animationSpec = tween(300)) togetherWith
-                        fadeOut(animationSpec = tween(300))
-            },
-            label = "screen_state_animation"
-        ) { state ->
-            when (state) {
-                ScreenState.Loading -> {
-                    ListScreenLoadingContent(
-                        onDiceClick = { 
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            showDiceDialog = true 
-                        }
-                    )
+        if (isLoading) {
+            ListScreenLoadingContent(
+                onDiceClick = { 
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    showDiceDialog = true 
                 }
-
-                ScreenState.Empty -> {
-                    ListScreenEmptyContent(
-                        onAddCharacterClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            showAddDialog = true
-                        },
-                        onDiceClick = { 
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            showDiceDialog = true 
-                        },
-                        onSettingsClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            onSettingsClick()
-                        }
-                    )
+            )
+        } else {
+            ListScreenUnified(
+                characters = characters,
+                onCharacterClick = { id ->
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onCharacterClick(id)
+                },
+                onAddCharacterClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    showAddDialog = true
+                },
+                onLevelChange = { id, delta ->
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onLevelChange(id, delta)
+                },
+                onPowerChange = { id, delta ->
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onPowerChange(id, delta)
+                },
+                onGenderToggle = { id ->
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onGenderToggle(id)
+                },
+                onResetAllClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    showResetAllDialog = true
+                },
+                onRemoveAllClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    showRemoveAllDialog = true
+                },
+                onDiceClick = { 
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    showDiceDialog = true 
+                },
+                onSettingsClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onSettingsClick()
                 }
-
-                ScreenState.Content -> {
-                    ListScreenContent(
-                        characters = characters,
-                        onCharacterClick = { id ->
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            onCharacterClick(id)
-                        },
-                        onAddCharacterClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            showAddDialog = true
-                        },
-                        onLevelChange = { id, delta ->
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            onLevelChange(id, delta)
-                        },
-                        onPowerChange = { id, delta ->
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            onPowerChange(id, delta)
-                        },
-                        onGenderToggle = { id ->
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            onGenderToggle(id)
-                        },
-                        onResetAllClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            showResetAllDialog = true
-                        },
-                        onRemoveAllClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            showRemoveAllDialog = true
-                        },
-                        onDiceClick = { 
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            showDiceDialog = true 
-                        },
-                        onSettingsClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            onSettingsClick()
-                        }
-                    )
-                }
-            }
+            )
         }
     }
 
