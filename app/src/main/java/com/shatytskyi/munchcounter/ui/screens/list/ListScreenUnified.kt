@@ -204,10 +204,10 @@ fun ListScreenUnified(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            // Divider and Add Player button
+            // Bottom action buttons
             item(
-                key = "divider-add",
-                contentType = "divider_add"
+                key = "bottom-actions",
+                contentType = "bottom_actions"
             ) {
                 Column(
                     modifier = Modifier.animateItem()
@@ -218,57 +218,65 @@ fun ListScreenUnified(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        MunchkinIconTextButton(
-                            onClick = onAddCharacterClick,
-                            icon = MunchkinIcons.Add,
-                            text = stringResource(R.string.add_player),
-                            modifier = Modifier.fillMaxWidth(0.5f),
-                            textStyle = MunchkinTheme.typography.labelLarge,
-                            contentPadding = 16.dp,
-                            rippleColor = MunchkinTheme.colors.primary,
-                            bounded = false
-                        )
-                    }
-                }
-            }
+                    if (isEmpty) {
+                        // Only Add button when no characters
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            MunchkinIconTextButton(
+                                onClick = onAddCharacterClick,
+                                icon = MunchkinIcons.Add,
+                                text = stringResource(R.string.add),
+                                modifier = Modifier.fillMaxWidth(0.5f),
+                                textStyle = MunchkinTheme.typography.labelMedium,
+                                contentPadding = 16.dp,
+                                rippleColor = MunchkinTheme.colors.primary,
+                                bounded = false
+                            )
+                        }
+                    } else {
+                        // All three buttons when characters exist
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // Reset button
+                            MunchkinIconTextButton(
+                                onClick = onResetAllClick,
+                                icon = MunchkinIcons.Reset,
+                                text = stringResource(R.string.reset),
+                                modifier = Modifier.weight(1f),
+                                textStyle = MunchkinTheme.typography.labelMedium,
+                                contentPadding = 16.dp,
+                                rippleColor = MunchkinTheme.colors.secondary,
+                                bounded = false
+                            )
 
-            // Reset and Remove buttons - only shown when there are characters
-            if (!isEmpty) {
-                item(
-                    key = "action-buttons",
-                    contentType = "action_buttons"
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .animateItem(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        MunchkinIconTextButton(
-                            onClick = onResetAllClick,
-                            icon = MunchkinIcons.Reset,
-                            text = stringResource(R.string.reset_all),
-                            modifier = Modifier.weight(1f),
-                            textStyle = MunchkinTheme.typography.labelMedium,
-                            contentPadding = 16.dp,
-                            rippleColor = MunchkinTheme.colors.secondary,
-                            bounded = false
-                        )
+                            // Add button (slightly larger)
+                            MunchkinIconTextButton(
+                                onClick = onAddCharacterClick,
+                                icon = MunchkinIcons.Add,
+                                text = stringResource(R.string.add),
+                                modifier = Modifier.weight(1.3f),
+                                textStyle = MunchkinTheme.typography.labelMedium,
+                                contentPadding = 16.dp,
+                                rippleColor = MunchkinTheme.colors.primary,
+                                bounded = false
+                            )
 
-                        MunchkinIconTextButton(
-                            onClick = onRemoveAllClick,
-                            icon = MunchkinIcons.RemoveAll,
-                            text = stringResource(R.string.remove_all),
-                            modifier = Modifier.weight(1f),
-                            textStyle = MunchkinTheme.typography.labelMedium,
-                            contentPadding = 16.dp,
-                            rippleColor = MunchkinTheme.colors.red,
-                            bounded = false
-                        )
+                            // Clear button
+                            MunchkinIconTextButton(
+                                onClick = onRemoveAllClick,
+                                icon = MunchkinIcons.RemoveAll,
+                                text = stringResource(R.string.clear),
+                                modifier = Modifier.weight(1f),
+                                textStyle = MunchkinTheme.typography.labelMedium,
+                                contentPadding = 16.dp,
+                                rippleColor = MunchkinTheme.colors.red,
+                                bounded = false
+                            )
+                        }
                     }
                 }
             }
