@@ -30,7 +30,7 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 @Composable
 fun MunchkinIconTextButton(
     onClick: () -> Unit,
-    icon: ImageVector,
+    icon: ImageVector?,
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -53,12 +53,14 @@ fun MunchkinIconTextButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        MunchkinIcon(
-            imageVector = icon,
-            size = 24.dp,
-            tint = iconTint
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+        icon?.let {
+            MunchkinIcon(
+                imageVector = icon,
+                size = 24.dp,
+                tint = iconTint
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+        }
         MunchkinText(
             text = text,
             style = textStyle,

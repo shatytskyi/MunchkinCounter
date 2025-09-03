@@ -1,14 +1,21 @@
 package com.shatytskyi.munchcounter.ui.dialogs
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Female
 import androidx.compose.material.icons.outlined.Male
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,14 +36,19 @@ import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
-import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
+import androidx.compose.foundation.shape.RoundedCornerShape
+import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextField
+import com.shatytskyi.munchcounter.ui.components.icons.Add
+import com.shatytskyi.munchcounter.ui.components.icons.Close
+import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.components.munchkinClickable
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCharacterDialog(
     onDismiss: () -> Unit,
@@ -47,112 +59,145 @@ fun AddCharacterDialog(
     var selectedGender by remember { mutableStateOf(Gender.MALE) }
     val focusRequester = remember { FocusRequester() }
     val haptic = LocalHapticFeedback.current
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
     LaunchedEffect(Unit) {
-        delay(100)
+        delay(200) // Delay for bottom sheet animation
         focusRequester.requestFocus()
     }
 
-    MunchkinDialog(
+    ModalBottomSheet(
         onDismissRequest = onDismiss,
-        title = stringResource(R.string.add_new_player),
-        content = {
+        sheetState = bottomSheetState,
+        containerColor = MunchkinTheme.colors.background,
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 16.dp)
+                .windowInsetsPadding(WindowInsets.navigationBars)
+        ) {
+            // Header
+            MunchkinText(
+                text = stringResource(R.string.add_new_player),
+                style = MunchkinTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MunchkinTheme.colors.onBackground,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Name input section
             Column {
-                Spacer(modifier = Modifier.height(24.dp))
+                MunchkinText(
+                    text = stringResource(R.string.player_name),
+                    style = MunchkinTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    color = MunchkinTheme.colors.onBackground
+                )
 
-                Column {
-                    MunchkinText(
-                        text = stringResource(R.string.player_name),
-                        style = MunchkinTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                        color = MunchkinTheme.colors.onBackground
-                    )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                MunchkinTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    keyboardType = KeyboardType.Text,
+                    focusRequester = focusRequester,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
-                    MunchkinTextField(
-                        value = name,
-                        onValueChange = { name = it },
-                        keyboardType = KeyboardType.Text,
-                        focusRequester = focusRequester,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+            Spacer(modifier = Modifier.height(32.dp))
 
-                Spacer(modifier = Modifier.height(24.dp))
+            // Gender selection section
+            Column {
+                MunchkinText(
+                    text = stringResource(R.string.gender),
+                    style = MunchkinTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    color = MunchkinTheme.colors.onBackground
+                )
 
-                Column {
-                    MunchkinText(
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Start,
-                        text = stringResource(R.string.gender),
-                        style = MunchkinTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                        color = MunchkinTheme.colors.onBackground
-                    )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    MunchkinCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        backgroundColor = MunchkinTheme.colors.background,
-                        color = MunchkinTheme.colors.primary
+                MunchkinCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    backgroundColor = MunchkinTheme.colors.background,
+                    color = MunchkinTheme.colors.primary,
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                        ) {
-                            Gender.entries.forEach { gender ->
-                                GenderOption(
-                                    gender = gender,
-                                    isSelected = selectedGender == gender,
-                                    onClick = {
-                                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                                        selectedGender = gender
-                                    },
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
+                        Gender.entries.forEach { gender ->
+                            GenderOption(
+                                gender = gender,
+                                isSelected = selectedGender == gender,
+                                onClick = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                                    selectedGender = gender
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                     }
                 }
             }
-        },
-        confirmButton = {
-            MunchkinText(
-                modifier = Modifier.munchkinClickable(
-                    enabled = name.trim().isNotEmpty(),
-                    bounded = false,
-                    rippleColor = MunchkinTheme.colors.primary,
-                    onClick = {
-                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                        onConfirm(name.trim(), selectedGender)
-                    }
-                ),
-                style = MunchkinTheme.typography.bodyLarge,
-                text = stringResource(R.string.add),
-            )
-        },
-        dismissButton = {
-            MunchkinText(
-                modifier = Modifier.munchkinClickable(
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Action buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Cancel button
+                MunchkinIconTextButton(
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                         onDismiss()
                     },
-                    bounded = false,
+                    icon = MunchkinIcons.Close,
+                    text = stringResource(R.string.cancel),
+                    modifier = Modifier.weight(1f),
+                    textStyle = MunchkinTheme.typography.labelMedium,
+                    contentPadding = 16.dp,
                     rippleColor = MunchkinTheme.colors.secondary,
-                ),
-                style = MunchkinTheme.typography.bodyMedium,
-                text = stringResource(R.string.cancel)
-            )
-        },
-        modifier = modifier
-    )
+                    bounded = false
+                )
+
+                // Add button
+                MunchkinIconTextButton(
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                        onConfirm(name.trim(), selectedGender)
+                    },
+                    icon = MunchkinIcons.Add,
+                    text = stringResource(R.string.add),
+                    modifier = Modifier.weight(1f),
+                    textStyle = MunchkinTheme.typography.labelMedium,
+                    contentPadding = 16.dp,
+                    rippleColor = MunchkinTheme.colors.primary,
+                    bounded = false,
+                    enabled = name.trim().isNotEmpty()
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
 }
 
 @Composable
