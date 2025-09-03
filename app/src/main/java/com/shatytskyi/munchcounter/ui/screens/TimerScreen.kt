@@ -29,7 +29,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.VolumeOff
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material3.HorizontalDivider
+import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
@@ -211,7 +211,7 @@ private fun TimerContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        HorizontalDivider(
+        MunchkinHorizontalDivider(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 

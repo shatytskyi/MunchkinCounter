@@ -233,11 +233,10 @@ private fun StatItem(
 
         val titleModifier = if (sharedTransitionScope != null && animatedContentScope != null && titleSharedElementKey != null) {
             with(sharedTransitionScope) {
-                Modifier
-                    .sharedElement(
-                        sharedContentState = rememberSharedContentState(key = titleSharedElementKey),
-                        animatedVisibilityScope = animatedContentScope
-                    )
+                Modifier.sharedElement(
+                    sharedContentState = rememberSharedContentState(key = titleSharedElementKey),
+                    animatedVisibilityScope = animatedContentScope
+                )
             }
         } else {
             Modifier

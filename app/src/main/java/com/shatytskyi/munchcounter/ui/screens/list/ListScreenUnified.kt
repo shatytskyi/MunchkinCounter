@@ -30,7 +30,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.HorizontalDivider
+import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -223,7 +223,7 @@ fun ListScreenUnified(
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    HorizontalDivider()
+                    MunchkinHorizontalDivider()
 
                     Spacer(modifier = Modifier.height(16.dp))
 

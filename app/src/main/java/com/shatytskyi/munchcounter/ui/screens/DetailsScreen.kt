@@ -28,7 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.HorizontalDivider
+import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -250,7 +250,7 @@ private fun DetailsScreenContent(
 
             item {
                 Spacer(modifier = Modifier.height(24.dp))
-                HorizontalDivider()
+                MunchkinHorizontalDivider()
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Row(

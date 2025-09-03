@@ -22,7 +22,7 @@ import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.BrightnessHigh
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.TextFields
-import androidx.compose.material3.HorizontalDivider
+import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -111,7 +111,7 @@ fun SettingsScreen(
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
-                HorizontalDivider(
+                MunchkinHorizontalDivider(
                     color = MunchkinTheme.colors.grey.copy(alpha = 0.3f)
                 )
                 Spacer(modifier = Modifier.height(32.dp))

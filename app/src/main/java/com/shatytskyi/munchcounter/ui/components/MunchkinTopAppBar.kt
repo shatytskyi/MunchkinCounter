@@ -71,32 +71,31 @@ fun MunchkinTopAppBar(
             Spacer(modifier = Modifier.width(8.dp))
         }
 
-        val titleModifier =
-            if (sharedTransitionScope != null && animatedContentScope != null && titleSharedKey != null) {
-                with(sharedTransitionScope) {
-                    Modifier
-                        .weight(1f)
-                        .sharedElement(
-                            sharedContentState = rememberSharedContentState(key = titleSharedKey),
-                            animatedVisibilityScope = animatedContentScope
-                        )
-                        .then(
-                            if (onBack != null) {
-                                Modifier
-                            } else {
-                                Modifier.padding(start = 16.dp)
-                            }
-                        )
-                }
-            } else {
-                Modifier.weight(1f).then(
-                    if (onBack != null) {
-                        Modifier
-                    } else {
-                        Modifier.padding(start = 16.dp)
-                    }
-                )
+        val titleModifier = if (sharedTransitionScope != null && animatedContentScope != null && titleSharedKey != null) {
+            with(sharedTransitionScope) {
+                Modifier
+                    .weight(1f)
+                    .sharedElement(
+                        sharedContentState = rememberSharedContentState(key = titleSharedKey),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+                    .then(
+                        if (onBack != null) {
+                            Modifier
+                        } else {
+                            Modifier.padding(start = 16.dp)
+                        }
+                    )
             }
+        } else {
+            Modifier.weight(1f).then(
+                if (onBack != null) {
+                    Modifier
+                } else {
+                    Modifier.padding(start = 16.dp)
+                }
+            )
+        }
 
         MunchkinText(
             text = title,
