@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -217,8 +218,6 @@ private fun DetailsScreenContent(
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
-                HorizontalDivider()
-                Spacer(modifier = Modifier.height(16.dp))
                 LevelControlWidget(
                     onLevelChange = { delta ->
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
@@ -228,8 +227,6 @@ private fun DetailsScreenContent(
             }
 
             item {
-                Spacer(modifier = Modifier.height(24.dp))
-                HorizontalDivider()
                 Spacer(modifier = Modifier.height(16.dp))
                 PowerControlWidget(
                     onPowerChange = { delta ->
@@ -452,11 +449,11 @@ private fun LevelControlWidget(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             // Minus button
             LevelControlCard(
-                value = -1,
                 onClick = { onLevelChange(-1) },
                 isNegative = true,
                 modifier = Modifier.weight(1f)
@@ -464,7 +461,6 @@ private fun LevelControlWidget(
 
             // Plus button
             LevelControlCard(
-                value = +1,
                 onClick = { onLevelChange(+1) },
                 isNegative = false,
                 modifier = Modifier.weight(1f)
@@ -475,7 +471,6 @@ private fun LevelControlWidget(
 
 @Composable
 private fun LevelControlCard(
-    value: Int,
     onClick: () -> Unit,
     isNegative: Boolean,
     modifier: Modifier = Modifier
@@ -484,7 +479,7 @@ private fun LevelControlCard(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp),
-        color = if (isNegative) MunchkinTheme.colors.onBackground else MunchkinTheme.colors.onBackground,
+        color = MunchkinTheme.colors.onBackground,
         onClick = onClick
     ) {
         Row(
@@ -526,7 +521,8 @@ private fun PowerControlWidget(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             // Minus buttons column
             Column(
@@ -570,7 +566,7 @@ private fun PowerControlCard(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp),
-        color = if (isNegative) MunchkinTheme.colors.secondary else MunchkinTheme.colors.primary,
+        color = MunchkinTheme.colors.onBackground,
         onClick = onClick
     ) {
         Row(
