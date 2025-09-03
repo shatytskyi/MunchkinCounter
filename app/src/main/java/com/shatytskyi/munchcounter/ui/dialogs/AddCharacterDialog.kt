@@ -7,9 +7,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Female
 import androidx.compose.material.icons.outlined.Male
@@ -37,7 +41,6 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
-import androidx.compose.foundation.shape.RoundedCornerShape
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextField
@@ -74,12 +77,16 @@ fun AddCharacterDialog(
         containerColor = MunchkinTheme.colors.background,
         modifier = modifier
     ) {
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .verticalScroll(scrollState)
                 .padding(horizontal = 24.dp)
-                .padding(bottom = 16.dp)
+                .windowInsetsPadding(WindowInsets.ime)
                 .windowInsetsPadding(WindowInsets.navigationBars)
+                .padding(bottom = 16.dp)
         ) {
             // Header
             MunchkinText(
@@ -92,7 +99,7 @@ fun AddCharacterDialog(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Name input section
             Column {
@@ -104,19 +111,19 @@ fun AddCharacterDialog(
                     color = MunchkinTheme.colors.onBackground
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 MunchkinTextField(
                     value = name,
                     onValueChange = { name = it },
                     keyboardType = KeyboardType.Text,
                     focusRequester = focusRequester,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Gender selection section
             Column {
@@ -128,12 +135,12 @@ fun AddCharacterDialog(
                     color = MunchkinTheme.colors.onBackground
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 MunchkinCard(
                     modifier = Modifier.fillMaxWidth(),
                     backgroundColor = MunchkinTheme.colors.background,
-                    color = MunchkinTheme.colors.primary,
+                    color = MunchkinTheme.colors.onBackground,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Row(
@@ -156,7 +163,7 @@ fun AddCharacterDialog(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Action buttons
             Row(
@@ -195,7 +202,7 @@ fun AddCharacterDialog(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
@@ -225,7 +232,12 @@ private fun GenderOption(
                 Gender.MALE -> Icons.Outlined.Male
                 Gender.FEMALE -> Icons.Outlined.Female
             },
-            tint = if (isSelected) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
+            tint = if (isSelected) {
+                when (gender) {
+                    Gender.MALE -> MunchkinTheme.colors.primary
+                    else -> MunchkinTheme.colors.secondary
+                }
+            } else MunchkinTheme.colors.grey,
             size = 24.dp
         )
 
@@ -237,7 +249,12 @@ private fun GenderOption(
             style = MunchkinTheme.typography.labelMedium.copy(
                 fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal
             ),
-            color = if (isSelected) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground
+            color = if (isSelected) {
+                when (gender) {
+                    Gender.MALE -> MunchkinTheme.colors.primary
+                    else -> MunchkinTheme.colors.secondary
+                }
+            } else MunchkinTheme.colors.onBackground
         )
     }
 }

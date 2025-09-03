@@ -57,7 +57,7 @@ fun MunchkinTextField(
             .background(MunchkinTheme.colors.background)
             .border(
                 width = 2.dp,
-                color = MunchkinTheme.colors.primary,
+                color = MunchkinTheme.colors.onBackground,
                 shape = RoundedCornerShape(12.dp)
             ),
         contentAlignment = Alignment.Center
