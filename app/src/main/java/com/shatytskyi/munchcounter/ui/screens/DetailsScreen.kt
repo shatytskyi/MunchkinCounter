@@ -1,6 +1,9 @@
 package com.shatytskyi.munchcounter.ui.screens
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -26,7 +29,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -71,11 +73,14 @@ import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun DetailsScreen(
     viewModel: CommonViewModel,
     characterId: Long,
     onBack: () -> Unit,
+    animatedContentScope: AnimatedContentScope,
+    sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier,
     onFight: () -> Unit = {},
     onTimerClick: () -> Unit = {}
@@ -115,6 +120,8 @@ fun DetailsScreen(
         onBackClick = onBack,
         onTimerClick = onTimerClick,
         onDiceClick = { showDiceDialog = true },
+        animatedContentScope = animatedContentScope,
+        sharedTransitionScope = sharedTransitionScope,
         modifier = modifier
     )
 
@@ -161,6 +168,7 @@ fun DetailsScreen(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun DetailsScreenContent(
     character: Character,
@@ -175,6 +183,8 @@ private fun DetailsScreenContent(
     onBackClick: () -> Unit,
     onTimerClick: () -> Unit,
     onDiceClick: () -> Unit,
+    animatedContentScope: AnimatedContentScope,
+    sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
@@ -211,7 +221,9 @@ private fun DetailsScreenContent(
                     onGenderToggle = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                         onGenderToggle(character.id)
-                    }
+                    },
+                    animatedContentScope = animatedContentScope,
+                    sharedTransitionScope = sharedTransitionScope
                 )
             }
 
@@ -305,6 +317,9 @@ private fun DetailsScreenContent(
                     .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
                 title = character.name,
                 onBack = onBackClick,
+                animatedContentScope = animatedContentScope,
+                sharedTransitionScope = sharedTransitionScope,
+                titleSharedKey = "character-name-${character.id}",
                 actions = {
                     MunchkinIconButton(onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
@@ -597,24 +612,19 @@ private fun PowerControlCard(
     showSystemUi = true,
     showBackground = true
 )
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun DetailsScreenPreview() {
     val mockCharacter = Character(1, "Aragorn", 5, 8, Gender.MALE)
 
     MunchkinTheme {
-        DetailsScreenContent(
-            character = mockCharacter,
-            topPadding = 100.dp,
-            onLevelChange = {},
-            onPowerChange = {},
-            onGenderToggle = {},
-            onFightClick = {},
-            onResetClick = {},
-            onEditClick = {},
-            onDeleteClick = {},
-            onBackClick = {},
-            onTimerClick = {},
-            onDiceClick = {}
-        )
+        Box(modifier = Modifier.padding(16.dp)) {
+            CharacterListItem(
+                character = mockCharacter,
+                hideName = true,
+                showLevelButtons = false,
+                showItemsButtons = false
+            )
+        }
     }
 }

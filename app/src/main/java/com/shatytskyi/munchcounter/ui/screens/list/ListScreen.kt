@@ -1,5 +1,8 @@
 package com.shatytskyi.munchcounter.ui.screens.list
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -20,12 +23,15 @@ import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ListScreen(
     viewModel: CommonViewModel,
     onCharacterClick: (Long) -> Unit,
     onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
+    animatedContentScope: AnimatedContentScope,
+    sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier
 ) {
     val characters by viewModel.characters.collectAsState()
@@ -55,10 +61,13 @@ fun ListScreen(
         },
         onTimerClick = onTimerClick,
         onSettingsClick = onSettingsClick,
+        animatedContentScope = animatedContentScope,
+        sharedTransitionScope = sharedTransitionScope,
         modifier = modifier
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ListScreenContent(
     characters: List<Character>,
@@ -72,6 +81,8 @@ private fun ListScreenContent(
     onRemoveAll: () -> Unit,
     onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
+    animatedContentScope: AnimatedContentScope,
+    sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
@@ -140,7 +151,9 @@ private fun ListScreenContent(
                 onSettingsClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     onSettingsClick()
-                }
+                },
+                animatedContentScope = animatedContentScope,
+                sharedTransitionScope = sharedTransitionScope
             )
         }
     }

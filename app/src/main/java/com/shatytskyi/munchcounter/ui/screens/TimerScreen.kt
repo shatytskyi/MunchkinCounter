@@ -3,6 +3,7 @@ package com.shatytskyi.munchcounter.ui.screens
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.view.WindowManager
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -78,6 +79,7 @@ private const val TICK_FREQUENCY = 659
 private const val END_FREQUENCY = 783
 private const val DEFAULT_VOLUME = 0.3f
 
+@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 fun TimerScreen(
     onBack: () -> Unit,
@@ -105,6 +107,7 @@ fun TimerScreen(
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun TimerContent(
     modifier: Modifier = Modifier,

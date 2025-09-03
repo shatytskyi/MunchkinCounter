@@ -1,5 +1,8 @@
 package com.shatytskyi.munchcounter.ui.components
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +36,7 @@ import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun CharacterListItem(
     character: Character,
@@ -43,12 +47,27 @@ fun CharacterListItem(
     showItemsButtons: Boolean = true,
     onLevelChange: (Int) -> Unit = {},
     onItemsChange: (Int) -> Unit = {},
-    onGenderToggle: () -> Unit = {}
+    onGenderToggle: () -> Unit = {},
+    animatedContentScope: AnimatedContentScope? = null,
+    sharedTransitionScope: SharedTransitionScope? = null
 ) {
     val haptic = LocalHapticFeedback.current
+    
+    val cardModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
+        with(sharedTransitionScope) {
+            modifier
+                .fillMaxWidth()
+                .sharedElement(
+                    sharedContentState = rememberSharedContentState(key = "character-card-${character.id}"),
+                    animatedVisibilityScope = animatedContentScope
+                )
+        }
+    } else {
+        modifier.fillMaxWidth()
+    }
+    
     MunchkinCard(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = cardModifier,
         color = MunchkinTheme.colors.onBackground,
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
@@ -70,8 +89,21 @@ fun CharacterListItem(
                             .padding(horizontal = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {
+                        val nameModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
+                            with(sharedTransitionScope) {
+                                Modifier
+                                    .padding(horizontal = 32.dp)
+                                    .sharedElement(
+                                        sharedContentState = rememberSharedContentState(key = "character-name-${character.id}"),
+                                        animatedVisibilityScope = animatedContentScope
+                                    )
+                            }
+                        } else {
+                            Modifier.padding(horizontal = 32.dp)
+                        }
+                        
                         MunchkinText(
-                            modifier = Modifier.padding(horizontal = 32.dp),
+                            modifier = nameModifier,
                             text = character.name,
                             style = MunchkinTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.SemiBold
@@ -248,6 +280,7 @@ private fun StatItem(
 
 
 @Preview
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun CharacterListItemPreview() {
     MunchkinTheme {

@@ -1,5 +1,8 @@
 package com.shatytskyi.munchcounter.ui.components
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,12 +25,16 @@ import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
 const val APP_BAR_HEIGHT = 64
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MunchkinTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
-    actions: @Composable () -> Unit = {}
+    actions: @Composable () -> Unit = {},
+    animatedContentScope: AnimatedContentScope? = null,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    titleSharedKey: String? = null
 ) {
     Row(
         modifier = modifier
@@ -54,6 +61,19 @@ fun MunchkinTopAppBar(
             Spacer(modifier = Modifier.width(16.dp))
         }
 
+        val titleModifier = if (sharedTransitionScope != null && animatedContentScope != null && titleSharedKey != null) {
+            with(sharedTransitionScope) {
+                Modifier
+                    .weight(1f)
+                    .sharedElement(
+                        sharedContentState = rememberSharedContentState(key = titleSharedKey),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+            }
+        } else {
+            Modifier.weight(1f)
+        }
+        
         MunchkinText(
             text = title,
             style = MunchkinTheme.typography.headlineSmall.copy(
@@ -63,7 +83,7 @@ fun MunchkinTopAppBar(
             textAlign = TextAlign.Start,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = Modifier.weight(1f)
+            modifier = titleModifier
         )
 
         actions()
@@ -71,6 +91,7 @@ fun MunchkinTopAppBar(
 }
 
 @Preview(name = "TopAppBar without Back Button")
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MunchkinTopAppBarWithoutBackPreview() {
     MunchkinTheme {
@@ -83,6 +104,7 @@ private fun MunchkinTopAppBarWithoutBackPreview() {
 }
 
 @Preview(name = "TopAppBar with Back Button")
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MunchkinTopAppBarWithBackPreview() {
     MunchkinTheme {
@@ -96,6 +118,7 @@ private fun MunchkinTopAppBarWithBackPreview() {
 }
 
 @Preview(name = "TopAppBar with Actions")
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MunchkinTopAppBarWithActionsPreview() {
     MunchkinTheme {

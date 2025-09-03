@@ -22,6 +22,7 @@ import com.shatytskyi.munchcounter.ui.components.icons.Timer
 import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
+@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 fun ListScreenTopBarWrapper(
     onDiceClick: () -> Unit = {},

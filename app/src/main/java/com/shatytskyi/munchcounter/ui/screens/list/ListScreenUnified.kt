@@ -1,5 +1,8 @@
 package com.shatytskyi.munchcounter.ui.screens.list
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -15,10 +18,12 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -52,7 +57,7 @@ import com.shatytskyi.munchcounter.ui.components.icons.RemoveAll
 import com.shatytskyi.munchcounter.ui.components.icons.Reset
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun ListScreenUnified(
     characters: List<Character>,
@@ -65,7 +70,9 @@ fun ListScreenUnified(
     onRemoveAllClick: () -> Unit,
     onDiceClick: () -> Unit = {},
     onTimerClick: () -> Unit = {},
-    onSettingsClick: () -> Unit = {}
+    onSettingsClick: () -> Unit = {},
+    animatedContentScope: AnimatedContentScope,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -197,7 +204,9 @@ fun ListScreenUnified(
                         },
                         onGenderToggle = {
                             onGenderToggle(character.id)
-                        }
+                        },
+                        animatedContentScope = animatedContentScope,
+                        sharedTransitionScope = sharedTransitionScope
                     )
                 }
 
@@ -291,19 +300,16 @@ fun ListScreenUnified(
     showSystemUi = true,
     showBackground = true
 )
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ListScreenUnifiedEmptyPreview() {
     MunchkinTheme {
-        ListScreenUnified(
-            characters = emptyList(),
-            onAddCharacterClick = {},
-            onCharacterClick = {},
-            onLevelChange = { _, _ -> },
-            onPowerChange = { _, _ -> },
-            onGenderToggle = {},
-            onResetAllClick = {},
-            onRemoveAllClick = {}
-        )
+        Box(modifier = Modifier.padding(16.dp)) {
+            MunchkinText(
+                text = "Empty State Preview",
+                style = MunchkinTheme.typography.bodyLarge
+            )
+        }
     }
 }
 
@@ -313,6 +319,7 @@ private fun ListScreenUnifiedEmptyPreview() {
     showSystemUi = true,
     showBackground = true
 )
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ListScreenUnifiedWithCharactersPreview() {
     val mockCharacters = listOf(
@@ -322,15 +329,13 @@ private fun ListScreenUnifiedWithCharactersPreview() {
     )
 
     MunchkinTheme {
-        ListScreenUnified(
-            characters = mockCharacters,
-            onAddCharacterClick = {},
-            onCharacterClick = {},
-            onLevelChange = { _, _ -> },
-            onPowerChange = { _, _ -> },
-            onGenderToggle = {},
-            onResetAllClick = {},
-            onRemoveAllClick = {}
-        )
+        LazyColumn(modifier = Modifier.padding(16.dp)) {
+            items(mockCharacters.size) { index ->
+                CharacterListItem(
+                    character = mockCharacters[index],
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+        }
     }
 }

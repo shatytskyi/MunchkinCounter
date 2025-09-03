@@ -18,6 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.core.tween
@@ -61,6 +63,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MunchkinApp(
     themeViewModel: ThemeViewModel,
@@ -71,90 +74,95 @@ fun MunchkinApp(
 
     val sharedViewModel: CommonViewModel = koinViewModel()
 
-    NavHost(
-        navController = navController,
-        startDestination = "character_list"
-    ) {
-        composable(
-            route = "character_list",
-            enterTransition = { 
-                slideInHorizontally(
-                    initialOffsetX = { -it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
-                )
-            },
-            exitTransition = { 
-                slideOutHorizontally(
-                    targetOffsetX = { -it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
-                )
-            },
-            popEnterTransition = { 
-                slideInHorizontally(
-                    initialOffsetX = { -it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
-                )
-            },
-            popExitTransition = { 
-                slideOutHorizontally(
-                    targetOffsetX = { it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
-                )
-            }
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = "character_list"
         ) {
-            ListScreen(
-                viewModel = sharedViewModel,
-                onCharacterClick = { characterId ->
-                    navController.navigate("solo/$characterId")
+            composable(
+                route = "character_list",
+                enterTransition = { 
+                    slideInHorizontally(
+                        initialOffsetX = { -it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
                 },
-                onTimerClick = {
-                    navController.navigate("timer")
+                exitTransition = { 
+                    slideOutHorizontally(
+                        targetOffsetX = { -it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
                 },
-                onSettingsClick = {
-                    navController.navigate("settings")
+                popEnterTransition = { 
+                    slideInHorizontally(
+                        initialOffsetX = { -it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
+                },
+                popExitTransition = { 
+                    slideOutHorizontally(
+                        targetOffsetX = { it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
                 }
-            )
-        }
-
-        composable(
-            route = "solo/{characterId}",
-            arguments = listOf(navArgument("characterId") { type = NavType.LongType }),
-            enterTransition = { 
-                slideInHorizontally(
-                    initialOffsetX = { it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
-                )
-            },
-            exitTransition = { 
-                slideOutHorizontally(
-                    targetOffsetX = { -it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
-                )
-            },
-            popEnterTransition = { 
-                slideInHorizontally(
-                    initialOffsetX = { it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
-                )
-            },
-            popExitTransition = { 
-                slideOutHorizontally(
-                    targetOffsetX = { it },
-                    animationSpec = tween(400, easing = FastOutSlowInEasing)
+            ) {
+                ListScreen(
+                    viewModel = sharedViewModel,
+                    onCharacterClick = { characterId ->
+                        navController.navigate("solo/$characterId")
+                    },
+                    onTimerClick = {
+                        navController.navigate("timer")
+                    },
+                    onSettingsClick = {
+                        navController.navigate("settings")
+                    },
+                    animatedContentScope = this@composable,
+                    sharedTransitionScope = this@SharedTransitionLayout
                 )
             }
-        ) { backStackEntry ->
-            val characterId = backStackEntry.arguments?.getLong("characterId") ?: -1
-            DetailsScreen(
-                viewModel = sharedViewModel,
-                characterId = characterId,
-                onBack = { navController.popBackStack() },
-                onFight = { 
-                    Toast.makeText(context, "Coming Soon!", Toast.LENGTH_SHORT).show()
+
+            composable(
+                route = "solo/{characterId}",
+                arguments = listOf(navArgument("characterId") { type = NavType.LongType }),
+                enterTransition = { 
+                    slideInHorizontally(
+                        initialOffsetX = { it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
                 },
-                onTimerClick = { navController.navigate("timer") }
-            )
-        }
+                exitTransition = { 
+                    slideOutHorizontally(
+                        targetOffsetX = { -it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
+                },
+                popEnterTransition = { 
+                    slideInHorizontally(
+                        initialOffsetX = { it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
+                },
+                popExitTransition = { 
+                    slideOutHorizontally(
+                        targetOffsetX = { it },
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    )
+                }
+            ) { backStackEntry ->
+                val characterId = backStackEntry.arguments?.getLong("characterId") ?: -1
+                DetailsScreen(
+                    viewModel = sharedViewModel,
+                    characterId = characterId,
+                    onBack = { navController.popBackStack() },
+                    onFight = { 
+                        Toast.makeText(context, "Coming Soon!", Toast.LENGTH_SHORT).show()
+                    },
+                    onTimerClick = { navController.navigate("timer") },
+                    animatedContentScope = this@composable,
+                    sharedTransitionScope = this@SharedTransitionLayout
+                )
+            }
 
         composable(
             route = "fight/{playerId}",
@@ -287,6 +295,7 @@ fun MunchkinApp(
                     }
                 }
             )
+        }
         }
     }
 }

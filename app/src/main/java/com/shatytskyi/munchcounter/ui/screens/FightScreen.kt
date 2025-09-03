@@ -1,5 +1,6 @@
 package com.shatytskyi.munchcounter.ui.screens
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,6 +61,7 @@ import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
+@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 fun FightScreen(
     viewModel: CommonViewModel,
@@ -150,6 +152,7 @@ fun FightScreen(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun FightScreenContent(
     player: Character,

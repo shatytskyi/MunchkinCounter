@@ -54,6 +54,7 @@ enum class ThemeMode {
     DARK
 }
 
+@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 fun SettingsScreen(
     currentThemeMode: ThemeMode = ThemeMode.AUTO,
