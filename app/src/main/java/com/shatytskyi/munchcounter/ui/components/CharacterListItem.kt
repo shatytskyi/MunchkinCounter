@@ -53,18 +53,7 @@ fun CharacterListItem(
 ) {
     val haptic = LocalHapticFeedback.current
     
-    val cardModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-        with(sharedTransitionScope) {
-            modifier
-                .fillMaxWidth()
-                .sharedElement(
-                    sharedContentState = rememberSharedContentState(key = "character-card-${character.id}"),
-                    animatedVisibilityScope = animatedContentScope
-                )
-        }
-    } else {
-        modifier.fillMaxWidth()
-    }
+    val cardModifier = modifier.fillMaxWidth()
     
     MunchkinCard(
         modifier = cardModifier,
@@ -114,8 +103,28 @@ fun CharacterListItem(
                             overflow = TextOverflow.Ellipsis
                         )
 
-                        Box(
-                            modifier = Modifier
+                        val genderIconModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
+                            with(sharedTransitionScope) {
+                                Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .munchkinClickable(
+                                        onClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                                            onGenderToggle()
+                                        },
+                                        bounded = false,
+                                        rippleColor = when (character.gender) {
+                                            Gender.MALE -> MunchkinTheme.colors.primary
+                                            Gender.FEMALE -> MunchkinTheme.colors.secondary
+                                        }
+                                    )
+                                    .sharedElement(
+                                        sharedContentState = rememberSharedContentState(key = "character-gender-${character.id}"),
+                                        animatedVisibilityScope = animatedContentScope
+                                    )
+                            }
+                        } else {
+                            Modifier
                                 .align(Alignment.CenterEnd)
                                 .munchkinClickable(
                                     onClick = {
@@ -128,7 +137,9 @@ fun CharacterListItem(
                                         Gender.FEMALE -> MunchkinTheme.colors.secondary
                                     }
                                 )
-                        ) {
+                        }
+                        
+                        Box(modifier = genderIconModifier) {
                             MunchkinIcon(
                                 imageVector = when (character.gender) {
                                     Gender.MALE -> Icons.Outlined.Male
@@ -159,7 +170,11 @@ fun CharacterListItem(
                         onIncrease = { onLevelChange(+1) },
                         color = MunchkinTheme.colors.primary,
                         modifier = Modifier.weight(1f),
-                        showButtons = showLevelButtons
+                        showButtons = showLevelButtons,
+                        sharedElementKey = "character-level-${character.id}",
+                        titleSharedElementKey = "character-level-title-${character.id}",
+                        animatedContentScope = animatedContentScope,
+                        sharedTransitionScope = sharedTransitionScope
                     )
 
                     StatItem(
@@ -169,7 +184,11 @@ fun CharacterListItem(
                         onIncrease = {},
                         color = MunchkinTheme.colors.secondary,
                         modifier = Modifier.weight(1f),
-                        showButtons = false
+                        showButtons = false,
+                        sharedElementKey = "character-power-${character.id}",
+                        titleSharedElementKey = "character-power-title-${character.id}",
+                        animatedContentScope = animatedContentScope,
+                        sharedTransitionScope = sharedTransitionScope
                     )
 
                     StatItem(
@@ -179,7 +198,11 @@ fun CharacterListItem(
                         onIncrease = { onItemsChange(+1) },
                         color = MunchkinTheme.colors.primary,
                         modifier = Modifier.weight(1f),
-                        showButtons = showItemsButtons
+                        showButtons = showItemsButtons,
+                        sharedElementKey = "character-items-${character.id}",
+                        titleSharedElementKey = "character-items-title-${character.id}",
+                        animatedContentScope = animatedContentScope,
+                        sharedTransitionScope = sharedTransitionScope
                     )
                 }
             }
@@ -188,6 +211,7 @@ fun CharacterListItem(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun StatItem(
     title: String,
@@ -196,14 +220,31 @@ private fun StatItem(
     onIncrease: () -> Unit,
     color: Color,
     modifier: Modifier = Modifier,
-    showButtons: Boolean = true
+    showButtons: Boolean = true,
+    sharedElementKey: String? = null,
+    titleSharedElementKey: String? = null,
+    animatedContentScope: AnimatedContentScope? = null,
+    sharedTransitionScope: SharedTransitionScope? = null
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        val titleModifier = if (sharedTransitionScope != null && animatedContentScope != null && titleSharedElementKey != null) {
+            with(sharedTransitionScope) {
+                Modifier
+                    .sharedElement(
+                        sharedContentState = rememberSharedContentState(key = titleSharedElementKey),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+            }
+        } else {
+            Modifier
+        }
+        
         MunchkinText(
+            modifier = titleModifier,
             text = title,
             style = MunchkinTheme.typography.labelMedium,
             color = MunchkinTheme.colors.onBackground,
@@ -214,13 +255,30 @@ private fun StatItem(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Box(
-            modifier = Modifier
+        val boxModifier = if (sharedTransitionScope != null && animatedContentScope != null && sharedElementKey != null) {
+            with(sharedTransitionScope) {
+                Modifier
+                    .weight(1f)
+                    .background(
+                        color = MunchkinTheme.colors.background,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .sharedElement(
+                        sharedContentState = rememberSharedContentState(key = sharedElementKey),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+            }
+        } else {
+            Modifier
                 .weight(1f)
                 .background(
                     color = MunchkinTheme.colors.background,
                     shape = RoundedCornerShape(8.dp)
-                ),
+                )
+        }
+        
+        Box(
+            modifier = boxModifier,
             contentAlignment = Alignment.Center
         ) {
             if (showButtons) {

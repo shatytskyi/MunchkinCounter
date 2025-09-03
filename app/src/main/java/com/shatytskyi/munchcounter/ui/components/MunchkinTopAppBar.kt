@@ -41,7 +41,6 @@ fun MunchkinTopAppBar(
             .fillMaxWidth()
             .height(APP_BAR_HEIGHT.dp)
             .padding(
-                horizontal = 16.dp,
                 vertical = 8.dp
             ),
         verticalAlignment = Alignment.CenterVertically
@@ -49,7 +48,7 @@ fun MunchkinTopAppBar(
         if (onBack != null) {
             MunchkinIconButton(
                 onClick = onBack,
-                size = 24.dp
+                size = 48.dp
             ) {
                 MunchkinIcon(
                     Icons.AutoMirrored.Filled.ArrowBack,
@@ -58,22 +57,36 @@ fun MunchkinTopAppBar(
                 )
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(8.dp))
         }
 
-        val titleModifier = if (sharedTransitionScope != null && animatedContentScope != null && titleSharedKey != null) {
-            with(sharedTransitionScope) {
-                Modifier
-                    .weight(1f)
-                    .sharedElement(
-                        sharedContentState = rememberSharedContentState(key = titleSharedKey),
-                        animatedVisibilityScope = animatedContentScope
-                    )
+        val titleModifier =
+            if (sharedTransitionScope != null && animatedContentScope != null && titleSharedKey != null) {
+                with(sharedTransitionScope) {
+                    Modifier
+                        .weight(1f)
+                        .sharedElement(
+                            sharedContentState = rememberSharedContentState(key = titleSharedKey),
+                            animatedVisibilityScope = animatedContentScope
+                        )
+                        .then(
+                            if (onBack != null) {
+                                Modifier
+                            } else {
+                                Modifier.padding(start = 16.dp)
+                            }
+                        )
+                }
+            } else {
+                Modifier.weight(1f).then(
+                    if (onBack != null) {
+                        Modifier
+                    } else {
+                        Modifier.padding(start = 16.dp)
+                    }
+                )
             }
-        } else {
-            Modifier.weight(1f)
-        }
-        
+
         MunchkinText(
             text = title,
             style = MunchkinTheme.typography.headlineSmall.copy(
