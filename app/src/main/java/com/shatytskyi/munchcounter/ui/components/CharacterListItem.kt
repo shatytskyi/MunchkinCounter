@@ -53,7 +53,18 @@ fun CharacterListItem(
 ) {
     val haptic = LocalHapticFeedback.current
     
-    val cardModifier = modifier.fillMaxWidth()
+    val cardModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
+        with(sharedTransitionScope) {
+            modifier
+                .fillMaxWidth()
+                .sharedBounds(
+                    sharedContentState = rememberSharedContentState(key = "character-card-${character.id}"),
+                    animatedVisibilityScope = animatedContentScope
+                )
+        }
+    } else {
+        modifier.fillMaxWidth()
+    }
     
     MunchkinCard(
         modifier = cardModifier,
@@ -78,21 +89,8 @@ fun CharacterListItem(
                             .padding(horizontal = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        val nameModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-                            with(sharedTransitionScope) {
-                                Modifier
-                                    .padding(horizontal = 32.dp)
-                                    .sharedElement(
-                                        sharedContentState = rememberSharedContentState(key = "character-name-${character.id}"),
-                                        animatedVisibilityScope = animatedContentScope
-                                    )
-                            }
-                        } else {
-                            Modifier.padding(horizontal = 32.dp)
-                        }
-                        
                         MunchkinText(
-                            modifier = nameModifier,
+                            modifier = Modifier.padding(horizontal = 32.dp),
                             text = character.name,
                             style = MunchkinTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.SemiBold
@@ -103,28 +101,8 @@ fun CharacterListItem(
                             overflow = TextOverflow.Ellipsis
                         )
 
-                        val genderIconModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-                            with(sharedTransitionScope) {
-                                Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .munchkinClickable(
-                                        onClick = {
-                                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                                            onGenderToggle()
-                                        },
-                                        bounded = false,
-                                        rippleColor = when (character.gender) {
-                                            Gender.MALE -> MunchkinTheme.colors.primary
-                                            Gender.FEMALE -> MunchkinTheme.colors.secondary
-                                        }
-                                    )
-                                    .sharedElement(
-                                        sharedContentState = rememberSharedContentState(key = "character-gender-${character.id}"),
-                                        animatedVisibilityScope = animatedContentScope
-                                    )
-                            }
-                        } else {
-                            Modifier
+                        Box(
+                            modifier = Modifier
                                 .align(Alignment.CenterEnd)
                                 .munchkinClickable(
                                     onClick = {
@@ -137,9 +115,7 @@ fun CharacterListItem(
                                         Gender.FEMALE -> MunchkinTheme.colors.secondary
                                     }
                                 )
-                        }
-                        
-                        Box(modifier = genderIconModifier) {
+                        ) {
                             MunchkinIcon(
                                 imageVector = when (character.gender) {
                                     Gender.MALE -> Icons.Outlined.Male

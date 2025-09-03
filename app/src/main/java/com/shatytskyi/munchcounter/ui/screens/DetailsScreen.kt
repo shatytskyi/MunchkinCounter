@@ -211,20 +211,29 @@ private fun DetailsScreenContent(
             )
         ) {
             item {
-                CharacterListItem(
-                    character = character,
-                    hideName = true,
-                    showLevelButtons = false,
-                    showItemsButtons = false,
-                    onLevelChange = onLevelChange,
-                    onItemsChange = onPowerChange,
-                    onGenderToggle = {
-                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                        onGenderToggle(character.id)
-                    },
-                    animatedContentScope = animatedContentScope,
-                    sharedTransitionScope = sharedTransitionScope
-                )
+                val cardModifier = with(sharedTransitionScope) {
+                    Modifier.sharedBounds(
+                        sharedContentState = rememberSharedContentState(key = "character-card-${character.id}"),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+                }
+                
+                Box(modifier = cardModifier) {
+                    CharacterListItem(
+                        character = character,
+                        hideName = false,
+                        showLevelButtons = false,
+                        showItemsButtons = false,
+                        onLevelChange = onLevelChange,
+                        onItemsChange = onPowerChange,
+                        onGenderToggle = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onGenderToggle(character.id)
+                        },
+                        animatedContentScope = null,
+                        sharedTransitionScope = null
+                    )
+                }
             }
 
 
@@ -315,11 +324,11 @@ private fun DetailsScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
-                title = character.name,
+                title = "",
                 onBack = onBackClick,
                 animatedContentScope = animatedContentScope,
                 sharedTransitionScope = sharedTransitionScope,
-                titleSharedKey = "character-name-${character.id}",
+                titleSharedKey = null,
                 actions = {
                     MunchkinIconButton(onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
