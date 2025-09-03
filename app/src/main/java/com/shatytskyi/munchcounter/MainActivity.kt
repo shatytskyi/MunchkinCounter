@@ -139,7 +139,7 @@ fun MunchkinApp(
                 },
                 popEnterTransition = { 
                     slideInHorizontally(
-                        initialOffsetX = { it },
+                        initialOffsetX = { -it },
                         animationSpec = tween(400, easing = FastOutSlowInEasing)
                     )
                 },
