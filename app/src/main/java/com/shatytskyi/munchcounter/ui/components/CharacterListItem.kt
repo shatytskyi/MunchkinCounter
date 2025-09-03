@@ -354,7 +354,9 @@ fun CharacterListItemPreview() {
                 ),
                 onClick = {},
                 onLevelChange = {},
-                onItemsChange = {}
+                onItemsChange = {},
+                animatedContentScope = null,
+                sharedTransitionScope = null
             )
         }
     }

@@ -333,7 +333,9 @@ private fun ListScreenUnifiedWithCharactersPreview() {
             items(mockCharacters.size) { index ->
                 CharacterListItem(
                     character = mockCharacters[index],
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    animatedContentScope = null,
+                    sharedTransitionScope = null
                 )
             }
         }

@@ -623,7 +623,9 @@ private fun DetailsScreenPreview() {
                 character = mockCharacter,
                 hideName = true,
                 showLevelButtons = false,
-                showItemsButtons = false
+                showItemsButtons = false,
+                animatedContentScope = null,
+                sharedTransitionScope = null
             )
         }
     }
