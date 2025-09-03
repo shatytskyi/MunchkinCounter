@@ -4,21 +4,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Female
 import androidx.compose.material.icons.outlined.Male
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Gender
+import com.shatytskyi.munchcounter.ui.components.MunchkinBottomSheet
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
@@ -71,23 +65,11 @@ fun AddCharacterDialog(
         focusRequester.requestFocus()
     }
 
-    ModalBottomSheet(
+    MunchkinBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = bottomSheetState,
-        containerColor = MunchkinTheme.colors.background,
-        modifier = modifier
+        modifier = modifier,
+        sheetState = bottomSheetState
     ) {
-        val scrollState = rememberScrollState()
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(scrollState)
-                .padding(horizontal = 24.dp)
-                .windowInsetsPadding(WindowInsets.ime)
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(bottom = 16.dp)
-        ) {
             // Header
             MunchkinText(
                 text = stringResource(R.string.add_new_player),
@@ -203,7 +185,6 @@ fun AddCharacterDialog(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-        }
     }
 }
 
