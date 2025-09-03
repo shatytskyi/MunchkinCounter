@@ -63,6 +63,7 @@ fun MunchkinTheme(
             WindowCompat.setDecorFitsSystemWindows(window, false)
             window.statusBarColor = android.graphics.Color.TRANSPARENT
             window.navigationBarColor = colors.background.toArgb()
+            window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(colors.background.toArgb()))
             val insetsController = WindowCompat.getInsetsController(window, view)
             insetsController.isAppearanceLightStatusBars = !darkTheme
             insetsController.isAppearanceLightNavigationBars = !darkTheme
