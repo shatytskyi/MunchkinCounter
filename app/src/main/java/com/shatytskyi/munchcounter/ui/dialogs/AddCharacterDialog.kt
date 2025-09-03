@@ -140,7 +140,7 @@ fun AddCharacterDialog(
                 MunchkinCard(
                     modifier = Modifier.fillMaxWidth(),
                     backgroundColor = MunchkinTheme.colors.background,
-                    color = MunchkinTheme.colors.onBackground,
+                    color = MunchkinTheme.colors.grey,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Row(

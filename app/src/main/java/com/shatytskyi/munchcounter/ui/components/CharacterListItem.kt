@@ -57,7 +57,7 @@ fun CharacterListItem(
     
     MunchkinCard(
         modifier = cardModifier,
-        color = MunchkinTheme.colors.onBackground,
+        color = MunchkinTheme.colors.grey,
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
     ) {

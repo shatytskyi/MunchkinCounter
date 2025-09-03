@@ -494,7 +494,7 @@ private fun LevelControlCard(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp),
-        color = MunchkinTheme.colors.onBackground,
+        color = MunchkinTheme.colors.grey,
         onClick = onClick
     ) {
         Row(
@@ -581,7 +581,7 @@ private fun PowerControlCard(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp),
-        color = MunchkinTheme.colors.onBackground,
+        color = MunchkinTheme.colors.grey,
         onClick = onClick
     ) {
         Row(
