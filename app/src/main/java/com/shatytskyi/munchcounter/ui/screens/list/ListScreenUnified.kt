@@ -100,7 +100,7 @@ fun ListScreenUnified(
                 start = 16.dp,
                 end = 16.dp,
                 top = topPadding,
-                bottom = 100.dp
+                bottom = 32.dp
             )
         ) {
             // Empty state content
@@ -221,11 +221,11 @@ fun ListScreenUnified(
                 Column(
                     modifier = Modifier.animateItem()
                 ) {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     MunchkinHorizontalDivider()
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     if (isEmpty) {
                         // Only Add button when no characters

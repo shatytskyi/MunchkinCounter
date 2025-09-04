@@ -154,7 +154,7 @@ fun MunchkinApp(
                 DetailsScreen(
                     viewModel = sharedViewModel,
                     characterId = characterId,
-                    onBack = { navController.popBackStack() },
+                    onBack = { navController.navigateUp() },
                     onFight = { 
                         Toast.makeText(context, "Coming Soon!", Toast.LENGTH_SHORT).show()
                     },
@@ -196,7 +196,7 @@ fun MunchkinApp(
             FightScreen(
                 viewModel = sharedViewModel,
                 playerId = playerId,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.navigateUp() }
             )
         }
         
@@ -228,7 +228,7 @@ fun MunchkinApp(
             }
         ) {
             TimerScreen(
-                onBack = { navController.popBackStack() }
+                onBack = { navController.navigateUp() }
             )
         }
         
@@ -276,7 +276,7 @@ fun MunchkinApp(
                     themeViewModel.setSystemFont(enabled)
                 },
                 onBackClick = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
                 onLanguageClick = {
                     // Open system language settings for the app
