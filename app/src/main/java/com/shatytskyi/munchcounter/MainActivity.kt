@@ -26,7 +26,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.shatytskyi.munchcounter.ui.screens.DetailsScreen
+import com.shatytskyi.munchcounter.ui.screens.details.DetailsScreen
 import com.shatytskyi.munchcounter.ui.screens.FightScreen
 import com.shatytskyi.munchcounter.ui.screens.SettingsScreen
 import com.shatytskyi.munchcounter.ui.screens.TimerScreen
