@@ -37,7 +37,7 @@ fun WarningDialog(
                 
                 MunchkinText(
                     text = message,
-                    style = MunchkinTheme.typography.bodyMedium,
+                    style = MunchkinTheme.typography.bodyLarge,
                     color = MunchkinTheme.colors.onBackground,
                     textAlign = TextAlign.Center
                 )

@@ -78,7 +78,7 @@ fun DetailsScreenContent(
             }
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Character card
         Box(
@@ -197,26 +197,8 @@ fun DetailsScreenContent(
     showBackground = true
 )
 @Preview(
-    name = "Details Content - Pixel Tablet",
-    device = Devices.PIXEL_TABLET,
-    showSystemUi = true,
-    showBackground = true
-)
-@Preview(
-    name = "Details Content - Small Phone",
-    device = "spec:width=360dp,height=640dp,dpi=160",
-    showSystemUi = true,
-    showBackground = true
-)
-@Preview(
     name = "Details Content - Large Phone",
     device = "spec:width=428dp,height=926dp,dpi=460",
-    showSystemUi = true,
-    showBackground = true
-)
-@Preview(
-    name = "Details Content - Foldable",
-    device = Devices.PIXEL_FOLD,
     showSystemUi = true,
     showBackground = true
 )
