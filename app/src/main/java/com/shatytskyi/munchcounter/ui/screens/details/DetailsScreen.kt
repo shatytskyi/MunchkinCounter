@@ -43,7 +43,6 @@ fun DetailsScreen(
     }
 
     if (character == null) {
-        onBack()
         return
     }
 
