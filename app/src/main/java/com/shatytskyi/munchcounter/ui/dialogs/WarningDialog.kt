@@ -56,7 +56,7 @@ fun WarningDialog(
                     rippleColor = MunchkinTheme.colors.red
                 ),
                 text = stringResource(R.string.confirm),
-                style = MunchkinTheme.typography.bodyMedium,
+                style = MunchkinTheme.typography.bodyLarge,
                 color = MunchkinTheme.colors.red
             )
         },
