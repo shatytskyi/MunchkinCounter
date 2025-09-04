@@ -1,9 +1,6 @@
 package com.shatytskyi.munchcounter.ui.dialogs
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,35 +8,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Female
-import androidx.compose.material.icons.outlined.Male
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -48,16 +31,15 @@ import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
+import com.shatytskyi.munchcounter.ui.components.GenderSelector
 import com.shatytskyi.munchcounter.ui.components.MunchkinBottomSheet
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
-import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTextField
 import com.shatytskyi.munchcounter.ui.components.icons.Close
 import com.shatytskyi.munchcounter.ui.components.icons.Edit
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
-import com.shatytskyi.munchcounter.ui.components.munchkinClickable
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import kotlinx.coroutines.delay
 
@@ -77,8 +59,8 @@ fun EditCharacterDialog(
             )
         )
     }
-    var level by remember { mutableStateOf(character.level.toString()) }
-    var items by remember { mutableStateOf(character.items.toString()) }
+    var level by remember { mutableStateOf(TextFieldValue(character.level.toString())) }
+    var items by remember { mutableStateOf(TextFieldValue(character.items.toString())) }
     var selectedGender by remember { mutableStateOf(character.gender) }
     val haptic = LocalHapticFeedback.current
     val focusRequester = remember { FocusRequester() }
@@ -121,47 +103,14 @@ fun EditCharacterDialog(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Custom TextField with TextFieldValue support for cursor positioning
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MunchkinTheme.colors.background)
-                        .border(
-                            width = 2.dp,
-                            color = MunchkinTheme.colors.primary,
-                            shape = RoundedCornerShape(12.dp)
-                        ),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    val customTextSelectionColors = TextSelectionColors(
-                        handleColor = MunchkinTheme.colors.primary,
-                        backgroundColor = MunchkinTheme.colors.primary.copy(alpha = 0.4f)
-                    )
-
-                    CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
-                        BasicTextField(
-                            value = nameFieldValue,
-                            onValueChange = { nameFieldValue = it },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp)
-                                .focusRequester(focusRequester),
-                            textStyle = MunchkinTheme.typography.bodyLarge.copy(
-                                color = MunchkinTheme.colors.onBackground,
-                                textAlign = TextAlign.Start
-                            ),
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Done
-                            ),
-                            keyboardActions = KeyboardActions.Default,
-                            cursorBrush = SolidColor(MunchkinTheme.colors.primary)
-                        )
-                    }
-                }
+                MunchkinTextField(
+                    value = nameFieldValue,
+                    onValueChange = { nameFieldValue = it },
+                    keyboardType = KeyboardType.Text,
+                    focusRequester = focusRequester,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -186,11 +135,11 @@ fun EditCharacterDialog(
 
                     MunchkinTextField(
                         value = level,
-                        onValueChange = {
-                            if (it.isEmpty() || it.toIntOrNull()?.let { value ->
+                        onValueChange = { newValue ->
+                            if (newValue.text.isEmpty() || newValue.text.toIntOrNull()?.let { value ->
                                     value in -999..999
                                 } == true) {
-                                level = it
+                                level = newValue
                             }
                         },
                         keyboardType = KeyboardType.Number,
@@ -215,11 +164,11 @@ fun EditCharacterDialog(
 
                     MunchkinTextField(
                         value = items,
-                        onValueChange = {
-                            if (it.isEmpty() || it.toIntOrNull()?.let { value ->
+                        onValueChange = { newValue ->
+                            if (newValue.text.isEmpty() || newValue.text.toIntOrNull()?.let { value ->
                                     value in -999..999
                                 } == true) {
-                                items = it
+                                items = newValue
                             }
                         },
                         keyboardType = KeyboardType.Number,
@@ -246,7 +195,7 @@ fun EditCharacterDialog(
                 MunchkinCard(
                     modifier = Modifier.fillMaxWidth(),
                     backgroundColor = MunchkinTheme.colors.background,
-                    color = MunchkinTheme.colors.primary,
+                    color = MunchkinTheme.colors.grey,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Row(
@@ -255,7 +204,7 @@ fun EditCharacterDialog(
                             .padding(horizontal = 16.dp)
                     ) {
                         Gender.entries.forEach { gender ->
-                            GenderOption(
+                            GenderSelector(
                                 gender = gender,
                                 isSelected = selectedGender == gender,
                                 onClick = {
@@ -295,8 +244,8 @@ fun EditCharacterDialog(
                 MunchkinIconTextButton(
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                        val lvl = level.toIntOrNull()?.coerceIn(-999, 999) ?: character.level
-                        val itm = items.toIntOrNull()?.coerceIn(-999, 999) ?: character.items
+                        val lvl = level.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.level
+                        val itm = items.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.items
                         onConfirm(nameFieldValue.text.trim(), lvl, itm, selectedGender)
                     },
                     icon = MunchkinIcons.Edit,
@@ -314,47 +263,6 @@ fun EditCharacterDialog(
     }
 }
 
-@Composable
-private fun GenderOption(
-    gender: Gender,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .munchkinClickable(
-                onClick = onClick,
-                bounded = false,
-                rippleColor = when (gender) {
-                    Gender.MALE -> MunchkinTheme.colors.primary
-                    else -> MunchkinTheme.colors.secondary
-                }
-            )
-            .padding(vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        MunchkinIcon(
-            imageVector = when (gender) {
-                Gender.MALE -> Icons.Outlined.Male
-                Gender.FEMALE -> Icons.Outlined.Female
-            },
-            tint = if (isSelected) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
-            size = 24.dp
-        )
-
-        MunchkinText(
-            text = when (gender) {
-                Gender.MALE -> stringResource(R.string.gender_male)
-                Gender.FEMALE -> stringResource(R.string.gender_female)
-            },
-            style = MunchkinTheme.typography.labelMedium.copy(
-                fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal
-            ),
-            color = if (isSelected) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
