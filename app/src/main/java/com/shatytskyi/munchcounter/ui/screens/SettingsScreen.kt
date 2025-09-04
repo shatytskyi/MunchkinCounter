@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,9 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Brightness4
 import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.BrightnessHigh
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.TextFields
-import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -37,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.APP_BAR_HEIGHT
+import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
@@ -163,8 +162,10 @@ private fun ThemeSwitchGroup(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ThemeMode.entries.forEach { mode ->
                 MunchkinIconTextButton(
@@ -182,7 +183,6 @@ private fun ThemeSwitchGroup(
                         ThemeMode.AUTO -> stringResource(R.string.theme_auto)
                         ThemeMode.DARK -> stringResource(R.string.theme_dark)
                     },
-                    modifier = Modifier.weight(1f),
                     rippleColor = null,
                     iconTint = if (selectedMode == mode) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
                     textColor = if (selectedMode == mode) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
@@ -220,8 +220,10 @@ private fun ColorSwitchGroup(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             MunchkinIconTextButton(
                 onClick = {
@@ -230,7 +232,6 @@ private fun ColorSwitchGroup(
                 },
                 icon = MunchkinIcons.ColorsOn,
                 text = stringResource(R.string.colors_app),
-                modifier = Modifier.weight(1f),
                 iconTint = if (!dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
                 textColor = if (!dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
                 textStyle = MunchkinTheme.typography.labelMedium.copy(
@@ -246,7 +247,6 @@ private fun ColorSwitchGroup(
                 },
                 icon = MunchkinIcons.ColorsOff,
                 text = stringResource(R.string.colors_dynamic),
-                modifier = Modifier.weight(1f),
                 iconTint = if (dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
                 textColor = if (dynamicColors) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
                 textStyle = MunchkinTheme.typography.labelMedium.copy(
@@ -281,8 +281,10 @@ private fun FontSwitchGroup(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             MunchkinIconTextButton(
                 onClick = {
@@ -291,7 +293,6 @@ private fun FontSwitchGroup(
                 },
                 icon = MunchkinIcons.Font,
                 text = stringResource(R.string.fonts_app),
-                modifier = Modifier.weight(1f),
                 iconTint = if (!systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
                 textColor = if (!systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
                 rippleColor = null,
@@ -308,7 +309,6 @@ private fun FontSwitchGroup(
                 },
                 icon = MunchkinIcons.FontOff,
                 text = stringResource(R.string.fonts_system),
-                modifier = Modifier.weight(1f),
                 iconTint = if (systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
                 textColor = if (systemFont) MunchkinTheme.colors.primary else MunchkinTheme.colors.onBackground,
                 rippleColor = null,

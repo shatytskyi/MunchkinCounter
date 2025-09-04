@@ -156,7 +156,7 @@ fun MunchkinApp(
                     characterId = characterId,
                     onBack = { navController.navigateUp() },
                     onFight = { 
-                        Toast.makeText(context, "Coming Soon!", Toast.LENGTH_SHORT).show()
+                        navController.navigate("fight/$characterId")
                     },
                     onTimerClick = { navController.navigate("timer") },
                     animatedContentScope = this@composable,
@@ -196,7 +196,10 @@ fun MunchkinApp(
             FightScreen(
                 viewModel = sharedViewModel,
                 playerId = playerId,
-                onBack = { navController.navigateUp() }
+                onBack = { navController.navigateUp() },
+                onTimerClick = { navController.navigate("timer") },
+                animatedContentScope = this@composable,
+                sharedTransitionScope = this@SharedTransitionLayout
             )
         }
         

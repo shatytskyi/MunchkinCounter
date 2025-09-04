@@ -27,15 +27,12 @@ fun PowerControlCard(
     modifier: Modifier = Modifier
 ) {
     MunchkinCard(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier,
         color = MunchkinTheme.colors.grey,
         onClick = onClick
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {

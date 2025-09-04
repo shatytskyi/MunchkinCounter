@@ -109,13 +109,15 @@ fun DetailsScreenContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // Level and Power controls
-        DetailsControlsLayout(
+        DetailsControlsLayoutWithTransition(
             modifier = Modifier.weight(1f),
             onLevelChange = onLevelChange,
-            onPowerChange = onPowerChange
+            onPowerChange = onPowerChange,
+            characterId = character.id,
+            animatedContentScope = animatedContentScope,
+            sharedTransitionScope = sharedTransitionScope
         )
 
         Spacer(modifier = Modifier.height(24.dp))
