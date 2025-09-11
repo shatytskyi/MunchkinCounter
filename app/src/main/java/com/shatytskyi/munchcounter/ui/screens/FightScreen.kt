@@ -47,6 +47,7 @@ import com.shatytskyi.munchcounter.ui.components.icons.Timer
 import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.screens.details.LevelControlCard
+import com.shatytskyi.munchcounter.ui.screens.fight.FightInterface
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 
@@ -229,23 +230,15 @@ private fun FightScreenContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // TODO: Add fight interface here
-        Box(
+        // Fight interface takes all remaining space
+        FightInterface(
+            character = character,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            MunchkinText(
-                text = "Fight interface will be implemented here",
-                style = MunchkinTheme.typography.bodyLarge,
-                color = MunchkinTheme.colors.grey
-            )
-        }
-
-        Spacer(modifier = Modifier.navigationBarsPadding())
+                .weight(1f)
+        )
     }
 }
 
