@@ -106,8 +106,6 @@ fun DetailsScreen(
             onTimerClick()
         },
         onDiceClick = { 
-            analyticsManager.logEvent(AnalyticsEvents.DICE_ROLLED,
-                bundleOf("source" to "details_screen"))
             showDiceDialog = true 
         },
         animatedContentScope = animatedContentScope,
@@ -169,7 +167,8 @@ fun DetailsScreen(
 
     if (showDiceDialog) {
         DiceDialog(
-            onDismiss = { showDiceDialog = false }
+            onDismiss = { showDiceDialog = false },
+            source = "details_screen"
         )
     }
 }

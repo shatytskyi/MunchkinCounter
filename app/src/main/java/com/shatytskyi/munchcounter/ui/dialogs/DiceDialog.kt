@@ -51,6 +51,7 @@ import org.koin.compose.koinInject
 @Composable
 fun DiceDialog(
     onDismiss: () -> Unit,
+    source: String = "unknown",
     modifier: Modifier = Modifier
 ) {
     var result by remember { mutableIntStateOf((1..6).random()) }
@@ -95,7 +96,8 @@ fun DiceDialog(
                 "dice_roll_result",
                 bundleOf(
                     "result" to result,
-                    "roll_number" to rollCount
+                    "roll_number" to rollCount,
+                    "source" to source
                 )
             )
         }
@@ -133,7 +135,7 @@ fun DiceDialog(
                                     // Track dice roll action (result tracked after animation)
                                     analyticsManager.logEvent(
                                         AnalyticsEvents.DICE_ROLLED,
-                                        bundleOf("source" to "dice_dialog")
+                                        bundleOf("source" to source)
                                     )
                                 }
                             )

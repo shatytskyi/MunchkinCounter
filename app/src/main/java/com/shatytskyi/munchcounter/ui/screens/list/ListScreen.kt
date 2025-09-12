@@ -16,18 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.shatytskyi.munchcounter.R
+import com.shatytskyi.munchcounter.analytics.AnalyticsEvents
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.ScreenNames
+import com.shatytskyi.munchcounter.analytics.UserProperties
+import com.shatytskyi.munchcounter.analytics.bundleOf
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.dialogs.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
-import com.shatytskyi.munchcounter.analytics.AnalyticsManager
-import com.shatytskyi.munchcounter.analytics.AnalyticsEvents
-import com.shatytskyi.munchcounter.analytics.ScreenNames
-import com.shatytskyi.munchcounter.analytics.UserProperties
-import com.shatytskyi.munchcounter.analytics.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
 import org.koin.compose.koinInject
 
@@ -99,12 +99,15 @@ private fun ListScreenContent(
     var showResetAllDialog by remember { mutableStateOf(false) }
     var showRemoveAllDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
-    
-    // Log screen view and set user properties
-    LaunchedEffect(characters) {
+
+    // Log screen view once
+    LaunchedEffect(Unit) {
         analyticsManager.logScreenView(ScreenNames.HOME, "ListScreen")
-        
-        // Update user properties for segmentation
+    }
+
+    // Update user properties when character count changes
+    LaunchedEffect(characters.size) {
+        // Set user property
         analyticsManager.setUserProperty(
             UserProperties.ACTIVE_PLAYER_COUNT,
             when (characters.size) {
@@ -122,10 +125,9 @@ private fun ListScreenContent(
     ) {
         if (isLoading) {
             ListScreenLoadingContent(
-                onDiceClick = { 
+                onDiceClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    analyticsManager.logEvent(AnalyticsEvents.DICE_ROLLED, null)
-                    showDiceDialog = true 
+                    showDiceDialog = true
                 },
                 onTimerClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
@@ -144,7 +146,7 @@ private fun ListScreenContent(
                 onCharacterClick = { id ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     // Track player detail views using Firebase's standard event
-                    val character = characters.find { it.id == id }
+                    characters.find { it.id == id }
                     analyticsManager.logEvent(
                         FirebaseAnalytics.Event.SELECT_CONTENT,
                         bundleOf(
@@ -210,10 +212,9 @@ private fun ListScreenContent(
                     // Track on confirm, not on click
                     showRemoveAllDialog = true
                 },
-                onDiceClick = { 
+                onDiceClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    analyticsManager.logEvent(AnalyticsEvents.DICE_ROLLED, null)
-                    showDiceDialog = true 
+                    showDiceDialog = true
                 },
                 onTimerClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
@@ -234,8 +235,8 @@ private fun ListScreenContent(
     // Dialogs
     if (showAddDialog) {
         AddCharacterDialog(
-            onDismiss = { 
-                showAddDialog = false 
+            onDismiss = {
+                showAddDialog = false
             },
             onConfirm = { name, gender ->
                 haptic.performHapticFeedback(HapticFeedbackType.Confirm)
@@ -257,8 +258,8 @@ private fun ListScreenContent(
         WarningDialog(
             title = stringResource(R.string.warning_reset_all_title),
             message = stringResource(R.string.warning_reset_all_message),
-            onDismiss = { 
-                showResetAllDialog = false 
+            onDismiss = {
+                showResetAllDialog = false
             },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -279,8 +280,8 @@ private fun ListScreenContent(
         WarningDialog(
             title = stringResource(R.string.warning_delete_all_title),
             message = stringResource(R.string.warning_delete_all_message),
-            onDismiss = { 
-                showRemoveAllDialog = false 
+            onDismiss = {
+                showRemoveAllDialog = false
             },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -299,9 +300,10 @@ private fun ListScreenContent(
 
     if (showDiceDialog) {
         DiceDialog(
-            onDismiss = { 
-                showDiceDialog = false 
-            }
+            onDismiss = {
+                showDiceDialog = false
+            },
+            source = "list_screen"
         )
     }
 }

@@ -125,8 +125,6 @@ fun FightScreen(
             onTimerClick()
         },
         onDiceClick = { 
-            analyticsManager.logEvent(AnalyticsEvents.DICE_ROLLED,
-                bundleOf("source" to "fight_screen"))
             showDiceDialog = true 
         },
         onLevelChange = { delta ->
@@ -184,7 +182,8 @@ fun FightScreen(
 
     if (showDiceDialog) {
         DiceDialog(
-            onDismiss = { showDiceDialog = false }
+            onDismiss = { showDiceDialog = false },
+            source = "fight_screen"
         )
     }
 }
