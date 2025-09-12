@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -357,13 +358,16 @@ private fun PowerComparisonColumn(
     isPlayerWinning: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    val powerDifference = playerPower - monsterPower
+    
+    ConstraintLayout(
         modifier = modifier
             .background(MunchkinTheme.colors.background.copy(alpha = 0.5f))
-            .padding(8.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(8.dp)
     ) {
+        val (playerRef, vsRef, monsterRef, differenceRef) = createRefs()
+        
+        // Player power
         AnimatedContent(
             targetState = playerPower,
             transitionSpec = {
@@ -375,7 +379,11 @@ private fun PowerComparisonColumn(
                             (slideOutVertically { height -> height } + fadeOut())
                 }
             },
-            label = "player_power_animation"
+            label = "player_power_animation",
+            modifier = Modifier.constrainAs(playerRef) {
+                bottom.linkTo(vsRef.top, margin = 24.dp)
+                centerHorizontallyTo(parent)
+            }
         ) { power ->
             MunchkinText(
                 text = power.toString(),
@@ -383,18 +391,18 @@ private fun PowerComparisonColumn(
                 color = MunchkinTheme.colors.primary
             )
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // VS
+        
+        // VS - centered in the parent
         MunchkinText(
             text = "VS",
             style = MunchkinTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            color = MunchkinTheme.colors.grey
+            color = MunchkinTheme.colors.grey,
+            modifier = Modifier.constrainAs(vsRef) {
+                centerTo(parent)
+            }
         )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
+        
+        // Monster power
         AnimatedContent(
             targetState = monsterPower,
             transitionSpec = {
@@ -406,13 +414,38 @@ private fun PowerComparisonColumn(
                             (slideOutVertically { height -> height } + fadeOut())
                 }
             },
-            label = "monster_power_animation"
+            label = "monster_power_animation",
+            modifier = Modifier.constrainAs(monsterRef) {
+                top.linkTo(vsRef.bottom, margin = 24.dp)
+                centerHorizontallyTo(parent)
+            }
         ) { power ->
             MunchkinText(
                 text = power.toString(),
                 style = MunchkinTheme.typography.headlineLarge,
                 color = MunchkinTheme.colors.red
             )
+        }
+        
+        // Power difference indicator
+        if (powerDifference != 0) {
+            AnimatedContent(
+                targetState = powerDifference,
+                transitionSpec = {
+                    fadeIn() togetherWith fadeOut()
+                },
+                label = "power_difference_animation",
+                modifier = Modifier.constrainAs(differenceRef) {
+                    top.linkTo(monsterRef.bottom, margin = 16.dp)
+                    centerHorizontallyTo(parent)
+                }
+            ) { difference ->
+                MunchkinText(
+                    text = if (difference > 0) "(+$difference)" else "($difference)",
+                    style = MunchkinTheme.typography.bodyLarge,
+                    color = if (difference > 0) MunchkinTheme.colors.primary else MunchkinTheme.colors.red
+                )
+            }
         }
     }
 }
