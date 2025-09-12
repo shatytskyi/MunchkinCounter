@@ -6,6 +6,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,7 +22,11 @@ import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.dialogs.AddCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.Events
+import com.shatytskyi.munchcounter.analytics.EventParams
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -86,10 +91,16 @@ private fun ListScreenContent(
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
+    val analyticsManager = koinInject<AnalyticsManager>()
     var showAddDialog by remember { mutableStateOf(false) }
     var showResetAllDialog by remember { mutableStateOf(false) }
     var showRemoveAllDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
+    
+    // Log screen view
+    LaunchedEffect(Unit) {
+        analyticsManager.trackEvent(Events.HomeScreen.VIEWED)
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -98,14 +109,17 @@ private fun ListScreenContent(
             ListScreenLoadingContent(
                 onDiceClick = { 
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    analyticsManager.trackEvent(Events.HomeScreen.DICE_BUTTON_CLICKED)
                     showDiceDialog = true 
                 },
                 onTimerClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    analyticsManager.trackEvent(Events.HomeScreen.TIMER_BUTTON_CLICKED)
                     onTimerClick()
                 },
                 onSettingsClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    analyticsManager.trackEvent(Events.HomeScreen.SETTINGS_CLICKED)
                     onSettingsClick()
                 }
             )
@@ -114,42 +128,79 @@ private fun ListScreenContent(
                 characters = characters,
                 onCharacterClick = { id ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    val character = characters.find { it.id == id }
+                    analyticsManager.trackEvent(
+                        Events.HomeScreen.PLAYER_CARD_CLICKED,
+                        mapOf(EventParams.PLAYER_NAME to (character?.name ?: "Unknown"))
+                    )
                     onCharacterClick(id)
                 },
                 onAddCharacterClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    analyticsManager.trackEvent(Events.HomeScreen.ADD_PLAYER_CLICKED)
                     showAddDialog = true
                 },
                 onLevelChange = { id, delta ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    val character = characters.find { it.id == id }
+                    val eventName = if (delta > 0) Events.HomeScreen.PLAYER_LEVEL_UP else Events.HomeScreen.PLAYER_LEVEL_DOWN
+                    analyticsManager.trackEvent(
+                        eventName,
+                        mapOf(
+                            EventParams.PLAYER_NAME to (character?.name ?: "Unknown"),
+                            EventParams.PLAYER_LEVEL to ((character?.level ?: 1) + delta)
+                        )
+                    )
                     onLevelChange(id, delta)
                 },
                 onPowerChange = { id, delta ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    val character = characters.find { it.id == id }
+                    val eventName = if (delta > 0) Events.HomeScreen.PLAYER_ITEMS_INCREASED else Events.HomeScreen.PLAYER_ITEMS_DECREASED
+                    analyticsManager.trackEvent(
+                        eventName,
+                        mapOf(
+                            EventParams.PLAYER_NAME to (character?.name ?: "Unknown"),
+                            EventParams.PLAYER_ITEMS to ((character?.power ?: 0) + delta)
+                        )
+                    )
                     onPowerChange(id, delta)
                 },
                 onGenderToggle = { id ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    val character = characters.find { it.id == id }
+                    analyticsManager.trackEvent(
+                        Events.HomeScreen.PLAYER_GENDER_TOGGLED,
+                        mapOf(
+                            EventParams.PLAYER_NAME to (character?.name ?: "Unknown"),
+                            EventParams.PLAYER_GENDER to (character?.gender?.name ?: "Unknown")
+                        )
+                    )
                     onGenderToggle(id)
                 },
                 onResetAllClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    analyticsManager.trackEvent(Events.HomeScreen.RESET_ALL_CLICKED)
                     showResetAllDialog = true
                 },
                 onRemoveAllClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    analyticsManager.trackEvent(Events.HomeScreen.DELETE_ALL_CLICKED)
                     showRemoveAllDialog = true
                 },
                 onDiceClick = { 
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    analyticsManager.trackEvent(Events.HomeScreen.DICE_BUTTON_CLICKED)
                     showDiceDialog = true 
                 },
                 onTimerClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    analyticsManager.trackEvent(Events.HomeScreen.TIMER_BUTTON_CLICKED)
                     onTimerClick()
                 },
                 onSettingsClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    analyticsManager.trackEvent(Events.HomeScreen.SETTINGS_CLICKED)
                     onSettingsClick()
                 },
                 animatedContentScope = animatedContentScope,
@@ -161,9 +212,19 @@ private fun ListScreenContent(
     // Dialogs
     if (showAddDialog) {
         AddCharacterDialog(
-            onDismiss = { showAddDialog = false },
+            onDismiss = { 
+                analyticsManager.trackEvent(Events.AddPlayerScreen.CANCEL_CLICKED)
+                showAddDialog = false 
+            },
             onConfirm = { name, gender ->
                 haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                analyticsManager.trackEvent(
+                    Events.AddPlayerScreen.ADD_CLICKED,
+                    mapOf(
+                        EventParams.PLAYER_NAME to name,
+                        EventParams.PLAYER_GENDER to gender.name
+                    )
+                )
                 onAddCharacter(name, gender)
                 showAddDialog = false
             }
@@ -174,9 +235,16 @@ private fun ListScreenContent(
         WarningDialog(
             title = stringResource(R.string.warning_reset_all_title),
             message = stringResource(R.string.warning_reset_all_message),
-            onDismiss = { showResetAllDialog = false },
+            onDismiss = { 
+                analyticsManager.trackEvent(Events.HomeScreen.RESET_ALL_CANCELLED)
+                showResetAllDialog = false 
+            },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                analyticsManager.trackEvent(
+                    Events.HomeScreen.RESET_ALL_CONFIRMED,
+                    mapOf(EventParams.PLAYER_COUNT to characters.size)
+                )
                 onResetAll()
                 showResetAllDialog = false
             }
@@ -187,9 +255,16 @@ private fun ListScreenContent(
         WarningDialog(
             title = stringResource(R.string.warning_delete_all_title),
             message = stringResource(R.string.warning_delete_all_message),
-            onDismiss = { showRemoveAllDialog = false },
+            onDismiss = { 
+                analyticsManager.trackEvent(Events.HomeScreen.DELETE_ALL_CANCELLED)
+                showRemoveAllDialog = false 
+            },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                analyticsManager.trackEvent(
+                    Events.HomeScreen.DELETE_ALL_CONFIRMED,
+                    mapOf(EventParams.PLAYER_COUNT to characters.size)
+                )
                 onRemoveAll()
                 showRemoveAllDialog = false
             }
@@ -198,7 +273,10 @@ private fun ListScreenContent(
 
     if (showDiceDialog) {
         DiceDialog(
-            onDismiss = { showDiceDialog = false }
+            onDismiss = { 
+                analyticsManager.trackEvent(Events.DiceScreen.BACK_CLICKED)
+                showDiceDialog = false 
+            }
         )
     }
 }

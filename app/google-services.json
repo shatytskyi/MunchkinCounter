@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "164120601496",
+    "project_id": "munchkin-counter-14314",
+    "storage_bucket": "munchkin-counter-14314.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164120601496:android:25b547785eda623a6fc1ed",
+        "android_client_info": {
+          "package_name": "com.shatytskyi.gamecounter.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUglyGw8RwE2fUFt8Kr7xtozkfXBQT_3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164120601496:android:30859e39a2f3a03f6fc1ed",
+        "android_client_info": {
+          "package_name": "com.shatytskyi.munchcounter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUglyGw8RwE2fUFt8Kr7xtozkfXBQT_3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

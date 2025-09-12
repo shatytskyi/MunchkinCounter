@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics.plugin)
 }
 
 repositories {
@@ -45,8 +47,8 @@ android {
         applicationId = "com.shatytskyi.gamecounter"
         minSdk = 31
         targetSdk = 36
-        versionCode = 9
-        versionName = "v1.2"
+        versionCode = 10
+        versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -58,6 +60,8 @@ android {
     buildTypes {
         debug {
             signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
         }
         release {
             isMinifyEnabled = false
@@ -68,12 +72,12 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-    
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    
+
     kotlin {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
@@ -83,7 +87,7 @@ android {
     buildFeatures {
         compose = true
     }
-    
+
 }
 
 dependencies {
@@ -128,7 +132,12 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-    
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+
     // Compose UI Tooling for Previews
     debugImplementation(libs.compose.ui.tooling)
 }

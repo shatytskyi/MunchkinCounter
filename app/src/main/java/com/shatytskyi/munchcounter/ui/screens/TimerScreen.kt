@@ -55,6 +55,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.R
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.Events
+import com.shatytskyi.munchcounter.analytics.EventParams
 import com.shatytskyi.munchcounter.data.TimerPreferences
 import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
@@ -373,6 +376,7 @@ private class TimerLogic {
 @Composable
 private fun useTimerLogic(): TimerState {
     val timerPreferences = koinInject<TimerPreferences>()
+    val analyticsManager = koinInject<AnalyticsManager>()
     val savedSeconds by timerPreferences.selectedSeconds.collectAsState(initial = 5)
     var selectedSeconds by remember(savedSeconds) { mutableIntStateOf(savedSeconds) }
     var currentSeconds by remember { mutableIntStateOf(0) }
@@ -382,6 +386,11 @@ private fun useTimerLogic(): TimerState {
     val scope = rememberCoroutineScope()
     val timerLogic = remember { TimerLogic() }
     val haptic = LocalHapticFeedback.current
+    
+    // Log screen view
+    LaunchedEffect(Unit) {
+        analyticsManager.trackEvent(Events.TimerScreen.VIEWED)
+    }
 
     LaunchedEffect(isRunning, currentSeconds) {
         if (isRunning && currentSeconds > 0) {
@@ -395,6 +404,10 @@ private fun useTimerLogic(): TimerState {
                 shouldFlash = true
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 timerLogic.playBeep(END_FREQUENCY)
+                analyticsManager.trackEvent(
+                    Events.TimerScreen.COMPLETED,
+                    mapOf(EventParams.SECONDS to selectedSeconds)
+                )
             }
         }
     }
@@ -417,12 +430,20 @@ private fun useTimerLogic(): TimerState {
                 scope.launch {
                     timerPreferences.setSelectedSeconds(seconds)
                 }
+                analyticsManager.trackEvent(
+                    Events.TimerScreen.SECONDS_SELECTED,
+                    mapOf(EventParams.SECONDS to seconds)
+                )
             }
         },
         onTimerToggle = {
             if (isRunning) {
                 isRunning = false
                 currentSeconds = 0
+                analyticsManager.trackEvent(
+                    Events.TimerScreen.STOP_CLICKED,
+                    mapOf(EventParams.SECONDS to selectedSeconds)
+                )
             } else {
                 currentSeconds = selectedSeconds
                 isRunning = true
@@ -430,6 +451,10 @@ private fun useTimerLogic(): TimerState {
                 scope.launch {
                     timerLogic.playBeep(START_FREQUENCY)
                 }
+                analyticsManager.trackEvent(
+                    Events.TimerScreen.START_CLICKED,
+                    mapOf(EventParams.SECONDS to selectedSeconds)
+                )
             }
         }
     )
