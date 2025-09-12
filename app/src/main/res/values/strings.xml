@@ -92,6 +92,7 @@
     <string name="sound">Sound</string>
 
     <!-- Dice -->
+    <string name="roll_the_dice">Roll the dice</string>
 
     <!-- Warnings & Dialogs -->
     <string name="reset_character_title">Reset %s?</string>

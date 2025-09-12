@@ -64,6 +64,7 @@
     <string name="escape_success">Успешный побег!</string>
     <string name="escape_failed">Побег провалился!</string>
     <string name="roll_dice">Бросить кубик</string>
+    <string name="roll_the_dice">Бросить кубик</string>
     <string name="roll_again">Бросить ещё раз</string>
     <string name="stay">Остаться</string>
 

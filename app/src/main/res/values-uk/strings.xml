@@ -78,6 +78,7 @@
     <string name="escape_success">Успішна втеча!</string>
     <string name="escape_failed">Втеча провалилася!</string>
     <string name="roll_dice">Кинути кубик</string>
+    <string name="roll_the_dice">Кинути кубик</string>
     <string name="roll_again">Кинути ще раз</string>
     <string name="stay">Залишитися</string>
 

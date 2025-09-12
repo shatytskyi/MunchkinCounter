@@ -105,7 +105,7 @@ fun DiceDialog(
 
     MunchkinDialog(
         onDismissRequest = onDismiss,
-        title = "Roll the dice",
+        title = stringResource(R.string.roll_the_dice),
         content = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
