@@ -7,6 +7,8 @@ import com.shatytskyi.munchcounter.data.CharacterRepository
 import com.shatytskyi.munchcounter.data.MunchkinDatabase
 import com.shatytskyi.munchcounter.data.ThemePreferences
 import com.shatytskyi.munchcounter.data.ThemePreferencesImpl
+import com.shatytskyi.munchcounter.data.TimerPreferences
+import com.shatytskyi.munchcounter.data.TimerPreferencesImpl
 import org.koin.dsl.module
 
 val databaseModule = module {
@@ -27,6 +29,10 @@ val databaseModule = module {
 
     single<ThemePreferences> {
         ThemePreferencesImpl(get())
+    }
+
+    single<TimerPreferences> {
+        TimerPreferencesImpl(get())
     }
 
     single<CharacterRepository> {

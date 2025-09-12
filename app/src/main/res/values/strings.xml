@@ -89,6 +89,7 @@
     <string name="timer_start">START</string>
     <string name="timer_select_seconds">Select seconds for decision making</string>
     <string name="volume">Volume</string>
+    <string name="sound">Sound</string>
 
     <!-- Dice -->
 

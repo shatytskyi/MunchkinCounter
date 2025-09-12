@@ -26,17 +26,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.VolumeOff
-import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,11 +55,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.R
+import com.shatytskyi.munchcounter.data.TimerPreferences
+import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
+import org.koin.compose.koinInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -77,9 +74,8 @@ private const val SOUND_DURATION = 200
 private const val START_FREQUENCY = 523
 private const val TICK_FREQUENCY = 659
 private const val END_FREQUENCY = 783
-private const val DEFAULT_VOLUME = 0.3f
 
-@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TimerScreen(
     onBack: () -> Unit,
@@ -146,68 +142,6 @@ private fun TimerContent(
                 timerState.onSecondsSelected(seconds)
             }
         )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Volume selector
-        MunchkinText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            text = stringResource(R.string.volume),
-            style = MunchkinTheme.typography.labelMedium,
-            color = MunchkinTheme.colors.onBackground
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(36.dp)
-                    .clip(RoundedCornerShape(24.dp))
-                    .background(MunchkinTheme.colors.grey.copy(alpha = 0.2f))
-                    .padding(horizontal = 8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Slider(
-                    modifier = Modifier.height(24.dp),
-                    value = timerState.volume,
-                    onValueChange = timerState.onVolumeChanged,
-                    valueRange = 0.01f..1f,
-                    enabled = timerState.isSoundEnabled,
-                    colors = SliderDefaults.colors(
-                        thumbColor = if (timerState.isSoundEnabled) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
-                        activeTrackColor = if (timerState.isSoundEnabled) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
-                        inactiveTrackColor = MunchkinTheme.colors.grey.copy(alpha = 0.5f),
-                        disabledThumbColor = MunchkinTheme.colors.grey.copy(alpha = 0.5f),
-                        disabledActiveTrackColor = MunchkinTheme.colors.grey.copy(alpha = 0.3f),
-                        disabledInactiveTrackColor = MunchkinTheme.colors.grey.copy(alpha = 0.2f)
-                    ),
-                )
-            }
-            
-            MunchkinIconButton(
-                onClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    timerState.onSoundToggle()
-                },
-                size = 36.dp
-            ) {
-                MunchkinIcon(
-                    imageVector = if (timerState.isSoundEnabled) Icons.AutoMirrored.Outlined.VolumeUp else Icons.AutoMirrored.Outlined.VolumeOff,
-                    tint = if (timerState.isSoundEnabled) MunchkinTheme.colors.primary else MunchkinTheme.colors.grey,
-                    size = 20.dp
-                )
-            }
-        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -367,7 +301,7 @@ private fun TimerButton(
 }
 
 private class TimerLogic {
-    suspend fun playBeep(frequency: Int, volume: Float) {
+    suspend fun playBeep(frequency: Int) {
         withContext(Dispatchers.IO) {
             val sampleRate = 44100
             val numSamples = (sampleRate * SOUND_DURATION / 1000.0).toInt()
@@ -393,7 +327,7 @@ private class TimerLogic {
                 val harmonic4 = sin(angle * 4) * 0.05
 
                 val waveform = fundamental + harmonic2 + harmonic3 + harmonic4
-                samples[i] = (waveform * Short.MAX_VALUE * volume * amplitude).toInt().toShort()
+                samples[i] = (waveform * Short.MAX_VALUE * amplitude).toInt().toShort()
 
                 angle += increment
                 angle %= (2.0 * PI)
@@ -408,8 +342,8 @@ private class TimerLogic {
             val audioTrack = AudioTrack.Builder()
                 .setAudioAttributes(
                     android.media.AudioAttributes.Builder()
-                        .setUsage(android.media.AudioAttributes.USAGE_ALARM)
-                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_MUSIC)
                         .build()
                 )
                 .setAudioFormat(
@@ -438,11 +372,11 @@ private class TimerLogic {
 
 @Composable
 private fun useTimerLogic(): TimerState {
-    var selectedSeconds by remember { mutableIntStateOf(5) }
+    val timerPreferences = koinInject<TimerPreferences>()
+    val savedSeconds by timerPreferences.selectedSeconds.collectAsState(initial = 5)
+    var selectedSeconds by remember(savedSeconds) { mutableIntStateOf(savedSeconds) }
     var currentSeconds by remember { mutableIntStateOf(0) }
     var isRunning by remember { mutableStateOf(false) }
-    var volume by remember { mutableFloatStateOf(DEFAULT_VOLUME) }
-    var isSoundEnabled by remember { mutableStateOf(true) }
     var shouldFlash by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
@@ -455,16 +389,12 @@ private fun useTimerLogic(): TimerState {
             currentSeconds -= 1
             if (currentSeconds > 0) {
                 haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                if (isSoundEnabled) {
-                    timerLogic.playBeep(TICK_FREQUENCY, volume)
-                }
+                timerLogic.playBeep(TICK_FREQUENCY)
             } else {
                 isRunning = false
                 shouldFlash = true
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                if (isSoundEnabled) {
-                    timerLogic.playBeep(END_FREQUENCY, volume)
-                }
+                timerLogic.playBeep(END_FREQUENCY)
             }
         }
     }
@@ -480,19 +410,14 @@ private fun useTimerLogic(): TimerState {
         selectedSeconds = selectedSeconds,
         currentSeconds = currentSeconds,
         isRunning = isRunning,
-        volume = volume,
-        isSoundEnabled = isSoundEnabled,
         shouldFlash = shouldFlash,
         onSecondsSelected = { seconds ->
             if (!isRunning) {
                 selectedSeconds = seconds
+                scope.launch {
+                    timerPreferences.setSelectedSeconds(seconds)
+                }
             }
-        },
-        onVolumeChanged = { newVolume ->
-            volume = newVolume
-        },
-        onSoundToggle = {
-            isSoundEnabled = !isSoundEnabled
         },
         onTimerToggle = {
             if (isRunning) {
@@ -502,10 +427,8 @@ private fun useTimerLogic(): TimerState {
                 currentSeconds = selectedSeconds
                 isRunning = true
                 haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                if (isSoundEnabled) {
-                    scope.launch {
-                        timerLogic.playBeep(START_FREQUENCY, volume)
-                    }
+                scope.launch {
+                    timerLogic.playBeep(START_FREQUENCY)
                 }
             }
         }
@@ -516,12 +439,8 @@ private data class TimerState(
     val selectedSeconds: Int,
     val currentSeconds: Int,
     val isRunning: Boolean,
-    val volume: Float,
-    val isSoundEnabled: Boolean,
     val shouldFlash: Boolean,
     val onSecondsSelected: (Int) -> Unit,
-    val onVolumeChanged: (Float) -> Unit,
-    val onSoundToggle: () -> Unit,
     val onTimerToggle: () -> Unit
 )
 
