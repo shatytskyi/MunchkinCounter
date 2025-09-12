@@ -9,22 +9,16 @@
     <string name="edit">Редагувати</string>
     <string name="delete">Видалити</string>
     <string name="close">Закрити</string>
-    <string name="exit">Вихід</string>
 
     <!-- Player Management -->
-    <string name="add_player">Додати гравця</string>
     <string name="add_new_player">Додати нового гравця</string>
     <string name="player_name">Ім\'я гравця</string>
     <string name="no_players">Поки що немає гравців</string>
     <string name="no_players_description">Додайте першого гравця, щоб почати гру в Манчкін!</string>
-    <string name="reset_player">Скинути гравця</string>
-    <string name="delete_player">Видалити гравця</string>
     <string name="player_will_be_reset">Гравець буде скинутий до 1-го рівня з 0 предметів</string>
     <string name="player_will_be_deleted">Гравець буде видалений назавжди</string>
     <string name="delete_character_title">Видалити %s?</string>
     <string name="loading_players">Завантаження гравців...</string>
-    <string name="reset_all">Скинути всіх</string>
-    <string name="remove_all">Видалити всіх</string>
     <string name="warning_reset_all_title">Скинути всіх гравців?</string>
     <string name="warning_reset_all_message">Всі гравці будуть скинуті до 1-го рівня з 0 сили</string>
     <string name="warning_delete_all_title">Видалити всіх гравців?</string>
@@ -34,70 +28,30 @@
     <string name="level">Рівень</string>
     <string name="power">Сила</string>
     <string name="items">Предмети</string>
-    <string name="items_controls">КЕРУВАННЯ СПОРЯДЖЕННЯМ</string>
 
     <!-- Fight Screen -->
-    <string name="fight">В бій!</string>
     <string name="fight_title">Бій</string>
     <string name="loading_fight">Завантаження бою…</string>
-    <string name="player_header">ГРАВЕЦЬ</string>
-    <string name="helper_header">ПОМІЧНИК</string>
-    <string name="result_header">РЕЗУЛЬТАТ</string>
-    <string name="monster_power">Монстр - Сила %d</string>
-    <string name="player_level">%1$s - Рівень %2$d</string>
-    <string name="player_power">Сила: %d</string>
-    <string name="victory">ПЕРЕМОГА</string>
-    <string name="escape">ВТЕЧА</string>
-    <string name="win_button">Перемога!</string>
-    <string name="run_button">Тікати!</string>
-    
+
     <!-- New Fight Screen strings -->
-    <string name="player_stats">Статистика гравця</string>
-    <string name="current_power">Поточна сила</string>
-    <string name="no_helper">Помічника не обрано</string>
-    <string name="remove">Прибрати</string>
-    <string name="power_comparison">Порівняння сил</string>
     <string name="player">Гравець</string>
     <string name="monster">Монстр</string>
-    <string name="winning_by">Виграє на %d</string>
-    <string name="losing_by">Програє на %d</string>
-    <string name="player_power_control">Керування силою гравця</string>
-    <string name="monster_power_control">Керування силою монстра</string>
-    <string name="name">Ім\'я</string>
 
     <!-- Helper/Partner -->
-    <string name="helper">Помічник</string>
-    <string name="choose_helper">Обрати помічника</string>
-    <string name="twin">Двійник</string>
-    <string name="remove_helper">Прибрати</string>
 
     <!-- Escape Dialog -->
-    <string name="escape_attempt">Спроба втечі</string>
-    <string name="roll_dice_to_escape">Киньте кубик для втечі</string>
-    <string name="dice_result">Результат: %d</string>
-    <string name="escape_success">Успішна втеча!</string>
-    <string name="escape_failed">Втеча провалилася!</string>
-    <string name="roll_dice">Кинути кубик</string>
     <string name="roll_the_dice">Кинути кубик</string>
-    <string name="roll_again">Кинути ще раз</string>
-    <string name="stay">Залишитися</string>
 
     <!-- Timer -->
     <string name="timer_title">Таймер</string>
     <string name="timer_start">СТАРТ</string>
     <string name="timer_select_seconds">Оберіть секунди для прийняття рішення</string>
-    <string name="volume">Гучність</string>
 
     <!-- Warnings & Dialogs -->
     <string name="reset_character_title">Скинути %s?</string>
 
     <!-- Edit Character -->
     <string name="edit_player">Редагувати гравця</string>
-    <string name="name_label">Ім\'я:</string>
-    <string name="level_label">Рівень:</string>
-    <string name="items_label">Предмети:</string>
-    <string name="gender_label">Стать:</string>
-    <string name="enter_player_name">Введіть ім\'я гравця…</string>
 
     <!-- Other -->
     <string name="settings">Налаштування</string>
@@ -105,11 +59,16 @@
     <string name="theme_light">Світла</string>
     <string name="theme_auto">Авто</string>
     <string name="theme_dark">Темна</string>
+    <string name="fonts_system">Шрифт системи</string>
     <string name="language">Мова</string>
     <string name="language_description">Змінити мову програми</string>
     <string name="gender">Стать</string>
     <string name="gender_male">Чоловіча</string>
     <string name="gender_female">Жіноча</string>
-    <string name="zero">0</string>
+    <string name="colors">Кольори</string>
+    <string name="colors_app">Кольори застосунку</string>
+    <string name="colors_dynamic">Кольори системи</string>
+    <string name="fonts">Шрифт</string>
+    <string name="fonts_app">Шрифт застосунку</string>
 
 </resources>

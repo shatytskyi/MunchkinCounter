@@ -31,7 +31,6 @@
     <string name="level">Level</string>
     <string name="power">Power</string>
     <string name="items">Items</string>
-    <string name="items_controls">EQUIP CONTROLS</string>
 
     <!-- Fight Screen -->
     <string name="fight_title">Fight</string>
@@ -70,8 +69,8 @@
     <string name="colors">Colors</string>
     <string name="colors_app">App Colors</string>
     <string name="colors_dynamic">Themed Colors</string>
-    <string name="fonts">Fonts</string>
-    <string name="fonts_app">App Fonts</string>
+    <string name="fonts">Font</string>
+    <string name="fonts_app">App Font</string>
     <string name="fonts_system">System Font</string>
     <string name="language">Language</string>
     <string name="language_description">Change app language</string>
