@@ -41,7 +41,11 @@ import com.shatytskyi.munchcounter.ui.components.icons.Close
 import com.shatytskyi.munchcounter.ui.components.icons.Edit
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.AnalyticsEvents
+import com.shatytskyi.munchcounter.analytics.bundleOf
 import kotlinx.coroutines.delay
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,12 +67,29 @@ fun EditCharacterDialog(
     var items by remember { mutableStateOf(TextFieldValue(character.items.toString())) }
     var selectedGender by remember { mutableStateOf(character.gender) }
     val haptic = LocalHapticFeedback.current
+    val analyticsManager = koinInject<AnalyticsManager>()
     val focusRequester = remember { FocusRequester() }
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    
+    // Track what was changed
+    val hasNameChanged = remember(nameFieldValue.text) { 
+        nameFieldValue.text.trim() != character.name 
+    }
+    val hasLevelChanged = remember(level.text) { 
+        level.text.toIntOrNull() != character.level 
+    }
+    val hasItemsChanged = remember(items.text) { 
+        items.text.toIntOrNull() != character.items 
+    }
+    val hasGenderChanged = remember(selectedGender) { 
+        selectedGender != character.gender 
+    }
 
     LaunchedEffect(Unit) {
+        // Log dialog view
+        analyticsManager.logScreenView("Edit Player Dialog", "EditCharacterDialog")
         delay(200) // Delay for bottom sheet animation
         focusRequester.requestFocus()
     }
@@ -229,6 +250,16 @@ fun EditCharacterDialog(
                 MunchkinIconTextButton(
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        // Track cancellation with what was being edited
+                        analyticsManager.logEvent(
+                            "edit_player_cancelled",
+                            bundleOf(
+                                "had_name_change" to hasNameChanged,
+                                "had_level_change" to hasLevelChanged,
+                                "had_items_change" to hasItemsChanged,
+                                "had_gender_change" to hasGenderChanged
+                            )
+                        )
                         onDismiss()
                     },
                     icon = MunchkinIcons.Close,
@@ -246,6 +277,21 @@ fun EditCharacterDialog(
                         haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                         val lvl = level.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.level
                         val itm = items.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.items
+                        
+                        // Track what was modified
+                        analyticsManager.logEvent(
+                            AnalyticsEvents.PLAYER_MODIFIED,
+                            bundleOf(
+                                "source" to "edit_dialog",
+                                "changed_name" to hasNameChanged,
+                                "changed_level" to hasLevelChanged,
+                                "changed_items" to hasItemsChanged,
+                                "changed_gender" to hasGenderChanged,
+                                "level_delta" to (lvl - character.level),
+                                "items_delta" to (itm - character.items)
+                            )
+                        )
+                        
                         onConfirm(nameFieldValue.text.trim(), lvl, itm, selectedGender)
                     },
                     icon = MunchkinIcons.Edit,

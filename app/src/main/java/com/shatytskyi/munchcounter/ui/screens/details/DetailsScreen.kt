@@ -17,6 +17,12 @@ import com.shatytskyi.munchcounter.ui.dialogs.DiceDialog
 import com.shatytskyi.munchcounter.ui.dialogs.EditCharacterDialog
 import com.shatytskyi.munchcounter.ui.dialogs.WarningDialog
 import com.shatytskyi.munchcounter.viewmodel.CommonViewModel
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.AnalyticsEvents
+import com.shatytskyi.munchcounter.analytics.ScreenNames
+import com.shatytskyi.munchcounter.analytics.bundleOf
+import com.google.firebase.analytics.FirebaseAnalytics
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -32,14 +38,19 @@ fun DetailsScreen(
 ) {
     val characters by viewModel.characters.collectAsState()
     val character = characters.find { it.id == characterId }
+    val analyticsManager = koinInject<AnalyticsManager>()
 
     var showEditDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(character) {
         viewModel.loadCharacters()
+        // Log screen view
+        character?.let {
+            analyticsManager.logScreenView(ScreenNames.PLAYER_DETAILS, "DetailsScreen")
+        }
     }
 
     if (character == null) {
@@ -49,16 +60,56 @@ fun DetailsScreen(
 
     DetailsScreenContent(
         character = character,
-        onLevelChange = { delta -> viewModel.changeLevel(characterId, delta) },
-        onPowerChange = { delta -> viewModel.changePower(characterId, delta) },
-        onGenderToggle = { id -> viewModel.toggleGender(id) },
-        onFightClick = onFight,
+        onLevelChange = { delta -> 
+            viewModel.changeLevel(characterId, delta)
+            analyticsManager.logEvent(
+                AnalyticsEvents.LEVEL_CHANGED,
+                bundleOf(
+                    "source" to "details_screen",
+                    "direction" to if (delta > 0) "up" else "down",
+                    "button_value" to delta,
+                    "new_level" to (character.level + delta),
+                    FirebaseAnalytics.Param.VALUE to delta.toLong()
+                )
+            )
+        },
+        onPowerChange = { delta -> 
+            viewModel.changePower(characterId, delta)
+            analyticsManager.logEvent(
+                AnalyticsEvents.ITEMS_CHANGED,
+                bundleOf(
+                    "source" to "details_screen",
+                    "direction" to if (delta > 0) "increase" else "decrease",
+                    "button_value" to delta,
+                    "new_items" to (character.power + delta),
+                    FirebaseAnalytics.Param.VALUE to delta.toLong()
+                )
+            )
+        },
+        onGenderToggle = { id -> 
+            viewModel.toggleGender(id)
+            analyticsManager.logEvent(AnalyticsEvents.GENDER_TOGGLED, 
+                bundleOf("source" to "details_screen"))
+        },
+        onFightClick = {
+            analyticsManager.logEvent(AnalyticsEvents.FIGHT_STARTED,
+                bundleOf("source" to "details_screen"))
+            onFight()
+        },
         onResetClick = { showResetDialog = true },
         onEditClick = { showEditDialog = true },
         onDeleteClick = { showDeleteDialog = true },
         onBackClick = onBack,
-        onTimerClick = onTimerClick,
-        onDiceClick = { showDiceDialog = true },
+        onTimerClick = {
+            analyticsManager.logEvent(AnalyticsEvents.TIMER_USED,
+                bundleOf("source" to "details_screen"))
+            onTimerClick()
+        },
+        onDiceClick = { 
+            analyticsManager.logEvent(AnalyticsEvents.DICE_ROLLED,
+                bundleOf("source" to "details_screen"))
+            showDiceDialog = true 
+        },
         animatedContentScope = animatedContentScope,
         sharedTransitionScope = sharedTransitionScope,
         modifier = modifier
@@ -82,6 +133,14 @@ fun DetailsScreen(
             message = stringResource(R.string.player_will_be_reset),
             onDismiss = { showResetDialog = false },
             onConfirm = {
+                analyticsManager.logEvent(
+                    "player_reset",
+                    bundleOf(
+                        "source" to "details_screen",
+                        "player_level" to character.level,
+                        "player_items" to character.items
+                    )
+                )
                 viewModel.resetCharacter(characterId)
                 showResetDialog = false
             }
@@ -94,6 +153,14 @@ fun DetailsScreen(
             message = stringResource(R.string.player_will_be_deleted),
             onDismiss = { showDeleteDialog = false },
             onConfirm = {
+                analyticsManager.logEvent(
+                    AnalyticsEvents.PLAYER_DELETED,
+                    bundleOf(
+                        "source" to "details_screen",
+                        "player_level" to character.level,
+                        "player_items" to character.items
+                    )
+                )
                 viewModel.removeCharacter(characterId)
                 onBack()
             }

@@ -42,7 +42,11 @@ import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.munchcounter.ui.components.icons.dice.Dice6
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.AnalyticsEvents
+import com.shatytskyi.munchcounter.analytics.bundleOf
 import kotlinx.coroutines.delay
+import org.koin.compose.koinInject
 
 @Composable
 fun DiceDialog(
@@ -54,12 +58,19 @@ fun DiceDialog(
     var animationValue by remember { mutableIntStateOf(result) }
     var currentDuration by remember { mutableIntStateOf(1000) }
     val haptic = LocalHapticFeedback.current
+    val analyticsManager = koinInject<AnalyticsManager>()
+    var rollCount by remember { mutableIntStateOf(0) }
 
     val shake by animateFloatAsState(
         targetValue = if (isRolling) 1f else 0f,
         animationSpec = tween(currentDuration, easing = LinearEasing),
         label = "dice_shake"
     )
+
+    // Log dialog view on first open
+    LaunchedEffect(Unit) {
+        analyticsManager.logScreenView("Dice Dialog", "DiceDialog")
+    }
 
     LaunchedEffect(isRolling) {
         if (isRolling) {
@@ -78,6 +89,15 @@ fun DiceDialog(
 
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             isRolling = false
+            
+            // Track dice roll result
+            analyticsManager.logEvent(
+                "dice_roll_result",
+                bundleOf(
+                    "result" to result,
+                    "roll_number" to rollCount
+                )
+            )
         }
     }
 
@@ -106,9 +126,15 @@ fun DiceDialog(
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = {
                                     result = (1..6).random()
-                                    currentDuration =
-                                        (500..1500).random()
+                                    currentDuration = (500..1500).random()
                                     isRolling = true
+                                    rollCount++
+                                    
+                                    // Track dice roll action (result tracked after animation)
+                                    analyticsManager.logEvent(
+                                        AnalyticsEvents.DICE_ROLLED,
+                                        bundleOf("source" to "dice_dialog")
+                                    )
                                 }
                             )
                     ) {

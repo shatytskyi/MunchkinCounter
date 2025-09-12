@@ -46,6 +46,12 @@ import com.shatytskyi.munchcounter.ui.components.icons.FontOff
 import com.shatytskyi.munchcounter.ui.components.icons.Language
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.ScreenNames
+import com.shatytskyi.munchcounter.analytics.UserProperties
+import com.shatytskyi.munchcounter.analytics.bundleOf
+import androidx.compose.runtime.LaunchedEffect
+import org.koin.compose.koinInject
 
 enum class ThemeMode {
     LIGHT,
@@ -70,6 +76,26 @@ fun SettingsScreen(
     val topPadding = remember(statusBarHeight) {
         with(density) { statusBarHeight.toDp() + APP_BAR_HEIGHT.dp + 16.dp }
     }
+    val analyticsManager = koinInject<AnalyticsManager>()
+    
+    // Log screen view and set user properties for settings
+    LaunchedEffect(currentThemeMode, dynamicColors, systemFont) {
+        analyticsManager.logScreenView(ScreenNames.SETTINGS, "SettingsScreen")
+        
+        // Set user properties for segmentation
+        analyticsManager.setUserProperty(
+            UserProperties.APP_THEME,
+            currentThemeMode.name.lowercase()
+        )
+        analyticsManager.setUserProperty(
+            UserProperties.DYNAMIC_COLORS_ENABLED,
+            dynamicColors.toString()
+        )
+        analyticsManager.setUserProperty(
+            UserProperties.SYSTEM_FONT_ENABLED,
+            systemFont.toString()
+        )
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -88,7 +114,21 @@ fun SettingsScreen(
             item {
                 ThemeSwitchGroup(
                     selectedMode = currentThemeMode,
-                    onModeSelected = onThemeModeChange
+                    onModeSelected = { mode ->
+                        analyticsManager.logEvent(
+                            "settings_changed",
+                            bundleOf(
+                                "setting" to "theme",
+                                "old_value" to currentThemeMode.name.lowercase(),
+                                "new_value" to mode.name.lowercase()
+                            )
+                        )
+                        analyticsManager.setUserProperty(
+                            UserProperties.APP_THEME,
+                            mode.name.lowercase()
+                        )
+                        onThemeModeChange(mode)
+                    }
                 )
             }
 
@@ -96,7 +136,21 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(24.dp))
                 ColorSwitchGroup(
                     dynamicColors = dynamicColors,
-                    onDynamicColorsChange = onDynamicColorsChange
+                    onDynamicColorsChange = { enabled ->
+                        analyticsManager.logEvent(
+                            "settings_changed",
+                            bundleOf(
+                                "setting" to "dynamic_colors",
+                                "old_value" to dynamicColors.toString(),
+                                "new_value" to enabled.toString()
+                            )
+                        )
+                        analyticsManager.setUserProperty(
+                            UserProperties.DYNAMIC_COLORS_ENABLED,
+                            enabled.toString()
+                        )
+                        onDynamicColorsChange(enabled)
+                    }
                 )
             }
 
@@ -104,7 +158,21 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(24.dp))
                 FontSwitchGroup(
                     systemFont = systemFont,
-                    onSystemFontChange = onSystemFontChange
+                    onSystemFontChange = { useSystemFont ->
+                        analyticsManager.logEvent(
+                            "settings_changed",
+                            bundleOf(
+                                "setting" to "system_font",
+                                "old_value" to systemFont.toString(),
+                                "new_value" to useSystemFont.toString()
+                            )
+                        )
+                        analyticsManager.setUserProperty(
+                            UserProperties.SYSTEM_FONT_ENABLED,
+                            useSystemFont.toString()
+                        )
+                        onSystemFontChange(useSystemFont)
+                    }
                 )
             }
 
@@ -118,7 +186,13 @@ fun SettingsScreen(
 
             item {
                 LanguageSelector(
-                    onClick = onLanguageClick
+                    onClick = {
+                        analyticsManager.logEvent(
+                            "language_selector_clicked",
+                            null
+                        )
+                        onLanguageClick()
+                    }
                 )
             }
         }

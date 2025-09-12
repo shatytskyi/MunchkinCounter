@@ -1,16 +1,20 @@
 package com.shatytskyi.munchcounter.analytics
 
+import android.os.Bundle
 import android.util.Log
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
-import com.google.firebase.analytics.logEvent
 
 /**
- * Analytics manager for tracking user interactions and app events
+ * Analytics manager for tracking user behavior and app usage patterns
+ * Following Firebase Analytics best practices for 2025
  */
 interface AnalyticsManager {
-    fun trackEvent(eventName: String, params: Map<String, Any>? = null)
+    fun logScreenView(screenName: String, screenClass: String? = null)
+    fun logEvent(eventName: String, params: Bundle? = null)
+    fun setUserProperty(name: String, value: String?)
+    fun setUserId(userId: String?)
 }
 
 class AnalyticsManagerImpl : AnalyticsManager {
@@ -18,50 +22,64 @@ class AnalyticsManagerImpl : AnalyticsManager {
     private val firebaseAnalytics: FirebaseAnalytics = Firebase.analytics
     
     init {
-        // Enable debug logging
+        // Enable analytics collection
         firebaseAnalytics.setAnalyticsCollectionEnabled(true)
         Log.d("AnalyticsManager", "Firebase Analytics initialized")
     }
     
     /**
-     * Track an event with optional parameters
-     * @param eventName The name of the event (use constants from Events object)
-     * @param params Optional parameters as key-value pairs (use constants from EventParams object for keys)
+     * Log screen view events for tracking user navigation patterns
      */
-    override fun trackEvent(eventName: String, params: Map<String, Any>?) {
-        Log.d("AnalyticsManager", "Tracking event: $eventName with params: $params")
-        
-        // Special handling for screen view events
-        if (eventName.startsWith("screen_") || eventName.contains("screen_viewed")) {
-            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-                param(FirebaseAnalytics.Param.SCREEN_NAME, eventName.removePrefix("screen_"))
-                param(FirebaseAnalytics.Param.SCREEN_CLASS, eventName)
-                params?.forEach { (key, value) ->
-                    when (value) {
-                        is String -> param(key, value)
-                        is Long -> param(key, value)
-                        is Double -> param(key, value)
-                        is Int -> param(key, value.toLong())
-                        is Float -> param(key, value.toDouble())
-                        is Boolean -> param(key, if (value) 1L else 0L)
-                        else -> param(key, value.toString())
-                    }
-                }
-            }
-        } else {
-            firebaseAnalytics.logEvent(eventName) {
-                params?.forEach { (key, value) ->
-                    when (value) {
-                        is String -> param(key, value)
-                        is Long -> param(key, value)
-                        is Double -> param(key, value)
-                        is Int -> param(key, value.toLong())
-                        is Float -> param(key, value.toDouble())
-                        is Boolean -> param(key, if (value) 1L else 0L)
-                        else -> param(key, value.toString())
-                    }
-                }
-            }
+    override fun logScreenView(screenName: String, screenClass: String?) {
+        val bundle = Bundle().apply {
+            putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+            screenClass?.let { putString(FirebaseAnalytics.Param.SCREEN_CLASS, it) }
+        }
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        Log.d("AnalyticsManager", "Screen view: $screenName")
+    }
+    
+    /**
+     * Log custom or recommended events
+     * Use FirebaseAnalytics.Event constants for standard events
+     */
+    override fun logEvent(eventName: String, params: Bundle?) {
+        firebaseAnalytics.logEvent(eventName, params)
+        Log.d("AnalyticsManager", "Event: $eventName, params: $params")
+    }
+    
+    /**
+     * Set user properties for audience segmentation
+     * Examples: preferred_game_mode, player_level_range, active_features
+     */
+    override fun setUserProperty(name: String, value: String?) {
+        firebaseAnalytics.setUserProperty(name, value)
+        Log.d("AnalyticsManager", "User property: $name = $value")
+    }
+    
+    /**
+     * Set user ID for cross-device tracking (optional)
+     */
+    override fun setUserId(userId: String?) {
+        firebaseAnalytics.setUserId(userId)
+        Log.d("AnalyticsManager", "User ID set: ${userId?.take(5)}...")
+    }
+}
+
+/**
+ * Extension functions for easier parameter building
+ */
+fun bundleOf(vararg pairs: Pair<String, Any?>): Bundle = Bundle().apply {
+    pairs.forEach { (key, value) ->
+        when (value) {
+            is String -> putString(key, value)
+            is Int -> putInt(key, value)
+            is Long -> putLong(key, value)
+            is Double -> putDouble(key, value)
+            is Float -> putFloat(key, value)
+            is Boolean -> putBoolean(key, value)
+            null -> {} // Skip null values
+            else -> putString(key, value.toString())
         }
     }
 }

@@ -55,7 +55,10 @@ import com.shatytskyi.munchcounter.ui.components.icons.Add
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.components.icons.Reset
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.bundleOf
 import kotlinx.coroutines.delay
+import org.koin.compose.koinInject
 
 @Composable
 fun FightInterface(
@@ -66,6 +69,7 @@ fun FightInterface(
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
+    val analyticsManager = koinInject<AnalyticsManager>()
 
     // Sizes for sections
     val playerControlsWidth = screenWidth * 0.65f
@@ -127,6 +131,16 @@ fun FightInterface(
                         onPowerChange = { delta ->
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             playerTempPower += delta
+                            analyticsManager.logEvent(
+                                "fight_player_temp_power_changed",
+                                bundleOf(
+                                    "direction" to if (delta > 0) "increase" else "decrease",
+                                    "button_value" to delta,
+                                    "new_temp_power" to playerTempPower,
+                                    "total_player_power" to (character.level + character.items + playerTempPower),
+                                    "is_winning" to ((character.level + character.items + playerTempPower) > monsterPower)
+                                )
+                            )
                         }
                     )
                 }
@@ -157,6 +171,16 @@ fun FightInterface(
                         onPowerChange = { delta ->
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             monsterPower += delta
+                            analyticsManager.logEvent(
+                                "fight_monster_power_changed",
+                                bundleOf(
+                                    "direction" to if (delta > 0) "increase" else "decrease",
+                                    "button_value" to delta,
+                                    "new_monster_power" to monsterPower,
+                                    "total_player_power" to totalPlayerPower,
+                                    "is_player_winning" to (totalPlayerPower > monsterPower)
+                                )
+                            )
                         }
                     )
                 }
@@ -200,6 +224,15 @@ fun FightInterface(
             MunchkinIconTextButton(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    // Track fight reset
+                    analyticsManager.logEvent(
+                        "fight_reset",
+                        bundleOf(
+                            "player_temp_power_before" to playerTempPower,
+                            "monster_power_before" to monsterPower,
+                            "was_player_winning" to (totalPlayerPower > monsterPower)
+                        )
+                    )
                     // Reset temporary power changes
                     playerTempPower = 0
                     monsterPower = 0

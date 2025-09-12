@@ -55,10 +55,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.munchcounter.R
-import com.shatytskyi.munchcounter.analytics.AnalyticsManager
-import com.shatytskyi.munchcounter.analytics.Events
-import com.shatytskyi.munchcounter.analytics.EventParams
 import com.shatytskyi.munchcounter.data.TimerPreferences
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import com.shatytskyi.munchcounter.analytics.AnalyticsEvents
+import com.shatytskyi.munchcounter.analytics.ScreenNames
+import com.shatytskyi.munchcounter.analytics.UserProperties
+import com.shatytskyi.munchcounter.analytics.bundleOf
 import com.shatytskyi.munchcounter.ui.components.MunchkinHorizontalDivider
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconButton
@@ -387,9 +389,13 @@ private fun useTimerLogic(): TimerState {
     val timerLogic = remember { TimerLogic() }
     val haptic = LocalHapticFeedback.current
     
-    // Log screen view
-    LaunchedEffect(Unit) {
-        analyticsManager.trackEvent(Events.TimerScreen.VIEWED)
+    // Log screen view and set timer preference as user property
+    LaunchedEffect(selectedSeconds) {
+        analyticsManager.logScreenView(ScreenNames.TIMER, "TimerScreen")
+        analyticsManager.setUserProperty(
+            UserProperties.TIMER_SECONDS_PREFERENCE,
+            selectedSeconds.toString()
+        )
     }
 
     LaunchedEffect(isRunning, currentSeconds) {
@@ -404,9 +410,9 @@ private fun useTimerLogic(): TimerState {
                 shouldFlash = true
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 timerLogic.playBeep(END_FREQUENCY)
-                analyticsManager.trackEvent(
-                    Events.TimerScreen.COMPLETED,
-                    mapOf(EventParams.SECONDS to selectedSeconds)
+                analyticsManager.logEvent(
+                    "timer_completed",
+                    bundleOf("seconds" to selectedSeconds)
                 )
             }
         }
@@ -430,9 +436,9 @@ private fun useTimerLogic(): TimerState {
                 scope.launch {
                     timerPreferences.setSelectedSeconds(seconds)
                 }
-                analyticsManager.trackEvent(
-                    Events.TimerScreen.SECONDS_SELECTED,
-                    mapOf(EventParams.SECONDS to seconds)
+                analyticsManager.setUserProperty(
+                    UserProperties.TIMER_SECONDS_PREFERENCE,
+                    seconds.toString()
                 )
             }
         },
@@ -440,9 +446,12 @@ private fun useTimerLogic(): TimerState {
             if (isRunning) {
                 isRunning = false
                 currentSeconds = 0
-                analyticsManager.trackEvent(
-                    Events.TimerScreen.STOP_CLICKED,
-                    mapOf(EventParams.SECONDS to selectedSeconds)
+                analyticsManager.logEvent(
+                    "timer_stopped",
+                    bundleOf(
+                        "seconds_remaining" to currentSeconds,
+                        "original_seconds" to selectedSeconds
+                    )
                 )
             } else {
                 currentSeconds = selectedSeconds
@@ -451,9 +460,9 @@ private fun useTimerLogic(): TimerState {
                 scope.launch {
                     timerLogic.playBeep(START_FREQUENCY)
                 }
-                analyticsManager.trackEvent(
-                    Events.TimerScreen.START_CLICKED,
-                    mapOf(EventParams.SECONDS to selectedSeconds)
+                analyticsManager.logEvent(
+                    AnalyticsEvents.TIMER_USED,
+                    bundleOf("seconds" to selectedSeconds)
                 )
             }
         }
