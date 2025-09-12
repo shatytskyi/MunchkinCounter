@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -73,7 +72,6 @@ fun FightInterface(
     val monsterControlsWidth = screenWidth * 0.65f
 
     // State
-    var showingMonster by rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     // Player and monster power
@@ -83,28 +81,15 @@ fun FightInterface(
     val totalPlayerPower = character.level + character.items + playerTempPower
     val totalMonsterPower = monsterPower
 
-    // Initial animation: switch to monster on screen start
+    // Initial animation: scroll to monster on screen start
     LaunchedEffect(Unit) {
         delay(400)
-        showingMonster = true
-    }
-
-    // Scroll to position on state change
-    LaunchedEffect(showingMonster) {
-        if (showingMonster) {
-            // Scroll to show monster (right side)
-            val scrollAmountPx = with(density) { playerControlsWidth.toPx().toInt() }
-            scrollState.animateScrollTo(
-                value = scrollAmountPx,
-                animationSpec = tween(durationMillis = 400)
-            )
-        } else {
-            // Scroll to show player (left side)
-            scrollState.animateScrollTo(
-                value = 0,
-                animationSpec = tween(durationMillis = 400)
-            )
-        }
+        // Scroll to show monster (right side)
+        val scrollAmountPx = with(density) { playerControlsWidth.toPx().toInt() }
+        scrollState.animateScrollTo(
+            value = scrollAmountPx,
+            animationSpec = tween(durationMillis = 400)
+        )
     }
 
     Column(
@@ -217,7 +202,6 @@ fun FightInterface(
                     // Reset temporary power changes
                     playerTempPower = 0
                     monsterPower = 0
-                    showingMonster = false
                 },
                 icon = MunchkinIcons.Reset,
                 text = stringResource(R.string.reset),
