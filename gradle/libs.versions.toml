@@ -12,7 +12,6 @@ room = "2.8.0"
 koin = "4.1.1"
 koin-compose = "4.1.1"
 coroutines = "1.10.2"
-gson = "2.13.2"
 serialization = "1.9.0"
 preference = "1.2.1"
 material = "1.13.0"
@@ -58,7 +57,6 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 # Serialization
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 

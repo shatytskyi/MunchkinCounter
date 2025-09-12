@@ -42,8 +42,6 @@ class CommonViewModel(
 
     fun loadCharacters() {
         viewModelScope.launch {
-            repository.loadCharacters()
-            // Небольшая задержка чтобы данные успели загрузиться
             delay(300)
             _isInitialLoading.value = false
         }
@@ -85,7 +83,6 @@ class CommonViewModel(
 
     fun removeAllCharacters() {
         viewModelScope.launch {
-            repository.createBackup()
             repository.removeAllCharacters()
         }
     }

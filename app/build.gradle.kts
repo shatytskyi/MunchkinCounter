@@ -113,7 +113,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
 
     // JSON serialization
-    implementation(libs.gson)
     implementation(libs.kotlinx.serialization.json)
 
     // Room database

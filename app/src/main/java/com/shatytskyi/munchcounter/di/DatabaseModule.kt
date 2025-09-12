@@ -10,23 +10,25 @@ import com.shatytskyi.munchcounter.data.ThemePreferencesImpl
 import org.koin.dsl.module
 
 val databaseModule = module {
-    
+
     single<MunchkinDatabase> {
         Room.databaseBuilder(
             get<Context>().applicationContext,
             MunchkinDatabase::class.java,
             "munchkin_database"
+        ).fallbackToDestructiveMigration(
+            dropAllTables = true
         ).build()
     }
-    
+
     single<CharacterDao> {
         get<MunchkinDatabase>().characterDao()
     }
-    
+
     single<ThemePreferences> {
         ThemePreferencesImpl(get())
     }
-    
+
     single<CharacterRepository> {
         CharacterRepository(get())
     }
