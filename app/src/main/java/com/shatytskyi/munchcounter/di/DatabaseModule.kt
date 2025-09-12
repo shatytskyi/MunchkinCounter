@@ -9,8 +9,10 @@ import com.shatytskyi.munchcounter.data.ThemePreferences
 import com.shatytskyi.munchcounter.data.ThemePreferencesImpl
 import com.shatytskyi.munchcounter.data.TimerPreferences
 import com.shatytskyi.munchcounter.data.TimerPreferencesImpl
+import com.shatytskyi.munchcounter.BuildConfig
 import com.shatytskyi.munchcounter.analytics.AnalyticsManager
-import com.shatytskyi.munchcounter.analytics.AnalyticsManagerImpl
+import com.shatytskyi.munchcounter.analytics.DebugAnalyticsManager
+import com.shatytskyi.munchcounter.analytics.ReleaseAnalyticsManager
 import org.koin.dsl.module
 
 val databaseModule = module {
@@ -42,6 +44,10 @@ val databaseModule = module {
     }
     
     single<AnalyticsManager> {
-        AnalyticsManagerImpl()
+        if (BuildConfig.DEBUG) {
+            DebugAnalyticsManager()
+        } else {
+            ReleaseAnalyticsManager()
+        }
     }
 }

@@ -17,52 +17,58 @@ interface AnalyticsManager {
     fun setUserId(userId: String?)
 }
 
-class AnalyticsManagerImpl : AnalyticsManager {
+/**
+ * Debug implementation - only logs events to console
+ */
+class DebugAnalyticsManager : AnalyticsManager {
+    
+    override fun logScreenView(screenName: String, screenClass: String?) {
+        Log.d("AnalyticsManager", "Track event: SCREEN_VIEW - screenName: $screenName, screenClass: $screenClass")
+    }
+    
+    override fun logEvent(eventName: String, params: Bundle?) {
+        Log.d("AnalyticsManager", "Track event: $eventName - params: $params")
+    }
+    
+    override fun setUserProperty(name: String, value: String?) {
+        Log.d("AnalyticsManager", "Track event: SET_USER_PROPERTY - name: $name, value: $value")
+    }
+    
+    override fun setUserId(userId: String?) {
+        Log.d("AnalyticsManager", "Track event: SET_USER_ID - userId: ${userId?.take(5)}...")
+    }
+}
+
+/**
+ * Release implementation - sends real events to Firebase
+ */
+class ReleaseAnalyticsManager : AnalyticsManager {
     
     private val firebaseAnalytics: FirebaseAnalytics = Firebase.analytics
     
     init {
-        // Enable analytics collection
         firebaseAnalytics.setAnalyticsCollectionEnabled(true)
-        Log.d("AnalyticsManager", "Firebase Analytics initialized")
+        Log.d("AnalyticsManager", "Firebase Analytics initialized for Release")
     }
     
-    /**
-     * Log screen view events for tracking user navigation patterns
-     */
     override fun logScreenView(screenName: String, screenClass: String?) {
         val bundle = Bundle().apply {
             putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
             screenClass?.let { putString(FirebaseAnalytics.Param.SCREEN_CLASS, it) }
         }
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
-        Log.d("AnalyticsManager", "Screen view: $screenName")
     }
     
-    /**
-     * Log custom or recommended events
-     * Use FirebaseAnalytics.Event constants for standard events
-     */
     override fun logEvent(eventName: String, params: Bundle?) {
         firebaseAnalytics.logEvent(eventName, params)
-        Log.d("AnalyticsManager", "Event: $eventName, params: $params")
     }
     
-    /**
-     * Set user properties for audience segmentation
-     * Examples: preferred_game_mode, player_level_range, active_features
-     */
     override fun setUserProperty(name: String, value: String?) {
         firebaseAnalytics.setUserProperty(name, value)
-        Log.d("AnalyticsManager", "User property: $name = $value")
     }
     
-    /**
-     * Set user ID for cross-device tracking (optional)
-     */
     override fun setUserId(userId: String?) {
         firebaseAnalytics.setUserId(userId)
-        Log.d("AnalyticsManager", "User ID set: ${userId?.take(5)}...")
     }
 }
 

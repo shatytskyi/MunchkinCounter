@@ -44,7 +44,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.shatytskyi.gamecounter"
+        applicationId = "com.shatytskyi.munchcounter"
         minSdk = 31
         targetSdk = 36
         versionCode = 10
@@ -86,6 +86,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
 }
