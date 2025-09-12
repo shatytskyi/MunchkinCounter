@@ -11,7 +11,7 @@ class MunchkinApplication : Application() {
     
     override fun onCreate() {
         super.onCreate()
-        
+
         startKoin {
             androidLogger()
             androidContext(this@MunchkinApplication)
