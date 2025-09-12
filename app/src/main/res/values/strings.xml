@@ -12,22 +12,16 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="close">Close</string>
-    <string name="exit">Exit</string>
 
     <!-- Player Management -->
-    <string name="add_player">Add Player</string>
     <string name="add_new_player">Add new player</string>
     <string name="player_name">Player Name</string>
     <string name="no_players">No Players Yet</string>
     <string name="no_players_description">Add your first player to get started with Munchkin!</string>
-    <string name="reset_player">Reset Player</string>
-    <string name="delete_player">Delete Player</string>
     <string name="player_will_be_reset">Player will be reset to level 1 with 0 items</string>
     <string name="player_will_be_deleted">Player will be permanently deleted</string>
     <string name="delete_character_title">Delete %s?</string>
     <string name="loading_players">Loading Players...</string>
-    <string name="reset_all">Reset All</string>
-    <string name="remove_all">Remove All</string>
     <string name="warning_reset_all_title">Reset All Players?</string>
     <string name="warning_reset_all_message">All players will be reset to level 1 with 0 power</string>
     <string name="warning_delete_all_title">Delete All Players?</string>
@@ -40,56 +34,21 @@
     <string name="items_controls">EQUIP CONTROLS</string>
 
     <!-- Fight Screen -->
-    <string name="fight">Fight!</string>
     <string name="fight_title">Fight</string>
     <string name="loading_fight">Loading Fight…</string>
-    <string name="player_header">PLAYER</string>
-    <string name="helper_header">HELPER</string>
-    <string name="result_header">RESULT</string>
-    <string name="monster_power">Monster - Power %d</string>
-    <string name="player_level">%1$s - Level %2$d</string>
-    <string name="player_power">Power: %d</string>
-    <string name="victory">VICTORY</string>
-    <string name="escape">ESCAPE</string>
-    <string name="win_button">Win!</string>
-    <string name="run_button">Run!</string>
-    
+
     <!-- New Fight Screen strings -->
-    <string name="player_stats">Player Stats</string>
-    <string name="current_power">Current Power</string>
-    <string name="no_helper">No helper selected</string>
-    <string name="remove">Remove</string>
-    <string name="power_comparison">Power Comparison</string>
     <string name="player">Player</string>
     <string name="monster">Monster</string>
-    <string name="winning_by">Winning by %d</string>
-    <string name="losing_by">Losing by %d</string>
-    <string name="player_power_control">Player Power Control</string>
-    <string name="monster_power_control">Monster Power Control</string>
-    <string name="name">Name</string>
 
     <!-- Helper/Partner -->
-    <string name="helper">Helper</string>
-    <string name="choose_helper">Choose Helper</string>
-    <string name="twin">Twin</string>
-    <string name="remove_helper">Remove</string>
 
     <!-- Escape Dialog -->
-    <string name="escape_attempt">Escape Attempt</string>
-    <string name="roll_dice_to_escape">Roll dice to escape</string>
-    <string name="dice_result">Result: %d</string>
-    <string name="escape_success">Successful escape!</string>
-    <string name="escape_failed">Escape failed!</string>
-    <string name="roll_dice">Roll Dice</string>
-    <string name="roll_again">Roll Again</string>
-    <string name="stay">Stay</string>
 
     <!-- Timer -->
     <string name="timer_title">Timer</string>
     <string name="timer_start">START</string>
     <string name="timer_select_seconds">Select seconds for decision making</string>
-    <string name="volume">Volume</string>
-    <string name="sound">Sound</string>
 
     <!-- Dice -->
     <string name="roll_the_dice">Roll the dice</string>
@@ -99,11 +58,6 @@
 
     <!-- Edit Character -->
     <string name="edit_player">Edit Player</string>
-    <string name="name_label">Name:</string>
-    <string name="level_label">Level:</string>
-    <string name="items_label">Items:</string>
-    <string name="gender_label">Gender:</string>
-    <string name="enter_player_name">Enter player name…</string>
 
     <!-- Death -->
 
@@ -124,6 +78,5 @@
     <string name="gender">Gender</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
-    <string name="zero">0</string>
 
 </resources>
