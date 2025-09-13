@@ -36,6 +36,7 @@ import com.shatytskyi.munchcounter.ui.components.icons.Close
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import org.koin.compose.koinInject
+import kotlin.math.absoluteValue
 
 data class HelperOption(
     val character: Character,
@@ -155,9 +156,8 @@ private fun HelperOptionItem(
     val battleResult = totalPowerWithHelper - currentMonsterPower
 
     val resultText = when {
-        battleResult > 0 -> "+$battleResult"
-        battleResult < 0 -> "$battleResult"
-        else -> "="
+        battleResult == 0 -> "="
+        else -> "+${battleResult.absoluteValue}"
     }
 
     val resultColor = when {

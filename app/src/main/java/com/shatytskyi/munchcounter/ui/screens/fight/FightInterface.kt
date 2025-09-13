@@ -470,14 +470,35 @@ private fun PowerComparisonColumn(
     modifier: Modifier = Modifier
 ) {
     val powerDifference = playerPower - monsterPower
-    
+
     ConstraintLayout(
         modifier = modifier
             .background(MunchkinTheme.colors.background.copy(alpha = 0.5f))
             .padding(8.dp)
     ) {
-        val (playerRef, vsRef, monsterRef, differenceRef) = createRefs()
-        
+        val (playerRef, playerDiffRef, vsRef, monsterRef, monsterDiffRef) = createRefs()
+
+        // Power difference above player (if player is winning)
+        if (powerDifference > 0) {
+            AnimatedContent(
+                targetState = powerDifference,
+                transitionSpec = {
+                    fadeIn() togetherWith fadeOut()
+                },
+                label = "player_difference_animation",
+                modifier = Modifier.constrainAs(playerDiffRef) {
+                    bottom.linkTo(playerRef.top, margin = 8.dp)
+                    centerHorizontallyTo(parent)
+                }
+            ) { difference ->
+                MunchkinText(
+                    text = "(+$difference)",
+                    style = MunchkinTheme.typography.bodyLarge,
+                    color = MunchkinTheme.colors.primary
+                )
+            }
+        }
+
         // Player power
         AnimatedContent(
             targetState = playerPower,
@@ -502,7 +523,7 @@ private fun PowerComparisonColumn(
                 color = MunchkinTheme.colors.primary
             )
         }
-        
+
         // VS - centered in the parent
         MunchkinText(
             text = "VS",
@@ -512,7 +533,7 @@ private fun PowerComparisonColumn(
                 centerTo(parent)
             }
         )
-        
+
         // Monster power
         AnimatedContent(
             targetState = monsterPower,
@@ -537,24 +558,24 @@ private fun PowerComparisonColumn(
                 color = MunchkinTheme.colors.red
             )
         }
-        
-        // Power difference indicator
-        if (powerDifference != 0) {
+
+        // Power difference below monster (if monster is winning)
+        if (powerDifference < 0) {
             AnimatedContent(
                 targetState = powerDifference,
                 transitionSpec = {
                     fadeIn() togetherWith fadeOut()
                 },
-                label = "power_difference_animation",
-                modifier = Modifier.constrainAs(differenceRef) {
-                    top.linkTo(monsterRef.bottom, margin = 16.dp)
+                label = "monster_difference_animation",
+                modifier = Modifier.constrainAs(monsterDiffRef) {
+                    top.linkTo(monsterRef.bottom, margin = 8.dp)
                     centerHorizontallyTo(parent)
                 }
             ) { difference ->
                 MunchkinText(
-                    text = if (difference > 0) "(+$difference)" else "($difference)",
+                    text = "(+${kotlin.math.abs(difference)})",
                     style = MunchkinTheme.typography.bodyLarge,
-                    color = if (difference > 0) MunchkinTheme.colors.primary else MunchkinTheme.colors.red
+                    color = MunchkinTheme.colors.red
                 )
             }
         }
