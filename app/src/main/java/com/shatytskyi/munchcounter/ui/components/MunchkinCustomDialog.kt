@@ -63,8 +63,8 @@ fun MunchkinCustomDialog(
                             .fillMaxWidth()
                             .verticalScroll(scrollState)
                             .padding(
-                                top = if (header != null) 80.dp else 24.dp,
-                                bottom = if (footer != null) 80.dp else 24.dp
+                                top = if (header != null) 96.dp else 24.dp, // 80dp header height + 16dp spacing
+                                bottom = if (footer != null) 96.dp else 24.dp // 80dp footer height + 16dp spacing
                             )
                             .padding(horizontal = 24.dp)
                     ) {

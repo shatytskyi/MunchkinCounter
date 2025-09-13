@@ -89,7 +89,7 @@ fun HelpSelectionDialog(
         onDismissRequest = onDismiss,
         modifier = modifier,
         header = {
-            // Title in header with same padding as footer
+            // Title in header with same total height as footer
             MunchkinText(
                 text = stringResource(R.string.select_helper),
                 style = MunchkinTheme.typography.titleLarge.copy(
@@ -99,7 +99,7 @@ fun HelpSelectionDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .padding(top = 16.dp, bottom = 16.dp),
+                    .padding(vertical = 32.dp), // Match total footer padding (16dp external + 16dp internal from button)
                 textAlign = TextAlign.Center
             )
         },
