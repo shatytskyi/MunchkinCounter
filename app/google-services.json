@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:164120601496:android:25b547785eda623a6fc1ed",
+        "mobilesdk_app_id": "1:164120601496:android:d9aebd636a4406016fc1ed",
         "android_client_info": {
-          "package_name": "com.shatytskyi.gamecounter.debug"
+          "package_name": "com.shatytskyi.gamecounter"
         }
       },
       "oauth_client": [],
@@ -26,9 +26,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:164120601496:android:30859e39a2f3a03f6fc1ed",
+        "mobilesdk_app_id": "1:164120601496:android:25b547785eda623a6fc1ed",
         "android_client_info": {
-          "package_name": "com.shatytskyi.munchcounter"
+          "package_name": "com.shatytskyi.gamecounter.debug"
         }
       },
       "oauth_client": [],
