@@ -53,6 +53,7 @@ import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.icons.Add
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
+import com.shatytskyi.munchcounter.ui.components.icons.Remove
 import com.shatytskyi.munchcounter.ui.components.icons.Reset
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.analytics.AnalyticsManager
@@ -60,9 +61,11 @@ import com.shatytskyi.munchcounter.analytics.bundleOf
 import com.shatytskyi.munchcounter.ui.dialogs.HelpSelectionDialog
 import com.shatytskyi.munchcounter.ui.dialogs.HelperOption
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 
 @Composable
 fun FightInterface(
@@ -75,6 +78,7 @@ fun FightInterface(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val analyticsManager = koinInject<AnalyticsManager>()
+    val coroutineScope = rememberCoroutineScope()
 
     // Sizes for sections
     val playerControlsWidth = screenWidth * 0.65f
@@ -242,7 +246,7 @@ fun FightInterface(
                         helperOption = null
                     }
                 },
-                icon = MunchkinIcons.Add,
+                icon = if (helperOption == null) MunchkinIcons.Add else MunchkinIcons.Remove,
                 text = stringResource(if (helperOption == null) R.string.help else R.string.remove_help),
                 modifier = Modifier.weight(1f),
                 textStyle = MunchkinTheme.typography.labelMedium,
@@ -291,6 +295,15 @@ fun FightInterface(
             onConfirm = { option ->
                 helperOption = option
                 showHelperDialog = false
+
+                // Scroll to player side after helper selection
+                coroutineScope.launch {
+                    scrollState.animateScrollTo(
+                        value = 0,
+                        animationSpec = tween(durationMillis = 400)
+                    )
+                }
+
                 // Track help added
                 analyticsManager.logEvent(
                     "help_added",
