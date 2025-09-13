@@ -148,9 +148,9 @@ private fun HelperOptionItem(
     val battleResult = totalPowerWithHelper - currentMonsterPower
 
     val resultText = when {
-        battleResult > 0 -> "+$battleResult"
-        battleResult < 0 -> "$battleResult"
-        else -> "="
+        battleResult > 0 -> "→ +$battleResult"
+        battleResult < 0 -> "→ $battleResult"
+        else -> "→ ="
     }
 
     val resultColor = when {
@@ -233,6 +233,7 @@ private fun HelperOptionItem(
                     .padding(horizontal = 12.dp, vertical = 4.dp)
             ) {
                 MunchkinText(
+                    textAlign = TextAlign.Center,
                     text = resultText,
                     style = MunchkinTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold
