@@ -26,6 +26,8 @@ fun MunchkinCustomDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = MunchkinTheme.colors.background,
+    header: @Composable (() -> Unit)? = null,
+    footer: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     Dialog(
@@ -51,15 +53,47 @@ fun MunchkinCustomDialog(
                 shape = RoundedCornerShape(16.dp),
                 color = containerColor
             ) {
-                val scrollState = rememberScrollState()
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(scrollState)
-                        .padding(24.dp)
+                Box(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    content()
+                    // Scrollable content (underneath header/footer)
+                    val scrollState = rememberScrollState()
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(scrollState)
+                            .padding(
+                                top = if (header != null) 80.dp else 24.dp,
+                                bottom = if (footer != null) 80.dp else 24.dp
+                            )
+                            .padding(horizontal = 24.dp)
+                    ) {
+                        content()
+                    }
+
+                    // Header overlay with semi-transparent background
+                    header?.let {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.TopCenter)
+                                .background(containerColor.copy(alpha = 0.95f))
+                        ) {
+                            it()
+                        }
+                    }
+
+                    // Footer overlay with semi-transparent background
+                    footer?.let {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter)
+                                .background(containerColor.copy(alpha = 0.95f))
+                        ) {
+                            it()
+                        }
+                    }
                 }
             }
         }

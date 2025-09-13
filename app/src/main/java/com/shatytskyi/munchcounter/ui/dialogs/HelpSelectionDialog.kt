@@ -87,14 +87,9 @@ fun HelpSelectionDialog(
 
     MunchkinCustomDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp)
-        ) {
-            // Title
+        modifier = modifier,
+        header = {
+            // Title in header with same padding as footer
             MunchkinText(
                 text = stringResource(R.string.select_helper),
                 style = MunchkinTheme.typography.titleLarge.copy(
@@ -103,33 +98,13 @@ fun HelpSelectionDialog(
                 color = MunchkinTheme.colors.onBackground,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 16.dp, bottom = 16.dp),
                 textAlign = TextAlign.Center
             )
-
-            // Helper options list
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                helperOptions.forEach { option ->
-                    HelperOptionItem(
-                        option = option,
-                        currentPlayerPower = currentPlayerTotalPower,
-                        currentMonsterPower = currentMonsterPower,
-                        onClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                            onConfirm(option)
-                        }
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Close button
+        },
+        footer = {
+            // Close button in footer
             MunchkinIconTextButton(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
@@ -137,14 +112,33 @@ fun HelpSelectionDialog(
                 },
                 icon = MunchkinIcons.Close,
                 text = stringResource(R.string.close),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 16.dp, bottom = 16.dp),
                 textStyle = MunchkinTheme.typography.labelMedium,
                 contentPadding = 16.dp,
                 rippleColor = MunchkinTheme.colors.secondary,
                 bounded = false
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
+        }
+    ) {
+        // Helper options list
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            helperOptions.forEach { option ->
+                HelperOptionItem(
+                    option = option,
+                    currentPlayerPower = currentPlayerTotalPower,
+                    currentMonsterPower = currentMonsterPower,
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                        onConfirm(option)
+                    }
+                )
+            }
         }
     }
 }
