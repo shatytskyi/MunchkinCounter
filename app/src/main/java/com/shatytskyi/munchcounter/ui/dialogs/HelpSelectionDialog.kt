@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -25,15 +28,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.ui.components.MunchkinBottomSheet
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
+import com.shatytskyi.munchcounter.ui.components.icons.ArrowTop
+import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
-import com.shatytskyi.munchcounter.analytics.AnalyticsManager
 import org.koin.compose.koinInject
 
 data class HelperOption(
@@ -148,15 +151,15 @@ private fun HelperOptionItem(
     val battleResult = totalPowerWithHelper - currentMonsterPower
 
     val resultText = when {
-        battleResult > 0 -> "→ +$battleResult"
-        battleResult < 0 -> "→ $battleResult"
-        else -> "→ ="
+        battleResult > 0 -> "+$battleResult"
+        battleResult < 0 -> "$battleResult"
+        else -> "="
     }
 
     val resultColor = when {
         battleResult > 0 -> MunchkinTheme.colors.primary
         battleResult < 0 -> MunchkinTheme.colors.red
-        else -> MunchkinTheme.colors.grey
+        else -> MunchkinTheme.colors.primary
     }
 
     MunchkinCard(
@@ -215,8 +218,14 @@ private fun HelperOptionItem(
                         }
                     }
 
+                    Spacer(modifier = Modifier.height(4.dp))
+
                     MunchkinText(
-                        text = "${stringResource(R.string.level)} ${if (option.isClone) option.character.level else option.character.level} • ${stringResource(R.string.power)} ${option.currentPower}",
+                        text = "${stringResource(R.string.level)} ${if (option.isClone) option.character.level else option.character.level} • ${
+                            stringResource(
+                                R.string.power
+                            )
+                        } ${option.currentPower}",
                         style = MunchkinTheme.typography.labelSmall,
                         color = MunchkinTheme.colors.grey
                     )
@@ -232,14 +241,25 @@ private fun HelperOptionItem(
                     )
                     .padding(horizontal = 12.dp, vertical = 4.dp)
             ) {
-                MunchkinText(
-                    textAlign = TextAlign.Center,
-                    text = resultText,
-                    style = MunchkinTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = resultColor
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    MunchkinIcon(
+                        imageVector = MunchkinIcons.ArrowTop,
+                        tint = resultColor,
+                        size = 18.dp,
+                        modifier = Modifier.rotate(90f)
+                    )
+                    MunchkinText(
+                        textAlign = TextAlign.Center,
+                        text = resultText,
+                        style = MunchkinTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = resultColor
+                    )
+                }
             }
         }
     }
