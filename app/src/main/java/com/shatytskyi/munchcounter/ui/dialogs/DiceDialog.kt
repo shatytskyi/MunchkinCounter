@@ -1,5 +1,10 @@
 package com.shatytskyi.munchcounter.ui.dialogs
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -17,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -27,9 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlin.math.sqrt
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.ui.components.MunchkinDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
@@ -51,8 +59,8 @@ import org.koin.compose.koinInject
 @Composable
 fun DiceDialog(
     onDismiss: () -> Unit,
-    source: String = "unknown",
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    source: String = "unknown"
 ) {
     var result by remember { mutableIntStateOf((1..6).random()) }
     var isRolling by remember { mutableStateOf(false) }
@@ -61,12 +69,73 @@ fun DiceDialog(
     val haptic = LocalHapticFeedback.current
     val analyticsManager = koinInject<AnalyticsManager>()
     var rollCount by remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
+    var lastShakeTime by remember { mutableStateOf(0L) }
 
     val shake by animateFloatAsState(
         targetValue = if (isRolling) 1f else 0f,
         animationSpec = tween(currentDuration, easing = LinearEasing),
         label = "dice_shake"
     )
+
+    // Shake detection setup
+    DisposableEffect(Unit) {
+        val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        
+        val shakeThreshold = 8.0f // Threshold for shake detection (lower = more sensitive)
+        val shakeInterval = 500L // Minimum time between shakes in milliseconds
+        
+        val sensorListener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent) {
+                if (isRolling) return // Don't detect shake while already rolling
+                
+                val x = event.values[0]
+                val y = event.values[1]
+                val z = event.values[2]
+                
+                val acceleration = sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH
+                
+                if (acceleration > shakeThreshold) {
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - lastShakeTime > shakeInterval) {
+                        lastShakeTime = currentTime
+                        // Trigger dice roll
+                        result = (1..6).random()
+                        currentDuration = (500..1500).random()
+                        isRolling = true
+                        rollCount++
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        
+                        // Track shake-triggered dice roll
+                        analyticsManager.logEvent(
+                            AnalyticsEvents.DICE_ROLLED,
+                            bundleOf(
+                                "source" to source,
+                                "trigger" to "shake"
+                            )
+                        )
+                    }
+                }
+            }
+            
+            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+                // Not needed
+            }
+        }
+        
+        accelerometer?.let {
+            sensorManager.registerListener(
+                sensorListener,
+                it,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        }
+        
+        onDispose {
+            sensorManager.unregisterListener(sensorListener)
+        }
+    }
 
     // Log dialog view on first open
     LaunchedEffect(Unit) {
@@ -135,7 +204,10 @@ fun DiceDialog(
                                     // Track dice roll action (result tracked after animation)
                                     analyticsManager.logEvent(
                                         AnalyticsEvents.DICE_ROLLED,
-                                        bundleOf("source" to source)
+                                        bundleOf(
+                                            "source" to source,
+                                            "trigger" to "tap"
+                                        )
                                     )
                                 }
                             )
