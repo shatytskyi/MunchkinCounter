@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.GenderSelector
-import com.shatytskyi.munchcounter.ui.components.MunchkinBottomSheet
+import com.shatytskyi.munchcounter.ui.components.MunchkinCustomDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
@@ -41,13 +39,11 @@ import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.analytics.AnalyticsManager
 import com.shatytskyi.munchcounter.analytics.AnalyticsEvents
-import com.shatytskyi.munchcounter.analytics.ScreenNames
 import com.shatytskyi.munchcounter.analytics.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCharacterDialog(
     onDismiss: () -> Unit,
@@ -59,9 +55,6 @@ fun AddCharacterDialog(
     val focusRequester = remember { FocusRequester() }
     val haptic = LocalHapticFeedback.current
     val analyticsManager = koinInject<AnalyticsManager>()
-    val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
     
     // Track if user changed from default gender
     var hasChangedGender by remember { mutableStateOf(false) }
@@ -75,10 +68,9 @@ fun AddCharacterDialog(
         focusRequester.requestFocus()
     }
 
-    MunchkinBottomSheet(
+    MunchkinCustomDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
-        sheetState = bottomSheetState
+        modifier = modifier
     ) {
         // Header
         MunchkinText(

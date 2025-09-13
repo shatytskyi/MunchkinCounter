@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,7 +30,7 @@ import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.data.Character
 import com.shatytskyi.munchcounter.data.Gender
 import com.shatytskyi.munchcounter.ui.components.GenderSelector
-import com.shatytskyi.munchcounter.ui.components.MunchkinBottomSheet
+import com.shatytskyi.munchcounter.ui.components.MunchkinCustomDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
 import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
@@ -47,7 +45,6 @@ import com.shatytskyi.munchcounter.analytics.bundleOf
 import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditCharacterDialog(
     character: Character,
@@ -69,9 +66,6 @@ fun EditCharacterDialog(
     val haptic = LocalHapticFeedback.current
     val analyticsManager = koinInject<AnalyticsManager>()
     val focusRequester = remember { FocusRequester() }
-    val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
     
     // Track what was changed
     val hasNameChanged = remember(nameFieldValue.text) { 
@@ -94,10 +88,9 @@ fun EditCharacterDialog(
         focusRequester.requestFocus()
     }
 
-    MunchkinBottomSheet(
+    MunchkinCustomDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
-        sheetState = bottomSheetState
+        modifier = modifier
     ) {
             // Header
             MunchkinText(

@@ -148,6 +148,7 @@ fun FightInterface(
                         currentPower = totalPlayerPower,
                         basePower = character.level + character.items,
                         tempPower = playerTempPower,
+                        playerName = character.name,
                         helperName = when {
                             helperOption == null -> null
                             helperOption!!.isClone -> stringResource(R.string.clone)
@@ -324,6 +325,7 @@ private fun PlayerPowerControls(
     currentPower: Int,
     basePower: Int,
     tempPower: Int,
+    playerName: String,
     helperName: String? = null,
     onPowerChange: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -336,14 +338,15 @@ private fun PlayerPowerControls(
         // Header
         MunchkinText(
             text = if (helperName != null) {
-                "${stringResource(R.string.player)} + $helperName"
+                "$playerName + $helperName"
             } else {
-                stringResource(R.string.player)
+                playerName
             },
             style = MunchkinTheme.typography.titleMedium,
             color = MunchkinTheme.colors.primary,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            maxLines = 1
         )
 
         // Power control buttons

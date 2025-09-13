@@ -9,12 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -26,15 +21,18 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.munchcounter.R
 import com.shatytskyi.munchcounter.analytics.AnalyticsManager
 import com.shatytskyi.munchcounter.data.Character
-import com.shatytskyi.munchcounter.ui.components.MunchkinBottomSheet
 import com.shatytskyi.munchcounter.ui.components.MunchkinCard
+import com.shatytskyi.munchcounter.ui.components.MunchkinCustomDialog
 import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
+import com.shatytskyi.munchcounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.munchcounter.ui.components.MunchkinText
 import com.shatytskyi.munchcounter.ui.components.icons.ArrowTop
+import com.shatytskyi.munchcounter.ui.components.icons.Close
 import com.shatytskyi.munchcounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import org.koin.compose.koinInject
@@ -45,7 +43,6 @@ data class HelperOption(
     val currentPower: Int = 0
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpSelectionDialog(
     characters: List<Character>,
@@ -58,9 +55,6 @@ fun HelpSelectionDialog(
 ) {
     val haptic = LocalHapticFeedback.current
     val analyticsManager = koinInject<AnalyticsManager>()
-    val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
 
     LaunchedEffect(Unit) {
         analyticsManager.logScreenView("Help Selection Dialog", "HelpSelectionDialog")
@@ -68,7 +62,7 @@ fun HelpSelectionDialog(
 
     val currentPlayerTotalPower = currentPlayer.level + currentPlayer.items + currentPlayerTempPower
 
-    // Create helper options list
+    // Create helper options list and sort by power (descending)
     val helperOptions = buildList {
         // Add clone of current player with temp power
         add(
@@ -89,12 +83,11 @@ fun HelpSelectionDialog(
                 )
             )
         }
-    }
+    }.sortedByDescending { it.currentPower }
 
-    MunchkinBottomSheet(
+    MunchkinCustomDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
-        sheetState = bottomSheetState
+        modifier = modifier
     ) {
         Column(
             modifier = Modifier
@@ -134,7 +127,24 @@ fun HelpSelectionDialog(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Close button
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onDismiss()
+                },
+                icon = MunchkinIcons.Close,
+                text = stringResource(R.string.close),
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = MunchkinTheme.typography.labelMedium,
+                contentPadding = 16.dp,
+                rippleColor = MunchkinTheme.colors.secondary,
+                bounded = false
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
@@ -166,10 +176,7 @@ private fun HelperOptionItem(
         modifier = modifier
             .fillMaxWidth()
             .alpha(if (option.isClone) 0.9f else 1f),
-        color = if (option.isClone)
-            MunchkinTheme.colors.primary.copy(alpha = 0.1f)
-        else
-            MunchkinTheme.colors.grey,
+        color = MunchkinTheme.colors.grey,
         shape = RoundedCornerShape(12.dp),
         onClick = onClick
     ) {
@@ -185,45 +192,34 @@ private fun HelperOptionItem(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                MunchkinIcon(
-                    imageVector = Icons.Outlined.Person,
-                    tint = if (option.isClone)
-                        MunchkinTheme.colors.primary
-                    else
-                        MunchkinTheme.colors.onBackground,
-                    size = 24.dp
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    MunchkinText(
+                        text = option.character.name,
+                        style = MunchkinTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = MunchkinTheme.colors.onBackground,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
 
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    if (option.isClone) {
                         MunchkinText(
-                            text = option.character.name,
-                            style = MunchkinTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = MunchkinTheme.colors.onBackground
+                            text = "(${stringResource(R.string.clone)})",
+                            style = MunchkinTheme.typography.bodyMedium,
+                            color = MunchkinTheme.colors.grey,
+                            maxLines = 1
                         )
-
-                        if (option.isClone) {
-                            Spacer(modifier = Modifier.width(8.dp))
-                            MunchkinText(
-                                text = "(${stringResource(R.string.clone)})",
-                                style = MunchkinTheme.typography.bodyMedium,
-                                color = MunchkinTheme.colors.primary
-                            )
-                        }
+                        Spacer(modifier = Modifier.height(2.dp))
+                    } else {
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
-
-                    Spacer(modifier = Modifier.height(4.dp))
 
                     MunchkinText(
                         text = "${stringResource(R.string.level)} ${if (option.isClone) option.character.level else option.character.level} • ${
                             stringResource(
                                 R.string.power
+                                
                             )
                         } ${option.currentPower}",
                         style = MunchkinTheme.typography.labelSmall,
