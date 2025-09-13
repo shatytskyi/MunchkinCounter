@@ -108,6 +108,7 @@ fun FightScreen(
 
     FightScreenContent(
         character = player,
+        characters = characters,
         onBackClick = {
             analyticsManager.logEvent(
                 "fight_session_ended",
@@ -192,6 +193,7 @@ fun FightScreen(
 @Composable
 private fun FightScreenContent(
     character: Character,
+    characters: List<Character>,
     onBackClick: () -> Unit,
     onTimerClick: () -> Unit,
     onDiceClick: () -> Unit,
@@ -300,6 +302,7 @@ private fun FightScreenContent(
         // Fight interface takes all remaining space
         FightInterface(
             character = character,
+            characters = characters,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -361,6 +364,7 @@ private fun FightScreenPreview() {
     MunchkinTheme {
         FightScreenContent(
             character = mockCharacter,
+            characters = listOf(mockCharacter),
             onBackClick = { },
             onTimerClick = { },
             onDiceClick = { },

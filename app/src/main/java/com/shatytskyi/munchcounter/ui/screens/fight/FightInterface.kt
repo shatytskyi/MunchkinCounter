@@ -57,12 +57,17 @@ import com.shatytskyi.munchcounter.ui.components.icons.Reset
 import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
 import com.shatytskyi.munchcounter.analytics.AnalyticsManager
 import com.shatytskyi.munchcounter.analytics.bundleOf
+import com.shatytskyi.munchcounter.ui.dialogs.HelpSelectionDialog
+import com.shatytskyi.munchcounter.ui.dialogs.HelperOption
 import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 @Composable
 fun FightInterface(
     character: Character,
+    characters: List<Character>,
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
@@ -83,7 +88,18 @@ fun FightInterface(
     var playerTempPower by rememberSaveable { mutableIntStateOf(0) }
     var monsterPower by rememberSaveable { mutableIntStateOf(0) }
 
-    val totalPlayerPower = character.level + character.items + playerTempPower
+    // Helper state
+    var helperOption by remember { mutableStateOf<HelperOption?>(null) }
+    var showHelperDialog by remember { mutableStateOf(false) }
+
+    // Calculate total player power including helper
+    val helperPower = when {
+        helperOption == null -> 0
+        helperOption!!.isClone -> character.level + character.items + playerTempPower
+        else -> helperOption!!.character.level + helperOption!!.character.items
+    }
+
+    val totalPlayerPower = character.level + character.items + playerTempPower + helperPower
     val totalMonsterPower = monsterPower
 
     // Initial animation: scroll to monster on screen start
@@ -128,6 +144,11 @@ fun FightInterface(
                         currentPower = totalPlayerPower,
                         basePower = character.level + character.items,
                         tempPower = playerTempPower,
+                        helperName = when {
+                            helperOption == null -> null
+                            helperOption!!.isClone -> stringResource(R.string.clone)
+                            else -> helperOption!!.character.name
+                        },
                         onPowerChange = { delta ->
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             playerTempPower += delta
@@ -203,22 +224,32 @@ fun FightInterface(
                 .navigationBarsPadding(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-//            val context = LocalContext.current
-//
-            // Help/Add Friend button
-//            MunchkinIconTextButton(
-//                onClick = {
-//                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-//                    Toast.makeText(context, "Coming soon!", Toast.LENGTH_SHORT).show()
-//                },
-//                icon = MunchkinIcons.Add,
-//                text = "Help",
-//                modifier = Modifier.weight(1f),
-//                textStyle = MunchkinTheme.typography.labelMedium,
-//                contentPadding = 16.dp,
-//                rippleColor = MunchkinTheme.colors.primary,
-//                bounded = false
-//            )
+            // Help/Remove Help button
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    if (helperOption == null) {
+                        showHelperDialog = true
+                    } else {
+                        // Track help removal
+                        analyticsManager.logEvent(
+                            "help_removed",
+                            bundleOf(
+                                "was_clone" to helperOption!!.isClone,
+                                "helper_power" to helperPower
+                            )
+                        )
+                        helperOption = null
+                    }
+                },
+                icon = MunchkinIcons.Add,
+                text = stringResource(if (helperOption == null) R.string.help else R.string.remove_help),
+                modifier = Modifier.weight(1f),
+                textStyle = MunchkinTheme.typography.labelMedium,
+                contentPadding = 16.dp,
+                rippleColor = MunchkinTheme.colors.primary,
+                bounded = false
+            )
 
             // Reset button
             MunchkinIconTextButton(
@@ -233,9 +264,10 @@ fun FightInterface(
                             "was_player_winning" to (totalPlayerPower > monsterPower)
                         )
                     )
-                    // Reset temporary power changes
+                    // Reset temporary power changes and helper
                     playerTempPower = 0
                     monsterPower = 0
+                    helperOption = null
                 },
                 icon = MunchkinIcons.Reset,
                 text = stringResource(R.string.reset),
@@ -247,6 +279,31 @@ fun FightInterface(
             )
         }
     }
+
+    // Helper selection dialog
+    if (showHelperDialog) {
+        HelpSelectionDialog(
+            characters = characters,
+            currentPlayer = character,
+            currentPlayerTempPower = playerTempPower,
+            currentMonsterPower = monsterPower,
+            onDismiss = { showHelperDialog = false },
+            onConfirm = { option ->
+                helperOption = option
+                showHelperDialog = false
+                // Track help added
+                analyticsManager.logEvent(
+                    "help_added",
+                    bundleOf(
+                        "helper_id" to option.character.id,
+                        "is_clone" to option.isClone,
+                        "helper_power" to option.currentPower,
+                        "total_player_power" to totalPlayerPower
+                    )
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -254,6 +311,7 @@ private fun PlayerPowerControls(
     currentPower: Int,
     basePower: Int,
     tempPower: Int,
+    helperName: String? = null,
     onPowerChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -264,7 +322,11 @@ private fun PlayerPowerControls(
     ) {
         // Header
         MunchkinText(
-            text = stringResource(R.string.player),
+            text = if (helperName != null) {
+                "${stringResource(R.string.player)} + $helperName"
+            } else {
+                stringResource(R.string.player)
+            },
             style = MunchkinTheme.typography.titleMedium,
             color = MunchkinTheme.colors.primary,
             modifier = Modifier.fillMaxWidth(),

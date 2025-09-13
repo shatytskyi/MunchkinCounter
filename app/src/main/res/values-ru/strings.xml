@@ -34,11 +34,16 @@
     <string name="loading_fight">Загрузка боя…</string>
 
     <!-- Helper/Partner -->
+    <string name="help">Помощь</string>
+    <string name="remove_help">Убрать помощь</string>
+    <string name="select_helper">Выбрать помощника</string>
+    <string name="clone">Двойник</string>
 
     <!-- Escape Dialog -->
     <string name="roll_the_dice">Бросить кубик</string>
 
     <!-- Timer -->
+    <string name="player">Игрок</string>
     <string name="monster">Монстр</string>
     <string name="timer_title">Таймер</string>
     <string name="timer_start">СТАРТ</string>
@@ -67,6 +72,5 @@
     <string name="gender">Пол</string>
     <string name="gender_male">Мужской</string>
     <string name="gender_female">Женский</string>
-    <string name="player">Игрок</string>
 
 </resources>

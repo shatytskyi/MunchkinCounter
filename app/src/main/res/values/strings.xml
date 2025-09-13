@@ -41,6 +41,10 @@
     <string name="monster">Monster</string>
 
     <!-- Helper/Partner -->
+    <string name="help">Help</string>
+    <string name="remove_help">Remove Help</string>
+    <string name="select_helper">Select Helper</string>
+    <string name="clone">Clone</string>
 
     <!-- Escape Dialog -->
 

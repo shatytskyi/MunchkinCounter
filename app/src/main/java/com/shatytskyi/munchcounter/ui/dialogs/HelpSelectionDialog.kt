@@ -1,0 +1,245 @@
+package com.shatytskyi.munchcounter.ui.dialogs
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.shatytskyi.munchcounter.R
+import com.shatytskyi.munchcounter.data.Character
+import com.shatytskyi.munchcounter.ui.components.MunchkinBottomSheet
+import com.shatytskyi.munchcounter.ui.components.MunchkinCard
+import com.shatytskyi.munchcounter.ui.components.MunchkinIcon
+import com.shatytskyi.munchcounter.ui.components.MunchkinText
+import com.shatytskyi.munchcounter.ui.theme.MunchkinTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Person
+import com.shatytskyi.munchcounter.analytics.AnalyticsManager
+import org.koin.compose.koinInject
+
+data class HelperOption(
+    val character: Character,
+    val isClone: Boolean = false,
+    val currentPower: Int = 0
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HelpSelectionDialog(
+    characters: List<Character>,
+    currentPlayer: Character,
+    currentPlayerTempPower: Int,
+    currentMonsterPower: Int,
+    onDismiss: () -> Unit,
+    onConfirm: (HelperOption) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val haptic = LocalHapticFeedback.current
+    val analyticsManager = koinInject<AnalyticsManager>()
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    LaunchedEffect(Unit) {
+        analyticsManager.logScreenView("Help Selection Dialog", "HelpSelectionDialog")
+    }
+
+    val currentPlayerTotalPower = currentPlayer.level + currentPlayer.items + currentPlayerTempPower
+
+    // Create helper options list
+    val helperOptions = buildList {
+        // Add clone of current player with temp power
+        add(
+            HelperOption(
+                character = currentPlayer,
+                isClone = true,
+                currentPower = currentPlayerTotalPower
+            )
+        )
+
+        // Add other characters
+        characters.filter { it.id != currentPlayer.id }.forEach { character ->
+            add(
+                HelperOption(
+                    character = character,
+                    isClone = false,
+                    currentPower = character.level + character.items
+                )
+            )
+        }
+    }
+
+    MunchkinBottomSheet(
+        onDismissRequest = onDismiss,
+        modifier = modifier,
+        sheetState = bottomSheetState
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+        ) {
+            // Title
+            MunchkinText(
+                text = stringResource(R.string.select_helper),
+                style = MunchkinTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MunchkinTheme.colors.onBackground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                textAlign = TextAlign.Center
+            )
+
+            // Helper options list
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                helperOptions.forEach { option ->
+                    HelperOptionItem(
+                        option = option,
+                        currentPlayerPower = currentPlayerTotalPower,
+                        currentMonsterPower = currentMonsterPower,
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                            onConfirm(option)
+                        }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+private fun HelperOptionItem(
+    option: HelperOption,
+    currentPlayerPower: Int,
+    currentMonsterPower: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val totalPowerWithHelper = currentPlayerPower + option.currentPower
+    val battleResult = totalPowerWithHelper - currentMonsterPower
+
+    val resultText = when {
+        battleResult > 0 -> "+$battleResult"
+        battleResult < 0 -> "$battleResult"
+        else -> "="
+    }
+
+    val resultColor = when {
+        battleResult > 0 -> MunchkinTheme.colors.primary
+        battleResult < 0 -> MunchkinTheme.colors.red
+        else -> MunchkinTheme.colors.grey
+    }
+
+    MunchkinCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .alpha(if (option.isClone) 0.9f else 1f),
+        color = if (option.isClone)
+            MunchkinTheme.colors.primary.copy(alpha = 0.1f)
+        else
+            MunchkinTheme.colors.grey,
+        shape = RoundedCornerShape(12.dp),
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Character info
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                MunchkinIcon(
+                    imageVector = Icons.Outlined.Person,
+                    tint = if (option.isClone)
+                        MunchkinTheme.colors.primary
+                    else
+                        MunchkinTheme.colors.onBackground,
+                    size = 24.dp
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        MunchkinText(
+                            text = option.character.name,
+                            style = MunchkinTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = MunchkinTheme.colors.onBackground
+                        )
+
+                        if (option.isClone) {
+                            Spacer(modifier = Modifier.width(8.dp))
+                            MunchkinText(
+                                text = "(${stringResource(R.string.clone)})",
+                                style = MunchkinTheme.typography.bodyMedium,
+                                color = MunchkinTheme.colors.primary
+                            )
+                        }
+                    }
+
+                    MunchkinText(
+                        text = "${stringResource(R.string.level)} ${if (option.isClone) option.character.level else option.character.level} • ${stringResource(R.string.power)} ${option.currentPower}",
+                        style = MunchkinTheme.typography.labelSmall,
+                        color = MunchkinTheme.colors.grey
+                    )
+                }
+            }
+
+            // Battle result
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = resultColor.copy(alpha = 0.1f),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(horizontal = 12.dp, vertical = 4.dp)
+            ) {
+                MunchkinText(
+                    text = resultText,
+                    style = MunchkinTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = resultColor
+                )
+            }
+        }
+    }
+}
