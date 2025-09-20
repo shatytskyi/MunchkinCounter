@@ -8,6 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -30,6 +35,8 @@ fun MunchkinCustomDialog(
     footer: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
+    val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -43,13 +50,16 @@ fun MunchkinCustomDialog(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.5f))
-                .systemBarsPadding(),
+                .systemBarsPadding()
+                .imePadding()
+                .padding(bottom = statusBarHeight),
             contentAlignment = Alignment.Center
         ) {
             Surface(
                 modifier = modifier
                     .widthIn(max = 400.dp)
-                    .fillMaxWidth(0.9f),
+                    .fillMaxWidth(0.9f)
+                    .navigationBarsPadding(),
                 shape = RoundedCornerShape(16.dp),
                 color = containerColor
             ) {
