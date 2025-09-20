@@ -41,6 +41,7 @@
 
     <!-- Escape Dialog -->
     <string name="roll_the_dice">Кинути кубик</string>
+    <string name="dice_hint">Натисніть на кубик або потрусіть телефон</string>
 
     <!-- Timer -->
     <string name="timer_title">Таймер</string>

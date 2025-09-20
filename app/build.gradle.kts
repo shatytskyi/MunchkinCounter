@@ -17,7 +17,7 @@ repositories {
 }
 
 android {
-    namespace = "com.shatytskyi.munchcounter"
+    namespace = "com.shatytskyi.gamecounter"
     compileSdk = 36
 
     val keystorePropertiesFile = rootProject.file("keystore.properties")

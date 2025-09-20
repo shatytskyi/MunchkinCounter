@@ -1,6 +1,7 @@
 <resources>
     <!-- App Name (not translatable) -->
     <string name="app_name" translatable="false">Munchkin Counter</string>
+    <string name="app_title_main" translatable="false">Counter</string>
 
     <!-- Common Actions -->
     <string name="cancel">Cancel</string>
@@ -55,6 +56,7 @@
 
     <!-- Dice -->
     <string name="roll_the_dice">Roll the dice</string>
+    <string name="dice_hint">Tap the dice or shake your phone to roll</string>
 
     <!-- Warnings & Dialogs -->
     <string name="reset_character_title">Reset %s?</string>
@@ -81,5 +83,15 @@
     <string name="gender">Gender</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
+
+    <!-- Rate App Dialog -->
+    <string name="rate_app">Rate App</string>
+    <string name="rate_dialog_title">Enjoying Munchkin Counter?</string>
+    <string name="rate_dialog_title_level10">Good game!</string>
+    <string name="rate_dialog_message">Rate us on Google Play?</string>
+    <string name="rate_dialog_message_level10">Level 10 reached!\nRate the app?</string>
+    <string name="rate_dialog_rate_now">Rate Now</string>
+    <string name="rate_dialog_remind_later">Maybe Later</string>
+    <string name="rate_dialog_never">No Thanks</string>
 
 </resources>

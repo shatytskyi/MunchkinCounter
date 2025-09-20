@@ -1,0 +1,123 @@
+package com.shatytskyi.gamecounter.ui.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
+
+@Composable
+fun MunchkinTextField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    modifier: Modifier = Modifier,
+    singleLine: Boolean = true,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Done,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    textAlign: TextAlign = TextAlign.Start,
+    focusRequester: FocusRequester? = null,
+    enabled: Boolean = true
+) {
+    val customTextSelectionColors = TextSelectionColors(
+        handleColor = MunchkinTheme.colors.primary,
+        backgroundColor = MunchkinTheme.colors.primary.copy(alpha = 0.4f)
+    )
+    
+    var isFocused by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .height(56.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(MunchkinTheme.colors.background)
+            .border(
+                width = 2.dp,
+                color = if (isFocused) {
+                    MunchkinTheme.colors.onBackground
+                } else {
+                    MunchkinTheme.colors.grey
+                },
+                shape = RoundedCornerShape(12.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    }
+                    .then(
+                        if (focusRequester != null) Modifier.focusRequester(focusRequester)
+                        else Modifier
+                    ),
+                textStyle = MunchkinTheme.typography.bodyLarge.copy(
+                    color = MunchkinTheme.colors.onBackground,
+                    textAlign = textAlign
+                ),
+                singleLine = singleLine,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction
+                ),
+                keyboardActions = keyboardActions,
+                cursorBrush = SolidColor(MunchkinTheme.colors.primary),
+                enabled = enabled,
+                decorationBox = { innerTextField ->
+                    innerTextField()
+                }
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun MunchkinTextFieldPreview() {
+    var text by remember { mutableStateOf(TextFieldValue("asd")) }
+
+    MunchkinTheme {
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            MunchkinTextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}

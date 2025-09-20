@@ -1,0 +1,102 @@
+package com.shatytskyi.gamecounter.rate
+
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import com.shatytskyi.gamecounter.analytics.AnalyticsManager
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
+class RateAppManager(
+    private val context: Context,
+    private val preferences: RateAppPreferences,
+    private val analyticsManager: AnalyticsManager
+) {
+    private val _shouldShowDialog = MutableStateFlow(false)
+    val shouldShowDialog: Flow<Boolean> = _shouldShowDialog.asStateFlow()
+
+    suspend fun checkLevel10Achievement(): Boolean {
+        if (preferences.hasShownLevel10Dialog()) {
+            return false
+        }
+
+        if (preferences.getUserChoice() == RateAppChoice.NEVER) {
+            return false
+        }
+
+        return true
+    }
+
+    suspend fun onLevel10Achieved() {
+        if (checkLevel10Achievement()) {
+            // Show our custom dialog
+            analyticsManager.logEvent("level_10_achieved_rate_trigger")
+            _shouldShowDialog.value = true
+            preferences.setHasShownLevel10Dialog(true)
+        }
+    }
+
+    fun dismissDialog() {
+        _shouldShowDialog.value = false
+    }
+
+    suspend fun onRateNowClicked() {
+        analyticsManager.logEvent("rate_app_clicked")
+        preferences.setUserChoice(RateAppChoice.RATED)
+        preferences.setHasShownLevel10Dialog(true)
+        dismissDialog()
+        // Open Play Store directly
+        openPlayStore()
+    }
+
+    suspend fun onRemindLaterClicked() {
+        analyticsManager.logEvent("rate_app_later_clicked")
+        preferences.setUserChoice(RateAppChoice.LATER)
+        preferences.setHasShownLevel10Dialog(true)
+        dismissDialog()
+    }
+
+    suspend fun onNeverClicked() {
+        analyticsManager.logEvent("rate_app_never_clicked")
+        preferences.setUserChoice(RateAppChoice.NEVER)
+        preferences.setHasShownLevel10Dialog(true)
+        dismissDialog()
+    }
+
+    fun openPlayStore() {
+        // Hardcoded package name to work in debug builds
+        val packageName = "com.shatytskyi.gamecounter"
+        try {
+            // Try to open Play Store app
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("market://details?id=$packageName")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+            analyticsManager.logEvent("play_store_opened")
+        } catch (e: ActivityNotFoundException) {
+            // If Play Store app is not available, open in browser
+            try {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(intent)
+                analyticsManager.logEvent("play_store_opened_browser")
+            } catch (e: Exception) {
+                Toast.makeText(context, "Unable to open Play Store", Toast.LENGTH_SHORT).show()
+                analyticsManager.logEvent("play_store_open_failed")
+            }
+        }
+    }
+}
+
+enum class RateAppChoice {
+    NONE,
+    RATED,
+    LATER,
+    NEVER
+}

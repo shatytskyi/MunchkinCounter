@@ -41,6 +41,7 @@
 
     <!-- Escape Dialog -->
     <string name="roll_the_dice">Бросить кубик</string>
+    <string name="dice_hint">Нажмите на кубик или потрясите телефон</string>
 
     <!-- Timer -->
     <string name="player">Игрок</string>
@@ -72,5 +73,15 @@
     <string name="gender">Пол</string>
     <string name="gender_male">Мужской</string>
     <string name="gender_female">Женский</string>
+
+    <!-- Rate App Dialog -->
+    <string name="rate_app">Оценить приложение</string>
+    <string name="rate_dialog_title">Нравится Munchkin Counter?</string>
+    <string name="rate_dialog_title_level10">Отличная игра!</string>
+    <string name="rate_dialog_message">Оценить в Google Play?</string>
+    <string name="rate_dialog_message_level10">10 уровень достигнут!\nОценить приложение?</string>
+    <string name="rate_dialog_rate_now">Оценить</string>
+    <string name="rate_dialog_remind_later">Позже</string>
+    <string name="rate_dialog_never">Нет, спасибо</string>
 
 </resources>
