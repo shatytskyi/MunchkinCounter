@@ -74,7 +74,7 @@ fun DetailsScreenContent(
             sharedTransitionScope = sharedTransitionScope,
             titleSharedKey = null,
             actions = {
-                DetailsAppBarActions(onTimerClick, onDiceClick, onFightClick)
+                DetailsAppBarActions(onTimerClick, onDiceClick, onFightClick, animatedContentScope, sharedTransitionScope)
             }
         )
 

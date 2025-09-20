@@ -79,7 +79,9 @@ fun ListScreenUnified(
     ListScreenTopBarWrapper(
         onDiceClick = onDiceClick,
         onTimerClick = onTimerClick,
-        onSettingsClick = onSettingsClick
+        onSettingsClick = onSettingsClick,
+        animatedContentScope = animatedContentScope,
+        sharedTransitionScope = sharedTransitionScope
     ) {
         LazyColumn(
             modifier = Modifier

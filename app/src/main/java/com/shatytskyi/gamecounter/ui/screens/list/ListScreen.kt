@@ -124,7 +124,9 @@ private fun ListScreenContent(
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     // Navigation events are less critical, skip tracking
                     onSettingsClick()
-                }
+                },
+                animatedContentScope = animatedContentScope,
+                sharedTransitionScope = sharedTransitionScope
             )
         } else {
             ListScreenUnified(

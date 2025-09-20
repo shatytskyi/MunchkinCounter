@@ -27,11 +27,14 @@ import com.shatytskyi.gamecounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.gamecounter.ui.components.MunchkinText
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
 
+@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 fun ListScreenLoadingContent(
     onDiceClick: () -> Unit = {},
     onTimerClick: () -> Unit = {},
-    onSettingsClick: () -> Unit = {}
+    onSettingsClick: () -> Unit = {},
+    animatedContentScope: androidx.compose.animation.AnimatedContentScope? = null,
+    sharedTransitionScope: androidx.compose.animation.SharedTransitionScope? = null
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -42,7 +45,9 @@ fun ListScreenLoadingContent(
     ListScreenTopBarWrapper(
         onDiceClick = onDiceClick,
         onTimerClick = onTimerClick,
-        onSettingsClick = onSettingsClick
+        onSettingsClick = onSettingsClick,
+        animatedContentScope = animatedContentScope,
+        sharedTransitionScope = sharedTransitionScope
     ) {
         Box(
             modifier = Modifier
@@ -78,6 +83,7 @@ fun ListScreenLoadingContent(
     showSystemUi = true,
     showBackground = true
 )
+@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 private fun LoadingStateContentPreview() {
     MunchkinTheme {

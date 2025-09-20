@@ -60,7 +60,9 @@ fun SettingsScreen(
     onDynamicColorsChange: (Boolean) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {},
-    onRateAppClick: () -> Unit = {}
+    onRateAppClick: () -> Unit = {},
+    animatedContentScope: androidx.compose.animation.AnimatedContentScope? = null,
+    sharedTransitionScope: androidx.compose.animation.SharedTransitionScope? = null
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -144,7 +146,10 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
                 title = stringResource(R.string.settings),
-                onBack = onBackClick
+                onBack = onBackClick,
+                animatedContentScope = animatedContentScope,
+                sharedTransitionScope = sharedTransitionScope,
+                backIconSharedKey = "back-icon-settings"
             )
         }
     }
@@ -335,6 +340,7 @@ private fun RateAppButton(
     showSystemUi = true,
     showBackground = true
 )
+@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 private fun SettingsScreenPreview() {
     MunchkinTheme {

@@ -43,7 +43,9 @@ fun MunchkinTopAppBar(
     actions: @Composable () -> Unit = {},
     animatedContentScope: AnimatedContentScope? = null,
     sharedTransitionScope: SharedTransitionScope? = null,
-    titleSharedKey: String? = null
+    titleSharedKey: String? = null,
+    backIconSharedKey: String? = null,
+    appIconSharedKey: String? = null
 ) {
     Row(
         modifier = modifier
@@ -63,9 +65,21 @@ fun MunchkinTopAppBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {
+            val backIconModifier = if (sharedTransitionScope != null && animatedContentScope != null && backIconSharedKey != null) {
+                with(sharedTransitionScope) {
+                    Modifier.sharedElement(
+                        sharedContentState = rememberSharedContentState(key = backIconSharedKey),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+                }
+            } else {
+                Modifier
+            }
+
             MunchkinIconButton(
                 onClick = onBack,
-                size = 48.dp
+                size = 48.dp,
+                modifier = backIconModifier
             ) {
                 MunchkinIcon(
                     Icons.AutoMirrored.Filled.ArrowBack,
@@ -76,12 +90,26 @@ fun MunchkinTopAppBar(
 
             Spacer(modifier = Modifier.width(8.dp))
         } else if (showIcon) {
+            val appIconModifier = if (sharedTransitionScope != null && animatedContentScope != null && appIconSharedKey != null) {
+                with(sharedTransitionScope) {
+                    Modifier
+                        .padding(start = 16.dp)
+                        .size(32.dp)
+                        .sharedElement(
+                            sharedContentState = rememberSharedContentState(key = appIconSharedKey),
+                            animatedVisibilityScope = animatedContentScope
+                        )
+                }
+            } else {
+                Modifier
+                    .padding(start = 16.dp)
+                    .size(32.dp)
+            }
+
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = null,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(32.dp),
+                modifier = appIconModifier,
                 colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
             )
 
