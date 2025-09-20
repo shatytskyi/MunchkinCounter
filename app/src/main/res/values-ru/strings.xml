@@ -9,7 +9,7 @@
     <string name="edit">Изменить</string>
     <string name="delete">Удалить</string>
     <string name="close">Закрыть</string>
-    <string name="got_it">Понятно</string>
+    <string name="got_it">Окей</string>
 
     <!-- Player Management -->
     <string name="add_new_player">Добавить нового игрока</string>
@@ -81,8 +81,8 @@
     <string name="other_settings">Другое</string>
     <string name="rate_dialog_title">Оценить Munchkin Counter</string>
     <string name="rate_dialog_title_level10">Отличная игра!</string>
-    <string name="rate_dialog_message_level10">10 уровень достигнут!\nОценить приложение?</string>
-    <string name="rate_dialog_rate_now">Оценить</string>
+    <string name="rate_dialog_message_level10">Ого, 10-й уровень! Отлично сыграно! 🎉\n\nКак насчёт оставить отзыв, чтобы помочь другим игрокам найти это приложение?</string>
+    <string name="rate_dialog_rate_now">Конечно!</string>
     <string name="rate_dialog_remind_later">Позже</string>
 
 </resources>

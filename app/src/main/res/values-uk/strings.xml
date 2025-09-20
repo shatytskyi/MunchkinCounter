@@ -11,6 +11,7 @@
     <string name="close">Закрити</string>
 
     <!-- Player Management -->
+    <string name="got_it">Добре</string>
     <string name="add_new_player">Додати нового гравця</string>
     <string name="player_name">Ім\'я гравця</string>
     <string name="no_players">Поки що немає гравців</string>
@@ -34,6 +35,7 @@
     <string name="loading_fight">Завантаження бою…</string>
 
     <!-- New Fight Screen strings -->
+    <string name="fight_info_message">Всі зміни в цій секції - тимчасові. Фактична сила персонажа не зміниться</string>
     <string name="player">Гравець</string>
     <string name="monster">Монстр</string>
 
@@ -44,6 +46,7 @@
     <string name="dice_hint">Натисніть на кубик або потрусіть телефон</string>
 
     <!-- Timer -->
+    <string name="clone">Двійник</string>
     <string name="timer_title">Таймер</string>
     <string name="timer_start">СТАРТ</string>
     <string name="timer_select_seconds">Оберіть секунди для прийняття рішення</string>
@@ -71,5 +74,15 @@
     <string name="colors_dynamic">Кольори системи</string>
     <string name="fonts">Шрифт</string>
     <string name="fonts_app">Шрифт застосунку</string>
+    <string name="other_settings">Інше</string>
+    <string name="rate_dialog_title">Оцінити Munchkin Counter</string>
+    <string name="fight_info_title">Важливо</string>
+    <string name="help">Помічник</string>
+    <string name="remove_help">Прибрати</string>
+    <string name="select_helper">Обрати помічника</string>
+    <string name="rate_dialog_title_level10">Оце так гра!</string>
+    <string name="rate_dialog_message_level10">Нарешті, 10-й рівень! Потужно!\\n\\nЯк щодо швидного ревью, щоб допомігти іншим знайти апку?</string>
+    <string name="rate_dialog_rate_now">Звісно</string>
+    <string name="rate_dialog_remind_later">Пізніше</string>
 
 </resources>

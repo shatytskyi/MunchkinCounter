@@ -92,8 +92,8 @@
     <string name="rate_dialog_title">Rate Munchkin Counter</string>
 
     <string name="rate_dialog_title_level10">Good game!</string>
-    <string name="rate_dialog_message_level10">Level 10 reached!\n\nMay I ask you to rate the app? ✨</string>
+    <string name="rate_dialog_message_level10">Wow, level 10! Well played! 🎉\n\nHow about dropping a quick review to help other players find this app?</string>
 
-    <string name="rate_dialog_rate_now">Rate Now</string>
+    <string name="rate_dialog_rate_now">Sure</string>
     <string name="rate_dialog_remind_later">Maybe Later</string>
 </resources>
