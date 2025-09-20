@@ -1,6 +1,7 @@
 package com.shatytskyi.gamecounter.ui.screens.fight
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,7 +9,9 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -58,6 +62,7 @@ import com.shatytskyi.gamecounter.ui.components.icons.Reset
 import com.shatytskyi.gamecounter.ui.dialogs.HelpSelectionDialog
 import com.shatytskyi.gamecounter.ui.dialogs.HelperOption
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
+import com.shatytskyi.gamecounter.data.FightPreferencesImpl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,6 +75,7 @@ fun FightInterface(
     val haptic = LocalHapticFeedback.current
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
+    val context = LocalContext.current
     val screenWidth = configuration.screenWidthDp.dp
     val coroutineScope = rememberCoroutineScope()
 
@@ -89,6 +95,10 @@ fun FightInterface(
     var helperOption by remember { mutableStateOf<HelperOption?>(null) }
     var showHelperDialog by remember { mutableStateOf(false) }
 
+    // Info message state
+    val fightPreferences = remember { FightPreferencesImpl(context) }
+    var showInfoMessage by remember { mutableStateOf(!fightPreferences.hasShownFightInfoMessage()) }
+
     // Calculate total player power including helper
     val helperPower = when {
         helperOption == null -> 0
@@ -99,24 +109,29 @@ fun FightInterface(
     val totalPlayerPower = character.level + character.items + playerTempPower + helperPower
     val totalMonsterPower = monsterPower
 
-    // Initial animation: scroll to monster on screen start
-    LaunchedEffect(Unit) {
-        delay(400)
-        // Scroll to show monster (right side)
-        val scrollAmountPx = with(density) { playerControlsWidth.toPx().toInt() }
-        scrollState.animateScrollTo(
-            value = scrollAmountPx,
-            animationSpec = tween(durationMillis = 400)
-        )
+    // Initial animation: scroll to monster after info message if needed
+    LaunchedEffect(showInfoMessage) {
+        if (!showInfoMessage) {
+            delay(400)
+            // Scroll to show monster (right side)
+            val scrollAmountPx = with(density) { playerControlsWidth.toPx().toInt() }
+            scrollState.animateScrollTo(
+                value = scrollAmountPx,
+                animationSpec = tween(durationMillis = 400)
+            )
+        }
     }
 
-    Column(
+    Box(
         modifier = modifier.fillMaxSize()
     ) {
-        // Divider at the top
-        MunchkinHorizontalDivider()
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Divider at the top
+            MunchkinHorizontalDivider()
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
         // Scrollable fight content takes all available space
         Box(
@@ -261,6 +276,69 @@ fun FightInterface(
                 }
             }
         )
+    }
+
+        // Info message overlay with full-screen clickable background
+        AnimatedVisibility(
+            visible = showInfoMessage,
+            modifier = Modifier.fillMaxSize(),
+            enter = fadeIn(animationSpec = tween(300)),
+            exit = fadeOut(animationSpec = tween(300))
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MunchkinTheme.colors.background.copy(alpha = 0.7f))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        showInfoMessage = false
+                        fightPreferences.setFightInfoMessageShown(true)
+                    },
+                contentAlignment = Alignment.TopCenter
+            ) {
+                MunchkinCard(
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
+                        .padding(top = 24.dp),
+                    color = MunchkinTheme.colors.secondary.copy(alpha = 0.95f),
+                    onClick = {
+                        showInfoMessage = false
+                        fightPreferences.setFightInfoMessageShown(true)
+                    }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        MunchkinText(
+                            text = stringResource(R.string.fight_info_title),
+                            style = MunchkinTheme.typography.titleMedium,
+                            color = MunchkinTheme.colors.onBackground,
+                            textAlign = TextAlign.Center
+                        )
+                        MunchkinText(
+                            text = stringResource(R.string.fight_info_message),
+                            style = MunchkinTheme.typography.bodyMedium,
+                            color = MunchkinTheme.colors.onBackground,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        MunchkinText(
+                            text = stringResource(R.string.got_it),
+                            style = MunchkinTheme.typography.labelLarge,
+                            color = MunchkinTheme.colors.primary,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

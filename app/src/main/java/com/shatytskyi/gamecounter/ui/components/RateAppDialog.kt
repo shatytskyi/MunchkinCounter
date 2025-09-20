@@ -14,7 +14,6 @@ import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
 
 @Composable
 fun RateAppDialog(
-    isLevel10Achievement: Boolean = false,
     onRateNow: () -> Unit,
     onRemindLater: () -> Unit,
     onDismiss: () -> Unit
@@ -22,11 +21,7 @@ fun RateAppDialog(
     MunchkinDialog(
         onDismissRequest = onDismiss,
         title = stringResource(
-            if (isLevel10Achievement) {
-                R.string.rate_dialog_title_level10
-            } else {
-                R.string.rate_dialog_title
-            }
+            R.string.rate_dialog_title_level10
         ),
         content = {
             Column(
@@ -36,11 +31,7 @@ fun RateAppDialog(
             ) {
                 MunchkinText(
                     text = stringResource(
-                        if (isLevel10Achievement) {
-                            R.string.rate_dialog_message_level10
-                        } else {
-                            R.string.rate_dialog_message
-                        }
+                        R.string.rate_dialog_message_level10
                     ),
                     style = MunchkinTheme.typography.bodyMedium,
                     color = MunchkinTheme.colors.onBackground.copy(alpha = 0.8f),

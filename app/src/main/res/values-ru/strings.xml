@@ -9,6 +9,7 @@
     <string name="edit">Изменить</string>
     <string name="delete">Удалить</string>
     <string name="close">Закрыть</string>
+    <string name="got_it">Понятно</string>
 
     <!-- Player Management -->
     <string name="add_new_player">Добавить нового игрока</string>
@@ -32,6 +33,8 @@
     <!-- Fight Screen -->
     <string name="fight_title">Бой</string>
     <string name="loading_fight">Загрузка боя…</string>
+    <string name="fight_info_title">Важно</string>
+    <string name="fight_info_message">Любые изменения силы на этом экране носят временный характер и не влияют на фактические характеристики персонажа</string>
 
     <!-- Helper/Partner -->
     <string name="help">Помощь</string>
@@ -75,13 +78,11 @@
     <string name="gender_female">Женский</string>
 
     <!-- Rate App Dialog -->
-    <string name="rate_app">Оценить приложение</string>
-    <string name="rate_dialog_title">Нравится Munchkin Counter?</string>
+    <string name="other_settings">Другое</string>
+    <string name="rate_dialog_title">Оценить Munchkin Counter</string>
     <string name="rate_dialog_title_level10">Отличная игра!</string>
-    <string name="rate_dialog_message">Оценить в Google Play?</string>
     <string name="rate_dialog_message_level10">10 уровень достигнут!\nОценить приложение?</string>
     <string name="rate_dialog_rate_now">Оценить</string>
     <string name="rate_dialog_remind_later">Позже</string>
-    <string name="rate_dialog_never">Нет, спасибо</string>
 
 </resources>

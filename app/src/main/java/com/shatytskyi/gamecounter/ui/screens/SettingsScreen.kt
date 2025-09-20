@@ -304,7 +304,7 @@ private fun RateAppButton(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         MunchkinText(
-            text = stringResource(R.string.rate_app),
+            text = stringResource(R.string.other_settings),
             style = MunchkinTheme.typography.headlineSmall,
             color = MunchkinTheme.colors.onBackground,
             modifier = Modifier.fillMaxWidth(),

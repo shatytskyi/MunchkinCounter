@@ -235,7 +235,6 @@ private fun ListScreenContent(
 
     if (shouldShowRateDialog) {
         RateAppDialog(
-            isLevel10Achievement = true,
             onRateNow = onRateNowClicked,
             onRemindLater = onRateLaterClicked,
             onDismiss = onRateDismiss

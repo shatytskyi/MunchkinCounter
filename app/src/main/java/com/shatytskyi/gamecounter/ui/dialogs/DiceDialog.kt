@@ -206,7 +206,7 @@ fun DiceDialog(
                     text = stringResource(R.string.dice_hint),
                     style = MunchkinTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
-                    color = MunchkinTheme.colors.grey,
+                    color = MunchkinTheme.colors.onBackground,
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .padding(horizontal = 16.dp)

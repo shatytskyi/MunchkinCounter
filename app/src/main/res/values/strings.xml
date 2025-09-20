@@ -13,6 +13,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="close">Close</string>
+    <string name="got_it">Got it</string>
 
     <!-- Player Management -->
     <string name="add_new_player">Add new player</string>
@@ -36,6 +37,8 @@
     <!-- Fight Screen -->
     <string name="fight_title">Fight</string>
     <string name="loading_fight">Loading Fight…</string>
+    <string name="fight_info_title">Important</string>
+    <string name="fight_info_message">Any strength changes in this section are temporary and will not affect the character\'s actual stats</string>
 
     <!-- New Fight Screen strings -->
     <string name="player">Player</string>
@@ -85,13 +88,12 @@
     <string name="gender_female">Female</string>
 
     <!-- Rate App Dialog -->
-    <string name="rate_app">Rate App</string>
-    <string name="rate_dialog_title">Enjoying Munchkin Counter?</string>
+    <string name="other_settings">Other</string>
+    <string name="rate_dialog_title">Rate Munchkin Counter</string>
+
     <string name="rate_dialog_title_level10">Good game!</string>
-    <string name="rate_dialog_message">Rate us on Google Play?</string>
-    <string name="rate_dialog_message_level10">Level 10 reached!\nRate the app?</string>
+    <string name="rate_dialog_message_level10">Level 10 reached!\n\nMay I ask you to rate the app? ✨</string>
+
     <string name="rate_dialog_rate_now">Rate Now</string>
     <string name="rate_dialog_remind_later">Maybe Later</string>
-    <string name="rate_dialog_never">No Thanks</string>
-
 </resources>
