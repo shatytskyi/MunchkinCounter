@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.BrightnessHigh
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.StarRate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -317,7 +318,7 @@ private fun OtherSettingsSection(
                 haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                 onRateAppClick()
             },
-            icon = Icons.Outlined.Star,
+            icon = Icons.Outlined.StarRate,
             text = stringResource(R.string.rate_dialog_title),
             modifier = Modifier.fillMaxWidth(),
             rippleColor = null,
