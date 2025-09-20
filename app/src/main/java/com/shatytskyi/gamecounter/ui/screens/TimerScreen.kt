@@ -55,20 +55,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shatytskyi.gamecounter.R
 import com.shatytskyi.gamecounter.data.TimerPreferences
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.AnalyticsEvents
-import com.shatytskyi.gamecounter.analytics.ScreenNames
-import com.shatytskyi.gamecounter.analytics.UserProperties
-import com.shatytskyi.gamecounter.analytics.bundleOf
 import com.shatytskyi.gamecounter.ui.components.MunchkinHorizontalDivider
 import com.shatytskyi.gamecounter.ui.components.MunchkinText
 import com.shatytskyi.gamecounter.ui.components.MunchkinTopAppBar
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
-import org.koin.compose.koinInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.compose.koinInject
 import kotlin.math.PI
 import kotlin.math.sin
 
@@ -375,7 +370,6 @@ private class TimerLogic {
 @Composable
 private fun useTimerLogic(): TimerState {
     val timerPreferences = koinInject<TimerPreferences>()
-    val analyticsManager = koinInject<AnalyticsManager>()
     val savedSeconds by timerPreferences.selectedSeconds.collectAsState(initial = 5)
     var selectedSeconds by remember(savedSeconds) { mutableIntStateOf(savedSeconds) }
     var currentSeconds by remember { mutableIntStateOf(0) }
@@ -385,15 +379,6 @@ private fun useTimerLogic(): TimerState {
     val scope = rememberCoroutineScope()
     val timerLogic = remember { TimerLogic() }
     val haptic = LocalHapticFeedback.current
-    
-    // Log screen view and set timer preference as user property
-    LaunchedEffect(selectedSeconds) {
-        analyticsManager.logScreenView(ScreenNames.TIMER, "TimerScreen")
-        analyticsManager.setUserProperty(
-            UserProperties.TIMER_SECONDS_PREFERENCE,
-            selectedSeconds.toString()
-        )
-    }
 
     LaunchedEffect(isRunning, currentSeconds) {
         if (isRunning && currentSeconds > 0) {
@@ -407,10 +392,6 @@ private fun useTimerLogic(): TimerState {
                 shouldFlash = true
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 timerLogic.playBeep(END_FREQUENCY)
-                analyticsManager.logEvent(
-                    "timer_completed",
-                    bundleOf("seconds" to selectedSeconds)
-                )
             }
         }
     }
@@ -433,23 +414,12 @@ private fun useTimerLogic(): TimerState {
                 scope.launch {
                     timerPreferences.setSelectedSeconds(seconds)
                 }
-                analyticsManager.setUserProperty(
-                    UserProperties.TIMER_SECONDS_PREFERENCE,
-                    seconds.toString()
-                )
             }
         },
         onTimerToggle = {
             if (isRunning) {
                 isRunning = false
                 currentSeconds = 0
-                analyticsManager.logEvent(
-                    "timer_stopped",
-                    bundleOf(
-                        "seconds_remaining" to currentSeconds,
-                        "original_seconds" to selectedSeconds
-                    )
-                )
             } else {
                 currentSeconds = selectedSeconds
                 isRunning = true
@@ -457,10 +427,6 @@ private fun useTimerLogic(): TimerState {
                 scope.launch {
                     timerLogic.playBeep(START_FREQUENCY)
                 }
-                analyticsManager.logEvent(
-                    AnalyticsEvents.TIMER_USED,
-                    bundleOf("seconds" to selectedSeconds)
-                )
             }
         }
     )

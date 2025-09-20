@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.gamecounter.R
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
 import com.shatytskyi.gamecounter.data.Character
 import com.shatytskyi.gamecounter.ui.components.MunchkinCard
 import com.shatytskyi.gamecounter.ui.components.MunchkinCustomDialog
@@ -34,7 +32,6 @@ import com.shatytskyi.gamecounter.ui.components.icons.ArrowTop
 import com.shatytskyi.gamecounter.ui.components.icons.Close
 import com.shatytskyi.gamecounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
-import org.koin.compose.koinInject
 import kotlin.math.absoluteValue
 
 data class HelperOption(
@@ -54,11 +51,6 @@ fun HelpSelectionDialog(
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
-    val analyticsManager = koinInject<AnalyticsManager>()
-
-    LaunchedEffect(Unit) {
-        analyticsManager.logScreenView("Help Selection Dialog", "HelpSelectionDialog")
-    }
 
     val currentPlayerTotalPower = currentPlayer.level + currentPlayer.items + currentPlayerTempPower
 
@@ -208,7 +200,7 @@ private fun HelperOptionItem(
                         text = "${stringResource(R.string.level)} ${if (option.isClone) option.character.level else option.character.level} • ${
                             stringResource(
                                 R.string.power
-                                
+
                             )
                         } ${option.currentPower}",
                         style = MunchkinTheme.typography.labelSmall,

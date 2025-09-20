@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -30,6 +29,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +43,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.shatytskyi.gamecounter.R
 import com.shatytskyi.gamecounter.data.Character
 import com.shatytskyi.gamecounter.ui.components.MunchkinCard
@@ -52,17 +55,11 @@ import com.shatytskyi.gamecounter.ui.components.icons.Add
 import com.shatytskyi.gamecounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.gamecounter.ui.components.icons.Remove
 import com.shatytskyi.gamecounter.ui.components.icons.Reset
-import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.bundleOf
 import com.shatytskyi.gamecounter.ui.dialogs.HelpSelectionDialog
 import com.shatytskyi.gamecounter.ui.dialogs.HelperOption
+import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 
 @Composable
 fun FightInterface(
@@ -74,7 +71,6 @@ fun FightInterface(
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
-    val analyticsManager = koinInject<AnalyticsManager>()
     val coroutineScope = rememberCoroutineScope()
 
     // Sizes for sections
@@ -154,16 +150,6 @@ fun FightInterface(
                         onPowerChange = { delta ->
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             playerTempPower += delta
-                            analyticsManager.logEvent(
-                                "fight_player_temp_power_changed",
-                                bundleOf(
-                                    "direction" to if (delta > 0) "increase" else "decrease",
-                                    "button_value" to delta,
-                                    "new_temp_power" to playerTempPower,
-                                    "total_player_power" to (character.level + character.items + playerTempPower),
-                                    "is_winning" to ((character.level + character.items + playerTempPower) > monsterPower)
-                                )
-                            )
                         }
                     )
                 }
@@ -194,16 +180,6 @@ fun FightInterface(
                         onPowerChange = { delta ->
                             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                             monsterPower += delta
-                            analyticsManager.logEvent(
-                                "fight_monster_power_changed",
-                                bundleOf(
-                                    "direction" to if (delta > 0) "increase" else "decrease",
-                                    "button_value" to delta,
-                                    "new_monster_power" to monsterPower,
-                                    "total_player_power" to totalPlayerPower,
-                                    "is_player_winning" to (totalPlayerPower > monsterPower)
-                                )
-                            )
                         }
                     )
                 }
@@ -233,14 +209,6 @@ fun FightInterface(
                     if (helperOption == null) {
                         showHelperDialog = true
                     } else {
-                        // Track help removal
-                        analyticsManager.logEvent(
-                            "help_removed",
-                            bundleOf(
-                                "was_clone" to helperOption!!.isClone,
-                                "helper_power" to helperPower
-                            )
-                        )
                         helperOption = null
                     }
                 },
@@ -257,16 +225,6 @@ fun FightInterface(
             MunchkinIconTextButton(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    // Track fight reset
-                    analyticsManager.logEvent(
-                        "fight_reset",
-                        bundleOf(
-                            "player_temp_power_before" to playerTempPower,
-                            "monster_power_before" to monsterPower,
-                            "was_player_winning" to (totalPlayerPower > monsterPower)
-                        )
-                    )
-                    // Reset temporary power changes and helper
                     playerTempPower = 0
                     monsterPower = 0
                     helperOption = null
@@ -301,17 +259,6 @@ fun FightInterface(
                         animationSpec = tween(durationMillis = 400)
                     )
                 }
-
-                // Track help added
-                analyticsManager.logEvent(
-                    "help_added",
-                    bundleOf(
-                        "helper_id" to option.character.id,
-                        "is_clone" to option.isClone,
-                        "helper_power" to option.currentPower,
-                        "total_player_power" to totalPlayerPower
-                    )
-                )
             }
         )
     }

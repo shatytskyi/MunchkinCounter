@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import com.shatytskyi.gamecounter.R
 import com.shatytskyi.gamecounter.data.Gender
 import com.shatytskyi.gamecounter.ui.components.GenderSelector
-import com.shatytskyi.gamecounter.ui.components.MunchkinCustomDialog
 import com.shatytskyi.gamecounter.ui.components.MunchkinCard
+import com.shatytskyi.gamecounter.ui.components.MunchkinCustomDialog
 import com.shatytskyi.gamecounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.gamecounter.ui.components.MunchkinText
 import com.shatytskyi.gamecounter.ui.components.MunchkinTextField
@@ -36,12 +36,7 @@ import com.shatytskyi.gamecounter.ui.components.icons.Add
 import com.shatytskyi.gamecounter.ui.components.icons.Close
 import com.shatytskyi.gamecounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.AnalyticsEvents
-import com.shatytskyi.gamecounter.analytics.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.delay
-import org.koin.compose.koinInject
 
 @Composable
 fun AddCharacterDialog(
@@ -53,8 +48,7 @@ fun AddCharacterDialog(
     var selectedGender by remember { mutableStateOf(Gender.MALE) }
     val focusRequester = remember { FocusRequester() }
     val haptic = LocalHapticFeedback.current
-    val analyticsManager = koinInject<AnalyticsManager>()
-    
+
     // Track if user changed from default gender
     var hasChangedGender by remember { mutableStateOf(false) }
     // Track if user started typing
@@ -62,7 +56,6 @@ fun AddCharacterDialog(
 
     LaunchedEffect(Unit) {
         // Log dialog view
-        analyticsManager.logScreenView("Add Player Dialog", "AddCharacterDialog")
         delay(200) // Delay for bottom sheet animation
         focusRequester.requestFocus()
     }
@@ -94,18 +87,11 @@ fun AddCharacterDialog(
 
             MunchkinTextField(
                 value = name,
-                onValueChange = { 
+                onValueChange = {
                     name = it
                     // Track first character typed
                     if (!hasStartedTyping && it.text.isNotEmpty()) {
                         hasStartedTyping = true
-                        analyticsManager.logEvent(
-                            FirebaseAnalytics.Event.SELECT_CONTENT,
-                            bundleOf(
-                                FirebaseAnalytics.Param.CONTENT_TYPE to "text_field",
-                                FirebaseAnalytics.Param.ITEM_ID to "player_name"
-                            )
-                        )
                     }
                 },
                 keyboardType = KeyboardType.Text,
@@ -148,14 +134,6 @@ fun AddCharacterDialog(
                                     selectedGender = gender
                                     if (!hasChangedGender) {
                                         hasChangedGender = true
-                                        // Track that user interacted with gender selector
-                                        analyticsManager.logEvent(
-                                            FirebaseAnalytics.Event.SELECT_CONTENT,
-                                            bundleOf(
-                                                FirebaseAnalytics.Param.CONTENT_TYPE to "gender_selector",
-                                                FirebaseAnalytics.Param.ITEM_ID to gender.name
-                                            )
-                                        )
                                     }
                                 }
                             },
@@ -178,13 +156,6 @@ fun AddCharacterDialog(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     // Track cancellation with context about user progress
-                    analyticsManager.logEvent(
-                        AnalyticsEvents.PLAYER_ADD_CANCELLED,
-                        bundleOf(
-                            "had_name" to name.text.trim().isNotEmpty(),
-                            "changed_gender" to hasChangedGender
-                        )
-                    )
                     onDismiss()
                 },
                 icon = MunchkinIcons.Close,

@@ -9,10 +9,6 @@ import com.shatytskyi.gamecounter.data.ThemePreferences
 import com.shatytskyi.gamecounter.data.ThemePreferencesImpl
 import com.shatytskyi.gamecounter.data.TimerPreferences
 import com.shatytskyi.gamecounter.data.TimerPreferencesImpl
-import com.shatytskyi.gamecounter.BuildConfig
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.DebugAnalyticsManager
-import com.shatytskyi.gamecounter.analytics.ReleaseAnalyticsManager
 import org.koin.dsl.module
 
 val databaseModule = module {
@@ -41,13 +37,5 @@ val databaseModule = module {
 
     single<CharacterRepository> {
         CharacterRepository(get())
-    }
-    
-    single<AnalyticsManager> {
-        if (BuildConfig.DEBUG) {
-            DebugAnalyticsManager()
-        } else {
-            ReleaseAnalyticsManager()
-        }
     }
 }

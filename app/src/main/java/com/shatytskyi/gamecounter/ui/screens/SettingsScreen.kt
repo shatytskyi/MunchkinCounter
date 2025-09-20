@@ -44,12 +44,6 @@ import com.shatytskyi.gamecounter.ui.components.icons.ColorsOn
 import com.shatytskyi.gamecounter.ui.components.icons.Language
 import com.shatytskyi.gamecounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.ScreenNames
-import com.shatytskyi.gamecounter.analytics.UserProperties
-import com.shatytskyi.gamecounter.analytics.bundleOf
-import androidx.compose.runtime.LaunchedEffect
-import org.koin.compose.koinInject
 
 enum class ThemeMode {
     LIGHT,
@@ -73,22 +67,6 @@ fun SettingsScreen(
     val topPadding = remember(statusBarHeight) {
         with(density) { statusBarHeight.toDp() + APP_BAR_HEIGHT.dp + 16.dp }
     }
-    val analyticsManager = koinInject<AnalyticsManager>()
-    
-    // Log screen view and set user properties for settings
-    LaunchedEffect(currentThemeMode, dynamicColors) {
-        analyticsManager.logScreenView(ScreenNames.SETTINGS, "SettingsScreen")
-
-        // Set user properties for segmentation
-        analyticsManager.setUserProperty(
-            UserProperties.APP_THEME,
-            currentThemeMode.name.lowercase()
-        )
-        analyticsManager.setUserProperty(
-            UserProperties.DYNAMIC_COLORS_ENABLED,
-            dynamicColors.toString()
-        )
-    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -108,18 +86,6 @@ fun SettingsScreen(
                 ThemeSwitchGroup(
                     selectedMode = currentThemeMode,
                     onModeSelected = { mode ->
-                        analyticsManager.logEvent(
-                            "settings_changed",
-                            bundleOf(
-                                "setting" to "theme",
-                                "old_value" to currentThemeMode.name.lowercase(),
-                                "new_value" to mode.name.lowercase()
-                            )
-                        )
-                        analyticsManager.setUserProperty(
-                            UserProperties.APP_THEME,
-                            mode.name.lowercase()
-                        )
                         onThemeModeChange(mode)
                     }
                 )
@@ -130,18 +96,6 @@ fun SettingsScreen(
                 ColorSwitchGroup(
                     dynamicColors = dynamicColors,
                     onDynamicColorsChange = { enabled ->
-                        analyticsManager.logEvent(
-                            "settings_changed",
-                            bundleOf(
-                                "setting" to "dynamic_colors",
-                                "old_value" to dynamicColors.toString(),
-                                "new_value" to enabled.toString()
-                            )
-                        )
-                        analyticsManager.setUserProperty(
-                            UserProperties.DYNAMIC_COLORS_ENABLED,
-                            enabled.toString()
-                        )
                         onDynamicColorsChange(enabled)
                     }
                 )
@@ -158,10 +112,6 @@ fun SettingsScreen(
             item {
                 LanguageSelector(
                     onClick = {
-                        analyticsManager.logEvent(
-                            "language_selector_clicked",
-                            null
-                        )
                         onLanguageClick()
                     }
                 )
@@ -178,10 +128,6 @@ fun SettingsScreen(
             item {
                 RateAppButton(
                     onClick = {
-                        analyticsManager.logEvent(
-                            "rate_app_button_clicked",
-                            bundleOf("source" to "settings")
-                        )
                         onRateAppClick()
                     }
                 )

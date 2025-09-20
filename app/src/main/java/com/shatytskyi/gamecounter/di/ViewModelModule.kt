@@ -4,7 +4,7 @@ import com.shatytskyi.gamecounter.rate.RateAppManager
 import com.shatytskyi.gamecounter.rate.RateAppPreferences
 import com.shatytskyi.gamecounter.viewmodel.CommonViewModel
 import com.shatytskyi.gamecounter.viewmodel.ThemeViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
@@ -14,7 +14,7 @@ val viewModelModule = module {
     }
 
     single {
-        RateAppManager(get(), get(), get())
+        RateAppManager(get(), get())
     }
 
     viewModel<CommonViewModel> {

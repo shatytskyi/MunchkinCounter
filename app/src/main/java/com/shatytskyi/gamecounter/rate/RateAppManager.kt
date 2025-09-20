@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 class RateAppManager(
     private val context: Context,
     private val preferences: RateAppPreferences,
-    private val analyticsManager: AnalyticsManager
 ) {
     private val _shouldShowDialog = MutableStateFlow(false)
     val shouldShowDialog: Flow<Boolean> = _shouldShowDialog.asStateFlow()
@@ -33,7 +31,6 @@ class RateAppManager(
     suspend fun onLevel10Achieved() {
         if (checkLevel10Achievement()) {
             // Show our custom dialog
-            analyticsManager.logEvent("level_10_achieved_rate_trigger")
             _shouldShowDialog.value = true
             preferences.setHasShownLevel10Dialog(true)
         }
@@ -44,7 +41,6 @@ class RateAppManager(
     }
 
     suspend fun onRateNowClicked() {
-        analyticsManager.logEvent("rate_app_clicked")
         preferences.setUserChoice(RateAppChoice.RATED)
         preferences.setHasShownLevel10Dialog(true)
         dismissDialog()
@@ -53,14 +49,12 @@ class RateAppManager(
     }
 
     suspend fun onRemindLaterClicked() {
-        analyticsManager.logEvent("rate_app_later_clicked")
         preferences.setUserChoice(RateAppChoice.LATER)
         preferences.setHasShownLevel10Dialog(true)
         dismissDialog()
     }
 
     suspend fun onNeverClicked() {
-        analyticsManager.logEvent("rate_app_never_clicked")
         preferences.setUserChoice(RateAppChoice.NEVER)
         preferences.setHasShownLevel10Dialog(true)
         dismissDialog()
@@ -76,7 +70,6 @@ class RateAppManager(
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
-            analyticsManager.logEvent("play_store_opened")
         } catch (e: ActivityNotFoundException) {
             // If Play Store app is not available, open in browser
             try {
@@ -85,10 +78,8 @@ class RateAppManager(
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
                 context.startActivity(intent)
-                analyticsManager.logEvent("play_store_opened_browser")
             } catch (e: Exception) {
                 Toast.makeText(context, "Unable to open Play Store", Toast.LENGTH_SHORT).show()
-                analyticsManager.logEvent("play_store_open_failed")
             }
         }
     }

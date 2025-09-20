@@ -6,7 +6,6 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,13 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.shatytskyi.gamecounter.R
-import com.shatytskyi.gamecounter.analytics.AnalyticsEvents
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.ScreenNames
-import com.shatytskyi.gamecounter.analytics.UserProperties
-import com.shatytskyi.gamecounter.analytics.bundleOf
 import com.shatytskyi.gamecounter.data.Character
 import com.shatytskyi.gamecounter.data.Gender
 import com.shatytskyi.gamecounter.ui.components.RateAppDialog
@@ -30,7 +23,6 @@ import com.shatytskyi.gamecounter.ui.dialogs.AddCharacterDialog
 import com.shatytskyi.gamecounter.ui.dialogs.DiceDialog
 import com.shatytskyi.gamecounter.ui.dialogs.WarningDialog
 import com.shatytskyi.gamecounter.viewmodel.CommonViewModel
-import org.koin.compose.koinInject
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -110,31 +102,10 @@ private fun ListScreenContent(
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
-    val analyticsManager = koinInject<AnalyticsManager>()
     var showAddDialog by remember { mutableStateOf(false) }
     var showResetAllDialog by remember { mutableStateOf(false) }
     var showRemoveAllDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
-
-    // Log screen view once
-    LaunchedEffect(Unit) {
-        analyticsManager.logScreenView(ScreenNames.HOME, "ListScreen")
-    }
-
-    // Update user properties when character count changes
-    LaunchedEffect(characters.size) {
-        // Set user property
-        analyticsManager.setUserProperty(
-            UserProperties.ACTIVE_PLAYER_COUNT,
-            when (characters.size) {
-                0 -> "0"
-                1 -> "1"
-                in 2..4 -> "2-4"
-                in 5..8 -> "5-8"
-                else -> "9+"
-            }
-        )
-    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -147,7 +118,6 @@ private fun ListScreenContent(
                 },
                 onTimerClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    analyticsManager.logEvent(AnalyticsEvents.TIMER_USED, null)
                     onTimerClick()
                 },
                 onSettingsClick = {
@@ -162,14 +132,6 @@ private fun ListScreenContent(
                 onCharacterClick = { id ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     // Track player detail views using Firebase's standard event
-                    characters.find { it.id == id }
-                    analyticsManager.logEvent(
-                        FirebaseAnalytics.Event.SELECT_CONTENT,
-                        bundleOf(
-                            FirebaseAnalytics.Param.CONTENT_TYPE to "player",
-                            FirebaseAnalytics.Param.ITEM_ID to id.toString()
-                        )
-                    )
                     onCharacterClick(id)
                 },
                 onAddCharacterClick = {
@@ -179,43 +141,15 @@ private fun ListScreenContent(
                 },
                 onLevelChange = { id, delta ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    val character = characters.find { it.id == id }
-                    // Track level changes with context
-                    analyticsManager.logEvent(
-                        AnalyticsEvents.LEVEL_CHANGED,
-                        bundleOf(
-                            "source" to "list_screen",
-                            "direction" to if (delta > 0) "up" else "down",
-                            "button_value" to delta,
-                            "new_level" to ((character?.level ?: 1) + delta),
-                            FirebaseAnalytics.Param.VALUE to delta.toLong()
-                        )
-                    )
                     onLevelChange(id, delta)
                 },
                 onPowerChange = { id, delta ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    val character = characters.find { it.id == id }
-                    // Track item/power changes
-                    analyticsManager.logEvent(
-                        AnalyticsEvents.ITEMS_CHANGED,
-                        bundleOf(
-                            "source" to "list_screen",
-                            "direction" to if (delta > 0) "increase" else "decrease",
-                            "button_value" to delta,
-                            "new_items" to ((character?.power ?: 0) + delta),
-                            FirebaseAnalytics.Param.VALUE to delta.toLong()
-                        )
-                    )
                     onPowerChange(id, delta)
                 },
                 onGenderToggle = { id ->
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
                     // Track gender toggle with source
-                    analyticsManager.logEvent(
-                        AnalyticsEvents.GENDER_TOGGLED,
-                        bundleOf("source" to "list_screen")
-                    )
                     onGenderToggle(id)
                 },
                 onResetAllClick = {
@@ -234,7 +168,6 @@ private fun ListScreenContent(
                 },
                 onTimerClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                    analyticsManager.logEvent(AnalyticsEvents.TIMER_USED, null)
                     onTimerClick()
                 },
                 onSettingsClick = {
@@ -256,14 +189,6 @@ private fun ListScreenContent(
             },
             onConfirm = { name, gender ->
                 haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                // Track player addition - key metric
-                analyticsManager.logEvent(
-                    AnalyticsEvents.PLAYER_ADDED,
-                    bundleOf(
-                        "gender" to gender.name,
-                        "player_count" to (characters.size + 1)
-                    )
-                )
                 onAddCharacter(name, gender)
                 showAddDialog = false
             }
@@ -279,13 +204,6 @@ private fun ListScreenContent(
             },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                // Track reset all - important user action
-                analyticsManager.logEvent(
-                    AnalyticsEvents.ALL_PLAYERS_RESET,
-                    bundleOf(
-                        "player_count" to characters.size
-                    )
-                )
                 onResetAll()
                 showResetAllDialog = false
             }
@@ -301,13 +219,6 @@ private fun ListScreenContent(
             },
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                // Track all players deletion
-                analyticsManager.logEvent(
-                    AnalyticsEvents.ALL_PLAYERS_DELETED,
-                    bundleOf(
-                        "player_count" to characters.size
-                    )
-                )
                 onRemoveAll()
                 showRemoveAllDialog = false
             }
@@ -319,7 +230,6 @@ private fun ListScreenContent(
             onDismiss = {
                 showDiceDialog = false
             },
-            source = "list_screen"
         )
     }
 

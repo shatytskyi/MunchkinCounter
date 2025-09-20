@@ -29,8 +29,8 @@ import com.shatytskyi.gamecounter.R
 import com.shatytskyi.gamecounter.data.Character
 import com.shatytskyi.gamecounter.data.Gender
 import com.shatytskyi.gamecounter.ui.components.GenderSelector
-import com.shatytskyi.gamecounter.ui.components.MunchkinCustomDialog
 import com.shatytskyi.gamecounter.ui.components.MunchkinCard
+import com.shatytskyi.gamecounter.ui.components.MunchkinCustomDialog
 import com.shatytskyi.gamecounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.gamecounter.ui.components.MunchkinText
 import com.shatytskyi.gamecounter.ui.components.MunchkinTextField
@@ -38,11 +38,7 @@ import com.shatytskyi.gamecounter.ui.components.icons.Close
 import com.shatytskyi.gamecounter.ui.components.icons.Edit
 import com.shatytskyi.gamecounter.ui.components.icons.MunchkinIcons
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.AnalyticsEvents
-import com.shatytskyi.gamecounter.analytics.bundleOf
 import kotlinx.coroutines.delay
-import org.koin.compose.koinInject
 
 @Composable
 fun EditCharacterDialog(
@@ -63,26 +59,9 @@ fun EditCharacterDialog(
     var items by remember { mutableStateOf(TextFieldValue(character.items.toString())) }
     var selectedGender by remember { mutableStateOf(character.gender) }
     val haptic = LocalHapticFeedback.current
-    val analyticsManager = koinInject<AnalyticsManager>()
     val focusRequester = remember { FocusRequester() }
-    
-    // Track what was changed
-    val hasNameChanged = remember(nameFieldValue.text) { 
-        nameFieldValue.text.trim() != character.name 
-    }
-    val hasLevelChanged = remember(level.text) { 
-        level.text.toIntOrNull() != character.level 
-    }
-    val hasItemsChanged = remember(items.text) { 
-        items.text.toIntOrNull() != character.items 
-    }
-    val hasGenderChanged = remember(selectedGender) { 
-        selectedGender != character.gender 
-    }
 
     LaunchedEffect(Unit) {
-        // Log dialog view
-        analyticsManager.logScreenView("Edit Player Dialog", "EditCharacterDialog")
         delay(200) // Delay for bottom sheet animation
         focusRequester.requestFocus()
     }
@@ -91,21 +70,49 @@ fun EditCharacterDialog(
         onDismissRequest = onDismiss,
         modifier = modifier
     ) {
-            // Header
+        // Header
+        MunchkinText(
+            text = stringResource(R.string.edit_player),
+            style = MunchkinTheme.typography.headlineSmall,
+            color = MunchkinTheme.colors.onBackground,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Name field
+        Column {
             MunchkinText(
-                text = stringResource(R.string.edit_player),
-                style = MunchkinTheme.typography.headlineSmall,
-                color = MunchkinTheme.colors.onBackground,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                text = stringResource(R.string.player_name),
+                style = MunchkinTheme.typography.labelLarge,
+                color = MunchkinTheme.colors.onBackground
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            // Name field
-            Column {
+            MunchkinTextField(
+                value = nameFieldValue,
+                onValueChange = { nameFieldValue = it },
+                keyboardType = KeyboardType.Text,
+                focusRequester = focusRequester,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Level and Items row
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Level field
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 MunchkinText(
-                    text = stringResource(R.string.player_name),
+                    text = stringResource(R.string.level),
                     style = MunchkinTheme.typography.labelLarge,
                     color = MunchkinTheme.colors.onBackground
                 )
@@ -113,181 +120,129 @@ fun EditCharacterDialog(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 MunchkinTextField(
-                    value = nameFieldValue,
-                    onValueChange = { nameFieldValue = it },
-                    keyboardType = KeyboardType.Text,
-                    focusRequester = focusRequester,
-                    textAlign = TextAlign.Start,
+                    value = level,
+                    onValueChange = { newValue ->
+                        if (newValue.text.isEmpty() || newValue.text.toIntOrNull()?.let { value ->
+                                value in -999..999
+                            } == true) {
+                            level = newValue
+                        }
+                    },
+                    keyboardType = KeyboardType.Number,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Level and Items row
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            // Items field
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
-                // Level field
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    MunchkinText(
-                        text = stringResource(R.string.level),
-                        style = MunchkinTheme.typography.labelLarge,
-                        color = MunchkinTheme.colors.onBackground
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    MunchkinTextField(
-                        value = level,
-                        onValueChange = { newValue ->
-                            if (newValue.text.isEmpty() || newValue.text.toIntOrNull()?.let { value ->
-                                    value in -999..999
-                                } == true) {
-                                level = newValue
-                            }
-                        },
-                        keyboardType = KeyboardType.Number,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                // Items field
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    MunchkinText(
-                        text = stringResource(R.string.items),
-                        style = MunchkinTheme.typography.labelLarge,
-                        color = MunchkinTheme.colors.onBackground
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    MunchkinTextField(
-                        value = items,
-                        onValueChange = { newValue ->
-                            if (newValue.text.isEmpty() || newValue.text.toIntOrNull()?.let { value ->
-                                    value in -999..999
-                                } == true) {
-                                items = newValue
-                            }
-                        },
-                        keyboardType = KeyboardType.Number,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Gender selection
-            Column {
                 MunchkinText(
-                    text = stringResource(R.string.gender),
+                    text = stringResource(R.string.items),
                     style = MunchkinTheme.typography.labelLarge,
                     color = MunchkinTheme.colors.onBackground
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                MunchkinCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    backgroundColor = MunchkinTheme.colors.background,
-                    color = MunchkinTheme.colors.grey,
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        Gender.entries.forEach { gender ->
-                            GenderSelector(
-                                gender = gender,
-                                isSelected = selectedGender == gender,
-                                onClick = {
-                                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                                    selectedGender = gender
-                                },
-                                modifier = Modifier.weight(1f)
-                            )
+                MunchkinTextField(
+                    value = items,
+                    onValueChange = { newValue ->
+                        if (newValue.text.isEmpty() || newValue.text.toIntOrNull()?.let { value ->
+                                value in -999..999
+                            } == true) {
+                            items = newValue
                         }
+                    },
+                    keyboardType = KeyboardType.Number,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Gender selection
+        Column {
+            MunchkinText(
+                text = stringResource(R.string.gender),
+                style = MunchkinTheme.typography.labelLarge,
+                color = MunchkinTheme.colors.onBackground
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            MunchkinCard(
+                modifier = Modifier.fillMaxWidth(),
+                backgroundColor = MunchkinTheme.colors.background,
+                color = MunchkinTheme.colors.grey,
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Gender.entries.forEach { gender ->
+                        GenderSelector(
+                            gender = gender,
+                            isSelected = selectedGender == gender,
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                                selectedGender = gender
+                            },
+                            modifier = Modifier.weight(1f)
+                        )
                     }
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-            // Action buttons
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Cancel button
-                MunchkinIconTextButton(
-                    onClick = {
-                        haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                        // Track cancellation with what was being edited
-                        analyticsManager.logEvent(
-                            "edit_player_cancelled",
-                            bundleOf(
-                                "had_name_change" to hasNameChanged,
-                                "had_level_change" to hasLevelChanged,
-                                "had_items_change" to hasItemsChanged,
-                                "had_gender_change" to hasGenderChanged
-                            )
-                        )
-                        onDismiss()
-                    },
-                    icon = MunchkinIcons.Close,
-                    text = stringResource(R.string.cancel),
-                    modifier = Modifier.weight(1f),
-                    textStyle = MunchkinTheme.typography.labelMedium,
-                    contentPadding = 16.dp,
-                    rippleColor = MunchkinTheme.colors.secondary,
-                    bounded = false
-                )
+        // Action buttons
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Cancel button
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                    onDismiss()
+                },
+                icon = MunchkinIcons.Close,
+                text = stringResource(R.string.cancel),
+                modifier = Modifier.weight(1f),
+                textStyle = MunchkinTheme.typography.labelMedium,
+                contentPadding = 16.dp,
+                rippleColor = MunchkinTheme.colors.secondary,
+                bounded = false
+            )
 
-                // Save button
-                MunchkinIconTextButton(
-                    onClick = {
-                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                        val lvl = level.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.level
-                        val itm = items.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.items
-                        
-                        // Track what was modified
-                        analyticsManager.logEvent(
-                            AnalyticsEvents.PLAYER_MODIFIED,
-                            bundleOf(
-                                "source" to "edit_dialog",
-                                "changed_name" to hasNameChanged,
-                                "changed_level" to hasLevelChanged,
-                                "changed_items" to hasItemsChanged,
-                                "changed_gender" to hasGenderChanged,
-                                "level_delta" to (lvl - character.level),
-                                "items_delta" to (itm - character.items)
-                            )
-                        )
-                        
-                        onConfirm(nameFieldValue.text.trim(), lvl, itm, selectedGender)
-                    },
-                    icon = MunchkinIcons.Edit,
-                    text = stringResource(R.string.save),
-                    modifier = Modifier.weight(1f),
-                    textStyle = MunchkinTheme.typography.labelMedium,
-                    contentPadding = 16.dp,
-                    rippleColor = MunchkinTheme.colors.primary,
-                    bounded = false,
-                    enabled = nameFieldValue.text.trim().isNotEmpty()
-                )
-            }
+            // Save button
+            MunchkinIconTextButton(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                    val lvl = level.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.level
+                    val itm = items.text.toIntOrNull()?.coerceIn(-999, 999) ?: character.items
 
-            Spacer(modifier = Modifier.height(12.dp))
+                    onConfirm(nameFieldValue.text.trim(), lvl, itm, selectedGender)
+                },
+                icon = MunchkinIcons.Edit,
+                text = stringResource(R.string.save),
+                modifier = Modifier.weight(1f),
+                textStyle = MunchkinTheme.typography.labelMedium,
+                contentPadding = 16.dp,
+                rippleColor = MunchkinTheme.colors.primary,
+                bounded = false,
+                enabled = nameFieldValue.text.trim().isNotEmpty()
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 

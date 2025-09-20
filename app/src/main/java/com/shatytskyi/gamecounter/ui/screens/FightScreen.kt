@@ -49,11 +49,6 @@ import com.shatytskyi.gamecounter.ui.screens.details.LevelControlCard
 import com.shatytskyi.gamecounter.ui.screens.fight.FightInterface
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
 import com.shatytskyi.gamecounter.viewmodel.CommonViewModel
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.AnalyticsEvents
-import com.shatytskyi.gamecounter.analytics.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
-import org.koin.compose.koinInject
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -68,24 +63,11 @@ fun FightScreen(
 ) {
     val characters by viewModel.characters.collectAsState()
     val player = characters.find { it.id == playerId }
-    val analyticsManager = koinInject<AnalyticsManager>()
 
     var showDiceDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(player) {
         viewModel.loadCharacters()
-        // Log screen view
-        player?.let {
-            analyticsManager.logScreenView("Fight", "FightScreen")
-            analyticsManager.logEvent(
-                "fight_session_started",
-                bundleOf(
-                    "player_level" to it.level,
-                    "player_items" to it.items,
-                    "player_total_power" to (it.level + it.items)
-                )
-            )
-        }
     }
 
     if (player == null) {
@@ -108,36 +90,15 @@ fun FightScreen(
         character = player,
         characters = characters,
         onBackClick = {
-            analyticsManager.logEvent(
-                "fight_session_ended",
-                bundleOf(
-                    "player_level" to player.level,
-                    "player_items" to player.items,
-                    "player_total_power" to (player.level + player.items)
-                )
-            )
             onBack()
         },
         onTimerClick = {
-            analyticsManager.logEvent(AnalyticsEvents.TIMER_USED,
-                bundleOf("source" to "fight_screen"))
             onTimerClick()
         },
-        onDiceClick = { 
-            showDiceDialog = true 
+        onDiceClick = {
+            showDiceDialog = true
         },
         onLevelChange = { delta ->
-            analyticsManager.logEvent(
-                AnalyticsEvents.LEVEL_CHANGED,
-                bundleOf(
-                    "source" to "fight_screen",
-                    "direction" to if (delta > 0) "up" else "down",
-                    "button_value" to delta,
-                    "new_level" to (player.level + delta),
-                    "during_fight" to true,
-                    FirebaseAnalytics.Param.VALUE to delta.toLong()
-                )
-            )
             viewModel.updateCharacter(
                 id = playerId,
                 name = player.name,
@@ -147,17 +108,6 @@ fun FightScreen(
             )
         },
         onPowerChange = { delta ->
-            analyticsManager.logEvent(
-                AnalyticsEvents.ITEMS_CHANGED,
-                bundleOf(
-                    "source" to "fight_screen",
-                    "direction" to if (delta > 0) "increase" else "decrease",
-                    "button_value" to delta,
-                    "new_items" to (player.items + delta),
-                    "during_fight" to true,
-                    FirebaseAnalytics.Param.VALUE to delta.toLong()
-                )
-            )
             viewModel.updateCharacter(
                 id = playerId,
                 name = player.name,
@@ -166,13 +116,8 @@ fun FightScreen(
                 gender = player.gender
             )
         },
-        onGenderToggle = { 
-            analyticsManager.logEvent(AnalyticsEvents.GENDER_TOGGLED,
-                bundleOf(
-                    "source" to "fight_screen",
-                    "during_fight" to true
-                ))
-            viewModel.toggleGender(playerId) 
+        onGenderToggle = {
+            viewModel.toggleGender(playerId)
         },
         animatedContentScope = animatedContentScope,
         sharedTransitionScope = sharedTransitionScope,
@@ -182,7 +127,6 @@ fun FightScreen(
     if (showDiceDialog) {
         DiceDialog(
             onDismiss = { showDiceDialog = false },
-            source = "fight_screen"
         )
     }
 }

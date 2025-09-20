@@ -40,9 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shatytskyi.gamecounter.R
-import com.shatytskyi.gamecounter.analytics.AnalyticsEvents
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.bundleOf
 import com.shatytskyi.gamecounter.ui.components.MunchkinDialog
 import com.shatytskyi.gamecounter.ui.components.MunchkinIcon
 import com.shatytskyi.gamecounter.ui.components.MunchkinText
@@ -55,25 +52,21 @@ import com.shatytskyi.gamecounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.gamecounter.ui.components.icons.dice.Dice6
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
 import kotlinx.coroutines.delay
-import org.koin.compose.koinInject
 import kotlin.math.sqrt
 
 @Composable
 fun DiceDialog(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
-    source: String = "unknown"
 ) {
     var result by remember { mutableIntStateOf((1..6).random()) }
     var isRolling by remember { mutableStateOf(false) }
     var animationValue by remember { mutableIntStateOf(result) }
     var currentDuration by remember { mutableIntStateOf(1000) }
     val haptic = LocalHapticFeedback.current
-    val analyticsManager = koinInject<AnalyticsManager>()
     var rollCount by remember { mutableIntStateOf(0) }
     val context = LocalContext.current
     var lastShakeTime by remember { mutableLongStateOf(0L) }
-    var triggerType by remember { mutableStateOf("tap") }
 
     val shake by animateFloatAsState(
         targetValue = if (isRolling) 1f else 0f,
@@ -82,22 +75,12 @@ fun DiceDialog(
     )
 
     // Function to trigger dice roll
-    fun triggerRoll(trigger: String) {
+    fun triggerRoll() {
         if (!isRolling) {
             result = (1..6).random()
             currentDuration = (1000..2000).random()
             isRolling = true
             rollCount++
-            triggerType = trigger
-
-            // Track dice roll action
-            analyticsManager.logEvent(
-                AnalyticsEvents.DICE_ROLLED,
-                bundleOf(
-                    "source" to source,
-                    "trigger" to trigger
-                )
-            )
         }
     }
 
@@ -124,7 +107,7 @@ fun DiceDialog(
                         if (currentTime - lastShakeTime > 500) {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             lastShakeTime = currentTime
-                            triggerRoll("shake")
+                            triggerRoll()
                         }
                     }
                 }
@@ -148,11 +131,6 @@ fun DiceDialog(
         }
     }
 
-    // Log dialog view on first open
-    LaunchedEffect(Unit) {
-        analyticsManager.logScreenView("Dice Dialog", "DiceDialog")
-    }
-
     LaunchedEffect(isRolling) {
         if (isRolling) {
             val iterations = currentDuration / 50
@@ -172,17 +150,6 @@ fun DiceDialog(
             // Strong vibration at the end
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             isRolling = false
-
-            // Track dice roll result
-            analyticsManager.logEvent(
-                "dice_roll_result",
-                bundleOf(
-                    "result" to result,
-                    "roll_number" to rollCount,
-                    "source" to source,
-                    "trigger" to triggerType
-                )
-            )
         }
     }
 
@@ -210,7 +177,7 @@ fun DiceDialog(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = {
-                                    triggerRoll("tap")
+                                    triggerRoll()
                                 }
                             )
                     ) {

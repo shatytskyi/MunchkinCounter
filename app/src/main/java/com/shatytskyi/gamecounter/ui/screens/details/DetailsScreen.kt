@@ -17,12 +17,6 @@ import com.shatytskyi.gamecounter.ui.dialogs.DiceDialog
 import com.shatytskyi.gamecounter.ui.dialogs.EditCharacterDialog
 import com.shatytskyi.gamecounter.ui.dialogs.WarningDialog
 import com.shatytskyi.gamecounter.viewmodel.CommonViewModel
-import com.shatytskyi.gamecounter.analytics.AnalyticsManager
-import com.shatytskyi.gamecounter.analytics.AnalyticsEvents
-import com.shatytskyi.gamecounter.analytics.ScreenNames
-import com.shatytskyi.gamecounter.analytics.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
-import org.koin.compose.koinInject
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -38,7 +32,6 @@ fun DetailsScreen(
 ) {
     val characters by viewModel.characters.collectAsState()
     val character = characters.find { it.id == characterId }
-    val analyticsManager = koinInject<AnalyticsManager>()
 
     var showEditDialog by remember { mutableStateOf(false) }
     var showResetDialog by remember { mutableStateOf(false) }
@@ -47,10 +40,6 @@ fun DetailsScreen(
 
     LaunchedEffect(character) {
         viewModel.loadCharacters()
-        // Log screen view
-        character?.let {
-            analyticsManager.logScreenView(ScreenNames.PLAYER_DETAILS, "DetailsScreen")
-        }
     }
 
     if (character == null) {
@@ -60,40 +49,16 @@ fun DetailsScreen(
 
     DetailsScreenContent(
         character = character,
-        onLevelChange = { delta -> 
+        onLevelChange = { delta ->
             viewModel.changeLevel(characterId, delta)
-            analyticsManager.logEvent(
-                AnalyticsEvents.LEVEL_CHANGED,
-                bundleOf(
-                    "source" to "details_screen",
-                    "direction" to if (delta > 0) "up" else "down",
-                    "button_value" to delta,
-                    "new_level" to (character.level + delta),
-                    FirebaseAnalytics.Param.VALUE to delta.toLong()
-                )
-            )
         },
-        onPowerChange = { delta -> 
+        onPowerChange = { delta ->
             viewModel.changePower(characterId, delta)
-            analyticsManager.logEvent(
-                AnalyticsEvents.ITEMS_CHANGED,
-                bundleOf(
-                    "source" to "details_screen",
-                    "direction" to if (delta > 0) "increase" else "decrease",
-                    "button_value" to delta,
-                    "new_items" to (character.power + delta),
-                    FirebaseAnalytics.Param.VALUE to delta.toLong()
-                )
-            )
         },
-        onGenderToggle = { id -> 
+        onGenderToggle = { id ->
             viewModel.toggleGender(id)
-            analyticsManager.logEvent(AnalyticsEvents.GENDER_TOGGLED, 
-                bundleOf("source" to "details_screen"))
         },
         onFightClick = {
-            analyticsManager.logEvent(AnalyticsEvents.FIGHT_STARTED,
-                bundleOf("source" to "details_screen"))
             onFight()
         },
         onResetClick = { showResetDialog = true },
@@ -101,12 +66,10 @@ fun DetailsScreen(
         onDeleteClick = { showDeleteDialog = true },
         onBackClick = onBack,
         onTimerClick = {
-            analyticsManager.logEvent(AnalyticsEvents.TIMER_USED,
-                bundleOf("source" to "details_screen"))
             onTimerClick()
         },
-        onDiceClick = { 
-            showDiceDialog = true 
+        onDiceClick = {
+            showDiceDialog = true
         },
         animatedContentScope = animatedContentScope,
         sharedTransitionScope = sharedTransitionScope,
@@ -131,14 +94,6 @@ fun DetailsScreen(
             message = stringResource(R.string.player_will_be_reset),
             onDismiss = { showResetDialog = false },
             onConfirm = {
-                analyticsManager.logEvent(
-                    "player_reset",
-                    bundleOf(
-                        "source" to "details_screen",
-                        "player_level" to character.level,
-                        "player_items" to character.items
-                    )
-                )
                 viewModel.resetCharacter(characterId)
                 showResetDialog = false
             }
@@ -151,14 +106,6 @@ fun DetailsScreen(
             message = stringResource(R.string.player_will_be_deleted),
             onDismiss = { showDeleteDialog = false },
             onConfirm = {
-                analyticsManager.logEvent(
-                    AnalyticsEvents.PLAYER_DELETED,
-                    bundleOf(
-                        "source" to "details_screen",
-                        "player_level" to character.level,
-                        "player_items" to character.items
-                    )
-                )
                 viewModel.removeCharacter(characterId)
                 onBack()
             }
@@ -168,7 +115,6 @@ fun DetailsScreen(
     if (showDiceDialog) {
         DiceDialog(
             onDismiss = { showDiceDialog = false },
-            source = "details_screen"
         )
     }
 }
