@@ -1,10 +1,7 @@
 package com.shatytskyi.gamecounter.ui.screens.details
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -22,50 +19,14 @@ fun DetailsAppBarActions(
     onTimerClick: () -> Unit,
     onDiceClick: () -> Unit,
     onFightClick: () -> Unit,
-    animatedContentScope: AnimatedContentScope? = null,
-    sharedTransitionScope: SharedTransitionScope? = null
 ) {
     val haptic: HapticFeedback = LocalHapticFeedback.current
-
-    val timerModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-        with(sharedTransitionScope) {
-            Modifier.sharedElement(
-                sharedContentState = rememberSharedContentState(key = "timer-icon"),
-                animatedVisibilityScope = animatedContentScope
-            )
-        }
-    } else {
-        Modifier
-    }
-
-    val diceModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-        with(sharedTransitionScope) {
-            Modifier.sharedElement(
-                sharedContentState = rememberSharedContentState(key = "dice-icon"),
-                animatedVisibilityScope = animatedContentScope
-            )
-        }
-    } else {
-        Modifier
-    }
-
-    val fightModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-        with(sharedTransitionScope) {
-            Modifier.sharedElement(
-                sharedContentState = rememberSharedContentState(key = "fight-icon"),
-                animatedVisibilityScope = animatedContentScope
-            )
-        }
-    } else {
-        Modifier
-    }
 
     MunchkinIconButton(
         onClick = {
             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
             onTimerClick()
         },
-        modifier = timerModifier
     ) {
         MunchkinIcon(
             imageVector = MunchkinIcons.Timer,
@@ -78,7 +39,6 @@ fun DetailsAppBarActions(
             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
             onDiceClick()
         },
-        modifier = diceModifier
     ) {
         MunchkinIcon(
             imageVector = MunchkinIcons.Dice.Dice5,
@@ -91,7 +51,6 @@ fun DetailsAppBarActions(
             haptic.performHapticFeedback(HapticFeedbackType.Confirm)
             onFightClick()
         },
-        modifier = fightModifier
     ) {
         MunchkinIcon(
             imageVector = MunchkinIcons.Fight,

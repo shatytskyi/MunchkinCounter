@@ -83,6 +83,25 @@ class RateAppManager(
             }
         }
     }
+
+    fun shareApp() {
+        val packageName = "com.shatytskyi.gamecounter"
+        val shareText = "Check out Munchkin Counter - the best way to track your Munchkin game!\n\nhttps://play.google.com/store/apps/details?id=$packageName"
+
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareText)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            val chooserIntent = Intent.createChooser(shareIntent, "Share Munchkin Counter").apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(chooserIntent)
+        } catch (e: Exception) {
+            Toast.makeText(context, "Unable to share app", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
 
 enum class RateAppChoice {

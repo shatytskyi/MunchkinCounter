@@ -70,11 +70,12 @@ fun DetailsScreenContent(
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
             title = "",
             onBack = onBackClick,
-            animatedContentScope = animatedContentScope,
-            sharedTransitionScope = sharedTransitionScope,
-            titleSharedKey = null,
             actions = {
-                DetailsAppBarActions(onTimerClick, onDiceClick, onFightClick, animatedContentScope, sharedTransitionScope)
+                DetailsAppBarActions(
+                    onTimerClick,
+                    onDiceClick,
+                    onFightClick,
+                )
             }
         )
 

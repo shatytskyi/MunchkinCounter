@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Brightness4
 import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.BrightnessHigh
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -51,7 +52,6 @@ enum class ThemeMode {
     DARK
 }
 
-@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 fun SettingsScreen(
     currentThemeMode: ThemeMode = ThemeMode.AUTO,
@@ -61,8 +61,7 @@ fun SettingsScreen(
     onBackClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {},
     onRateAppClick: () -> Unit = {},
-    animatedContentScope: androidx.compose.animation.AnimatedContentScope? = null,
-    sharedTransitionScope: androidx.compose.animation.SharedTransitionScope? = null
+    onShareAppClick: () -> Unit = {}
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -128,10 +127,9 @@ fun SettingsScreen(
             }
 
             item {
-                RateAppButton(
-                    onClick = {
-                        onRateAppClick()
-                    }
+                OtherSettingsSection(
+                    onRateAppClick = onRateAppClick,
+                    onShareAppClick = onShareAppClick
                 )
             }
         }
@@ -146,10 +144,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
                 title = stringResource(R.string.settings),
-                onBack = onBackClick,
-                animatedContentScope = animatedContentScope,
-                sharedTransitionScope = sharedTransitionScope,
-                backIconSharedKey = "back-icon-settings"
+                onBack = onBackClick
             )
         }
     }
@@ -300,8 +295,9 @@ private fun LanguageSelector(
 }
 
 @Composable
-private fun RateAppButton(
-    onClick: () -> Unit
+private fun OtherSettingsSection(
+    onRateAppClick: () -> Unit,
+    onShareAppClick: () -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
 
@@ -319,10 +315,26 @@ private fun RateAppButton(
         MunchkinIconTextButton(
             onClick = {
                 haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
-                onClick()
+                onRateAppClick()
             },
             icon = Icons.Outlined.Star,
             text = stringResource(R.string.rate_dialog_title),
+            modifier = Modifier.fillMaxWidth(),
+            rippleColor = null,
+            iconTint = MunchkinTheme.colors.grey,
+            textColor = MunchkinTheme.colors.onBackground,
+            textStyle = MunchkinTheme.typography.bodyMedium,
+            bounded = false,
+            contentPadding = 16.dp
+        )
+
+        MunchkinIconTextButton(
+            onClick = {
+                haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
+                onShareAppClick()
+            },
+            icon = Icons.Outlined.Share,
+            text = stringResource(R.string.share_app),
             modifier = Modifier.fillMaxWidth(),
             rippleColor = null,
             iconTint = MunchkinTheme.colors.grey,
@@ -340,7 +352,6 @@ private fun RateAppButton(
     showSystemUi = true,
     showBackground = true
 )
-@OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
 @Composable
 private fun SettingsScreenPreview() {
     MunchkinTheme {

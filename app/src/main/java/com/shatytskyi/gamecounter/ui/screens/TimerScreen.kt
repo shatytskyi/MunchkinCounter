@@ -3,7 +3,6 @@ package com.shatytskyi.gamecounter.ui.screens
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.view.WindowManager
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -72,13 +71,10 @@ private const val START_FREQUENCY = 523
 private const val TICK_FREQUENCY = 659
 private const val END_FREQUENCY = 783
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TimerScreen(
     onBack: () -> Unit,
-    modifier: Modifier = Modifier,
-    animatedContentScope: androidx.compose.animation.AnimatedContentScope? = null,
-    sharedTransitionScope: androidx.compose.animation.SharedTransitionScope? = null
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
@@ -98,19 +94,14 @@ fun TimerScreen(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding(),
-        onBack = onBack,
-        animatedContentScope = animatedContentScope,
-        sharedTransitionScope = sharedTransitionScope
+        onBack = onBack
     )
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun TimerContent(
     modifier: Modifier = Modifier,
-    onBack: () -> Unit,
-    animatedContentScope: androidx.compose.animation.AnimatedContentScope? = null,
-    sharedTransitionScope: androidx.compose.animation.SharedTransitionScope? = null
+    onBack: () -> Unit
 ) {
     val timerState = useTimerLogic()
     val haptic = LocalHapticFeedback.current
@@ -121,10 +112,7 @@ private fun TimerContent(
     ) {
         MunchkinTopAppBar(
             title = stringResource(R.string.timer_title),
-            onBack = onBack,
-            animatedContentScope = animatedContentScope,
-            sharedTransitionScope = sharedTransitionScope,
-            backIconSharedKey = "back-icon-timer"
+            onBack = onBack
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -456,7 +444,6 @@ private data class TimerState(
     showSystemUi = true,
     showBackground = true
 )
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun TimerScreenPreview() {
     MunchkinTheme {

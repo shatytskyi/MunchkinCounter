@@ -68,9 +68,6 @@
     <string name="colors">Цвета</string>
     <string name="colors_app">Цвета приложения</string>
     <string name="colors_dynamic">Системные цвета</string>
-    <string name="fonts">Шрифт</string>
-    <string name="fonts_app">Шрифт приложения</string>
-    <string name="fonts_system">Системный шрифт</string>
     <string name="language">Язык</string>
     <string name="language_description">Изменить язык приложения</string>
     <string name="gender">Пол</string>
@@ -80,6 +77,7 @@
     <!-- Rate App Dialog -->
     <string name="other_settings">Другое</string>
     <string name="rate_dialog_title">Оценить Munchkin Counter</string>
+    <string name="share_app">Поделиться приложением</string>
     <string name="rate_dialog_title_level10">Отличная игра!</string>
     <string name="rate_dialog_message_level10">Ого, 10-й уровень! Отлично сыграно! 🎉\n\nКак насчёт оставить отзыв, чтобы помочь другим игрокам найти это приложение?</string>
     <string name="rate_dialog_rate_now">Конечно!</string>

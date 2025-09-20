@@ -146,6 +146,10 @@ class CommonViewModel(
     fun openPlayStore() {
         rateAppManager.openPlayStore()
     }
+
+    fun shareApp() {
+        rateAppManager.shareApp()
+    }
     
     fun toggleGender(id: Long) {
         viewModelScope.launch {

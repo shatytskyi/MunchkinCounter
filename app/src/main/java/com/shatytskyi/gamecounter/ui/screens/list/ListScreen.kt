@@ -28,12 +28,12 @@ import com.shatytskyi.gamecounter.viewmodel.CommonViewModel
 @Composable
 fun ListScreen(
     viewModel: CommonViewModel,
+    modifier: Modifier = Modifier,
     onCharacterClick: (Long) -> Unit,
     onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     animatedContentScope: AnimatedContentScope,
     sharedTransitionScope: SharedTransitionScope,
-    modifier: Modifier = Modifier
 ) {
     val characters by viewModel.characters.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -82,6 +82,7 @@ fun ListScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ListScreenContent(
+    modifier: Modifier = Modifier,
     characters: List<Character>,
     isLoading: Boolean,
     shouldShowRateDialog: Boolean,
@@ -99,7 +100,6 @@ private fun ListScreenContent(
     onSettingsClick: () -> Unit = {},
     animatedContentScope: AnimatedContentScope,
     sharedTransitionScope: SharedTransitionScope,
-    modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
     var showAddDialog by remember { mutableStateOf(false) }
@@ -125,8 +125,6 @@ private fun ListScreenContent(
                     // Navigation events are less critical, skip tracking
                     onSettingsClick()
                 },
-                animatedContentScope = animatedContentScope,
-                sharedTransitionScope = sharedTransitionScope
             )
         } else {
             ListScreenUnified(

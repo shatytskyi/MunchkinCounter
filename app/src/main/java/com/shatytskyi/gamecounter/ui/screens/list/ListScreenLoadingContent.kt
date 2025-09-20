@@ -17,11 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
 import com.shatytskyi.gamecounter.R
 import com.shatytskyi.gamecounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.gamecounter.ui.components.MunchkinText
@@ -33,8 +33,6 @@ fun ListScreenLoadingContent(
     onDiceClick: () -> Unit = {},
     onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
-    animatedContentScope: androidx.compose.animation.AnimatedContentScope? = null,
-    sharedTransitionScope: androidx.compose.animation.SharedTransitionScope? = null
 ) {
     val density = LocalDensity.current
     val statusBarHeight = WindowInsets.systemBars.getTop(density)
@@ -46,8 +44,6 @@ fun ListScreenLoadingContent(
         onDiceClick = onDiceClick,
         onTimerClick = onTimerClick,
         onSettingsClick = onSettingsClick,
-        animatedContentScope = animatedContentScope,
-        sharedTransitionScope = sharedTransitionScope
     ) {
         Box(
             modifier = Modifier
@@ -65,7 +61,7 @@ fun ListScreenLoadingContent(
                     color = MunchkinTheme.colors.primary,
                     modifier = Modifier.size(48.dp)
                 )
-                
+
                 MunchkinText(
                     text = stringResource(R.string.loading_players),
                     style = MunchkinTheme.typography.bodyLarge,

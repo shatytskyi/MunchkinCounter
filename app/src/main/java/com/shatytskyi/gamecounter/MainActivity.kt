@@ -278,6 +278,10 @@ fun MunchkinApp(
                     // Open Play Store directly from settings
                     sharedViewModel.openPlayStore()
                 },
+                onShareAppClick = {
+                    // Share app link
+                    sharedViewModel.shareApp()
+                },
                 onLanguageClick = {
                     // Open system language settings for the app
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

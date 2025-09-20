@@ -78,9 +78,6 @@
     <string name="colors">Colors</string>
     <string name="colors_app">App Colors</string>
     <string name="colors_dynamic">Themed Colors</string>
-    <string name="fonts">Font</string>
-    <string name="fonts_app">App Font</string>
-    <string name="fonts_system">System Font</string>
     <string name="language">Language</string>
     <string name="language_description">Change app language</string>
     <string name="gender">Gender</string>
@@ -90,6 +87,7 @@
     <!-- Rate App Dialog -->
     <string name="other_settings">Other</string>
     <string name="rate_dialog_title">Rate Munchkin Counter</string>
+    <string name="share_app">Share App</string>
 
     <string name="rate_dialog_title_level10">Good game!</string>
     <string name="rate_dialog_message_level10">Wow, level 10! Well played! 🎉\n\nHow about dropping a quick review to help other players find this app?</string>

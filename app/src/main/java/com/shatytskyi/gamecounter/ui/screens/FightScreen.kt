@@ -53,13 +53,13 @@ import com.shatytskyi.gamecounter.viewmodel.CommonViewModel
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun FightScreen(
+    modifier: Modifier = Modifier,
     viewModel: CommonViewModel,
     playerId: Long,
     onBack: () -> Unit,
     onTimerClick: () -> Unit = {},
     animatedContentScope: AnimatedContentScope? = null,
     sharedTransitionScope: SharedTransitionScope? = null,
-    modifier: Modifier = Modifier
 ) {
     val characters by viewModel.characters.collectAsState()
     val player = characters.find { it.id == playerId }
@@ -158,11 +158,11 @@ private fun FightScreenContent(
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
             title = stringResource(R.string.fight_title),
             onBack = onBackClick,
-            animatedContentScope = animatedContentScope,
-            sharedTransitionScope = sharedTransitionScope,
-            titleSharedKey = null,
             actions = {
-                FightAppBarActions(onTimerClick, onDiceClick, animatedContentScope, sharedTransitionScope)
+                FightAppBarActions(
+                    onTimerClick,
+                    onDiceClick
+                )
             }
         )
 
@@ -257,39 +257,14 @@ private fun FightScreenContent(
 private fun FightAppBarActions(
     onTimerClick: () -> Unit,
     onDiceClick: () -> Unit,
-    animatedContentScope: AnimatedContentScope? = null,
-    sharedTransitionScope: SharedTransitionScope? = null
 ) {
     val haptic: HapticFeedback = LocalHapticFeedback.current
-
-    val timerModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-        with(sharedTransitionScope) {
-            Modifier.sharedElement(
-                sharedContentState = rememberSharedContentState(key = "timer-icon"),
-                animatedVisibilityScope = animatedContentScope
-            )
-        }
-    } else {
-        Modifier
-    }
-
-    val diceModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-        with(sharedTransitionScope) {
-            Modifier.sharedElement(
-                sharedContentState = rememberSharedContentState(key = "dice-icon"),
-                animatedVisibilityScope = animatedContentScope
-            )
-        }
-    } else {
-        Modifier
-    }
 
     MunchkinIconButton(
         onClick = {
             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
             onTimerClick()
         },
-        modifier = timerModifier
     ) {
         MunchkinIcon(
             imageVector = MunchkinIcons.Timer,
@@ -302,7 +277,6 @@ private fun FightAppBarActions(
             haptic.performHapticFeedback(HapticFeedbackType.KeyboardTap)
             onDiceClick()
         },
-        modifier = diceModifier
     ) {
         MunchkinIcon(
             imageVector = MunchkinIcons.Dice.Dice5,

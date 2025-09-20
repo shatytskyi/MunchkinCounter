@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import com.shatytskyi.gamecounter.ui.components.MunchkinHorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,6 +42,7 @@ import com.shatytskyi.gamecounter.data.Character
 import com.shatytskyi.gamecounter.data.Gender
 import com.shatytskyi.gamecounter.ui.components.APP_BAR_HEIGHT
 import com.shatytskyi.gamecounter.ui.components.CharacterListItem
+import com.shatytskyi.gamecounter.ui.components.MunchkinHorizontalDivider
 import com.shatytskyi.gamecounter.ui.components.MunchkinIconTextButton
 import com.shatytskyi.gamecounter.ui.components.MunchkinText
 import com.shatytskyi.gamecounter.ui.components.icons.Add
@@ -80,8 +80,6 @@ fun ListScreenUnified(
         onDiceClick = onDiceClick,
         onTimerClick = onTimerClick,
         onSettingsClick = onSettingsClick,
-        animatedContentScope = animatedContentScope,
-        sharedTransitionScope = sharedTransitionScope
     ) {
         LazyColumn(
             modifier = Modifier
@@ -213,7 +211,8 @@ fun ListScreenUnified(
                 contentType = "bottom_actions"
             ) {
                 Column(
-                    modifier = Modifier.animateItem()
+                    modifier = Modifier
+                        .animateItem()
                         .navigationBarsPadding()
                 ) {
                     Spacer(modifier = Modifier.height(8.dp))

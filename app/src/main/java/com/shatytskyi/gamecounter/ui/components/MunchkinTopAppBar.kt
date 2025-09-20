@@ -1,8 +1,5 @@
 package com.shatytskyi.gamecounter.ui.components
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -33,19 +30,13 @@ import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
 
 const val APP_BAR_HEIGHT = 64
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MunchkinTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     showIcon: Boolean = false,
-    actions: @Composable () -> Unit = {},
-    animatedContentScope: AnimatedContentScope? = null,
-    sharedTransitionScope: SharedTransitionScope? = null,
-    titleSharedKey: String? = null,
-    backIconSharedKey: String? = null,
-    appIconSharedKey: String? = null
+    actions: @Composable () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -65,21 +56,9 @@ fun MunchkinTopAppBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {
-            val backIconModifier = if (sharedTransitionScope != null && animatedContentScope != null && backIconSharedKey != null) {
-                with(sharedTransitionScope) {
-                    Modifier.sharedElement(
-                        sharedContentState = rememberSharedContentState(key = backIconSharedKey),
-                        animatedVisibilityScope = animatedContentScope
-                    )
-                }
-            } else {
-                Modifier
-            }
-
             MunchkinIconButton(
                 onClick = onBack,
-                size = 48.dp,
-                modifier = backIconModifier
+                size = 48.dp
             ) {
                 MunchkinIcon(
                     Icons.AutoMirrored.Filled.ArrowBack,
@@ -90,56 +69,16 @@ fun MunchkinTopAppBar(
 
             Spacer(modifier = Modifier.width(8.dp))
         } else if (showIcon) {
-            val appIconModifier = if (sharedTransitionScope != null && animatedContentScope != null && appIconSharedKey != null) {
-                with(sharedTransitionScope) {
-                    Modifier
-                        .padding(start = 16.dp)
-                        .size(32.dp)
-                        .sharedElement(
-                            sharedContentState = rememberSharedContentState(key = appIconSharedKey),
-                            animatedVisibilityScope = animatedContentScope
-                        )
-                }
-            } else {
-                Modifier
-                    .padding(start = 16.dp)
-                    .size(32.dp)
-            }
-
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = null,
-                modifier = appIconModifier,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .size(32.dp),
                 colorFilter = ColorFilter.tint(MunchkinTheme.colors.onBackground)
             )
 
             Spacer(modifier = Modifier.width(8.dp))
-        }
-
-        val titleModifier = if (sharedTransitionScope != null && animatedContentScope != null && titleSharedKey != null) {
-            with(sharedTransitionScope) {
-                Modifier
-                    .weight(1f)
-                    .sharedElement(
-                        sharedContentState = rememberSharedContentState(key = titleSharedKey),
-                        animatedVisibilityScope = animatedContentScope
-                    )
-                    .then(
-                        when {
-                            onBack != null -> Modifier
-                            showIcon -> Modifier
-                            else -> Modifier.padding(start = 16.dp)
-                        }
-                    )
-            }
-        } else {
-            Modifier.weight(1f).then(
-                when {
-                    onBack != null -> Modifier
-                    showIcon -> Modifier
-                    else -> Modifier.padding(start = 16.dp)
-                }
-            )
         }
 
         MunchkinText(
@@ -151,7 +90,13 @@ fun MunchkinTopAppBar(
             textAlign = TextAlign.Start,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = titleModifier
+            modifier = Modifier.weight(1f).then(
+                when {
+                    onBack != null -> Modifier
+                    showIcon -> Modifier
+                    else -> Modifier.padding(start = 16.dp)
+                }
+            )
         )
 
         actions()
@@ -159,7 +104,6 @@ fun MunchkinTopAppBar(
 }
 
 @Preview(name = "TopAppBar without Back Button")
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MunchkinTopAppBarWithoutBackPreview() {
     MunchkinTheme {
@@ -172,7 +116,6 @@ private fun MunchkinTopAppBarWithoutBackPreview() {
 }
 
 @Preview(name = "TopAppBar with Back Button")
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MunchkinTopAppBarWithBackPreview() {
     MunchkinTheme {
@@ -186,7 +129,6 @@ private fun MunchkinTopAppBarWithBackPreview() {
 }
 
 @Preview(name = "TopAppBar with Actions")
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MunchkinTopAppBarWithActionsPreview() {
     MunchkinTheme {

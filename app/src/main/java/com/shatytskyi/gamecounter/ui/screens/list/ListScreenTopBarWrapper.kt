@@ -1,8 +1,5 @@
 package com.shatytskyi.gamecounter.ui.screens.list
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -25,14 +22,11 @@ import com.shatytskyi.gamecounter.ui.components.icons.Timer
 import com.shatytskyi.gamecounter.ui.components.icons.dice.Dice5
 import com.shatytskyi.gamecounter.ui.theme.MunchkinTheme
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ListScreenTopBarWrapper(
     onDiceClick: () -> Unit = {},
     onTimerClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
-    animatedContentScope: AnimatedContentScope? = null,
-    sharedTransitionScope: SharedTransitionScope? = null,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -51,46 +45,9 @@ fun ListScreenTopBarWrapper(
                     .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top)),
                 title = stringResource(R.string.app_title_main),
                 showIcon = true,
-                animatedContentScope = animatedContentScope,
-                sharedTransitionScope = sharedTransitionScope,
-                appIconSharedKey = "app-icon",
                 actions = {
-                    val timerModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-                        with(sharedTransitionScope) {
-                            Modifier.sharedElement(
-                                sharedContentState = rememberSharedContentState(key = "timer-icon"),
-                                animatedVisibilityScope = animatedContentScope
-                            )
-                        }
-                    } else {
-                        Modifier
-                    }
-
-                    val diceModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-                        with(sharedTransitionScope) {
-                            Modifier.sharedElement(
-                                sharedContentState = rememberSharedContentState(key = "dice-icon"),
-                                animatedVisibilityScope = animatedContentScope
-                            )
-                        }
-                    } else {
-                        Modifier
-                    }
-
-                    val settingsModifier = if (sharedTransitionScope != null && animatedContentScope != null) {
-                        with(sharedTransitionScope) {
-                            Modifier.sharedElement(
-                                sharedContentState = rememberSharedContentState(key = "settings-icon"),
-                                animatedVisibilityScope = animatedContentScope
-                            )
-                        }
-                    } else {
-                        Modifier
-                    }
-
                     MunchkinIconButton(
-                        onClick = onTimerClick,
-                        modifier = timerModifier
+                        onClick = onTimerClick
                     ) {
                         MunchkinIcon(
                             imageVector = MunchkinIcons.Timer,
@@ -98,8 +55,7 @@ fun ListScreenTopBarWrapper(
                         )
                     }
                     MunchkinIconButton(
-                        onClick = onDiceClick,
-                        modifier = diceModifier
+                        onClick = onDiceClick
                     ) {
                         MunchkinIcon(
                             imageVector = MunchkinIcons.Dice.Dice5,
@@ -107,8 +63,7 @@ fun ListScreenTopBarWrapper(
                         )
                     }
                     MunchkinIconButton(
-                        onClick = onSettingsClick,
-                        modifier = settingsModifier
+                        onClick = onSettingsClick
                     ) {
                         MunchkinIcon(
                             imageVector = MunchkinIcons.Settings,
