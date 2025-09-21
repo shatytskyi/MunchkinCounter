@@ -1,0 +1,90 @@
+<resources>
+    <!-- Common Actions -->
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="save">Guardar</string>
+    <string name="add">Añadir</string>
+    <string name="reset">Reiniciar</string>
+    <string name="clear">Limpiar</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="close">Cerrar</string>
+    <string name="got_it">Entendido</string>
+
+    <!-- Player Management -->
+    <string name="add_new_player">Añadir nuevo jugador</string>
+    <string name="player_name">Nombre del jugador</string>
+    <string name="no_players">Sin jugadores</string>
+    <string name="no_players_description">¡Añade tu primer jugador para empezar con Munchkin!</string>
+    <string name="player_will_be_reset">El jugador será reiniciado a nivel 1 con 0 objetos</string>
+    <string name="player_will_be_deleted">El jugador será eliminado permanentemente</string>
+    <string name="delete_character_title">¿Eliminar %s?</string>
+    <string name="loading_players">Cargando jugadores…</string>
+    <string name="warning_reset_all_title">¿Reiniciar todos los jugadores?</string>
+    <string name="warning_reset_all_message">Todos los jugadores serán reiniciados a nivel 1 con poder 0</string>
+    <string name="warning_delete_all_title">¿Eliminar todos los jugadores?</string>
+    <string name="warning_delete_all_message">Todos los jugadores serán eliminados permanentemente</string>
+
+    <!-- Stats -->
+    <string name="level">Nivel</string>
+    <string name="power">Poder</string>
+    <string name="items">Objetos</string>
+
+    <!-- Fight Screen -->
+    <string name="fight_title">Combate</string>
+    <string name="loading_fight">Cargando combate…</string>
+    <string name="fight_info_title">Importante</string>
+    <string name="fight_info_message">Cualquier cambio de fuerza en esta sección es temporal y no afectará las estadísticas reales del personaje</string>
+
+    <!-- New Fight Screen strings -->
+    <string name="player">Jugador</string>
+    <string name="monster">Monstruo</string>
+
+    <!-- Helper/Partner -->
+    <string name="help">Ayuda</string>
+    <string name="remove_help">Quitar ayuda</string>
+    <string name="select_helper">Seleccionar ayudante</string>
+    <string name="clone">Clon</string>
+
+    <!-- Timer -->
+    <string name="timer_title">Temporizador</string>
+    <string name="timer_start">INICIAR</string>
+    <string name="timer_select_seconds">Selecciona segundos para tomar decisión</string>
+    <string name="timer_finished">¡Tiempo agotado!</string>
+
+    <!-- Dice -->
+    <string name="roll_the_dice">Lanzar el dado</string>
+    <string name="dice_hint">Toca el dado o agita tu teléfono para lanzar</string>
+
+    <!-- Warnings & Dialogs -->
+    <string name="reset_character_title">¿Reiniciar %s?</string>
+
+    <!-- Edit Character -->
+    <string name="edit_player">Editar jugador</string>
+
+    <!-- Other -->
+    <string name="settings">Ajustes</string>
+    <string name="theme">Tema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_auto">Automático</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="colors">Colores</string>
+    <string name="colors_app">Colores de la app</string>
+    <string name="colors_dynamic">Colores dinámicos</string>
+    <string name="language">Idioma</string>
+    <string name="language_description">Cambiar idioma de la app</string>
+    <string name="gender">Género</string>
+    <string name="gender_male">Masculino</string>
+    <string name="gender_female">Femenino</string>
+
+    <!-- Rate App Dialog -->
+    <string name="other_settings">Otros</string>
+    <string name="rate_dialog_title">Calificar Munchkin Counter</string>
+    <string name="share_app">Compartir app</string>
+
+    <string name="rate_dialog_title_level10">¡Buen juego!</string>
+    <string name="rate_dialog_message_level10">¡Wow, nivel 10! ¡Bien jugado! 🎉\n\n¿Qué tal dejar una reseña rápida para ayudar a otros jugadores a encontrar esta app?</string>
+
+    <string name="rate_dialog_rate_now">Claro</string>
+    <string name="rate_dialog_remind_later">Quizás más tarde</string>
+</resources>
