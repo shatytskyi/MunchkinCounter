@@ -1,5 +1,6 @@
 package com.shatytskyi.gamecounter.ui.theme
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -33,7 +34,7 @@ fun MunchkinTheme(
         ThemeMode.AUTO -> systemInDarkTheme
     }
     val colors = when {
-        dynamicColor -> {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             val dynamicColorScheme = if (darkTheme) {
                 dynamicDarkColorScheme(context)

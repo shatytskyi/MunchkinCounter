@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId = "com.shatytskyi.gamecounter"
-        minSdk = 31
+        minSdk = 26
         targetSdk = 36
         versionCode = 11
         versionName = "2.0.2"

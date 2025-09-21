@@ -1,5 +1,6 @@
 package com.shatytskyi.gamecounter.ui.screens
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +23,6 @@ import androidx.compose.material.icons.outlined.Brightness4
 import androidx.compose.material.icons.outlined.BrightnessAuto
 import androidx.compose.material.icons.outlined.BrightnessHigh
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarRate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -93,38 +93,42 @@ fun SettingsScreen(
                 )
             }
 
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-                ColorSwitchGroup(
-                    dynamicColors = dynamicColors,
-                    onDynamicColorsChange = { enabled ->
-                        onDynamicColorsChange(enabled)
-                    }
-                )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    ColorSwitchGroup(
+                        dynamicColors = dynamicColors,
+                        onDynamicColorsChange = { enabled ->
+                            onDynamicColorsChange(enabled)
+                        }
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    MunchkinHorizontalDivider(
+                        color = MunchkinTheme.colors.grey.copy(alpha = 0.3f)
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                MunchkinHorizontalDivider(
-                    color = MunchkinTheme.colors.grey.copy(alpha = 0.3f)
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                item {
+                    LanguageSelector(
+                        onClick = {
+                            onLanguageClick()
+                        }
+                    )
+                }
 
-            item {
-                LanguageSelector(
-                    onClick = {
-                        onLanguageClick()
-                    }
-                )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                MunchkinHorizontalDivider(
-                    color = MunchkinTheme.colors.grey.copy(alpha = 0.3f)
-                )
-                Spacer(modifier = Modifier.height(32.dp))
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    MunchkinHorizontalDivider(
+                        color = MunchkinTheme.colors.grey.copy(alpha = 0.3f)
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
             }
 
             item {
