@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.shatytskyi.gamecounter.ui.screens.ThemeMode
+import androidx.core.graphics.drawable.toDrawable
 
 val LocalMunchkinColors = staticCompositionLocalOf { MunchkinColors() }
 val LocalMunchkinTypography = staticCompositionLocalOf<Material3Typography> { Typography }
@@ -63,7 +64,7 @@ fun MunchkinTheme(
             WindowCompat.setDecorFitsSystemWindows(window, false)
             window.statusBarColor = android.graphics.Color.TRANSPARENT
             window.navigationBarColor = colors.background.toArgb()
-            window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(colors.background.toArgb()))
+            window.setBackgroundDrawable(colors.background.toArgb().toDrawable())
             val insetsController = WindowCompat.getInsetsController(window, view)
             insetsController.isAppearanceLightStatusBars = !darkTheme
             insetsController.isAppearanceLightNavigationBars = !darkTheme
