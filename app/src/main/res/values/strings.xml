@@ -23,7 +23,7 @@
     <string name="player_will_be_reset">Player will be reset to level 1 with 0 items</string>
     <string name="player_will_be_deleted">Player will be permanently deleted</string>
     <string name="delete_character_title">Delete %s?</string>
-    <string name="loading_players">Loading Players...</string>
+    <string name="loading_players">Loading Players…</string>
     <string name="warning_reset_all_title">Reset All Players?</string>
     <string name="warning_reset_all_message">All players will be reset to level 1 with 0 power</string>
     <string name="warning_delete_all_title">Delete All Players?</string>

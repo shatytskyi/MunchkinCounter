@@ -95,7 +95,7 @@ fun AddCharacterDialog(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Action buttons
         Row(
@@ -133,8 +133,6 @@ fun AddCharacterDialog(
                 enabled = name.text.trim().isNotEmpty()
             )
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 

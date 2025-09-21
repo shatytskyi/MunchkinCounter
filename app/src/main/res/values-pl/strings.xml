@@ -1,0 +1,90 @@
+<resources>
+    <!-- Common Actions -->
+    <string name="cancel">Anuluj</string>
+    <string name="confirm">Potwierdź</string>
+    <string name="save">Zapisz</string>
+    <string name="add">Dodaj</string>
+    <string name="reset">Resetuj</string>
+    <string name="clear">Wyczyść</string>
+    <string name="edit">Edytuj</string>
+    <string name="delete">Usuń</string>
+    <string name="close">Zamknij</string>
+    <string name="got_it">Rozumiem</string>
+
+    <!-- Player Management -->
+    <string name="add_new_player">Dodaj nowego gracza</string>
+    <string name="player_name">Nazwa gracza</string>
+    <string name="no_players">Brak graczy</string>
+    <string name="no_players_description">Dodaj pierwszego gracza, aby rozpocząć grę w Munchkin!</string>
+    <string name="player_will_be_reset">Gracz zostanie zresetowany do poziomu 1 z 0 przedmiotami</string>
+    <string name="player_will_be_deleted">Gracz zostanie trwale usunięty</string>
+    <string name="delete_character_title">Usunąć %s?</string>
+    <string name="loading_players">Ładowanie graczy…</string>
+    <string name="warning_reset_all_title">Zresetować wszystkich graczy?</string>
+    <string name="warning_reset_all_message">Wszyscy gracze zostaną zresetowani do poziomu 1 z mocą 0</string>
+    <string name="warning_delete_all_title">Usunąć wszystkich graczy?</string>
+    <string name="warning_delete_all_message">Wszyscy gracze zostaną trwale usunięci</string>
+
+    <!-- Stats -->
+    <string name="level">Poziom</string>
+    <string name="power">Moc</string>
+    <string name="items">Przedmioty</string>
+
+    <!-- Fight Screen -->
+    <string name="fight_title">Walka</string>
+    <string name="loading_fight">Ładowanie walki…</string>
+    <string name="fight_info_title">Ważne</string>
+    <string name="fight_info_message">Wszelkie zmiany siły w tej sekcji są tymczasowe i nie wpłyną na rzeczywiste statystyki postaci</string>
+
+    <!-- New Fight Screen strings -->
+    <string name="player">Gracz</string>
+    <string name="monster">Potwór</string>
+
+    <!-- Helper/Partner -->
+    <string name="help">Pomoc</string>
+    <string name="remove_help">Usuń pomoc</string>
+    <string name="select_helper">Wybierz pomocnika</string>
+    <string name="clone">Klon</string>
+
+    <!-- Timer -->
+    <string name="timer_title">Czasomierz</string>
+    <string name="timer_start">START</string>
+    <string name="timer_select_seconds">Wybierz sekundy na podjęcie decyzji</string>
+    <string name="timer_finished">Czas minął!</string>
+
+    <!-- Dice -->
+    <string name="roll_the_dice">Rzuć kostką</string>
+    <string name="dice_hint">Stuknij kostkę lub potrząśnij telefonem, aby rzucić</string>
+
+    <!-- Warnings & Dialogs -->
+    <string name="reset_character_title">Zresetować %s?</string>
+
+    <!-- Edit Character -->
+    <string name="edit_player">Edytuj gracza</string>
+
+    <!-- Other -->
+    <string name="settings">Ustawienia</string>
+    <string name="theme">Motyw</string>
+    <string name="theme_light">Jasny</string>
+    <string name="theme_auto">Automatyczny</string>
+    <string name="theme_dark">Ciemny</string>
+    <string name="colors">Kolory</string>
+    <string name="colors_app">Kolory aplikacji</string>
+    <string name="colors_dynamic">Kolory motywu</string>
+    <string name="language">Język</string>
+    <string name="language_description">Zmień język aplikacji</string>
+    <string name="gender">Płeć</string>
+    <string name="gender_male">Mężczyzna</string>
+    <string name="gender_female">Kobieta</string>
+
+    <!-- Rate App Dialog -->
+    <string name="other_settings">Inne</string>
+    <string name="rate_dialog_title">Oceń Munchkin Counter</string>
+    <string name="share_app">Udostępnij aplikację</string>
+
+    <string name="rate_dialog_title_level10">Dobra gra!</string>
+    <string name="rate_dialog_message_level10">Wow, poziom 10! Świetnie zagrane! 🎉\n\nMoże zostawisz krótką recenzję, aby pomóc innym graczom znaleźć tę aplikację?</string>
+
+    <string name="rate_dialog_rate_now">Jasne</string>
+    <string name="rate_dialog_remind_later">Może później</string>
+</resources>
