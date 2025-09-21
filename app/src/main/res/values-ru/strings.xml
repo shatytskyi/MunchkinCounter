@@ -19,7 +19,7 @@
     <string name="player_will_be_reset">Игрок будет сброшен до 1-го уровня с 0 предметов</string>
     <string name="player_will_be_deleted">Игрок будет удалён навсегда</string>
     <string name="delete_character_title">Удалить %s?</string>
-    <string name="loading_players">Загрузка игроков...</string>
+    <string name="loading_players">Загрузка игроков…</string>
     <string name="warning_reset_all_title">Сбросить всех игроков?</string>
     <string name="warning_reset_all_message">Все игроки будут сброшены до 1-го уровня с 0 силы</string>
     <string name="warning_delete_all_title">Удалить всех игроков?</string>
