@@ -6,7 +6,6 @@ import android.view.WindowManager
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -37,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -73,8 +71,7 @@ private const val END_FREQUENCY = 783
 
 @Composable
 fun TimerScreen(
-    onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    onBack: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -184,7 +181,7 @@ private fun SecondsSelector(
 
     LazyRow(
         state = listState,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.onSizeChanged { size ->
             containerWidth = size.width
         }
@@ -194,13 +191,33 @@ private fun SecondsSelector(
         }
         items(10) { index ->
             val seconds = index + 1
+            val isSelected = selectedSeconds == seconds
+
+            val borderWidth by animateFloatAsState(
+                targetValue = if (isSelected) 2f else 1f,
+                animationSpec = tween(durationMillis = 200),
+                label = "border_width"
+            )
+
+            val scale by animateFloatAsState(
+                targetValue = if (isSelected) 1.1f else 1f,
+                animationSpec = tween(durationMillis = 200),
+                label = "item_scale"
+            )
+
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(42.dp)
+                    .graphicsLayer(
+                        scaleX = scale,
+                        scaleY = scale
+                    )
                     .clip(CircleShape)
-                    .background(
-                        if (selectedSeconds == seconds) MunchkinTheme.colors.primary
-                        else MunchkinTheme.colors.grey.copy(alpha = 0.3f)
+                    .border(
+                        width = borderWidth.dp,
+                        color = if (isSelected) MunchkinTheme.colors.primary
+                                else MunchkinTheme.colors.grey.copy(alpha = 0.4f),
+                        shape = CircleShape
                     )
                     .clickable(
                         indication = null,
@@ -212,11 +229,12 @@ private fun SecondsSelector(
             ) {
                 MunchkinText(
                     text = seconds.toString(),
-                    color = if (selectedSeconds == seconds)
-                        Color.White
-                    else MunchkinTheme.colors.onBackground,
+                    color = if (isSelected)
+                        MunchkinTheme.colors.primary
+                    else MunchkinTheme.colors.onBackground.copy(alpha = 0.7f),
                     style = MunchkinTheme.typography.labelLarge.copy(
-                        fontWeight = FontWeight.Bold
+                        fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Medium,
+                        fontSize = if (isSelected) 18.sp else 16.sp
                     )
                 )
             }
@@ -236,41 +254,55 @@ private fun TimerButton(
     shouldFlash: Boolean,
     onToggle: () -> Unit
 ) {
-    val scale by animateFloatAsState(
-        targetValue = if (shouldFlash) 1.1f else 1f,
-        animationSpec = tween(durationMillis = 500),
-        label = "flash_scale"
+    val flashAlpha by animateFloatAsState(
+        targetValue = if (shouldFlash) 1f else 0f,
+        animationSpec = tween(durationMillis = 300),
+        label = "flash_alpha"
     )
 
     val progress =
         if (selectedSeconds > 0 && isRunning) currentSeconds.toFloat() / selectedSeconds else 0f
+
     val backgroundColor by animateColorAsState(
-        targetValue = if (shouldFlash) MunchkinTheme.colors.secondary
-        else if (isRunning) lerp(
-            MunchkinTheme.colors.primary,
-            MunchkinTheme.colors.secondary,
-            1f - progress
-        )
-        else MunchkinTheme.colors.primary,
+        targetValue = when {
+            shouldFlash -> MunchkinTheme.colors.secondary
+            isRunning -> lerp(
+                MunchkinTheme.colors.primary,
+                MunchkinTheme.colors.secondary,
+                1f - progress
+            )
+            else -> MunchkinTheme.colors.primary
+        },
         animationSpec = tween(durationMillis = 300),
         label = "background_color"
     )
 
     Box(
         modifier = modifier
-            .graphicsLayer(
-                scaleX = scale,
-                scaleY = scale
-            )
             .clip(RoundedCornerShape(24.dp))
-            .border(width = 2.dp, color = backgroundColor, shape = RoundedCornerShape(24.dp))
+            .border(
+                width = if (shouldFlash) 3.dp else 2.dp,
+                color = if (shouldFlash)
+                    MunchkinTheme.colors.secondary.copy(alpha = flashAlpha)
+                else backgroundColor,
+                shape = RoundedCornerShape(24.dp)
+            )
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ) { onToggle() },
         contentAlignment = Alignment.Center
     ) {
-        if (isRunning) {
+        if (shouldFlash) {
+            MunchkinText(
+                text = stringResource(R.string.timer_finished),
+                color = MunchkinTheme.colors.secondary.copy(alpha = flashAlpha),
+                style = MunchkinTheme.typography.displayMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                textAlign = TextAlign.Center
+            )
+        } else if (isRunning) {
             MunchkinText(
                 text = currentSeconds.toString(),
                 color = backgroundColor,
@@ -395,7 +427,7 @@ private fun useTimerLogic(): TimerState {
 
     LaunchedEffect(shouldFlash) {
         if (shouldFlash) {
-            delay(500L)
+            delay(1500L)
             shouldFlash = false
         }
     }

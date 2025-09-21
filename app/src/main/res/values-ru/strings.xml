@@ -43,6 +43,7 @@
     <string name="clone">Двойник</string>
 
     <!-- Escape Dialog -->
+    <string name="timer_finished">Время\nвышло</string>
     <string name="roll_the_dice">Бросить кубик</string>
     <string name="dice_hint">Нажмите на кубик или потрясите телефон</string>
 
