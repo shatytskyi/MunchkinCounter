@@ -187,9 +187,9 @@ private fun ListScreenContent(
             onDismiss = {
                 showAddDialog = false
             },
-            onConfirm = { name, gender ->
+            onConfirm = { name ->
                 haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                onAddCharacter(name, gender)
+                onAddCharacter(name, Gender.MALE)
                 showAddDialog = false
             }
         )
