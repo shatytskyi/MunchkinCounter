@@ -62,7 +62,9 @@ fun MunchkinTheme(
         SideEffect {
             val window = (view.context as android.app.Activity).window
             WindowCompat.setDecorFitsSystemWindows(window, false)
+            @Suppress("DEPRECATION")
             window.statusBarColor = android.graphics.Color.TRANSPARENT
+            @Suppress("DEPRECATION")
             window.navigationBarColor = colors.background.toArgb()
             window.setBackgroundDrawable(colors.background.toArgb().toDrawable())
             val insetsController = WindowCompat.getInsetsController(window, view)
